@@ -1,0 +1,22 @@
+{
+  "status": 0,
+  "value": {
+    "webStorageEnabled": false,
+    "locationContextEnabled": false,
+    "browserName": "",
+    "platform": "MAC",
+    "javascriptEnabled": true,
+    "databaseEnabled": false,
+    "takesScreenshot": true,
+    "networkConnectionEnabled": false,
+    "app": "../NativeDemoApp/ios/build/NativeDemoApp/Build/Products/Debug-iphonesimulator/NativeDemoApp.app",
+    "platformName": "iOS",
+    "platformVersion": "12.1",
+    "deviceName": "iPhone X",
+    "automationName": "XCUITest",
+    "wdaLocalPort": 8100,
+    "waitForQuiescence": false,
+    "udid": "7B638B33-82BC-437B-8A1E-32839831AC8D"
+  },
+  "sessionId": "be5cd665-9bbe-4d69-96c3-41d6145e138c"
+}

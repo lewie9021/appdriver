@@ -1,0 +1,59 @@
+# Device
+
+The `device` object provides a way to interact with application which is not directly linked to an element.
+
+### Examples
+
+```javascript
+(async () => {
+  await device.performTouchGesture([
+    ...
+  ]);
+})();
+```
+
+```javascript
+(async () => {
+  await device.setOrientation("portrait");
+})();
+```
+
+```javascript
+(async () => {
+  await device.restartApp();
+})();
+```
+
+### Device API
+
+[```.restartApp() => Device```](./device/restartApp.md)
+
+TODO: Description here.
+
+[```.swipeUp({distance?: Number, duration?: Number, startX?: Number, startY?: Number}) => Device```](./device/swipeUp.md)
+
+TODO: Description here.
+
+[```.swipeDown({distance?: Number, duration?: Number, startX?: Number, startY?: Number}) => Device```](./device/swipeDown.md)
+
+TODO: Description here.
+
+[```.swipeLeft({distance?: Number, duration?: Number, startX?: Number, startY?: Number}) => Device```](./device/swipeLeft.md)
+
+TODO: Description here.
+
+[```.swipeRight({distance?: Number, duration?: Number, startX?: Number, startY?: Number}) => Device```](./device/swipeRight.md)
+
+TODO: Description here.
+
+[```.swipe({duration?: Number, startX: Number, startY: Number, endX: Number, endY: Number}) => Device```](./device/swipe.md)
+
+TODO: Description here.
+
+[```.setOrientation(orientation: "landscape" | "portrait") => Device```](./device/setOrientation.md)
+
+TODO: Description here.
+
+[```.getOrientation() => Device```](./device/getOrientation.md)
+
+TODO: Description here.
