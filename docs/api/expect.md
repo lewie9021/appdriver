@@ -30,34 +30,30 @@ The `expect` utility is the out-of-the-box solution for asserting within tests. 
 
 ### Expect API
 
-[```.toHaveValue(value: String) => Promise```](./expect/toHaveValue.md)
+:hammer: [```.toHaveValue(value: String) => Promise```](./expect/toHaveValue.md)
 
 TODO: Description here.
 
-[```.toHaveValueGreaterThan(value: Number) => Promise```](./expect/toHaveValueGreaterThan.md)
+:hammer: [```.toHaveValueGreaterThan(value: Number) => Promise```](./expect/toHaveValueGreaterThan.md)
 
 TODO: Description here.
 
-[```.toHaveValueLessThan(value: Number) => Promise```](./expect/toHaveValueLessThan.md)
+:hammer: [```.toHaveValueLessThan(value: Number) => Promise```](./expect/toHaveValueLessThan.md)
 
 TODO: Description here.
 
-[```.toContainText(text: String) => Promise```](./expect/toContainText.md)
+:hammer: [```.toContainValue(text: String) => Promise```](./expect/toContainValue.md)
 
 TODO: Description here.
 
-[```.toHaveText(text: String) => Promise```](./expect/toHaveText.md)
+:hammer: [```.toHaveAttribute(attribute: String, value: String|Number) => Promise```](./expect/toHaveAttribute.md)
 
 TODO: Description here.
 
-[```.toHaveAttribute(attribute: String, value: String|Number) => Promise```](./expect/toHaveAttribute.md)
+:hammer: [```.toExist(text: String) => Promise```](./expect/toExist.md)
 
 TODO: Description here.
 
-[```.toExist(text: String) => Promise```](./expect/toExist.md)
-
-TODO: Description here.
-
-[```.toBeVisible(text: String) => Promise```](./expect/toExist.md)
+:hammer: [```.toBeVisible(text: String) => Promise```](./expect/toExist.md)
 
 TODO: Description here.

@@ -1,6 +1,6 @@
-# AppDriverIO
+# AppDriver
 
-A mobile focused, intuitive Appium WebDriver client.
+A mobile focused, intuitive Appium client.
 
 ### API
 
