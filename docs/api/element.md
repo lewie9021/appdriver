@@ -37,6 +37,14 @@ TODO: Description here.
 
 TODO: Description here.
 
+:hammer: [```.getLocation() => {x: Number, y: Number}```](./element/getLocation.md)
+
+TODO: Description here.
+
+:hammer: [```.getSize() => {width: Number, height: Number}```](./element/getSize.md)
+
+TODO: Description here.
+
 :warning: [```.scrollIntoView() => Element```](./element/scrollIntoView.md)
 
 TODO: Description here.

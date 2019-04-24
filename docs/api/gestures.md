@@ -49,9 +49,67 @@ The `gestures` object provides a way to create gestures within the application t
   await $button.performGesture(longPress);
 ```
 
+Pinch Gesture:
+
+```javascript
+(async () => {
+  const $scrollView = await element(by.id("scroll-view"));
+  const size = = await $scrollView.getSize();
+  
+  const swipeLeft = gestures.create()
+    .press({
+      x: size.width / 4,
+      y: size.height / 2
+    })
+    .moveTo({
+      x: (size.width / 4)
+    })
+    .release();
+  const swipeRight = gestures.create()
+    .press({
+      x: size.width - (size.width / 4),
+      y: size.height / 2
+    })
+    .moveTo({
+      x: size.width / 4
+    })
+    .release();
+  
+  const pinch = gestures.parallel([
+    swipeLeft,
+    swipeRight
+  ]);
+  
+  await $scrollView.performGesture(pinch);
+})()
+```
+
+### Common Gestures
+
+- **Tap**: Briefly touch surface with fingertip.
+- **Double Tap**: Rapid touch surface twice with fingertip.
+- **Drag**: Move fingertip over surface without losing contact.
+- **Flick**: Quickly brush surface with fingertip.
+- **Pinch**: Touch surface with two fingers and bring them closer together.
+- **Spread**: Touch surface with two fingers and move them apart.
+- **Press**: Touch surface for extended period of time.
+- **Rotate**: Touch surface with two fingers and move them in a clockwise or counterclockwise direction.
+
 ### Gestures API
 
 :warning: [```.create() => Gesture```](./gestures/create.md)
+
+TODO: Description here.
+
+:warning: [```.parallel(Array<Gesture>) => Gesture```](./gestures/parallel.md)
+
+TODO: Description here.
+
+:warning: [```.series(Array<Gesture>) => Gesture```](./gestures/series.md)
+
+TODO: Description here.
+
+:warning: [```.swipeUp() => Gesture```](./gestures/swipeUp.md)
 
 TODO: Description here.
 
