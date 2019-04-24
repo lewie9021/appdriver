@@ -4,42 +4,72 @@ The `gestures` object provides a way to create gestures within the application t
 
 ### Examples
 
+Swipe Gesture
+
 ```javascript
 (async () => {
+  const $scrollView = await element(by.id("scroll-view"));
+  const size = await $scrollView.getSize();
   const swipeUp = gestures.create()
-    .press({x: 160, y: 200})
+    .press({
+      x: size.width / 2,
+      y: size.height / 2
+    })
     .wait(250)
-    .moveTo({y: 100})
+    .moveTo({y: (size.height / 2) - 100})
     .release();
   
   await device.performGesture(swipeUp);
 })();
 ```
 
+Drop 'n' Drag Gesture:
+
 ```javascript
 (async () => {
   const $box = await element(by.id("box"));
   const $destination = await element(by.id("destination"));
   const dragAndDrop = gestures.create()
-    .press()
+    .press({element: $box})
     .wait(250)
     .moveTo({element: $destination})
     .release();
   
-  await $box.performGesture(dragAndDrop);
+  await device.performGesture(dragAndDrop);
 })();
 ```
 
+Tap Gesture:
+
 ```javascript
+(async () => {
   const $button = await element(by.id("button"));
   const tap = gestures.create()
     .press()
     .release();
   
   await $button.performGesture(tap);
+})();
 ```
 
+Double Tap Gesture:
+
 ```javascript
+(async () => {
+  const $button = await element(by.id("button"));
+  const tap = gestures.create()
+    .press()
+    .release();
+  const doubleTap = gestures.series([tap, gestures.wait(50), tap]);
+  
+  await $button.performGesture(doubleTap);
+})();
+```
+
+Press Gesture:
+
+```javascript
+(async () => {
   const $button = await element(by.id("button"));
   const longPress = gestures.create()
     .press()
@@ -47,6 +77,7 @@ The `gestures` object provides a way to create gestures within the application t
     .release();
   
   await $button.performGesture(longPress);
+})();
 ```
 
 Pinch Gesture:
@@ -73,14 +104,14 @@ Pinch Gesture:
   const pinch = gestures.parallel([swipeLeft, swipeRight]);
   
   await $scrollView.performGesture(pinch);
-})()
+})();
 ```
 
 ### Common Gestures
 
 - **Tap**: Briefly touch surface with fingertip.
 - **Double Tap**: Rapid touch surface twice with fingertip.
-- **Drag**: Move fingertip over surface without losing contact.
+- **Swipe**: Move fingertip over surface without losing contact.
 - **Flick**: Quickly brush surface with fingertip.
 - **Pinch**: Touch surface with two fingers and bring them closer together.
 - **Spread**: Touch surface with two fingers and move them apart.
