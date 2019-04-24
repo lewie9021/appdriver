@@ -41,23 +41,23 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.attribute() => Element```](./element/attribute.md)
+:hammer: [```.getAttribute(attribute: String) => Element```](./element/getAttribute.md)
 
 TODO: Description here.
 
-:white_check_mark: [```.waitToBeVisible() => Element```](./element/waitToBeVisible.md)
+:white_check_mark: [```.waitToBeVisible({interval?: Number}) => Element```](./element/waitToBeVisible.md)
 
 TODO: Description here.
 
-:white_check_mark: [```.waitToExist() => Element```](./element/waitToExist.md)
+:white_check_mark: [```.waitToExist({interval?: Number}) => Element```](./element/waitToExist.md)
 
 TODO: Description here.
 
-:hammer: [```.findElement() => Element```](./element/findElement.md)
+:hammer: [```.findElement(matcher: Matcher) => Element```](./element/findElement.md)
 
 TODO: Description here.
 
-:hammer: [```.findElements() => Element```](./element/findElements.md)
+:hammer: [```.findElements(matcher: Matcher) => Element```](./element/findElements.md)
 
 TODO: Description here.
 

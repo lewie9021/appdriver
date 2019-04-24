@@ -30,11 +30,23 @@ The `expect` utility is the out-of-the-box solution for asserting within tests. 
 
 ### Expect API
 
+:hammer: [```.not => Expect```](./expect/not.md)
+
+TODO: Description here.
+
 :hammer: [```.toHaveValue(value: String) => Promise```](./expect/toHaveValue.md)
 
 TODO: Description here.
 
+:hammer: [```.toHaveValueGreaterThenOrEqual(value: Number) => Promise```](./expect/toHaveValueGreaterThenOrEqual.md)
+
+TODO: Description here.
+
 :hammer: [```.toHaveValueGreaterThan(value: Number) => Promise```](./expect/toHaveValueGreaterThan.md)
+
+TODO: Description here.
+
+:hammer: [```.toHaveValueLessThanOrEqual(value: Number) => Promise```](./expect/toHaveValueGreaterThenOrEqual.md)
 
 TODO: Description here.
 

@@ -1,14 +1,18 @@
 # Device
 
-The `device` object provides a way to interact with the application that's not directly linked to an element.
+The `device` object provides a way to interact within the application that's not directly linked to an element.
 
 ### Examples
 
 ```javascript
 (async () => {
-  await device.performTouchGesture([
-    ...
-  ]);
+  const swipeUp = gestures.create()
+    .press({x: 160, y: 200})
+    .wait(250)
+    .moveTo({y: 100})
+    .release();
+  
+  await device.performGesture(swipeUp);
 })();
 ```
 
