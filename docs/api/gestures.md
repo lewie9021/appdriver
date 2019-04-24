@@ -61,24 +61,16 @@ Pinch Gesture:
       x: size.width / 2,
       y: size.height / 2
     })
-    .moveTo({
-      x: size.width / 4
-    })
+    .moveTo({x: size.width / 4})
     .release();
   const swipeRight = gestures.create()
     .press({
       x: size.width - (size.width / 4),
       y: size.height / 2
     })
-    .moveTo({
-      x: size.width / 2
-    })
+    .moveTo({x: size.width / 2})
     .release();
-  
-  const pinch = gestures.parallel([
-    swipeLeft,
-    swipeRight
-  ]);
+  const pinch = gestures.parallel([swipeLeft, swipeRight]);
   
   await $scrollView.performGesture(pinch);
 })()
