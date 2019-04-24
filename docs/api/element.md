@@ -45,19 +45,19 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.scrollIntoView() => Element```](./element/scrollIntoView.md)
-
-TODO: Description here.
-
 :hammer: [```.getAttribute(attribute: String) => Element```](./element/getAttribute.md)
 
 TODO: Description here.
 
-:white_check_mark: [```.waitToBeVisible({interval?: Number}) => Element```](./element/waitToBeVisible.md)
+:hammer: [```.waitFor(action: Promise<Boolean>, options?: {interval?: Number, maxRetries?: Number}) => Element```](./element/waitFor.md)
 
 TODO: Description here.
 
-:white_check_mark: [```.waitToExist({interval?: Number}) => Element```](./element/waitToExist.md)
+:hammer: [```.waitToBeVisible(options?: {interval?: Number, maxRetries?: Number}) => Element```](./element/waitToBeVisible.md)
+
+TODO: Description here.
+
+:hammer: [```.waitToExist(options; {interval?: Number, maxRetries?: Number}) => Element```](./element/waitToExist.md)
 
 TODO: Description here.
 
