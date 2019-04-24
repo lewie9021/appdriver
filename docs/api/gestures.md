@@ -54,15 +54,15 @@ Pinch Gesture:
 ```javascript
 (async () => {
   const $scrollView = await element(by.id("scroll-view"));
-  const size = = await $scrollView.getSize();
+  const size = await $scrollView.getSize();
   
   const swipeLeft = gestures.create()
     .press({
-      x: size.width / 4,
+      x: size.width / 2,
       y: size.height / 2
     })
     .moveTo({
-      x: (size.width / 4)
+      x: size.width / 4
     })
     .release();
   const swipeRight = gestures.create()
@@ -71,7 +71,7 @@ Pinch Gesture:
       y: size.height / 2
     })
     .moveTo({
-      x: size.width / 4
+      x: size.width / 2
     })
     .release();
   
