@@ -1,4 +1,5 @@
 const { get, post } = require("./api");
+const { getScreenshotSize, getIPhoneScaleFactor } = require("./utils");
 
 // http://appium.io/docs/en/commands/status/
 const status = () => {
@@ -39,6 +40,10 @@ const elementDisplayed = (sessionId, elementId) => {
   return get(`/session/${sessionId}/element/${elementId}/displayed`);
 };
 
+const takeScreenshot = (sessionId) => {
+  return get(`/session/${sessionId}/screenshot`);
+};
+
 const elementExists = (matcher) => {
   return matcher.resolve()
     .then((data) => ({
@@ -48,15 +53,39 @@ const elementExists = (matcher) => {
     }))
 };
 
+const elementSize = (sessionId, elementId) => {
+  return get(`/session/${sessionId}/element/${elementId}/size`);
+};
+
+// Hack to get viewport size.
+// - getScreenshotSize returns width and height in pixels.
+const getViewportSize = (sessionId) => {
+  return takeScreenshot(sessionId)
+    .then(({value}) => {
+      const dimensions = getScreenshotSize(value);
+      const scaleFactor = getIPhoneScaleFactor("iPhone X"); // TODO: Use session.deviceName.
+
+      return {
+        width: dimensions.width / scaleFactor,
+        height: dimensions.height / scaleFactor
+      };
+    });
+};
+
 module.exports = {
   status,
   execute,
   session: {
-    create: createSession
+    create: createSession,
+    takeScreenshot
+  },
+  device: {
+    getViewportSize
   },
   element: {
     findElement,
     attributes: {
+      size: elementSize,
       exists: elementExists,
       displayed: elementDisplayed
     },

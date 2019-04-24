@@ -8,7 +8,8 @@ const poll = (func, maxRetries = 3) => {
         throw err
       }
 
-      return poll(func, maxRetries - 1);
+      return delay(1000)
+        .then(() => poll(func, maxRetries - 1));
     });
 };
 
@@ -25,13 +26,12 @@ const pollDisplayed = (sessionId, elementId) => {
   });
 };
 
-const pollExist = (matcher) => {
+const pollExist = (sessionId, matcher) => {
   return poll(() => {
-    console.log("polling...");
-    return commands.element.attributes.exists(matcher)
+    return commands.element.findElement(sessionId, {using: matcher.type, value: matcher.value})
       .then((x) => {
-        if (!x.value) {
-          throw new Error("Element not displayed");
+        if (x.status) {
+          throw new Error("Element doesn't exist");
         }
 
         return x;
@@ -61,17 +61,23 @@ class Element {
     return this;
   }
 
+  getSize() {
+    return this.value.then((value) => {
+      if (value.status === 7) {
+        throw new Error("Can't get size of element that doesn't exist");
+      }
+
+      return commands.element.attributes.size(value.sessionId, value.value.ELEMENT)
+    });
+  }
+
   waitToBeVisible() {
     const currentValue = this.value;
 
     this.value = new Promise((resolve, reject) => {
       currentValue.then((value) => {
         return pollDisplayed(value.sessionId, value.value.ELEMENT)
-          .then((x) => {
-            console.log("x:", x);
-
-            resolve(value);
-          });
+          .then(() => resolve(value));
       }, reject);
     });
 
@@ -84,16 +90,11 @@ class Element {
     this.value = new Promise((resolve, reject) => {
       currentValue.then((value) => {
         if (value.status === 0) {
-          console.log("element already exists....");
           return resolve(value);
         }
 
-        return pollExist(matcher)
-          .then((x) => {
-            console.log("x:", x);
-
-            resolve(value);
-          });
+        return pollExist(value.sessionId, matcher)
+          .then((x) => resolve(x));
       }, reject);
     });
 

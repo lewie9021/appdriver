@@ -14,11 +14,13 @@ const { element } = require("./src/element");
     "waitForQuiescence": false
   });
 
-  console.log("[2] Selecting element...");
-  const $searchInput = await element(by.id(sessionId, "search-input"))
-    // .waitToBeVisible()
-    .waitToExist(by.id(sessionId, "search-input"))
-    .tap();
+  // const viewportDimensions = await commands.device.getViewportSize(sessionId);
+  // console.log("[2] viewport dimensions", viewportDimensions);
 
-  console.log("[3] $searchInput", $searchInput);
+  console.log("[2] Selecting element...");
+  const dimensions = await element(by.id(sessionId, "box"))
+    .waitToExist(by.id(sessionId, "box"))
+    .getSize(sessionId);
+
+  console.log("[3] box dimensions", dimensions);
 })();
