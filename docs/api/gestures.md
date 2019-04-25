@@ -4,106 +4,19 @@ The `gestures` object provides a way to create gestures within the application t
 
 ### Examples
 
-Swipe Gesture
+Rotate Gesture:
 
 ```javascript
 (async () => {
-  const $scrollView = await element(by.id("scroll-view"));
-  const size = await $scrollView.getSize();
-  const swipeUp = gestures.create()
-    .press({
-      x: size.width / 2,
-      y: size.height / 2
-    })
-    .wait(250)
-    .moveTo({y: (size.height / 2) - 100})
-    .release();
+  const viewport = await device.getViewportSize();
+  const rotate90 = gestures.rotate({
+    x: viewport.width / 2,
+    y: viewport.height / 2,
+    radius: 25,
+    degrees: [90, 180]
+  });
   
-  await device.performGesture(swipeUp);
-})();
-```
-
-Drop 'n' Drag Gesture:
-
-```javascript
-(async () => {
-  const $box = await element(by.id("box"));
-  const $destination = await element(by.id("destination"));
-  const dragAndDrop = gestures.create()
-    .press({element: $box})
-    .wait(250)
-    .moveTo({element: $destination})
-    .release();
-  
-  await device.performGesture(dragAndDrop);
-})();
-```
-
-Tap Gesture:
-
-```javascript
-(async () => {
-  const $button = await element(by.id("button"));
-  const tap = gestures.create()
-    .press()
-    .release();
-  
-  await $button.performGesture(tap);
-})();
-```
-
-Double Tap Gesture:
-
-```javascript
-(async () => {
-  const $button = await element(by.id("button"));
-  const tap = gestures.create()
-    .press()
-    .release();
-  const doubleTap = gestures.series([tap, gestures.wait(50), tap]);
-  
-  await $button.performGesture(doubleTap);
-})();
-```
-
-Press Gesture:
-
-```javascript
-(async () => {
-  const $button = await element(by.id("button"));
-  const longPress = gestures.create()
-    .press()
-    .wait(500)
-    .release();
-  
-  await $button.performGesture(longPress);
-})();
-```
-
-Pinch Gesture:
-
-```javascript
-(async () => {
-  const $scrollView = await element(by.id("scroll-view"));
-  const size = await $scrollView.getSize();
-  
-  const swipeLeft = gestures.create()
-    .press({
-      x: size.width / 2,
-      y: size.height / 2
-    })
-    .moveTo({x: size.width / 4})
-    .release();
-  const swipeRight = gestures.create()
-    .press({
-      x: size.width - (size.width / 4),
-      y: size.height / 2
-    })
-    .moveTo({x: size.width / 2})
-    .release();
-  const pinch = gestures.parallel([swipeLeft, swipeRight]);
-  
-  await $scrollView.performGesture(pinch);
+  await device.performGesture(rotate90);
 })();
 ```
 
@@ -132,30 +45,42 @@ TODO: Description here.
 
 TODO: Description here.
 
+:warning: [```.tap({x: Number, y: Number, duration: Number}) => Gesture```](./gestures/tap.md)
+
+TODO: Description here.
+
+:warning: [```.doubleTap({x: Number, y: Number, duration: Number}) => Gesture```](./gestures/doubleTap.md)
+
+TODO: Description here.
+
+:warning: [```.longPress({x: Number, y: Number, duration: Number}) => Gesture```](./gestures/doubleTap.md)
+
+TODO: Description here.
+
 :warning: [```.swipeUp({x: Number, y: Number, distance: Number, duration?: Number}) => Gesture```](./gestures/swipeUp.md)
+
+TODO: Description here.
+
+:warning: [```.swipeDown({x: Number, y: Number, distance: Number, duration?: Number}) => Gesture```](./gestures/swipeDown.md)
+
+TODO: Description here.
+
+:warning: [```.swipeLeft({x: Number, y: Number, distance: Number, duration?: Number}) => Gesture```](./gestures/swipeLeft.md)
+
+TODO: Description here.
+
+:warning: [```.swipeRight({x: Number, y: Number, distance: Number, duration?: Number}) => Gesture```](./gestures/swipeRight.md)
+
+TODO: Description here.
+
+:warning: [```.pinch({x: Number, y: Number, distance: Number, duration?: Number}) => Gesture```](./gestures/pinch.md)
+
+TODO: Description here.
+
+:warning: [```.spread({x: Number, y: Number, distance: Number, duration?: Number}) => Gesture```](./gestures/spread.md)
 
 TODO: Description here.
 
 :warning: [```.rotate({x: Number, y: Number, radius: Number: degrees: [start: Number, end: Number], duration?: Number, step?: Number}) => Gesture```](./gestures/rotate.md)
 
-TODO: Description here.
-
-### Gesture API
-
-:warning: [```.press({x?: Number, y?: Number}) => Gesture```](./gesture/press.md)
-
-TODO: Description here.
-
-:warning: [```.wait(milliseconds: Number) => Gesture```](./gesture/wait.md)
-
-TODO: Description here.
-
-:warning: [```.moveTo({x?: Number, y?: Number, element?: Element}) => Gesture```](./gesture/moveTo.md)
-
-TODO: Description here.
-
-:warning: [```.release() => Gesture```](./gesture/release.md)
-
-TODO: Description here.
-
-
+TODO: Description here
