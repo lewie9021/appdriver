@@ -7,14 +7,18 @@ The `element` instance provides a way to interact with elements on the screen. Y
 ```javascript
 (async () => {
   const $element = await element(by.id("search-input"))
-    .scrollIntoView()
-    .tap()
     .typeText("Example Text");
   
   await expect($element).toHaveValue("Example Text");
 })();
 ```
 
+```javascript
+(async () => {
+  await element(by.id("scroll-view"))
+    .swipeUp({distance: 100});
+})();
+```
 ### Element API
 
 :white_check_mark: [```.tap() => Element```](./element/tap.md)
@@ -69,18 +73,18 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.swipeUp({distance?: Number, duration?: Number, offsetX?: Number, offsetY?: Number}) => Element```](./element/swipeUp.md)
+:warning: [```.swipeUp({x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./element/swipeUp.md)
 
 TODO: Description here.
 
-:warning: [```.swipeDown({distance?: Number, duration?: Number, offsetX?: Number, offsetY?: Number}) => Element```](./element/swipeDown.md)
+:warning: [```.swipeDown({x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./element/swipeDown.md)
 
 TODO: Description here.
 
-:warning: [```.swipeLeft({distance?: Number, duration?: Number, offsetX?: Number, offsetY?: Number}) => Element```](./element/swipeLeft.md)
+:warning: [```.swipeLeft({x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./element/swipeLeft.md)
 
 TODO: Description here.
 
-:warning: [```.swipeRight({distance?: Number, duration?: Number, offsetX?: Number, offsetY?: Number}) => Element```](./element/swipeRight.md)
+:warning: [```.swipeRight({x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./element/swipeRight.md)
 
 TODO: Description here.
