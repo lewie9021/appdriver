@@ -72,12 +72,17 @@ const getViewportSize = (sessionId) => {
     });
 };
 
+getWindowRect = (sessionId) => {
+  return get(`/session/${sessionId}/window/rect`);
+};
+
 module.exports = {
   status,
   execute,
   session: {
     create: createSession,
-    takeScreenshot
+    takeScreenshot,
+    getWindowRect
   },
   device: {
     getViewportSize
