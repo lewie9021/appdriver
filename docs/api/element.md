@@ -49,7 +49,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.waitFor(action: Promise<Boolean>, options?: {interval?: Number, maxRetries?: Number}) => Element```](./element/waitFor.md)
+:hammer: [```.waitFor(factory: () => Promise<Boolean>, options?: {interval?: Number, maxRetries?: Number}) => Element```](./element/waitFor.md)
 
 TODO: Description here.
 

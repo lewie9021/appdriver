@@ -132,7 +132,11 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.swipeUp() => Gesture```](./gestures/swipeUp.md)
+:warning: [```.swipeUp({x: Number, y: Number, distance: Number, duration?: Number}) => Gesture```](./gestures/swipeUp.md)
+
+TODO: Description here.
+
+:warning: [```.rotate({x: Number, y: Number, radius: Number: degrees: [start: Number, end: Number], duration?: Number, step?: Number}) => Gesture```](./gestures/rotate.md)
 
 TODO: Description here.
 
