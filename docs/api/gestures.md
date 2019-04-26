@@ -57,7 +57,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.swipeUp({x: Number, y: Number, distance: Number, duration?: Number}) => Gesture```](./gestures/swipeUp.md)
+:warning: [```.swipeUp({x: Number, y: Number, distance: Number, percentage?: Number, duration?: Number}) => Gesture```](./gestures/swipeUp.md)
 
 TODO: Description here.
 
@@ -65,11 +65,11 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.swipeLeft({x: Number, y: Number, distance: Number, duration?: Number}) => Gesture```](./gestures/swipeLeft.md)
+:warning: [```.swipeLeft({x: Number, y: Number, distance: Number, percentage?: Number, duration?: Number}) => Gesture```](./gestures/swipeLeft.md)
 
 TODO: Description here.
 
-:warning: [```.swipeRight({x: Number, y: Number, distance: Number, duration?: Number}) => Gesture```](./gestures/swipeRight.md)
+:warning: [```.swipeRight({x: Number, y: Number, distance: Number, percentage?: Number, duration?: Number}) => Gesture```](./gestures/swipeRight.md)
 
 TODO: Description here.
 
