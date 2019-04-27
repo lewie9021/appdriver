@@ -1,5 +1,6 @@
 const { by } = require("./src/matchers");
 const commands = require("./src/commands");
+const device = require("./src/device");
 const gestures = require("./src/gestures");
 const capabilities = require("./src/capabilities");
 const { element } = require("./src/element");
@@ -10,10 +11,10 @@ const { element } = require("./src/element");
 
   console.log("[2] Selecting element...");
   const testId = "carousel-screen";
-  const $box = await element(by.label(sessionId, testId))
+  await element(by.label(sessionId, testId))
     .waitToExist(by.label(sessionId, testId));
 
-  const viewport = await commands.device.getViewportSize(sessionId);
+  const viewport = await device.getViewport(sessionId);
   console.log("[3] viewport dimensions", viewport);
 
   const swipeLeft = gestures.swipeLeft({
@@ -23,7 +24,6 @@ const { element } = require("./src/element");
   });
 
   await commands.session.executeActions(sessionId, [swipeLeft]);
-
   await commands.session.executeActions(sessionId, [swipeLeft]);
 
   // const rect = await commands.session.getWindowRect(sessionId);
