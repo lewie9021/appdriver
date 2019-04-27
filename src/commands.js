@@ -16,7 +16,6 @@ module.exports = {
   status: () => {
     return get("/status");
   },
-  execute,
   session: {
     create: (capabilities) => {
       const payload = {
