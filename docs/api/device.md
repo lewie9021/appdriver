@@ -30,7 +30,7 @@ The `device` object provides a way to interact within the application that's not
 
 ### Device API
 
-:hammer: [```.restartApp() => Device```](./device/restartApp.md)
+:white_check_mark: [```.restartApp() => Device```](./device/restartApp.md)
 
 TODO: Description here.
 
@@ -54,10 +54,10 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.setOrientation(orientation: "landscape" | "portrait") => Device```](./device/setOrientation.md)
+:white_check_mark: [```.setOrientation(orientation: "landscape" | "portrait") => Device```](./device/setOrientation.md)
 
 TODO: Description here.
 
-:hammer: [```.getOrientation() => Device```](./device/getOrientation.md)
+:white_check_mark: [```.getOrientation() => Device```](./device/getOrientation.md)
 
 TODO: Description here.

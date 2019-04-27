@@ -14,6 +14,10 @@ Test ID Matcher:
 
 ### Matchers API
 
-:hammer: [```by.id(testId: string) => Matcher```](./matchers/id.md)
+:hammer: [```by.id(id: string) => Matcher```](./matchers/id.md)
+
+TODO: Description here.
+
+:hammer: [```by.label(accessibilityLabel: string) => Matcher```](./matchers/label.md)
 
 TODO: Description here.
