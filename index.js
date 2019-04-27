@@ -9,17 +9,25 @@ const { element } = require("./src/element");
   const { sessionId } = await commands.session.create(capabilities.iPhoneX);
 
   console.log("[2] Selecting element...");
-  const $box = await element(by.label(sessionId, "list-screen"))
-    .waitToExist(by.label(sessionId, "list-screen"));
+  const testId = "carousel-screen";
+  const $box = await element(by.label(sessionId, testId))
+    .waitToExist(by.label(sessionId, testId));
 
-  await commands.session.executeActions(sessionId, [gestures.swipeUp]);
+  const viewport = await commands.device.getViewportSize(sessionId);
+  console.log("[3] viewport dimensions", viewport);
+
+  const swipeLeft = gestures.swipeLeft({
+    x: viewport.width * 0.75,
+    y: viewport.height / 2,
+    distance: viewport.width * 0.75,
+  });
+
+  await commands.session.executeActions(sessionId, [swipeLeft]);
+
+  await commands.session.executeActions(sessionId, [swipeLeft]);
 
   // const rect = await commands.session.getWindowRect(sessionId);
   // console.log("rect", rect);
-
-  // const viewportDimensions = await commands.device.getViewportSize(sessionId);
-  // console.log("[2] viewport dimensions", viewportDimensions);
-
 
   // const dimensions = await element(by.id(sessionId, "box"))
   //   .waitToExist(by.id(sessionId, "box"))
