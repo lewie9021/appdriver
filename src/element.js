@@ -13,9 +13,9 @@ const poll = (func, maxRetries = 10) => {
     });
 };
 
-const pollDisplayed = (sessionId, elementId) => {
+const pollDisplayed = (elementId) => {
   return poll(() => {
-    return commands.element.attributes.displayed(sessionId, elementId)
+    return commands.element.attributes.displayed(elementId)
       .then((x) => {
         if (!x.value) {
           throw new Error("Element not displayed");
@@ -26,9 +26,9 @@ const pollDisplayed = (sessionId, elementId) => {
   });
 };
 
-const pollExist = (sessionId, matcher) => {
+const pollExist = (matcher) => {
   return poll(() => {
-    return commands.element.findElement(sessionId, {using: matcher.type, value: matcher.value})
+    return commands.element.findElement({using: matcher.type, value: matcher.value})
       .then((x) => {
         if (x.status) {
           throw new Error("Element doesn't exist");
@@ -53,7 +53,7 @@ class Element {
           throw new Error("Can't tap element that doesn't exist");
         }
 
-        commands.element.actions.tap(value.sessionId, value.value.ELEMENT)
+        commands.element.actions.tap(value.value.ELEMENT)
           .then(() => resolve(value));
       }, reject);
     });
@@ -73,7 +73,7 @@ class Element {
         throw new Error("Can't get size of element that doesn't exist");
       }
 
-      return commands.element.attributes.size(value.sessionId, value.value.ELEMENT)
+      return commands.element.attributes.size(value.value.ELEMENT)
     });
   }
 
@@ -82,7 +82,7 @@ class Element {
 
     this.value = new Promise((resolve, reject) => {
       currentValue.then((value) => {
-        return pollDisplayed(value.sessionId, value.value.ELEMENT)
+        return pollDisplayed(value.value.ELEMENT)
           .then(() => resolve(value));
       }, reject);
     });
@@ -99,7 +99,7 @@ class Element {
           return resolve(value);
         }
 
-        return pollExist(value.sessionId, matcher)
+        return pollExist(matcher)
           .then((x) => resolve(x));
       }, reject);
     });

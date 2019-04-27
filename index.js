@@ -7,14 +7,14 @@ const { element } = require("./src/element");
 
 (async () => {
   console.log("[1] Initialising session...");
-  const { sessionId } = await commands.session.create(capabilities.iPhoneX);
+  const session = await commands.session.create(capabilities.iPhoneX);
 
   console.log("[2] Selecting element...");
   const testId = "carousel-screen";
-  await element(by.label(sessionId, testId))
-    .waitToExist(by.label(sessionId, testId));
+  await element(by.label(testId))
+    .waitToExist(by.label(testId));
 
-  const viewport = await device.getViewport(sessionId);
+  const viewport = await device.getViewport();
   console.log("[3] viewport dimensions", viewport);
 
   const swipeLeft = gestures.swipeLeft({
@@ -23,15 +23,15 @@ const { element } = require("./src/element");
     distance: viewport.width * 0.75,
   });
 
-  await device.performGesture(sessionId, [swipeLeft]);
-  await device.performGesture(sessionId, [swipeLeft]);
+  await device.performGesture([swipeLeft]);
+  await device.performGesture([swipeLeft]);
 
-  // await device.restartApp(sessionId, capabilities.iPhoneX);
-  // await device.resetApp(sessionId, capabilities.iPhoneX);
+  // await device.restartApp(capabilities.iPhoneX);
+  // await device.resetApp(capabilities.iPhoneX);
 
-  // const dimensions = await element(by.id(sessionId, "box"))
-  //   .waitToExist(by.id(sessionId, "box"))
-  //   .getSize(sessionId);
+  // const dimensions = await element(by.id("box"))
+  //   .waitToExist(by.id("box"))
+  //   .getSize();
   //
   // console.log("[3] box dimensions", dimensions);
 })();

@@ -1,5 +1,6 @@
 const { get, post } = require("./api");
-const { getScreenshotSize, getIPhoneScaleFactor } = require("./utils");
+
+global.session = null;
 
 // http://appium.io/docs/en/commands/status/
 const status = () => {
@@ -8,28 +9,12 @@ const status = () => {
 
 // http://appium.io/docs/en/commands/mobile-command/
 // TODO: Needs implementing.
-const execute = (sessionId, {script, args}) => {
+const execute = ({script, args}) => {
   return Promise.reject("Method not implemented");
 };
 
-const createSession = (capabilities) => {
-  const payload = {
-    desiredCapabilities: capabilities
-  };
-
-  return post("/session", null, payload)
-    .then((data) => {
-      if (data.status !== 0) {
-        console.error("capabilities:", capabilities);
-        throw new Error("There was a problem creating a session with the given capabilities.");
-      }
-
-      return data;
-    });
-};
-
-const findElement = (sessionId, {using, value}) => {
-  return post(`/session/${sessionId}/element`, null, {
+const findElement = ({using, value}) => {
+  return post(`/session/${global.session.sessionId}/element`, null, {
     using,
     value
   })
@@ -40,18 +25,16 @@ const findElement = (sessionId, {using, value}) => {
     });
 };
 
-const tapElement = (sessionId, elementId) => {
-  return post(`/session/${sessionId}/element/${elementId}/click`);
+const tapElement = (elementId) => {
+  return post(`/session/${global.session.sessionId}/element/${elementId}/click`);
 };
 
-const elementDisplayed = (sessionId, elementId) => {
-  console.log("displayed??");
-
-  return get(`/session/${sessionId}/element/${elementId}/displayed`);
+const elementDisplayed = (elementId) => {
+  return get(`/session/${global.session.sessionId}/element/${elementId}/displayed`);
 };
 
-const takeScreenshot = (sessionId) => {
-  return get(`/session/${sessionId}/screenshot`);
+const takeScreenshot = () => {
+  return get(`/session/${global.session.sessionId}/screenshot`);
 };
 
 const elementExists = (matcher) => {
@@ -63,53 +46,58 @@ const elementExists = (matcher) => {
     }))
 };
 
-const elementSize = (sessionId, elementId) => {
-  return get(`/session/${sessionId}/element/${elementId}/size`);
+const elementSize = (elementId) => {
+  return get(`/session/${global.session.sessionId}/element/${elementId}/size`);
 };
 
-// Hack to get viewport size.
-// - getScreenshotSize returns width and height in pixels.
-const getViewportSize = (sessionId) => {
-  return takeScreenshot(sessionId)
-    .then(({value}) => {
-      const dimensions = getScreenshotSize(value);
-      const scaleFactor = getIPhoneScaleFactor("iPhone X"); // TODO: Use session.deviceName.
-
-      return {
-        width: dimensions.width / scaleFactor,
-        height: dimensions.height / scaleFactor
-      };
-    });
+getWindowRect = () => {
+  return get(`/session/${global.session.sessionId}/window/rect`);
 };
 
-getWindowRect = (sessionId) => {
-  return get(`/session/${sessionId}/window/rect`);
-};
-
-executeActions = (sessionId, actions) => {
-  return post(`/session/${sessionId}/actions`, null, {actions});
+executeActions = (actions) => {
+  return post(`/session/${global.session.sessionId}/actions`, null, {actions});
 };
 
 module.exports = {
   status,
   execute,
   session: {
-    create: createSession,
+    create: (capabilities) => {
+      const payload = {
+        desiredCapabilities: capabilities
+      };
+
+      return post("/session", null, payload)
+        .then((data) => {
+          if (data.status !== 0) {
+            throw new Error("There was a problem creating a session with the given capabilities.");
+          }
+
+          const session = {
+            ...data.value,
+            sessionId: data.sessionId
+          };
+
+          global.session = session;
+
+          return session;
+        })
+        .then();
+    },
     takeScreenshot,
     getWindowRect,
     executeActions
   },
   device: {
-    getViewportSize,
     app: {
-      closeApp: (sessionId) => {
-        return post(`/session/${sessionId}/appium/app/close`);
+      closeApp: () => {
+        return post(`/session/${global.session.sessionId}/appium/app/close`);
       },
-      launchApp: (sessionId) => {
-        return post(`/session/${sessionId}/appium/app/launch`);
+      launchApp: () => {
+        return post(`/session/${global.session.sessionId}/appium/app/launch`);
       },
-      resetApp: (sessionId) => {
-        return post(`/session/${sessionId}/appium/app/reset`);
+      resetApp: () => {
+        return post(`/session/${global.session.sessionId}/appium/app/reset`);
       }
     }
   },
