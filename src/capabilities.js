@@ -5,7 +5,8 @@ const iPhoneX = {
   "deviceName": "iPhone X",
   "automationName": "XCUITest",
   "wdaLocalPort": 8100,
-  "waitForQuiescence": false
+  "waitForQuiescence": false,
+  "noReset": true
 };
 
 const pixel2 = {
@@ -16,7 +17,8 @@ const pixel2 = {
   "avd": "Pixel_2_API_27",
   "automationName": "UiAutomator2",
   "appActivity": "com.nativedemoapp.MainActivity",
-  "systemPort": 8200
+  "systemPort": 8200,
+  "noReset": true
 };
 
 module.exports = {

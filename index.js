@@ -26,6 +26,9 @@ const { element } = require("./src/element");
   await device.performGesture(sessionId, [swipeLeft]);
   await device.performGesture(sessionId, [swipeLeft]);
 
+  // await device.restartApp(sessionId, capabilities.iPhoneX);
+  // await device.resetApp(sessionId, capabilities.iPhoneX);
+
   // const dimensions = await element(by.id(sessionId, "box"))
   //   .waitToExist(by.id(sessionId, "box"))
   //   .getSize(sessionId);

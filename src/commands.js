@@ -100,7 +100,18 @@ module.exports = {
     executeActions
   },
   device: {
-    getViewportSize
+    getViewportSize,
+    app: {
+      closeApp: (sessionId) => {
+        return post(`/session/${sessionId}/appium/app/close`);
+      },
+      launchApp: (sessionId) => {
+        return post(`/session/${sessionId}/appium/app/launch`);
+      },
+      resetApp: (sessionId) => {
+        return post(`/session/${sessionId}/appium/app/reset`);
+      }
+    }
   },
   element: {
     findElement,
