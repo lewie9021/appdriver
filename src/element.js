@@ -1,7 +1,7 @@
 const commands = require("./commands");
 const { delay } = require("./utils");
 
-const poll = (func, maxRetries = 3) => {
+const poll = (func, maxRetries = 10) => {
   return func()
     .catch((err) => {
       if (maxRetries <= 1) {
@@ -59,6 +59,12 @@ class Element {
     });
 
     return this;
+  }
+
+  getElementId() {
+    return this.value.then((value) => {
+      return value.value.ELEMENT;
+    })
   }
 
   getSize() {

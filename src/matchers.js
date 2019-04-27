@@ -1,13 +1,23 @@
 const commands = require("./commands");
 
 const by = {
-  id: (sessionId, testId) => ({
+  id: (sessionId, id) => ({
     type: "id",
-    value: testId,
+    value: id,
     resolve: () => {
       return commands.element.findElement(sessionId, {
         using: "id",
-        value: testId
+        value: id
+      })
+    }
+  }),
+  label: (sessionId, accessibilityId) => ({
+    type: "accessibility id",
+    value: accessibilityId,
+    resolve: () => {
+      return commands.element.findElement(sessionId, {
+        using: "accessibility id",
+        value: accessibilityId
       })
     }
   }),

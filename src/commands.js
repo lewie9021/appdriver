@@ -13,9 +13,19 @@ const execute = (sessionId, {script, args}) => {
 };
 
 const createSession = (capabilities) => {
-  return post("/session", null, {
+  const payload = {
     desiredCapabilities: capabilities
-  });
+  };
+
+  return post("/session", null, payload)
+    .then((data) => {
+      if (data.status !== 0) {
+        console.error("capabilities:", capabilities);
+        throw new Error("There was a problem creating a session with the given capabilities.");
+      }
+
+      return data;
+    });
 };
 
 const findElement = (sessionId, {using, value}) => {
@@ -76,13 +86,18 @@ getWindowRect = (sessionId) => {
   return get(`/session/${sessionId}/window/rect`);
 };
 
+executeActions = (sessionId, actions) => {
+  return post(`/session/${sessionId}/actions`, null, {actions});
+};
+
 module.exports = {
   status,
   execute,
   session: {
     create: createSession,
     takeScreenshot,
-    getWindowRect
+    getWindowRect,
+    executeActions
   },
   device: {
     getViewportSize
