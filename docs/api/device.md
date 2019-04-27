@@ -34,6 +34,10 @@ The `device` object provides a way to interact within the application that's not
 
 TODO: Description here.
 
+:white_check_mark: [```.resetApp() => Device```](./device/resetApp.md)
+
+TODO: Description here.
+
 :warning: [```.swipeUp({distance?: Number, duration?: Number, startX?: Number, startY?: Number}) => Device```](./device/swipeUp.md)
 
 TODO: Description here.
@@ -54,7 +58,11 @@ TODO: Description here.
 
 TODO: Description here.
 
-:white_check_mark: [```.setOrientation(orientation: "landscape" | "portrait") => Device```](./device/setOrientation.md)
+:white_check_mark: [```.performGesture(gesture: Gesture) => Device```](./device/performGesture.md)
+
+TODO: Description here.
+
+:white_check_mark: [```.setOrientation(orientation: "LANDSCAPE" | "PORTRAIT") => Device```](./device/setOrientation.md)
 
 TODO: Description here.
 
