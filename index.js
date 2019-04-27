@@ -23,11 +23,8 @@ const { element } = require("./src/element");
     distance: viewport.width * 0.75,
   });
 
-  await commands.session.executeActions(sessionId, [swipeLeft]);
-  await commands.session.executeActions(sessionId, [swipeLeft]);
-
-  // const rect = await commands.session.getWindowRect(sessionId);
-  // console.log("rect", rect);
+  await device.performGesture(sessionId, [swipeLeft]);
+  await device.performGesture(sessionId, [swipeLeft]);
 
   // const dimensions = await element(by.id(sessionId, "box"))
   //   .waitToExist(by.id(sessionId, "box"))

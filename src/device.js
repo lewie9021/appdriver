@@ -16,6 +16,16 @@ const getViewport = (sessionId) => {
     });
 };
 
+const performGesture = (sessionId, actions) => {
+  return commands.session.executeActions(sessionId, actions)
+    .then(({status}) => {
+      if (status !== 0) {
+        throw new Error("Failed to perform gesture.");
+      }
+    });
+};
+
 module.exports = {
-  getViewport
+  getViewport,
+  performGesture
 };
