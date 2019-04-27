@@ -2,41 +2,6 @@ const { get, post } = require("./api");
 
 global.session = null;
 
-// http://appium.io/docs/en/commands/status/
-const status = () => {
-  return get("/status");
-};
-
-// http://appium.io/docs/en/commands/mobile-command/
-// TODO: Needs implementing.
-const execute = ({script, args}) => {
-  return Promise.reject("Method not implemented");
-};
-
-const findElement = ({using, value}) => {
-  return post(`/session/${global.session.sessionId}/element`, null, {
-    using,
-    value
-  })
-    .then((x) => {
-      console.log("findElement response:", x);
-
-      return x;
-    });
-};
-
-const tapElement = (elementId) => {
-  return post(`/session/${global.session.sessionId}/element/${elementId}/click`);
-};
-
-const elementDisplayed = (elementId) => {
-  return get(`/session/${global.session.sessionId}/element/${elementId}/displayed`);
-};
-
-const takeScreenshot = () => {
-  return get(`/session/${global.session.sessionId}/screenshot`);
-};
-
 const elementExists = (matcher) => {
   return matcher.resolve()
     .then((data) => ({
@@ -46,20 +11,11 @@ const elementExists = (matcher) => {
     }))
 };
 
-const elementSize = (elementId) => {
-  return get(`/session/${global.session.sessionId}/element/${elementId}/size`);
-};
-
-getWindowRect = () => {
-  return get(`/session/${global.session.sessionId}/window/rect`);
-};
-
-executeActions = (actions) => {
-  return post(`/session/${global.session.sessionId}/actions`, null, {actions});
-};
-
 module.exports = {
-  status,
+  // http://appium.io/docs/en/commands/status/
+  status: () => {
+    return get("/status");
+  },
   execute,
   session: {
     create: (capabilities) => {
@@ -84,9 +40,12 @@ module.exports = {
         })
         .then();
     },
-    takeScreenshot,
-    getWindowRect,
-    executeActions
+    takeScreenshot: () => {
+      return get(`/session/${global.session.sessionId}/screenshot`);
+    },
+    getWindowRect: () => {
+      return get(`/session/${global.session.sessionId}/window/rect`);
+    }
   },
   device: {
     app: {
@@ -102,14 +61,32 @@ module.exports = {
     }
   },
   element: {
-    findElement,
+    findElement: ({using, value}) => {
+      const payload = {
+        using,
+        value
+      };
+
+      return post(`/session/${global.session.sessionId}/element`, null, payload);
+    },
     attributes: {
-      size: elementSize,
+      size: (elementId) => {
+        return get(`/session/${global.session.sessionId}/element/${elementId}/size`);
+      },
       exists: elementExists,
-      displayed: elementDisplayed
+      displayed: (elementId) => {
+        return get(`/session/${global.session.sessionId}/element/${elementId}/displayed`);
+      }
     },
     actions: {
-      tap: tapElement
+      click: (elementId) => {
+        return post(`/session/${global.session.sessionId}/element/${elementId}/click`);
+      }
+    }
+  },
+  interactions: {
+    actions: (actions) => {
+      return post(`/session/${global.session.sessionId}/actions`, null, {actions});
     }
   }
 };

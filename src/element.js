@@ -53,7 +53,7 @@ class Element {
           throw new Error("Can't tap element that doesn't exist");
         }
 
-        commands.element.actions.tap(value.value.ELEMENT)
+        commands.element.actions.click(value.value.ELEMENT)
           .then(() => resolve(value));
       }, reject);
     });

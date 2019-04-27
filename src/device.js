@@ -43,7 +43,7 @@ const getViewport = () => {
 };
 
 const performGesture = (actions) => {
-  return commands.session.executeActions(actions)
+  return commands.interactions.actions(actions)
     .then(({status}) => {
       if (status !== 0) {
         throw new Error("Failed to perform gesture.");
