@@ -1,5 +1,5 @@
 const iPhoneX = {
-  "app": "../NativeDemoApp/ios/build/NativeDemoApp/Build/Products/Debug-iphonesimulator/NativeDemoApp.app",
+  "app": "../appdriver-native-demo-app/ios/build/NativeDemoApp/Build/Products/Debug-iphonesimulator/NativeDemoApp.app",
   "platformName": "iOS",
   "platformVersion": "12.1",
   "deviceName": "iPhone X",
@@ -9,7 +9,7 @@ const iPhoneX = {
 };
 
 const pixel2 = {
-  "app": "../NativeDemoApp/android/app/build/outputs/apk/debug/app-debug.apk",
+  "app": "../appdriver-native-demo-app/android/app/build/outputs/apk/debug/app-debug.apk",
   "platformName": "Android",
   "platformVersion": "8.1",
   "deviceName": "Pixel_2_API_27",
