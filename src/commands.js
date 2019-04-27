@@ -44,6 +44,16 @@ module.exports = {
     },
     getWindowRect: () => {
       return get(`/session/${global.session.sessionId}/window/rect`);
+    },
+    getOrientation: () => {
+      return get(`/session/${global.session.sessionId}/orientation`);
+    },
+    setOrientation: (orientation) => {
+      const payload = {
+        orientation
+      };
+
+      return post(`/session/${global.session.sessionId}/orientation`, null, payload);
     }
   },
   device: {

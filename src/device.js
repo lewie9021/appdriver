@@ -51,9 +51,31 @@ const performGesture = (actions) => {
     });
 };
 
+const getOrientation = () => {
+  return commands.session.getOrientation()
+    .then(({status, value}) => {
+      if (status !== 0) {
+        throw new Error("Failed to get orientation.");
+      }
+
+      return value;
+    });
+};
+
+const setOrientation = (orientation) => {
+  return commands.session.setOrientation(orientation)
+    .then(({status}) => {
+      if (status !== 0) {
+        throw new Error("Failed to set orientation.");
+      }
+    });
+};
+
 module.exports = {
   resetApp,
   restartApp,
   getViewport,
-  performGesture
+  performGesture,
+  getOrientation,
+  setOrientation
 };
