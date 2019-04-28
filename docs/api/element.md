@@ -1,12 +1,12 @@
 # Element
 
-The `element` instance provides a way to interact with elements on the screen. You will need to use a `matcher` object to define how elements are found. The most common is `by.id` which finds elements by testId.
+The `element` instance provides a way to interact with elements on the screen. You will need to use a `matcher` object to define how elements are found. The most common is `by.label` which finds elements by accessibility id.
 
 ### Examples
 
 ```javascript
 (async () => {
-  const $element = await element(by.id("search-input"))
+  const $element = await element(by.label("search-input"))
     .typeText("Example Text");
   
   await expect($element).toHaveValue("Example Text");
@@ -15,7 +15,7 @@ The `element` instance provides a way to interact with elements on the screen. Y
 
 ```javascript
 (async () => {
-  await element(by.id("scroll-view"))
+  await element(by.label("scroll-view"))
     .swipeUp({distance: 100});
 })();
 ```
