@@ -30,42 +30,42 @@ The `device` object provides a way to interact within the application that's not
 
 ### Device API
 
-:white_check_mark: [```.restartApp() => Device```](./device/restartApp.md)
+:white_check_mark: [```.restartApp() => Promise```](./device/restartApp.md)
 
 TODO: Description here.
 
-:white_check_mark: [```.resetApp() => Device```](./device/resetApp.md)
+:white_check_mark: [```.resetApp() => Promise```](./device/resetApp.md)
 
 TODO: Description here.
 
-:warning: [```.swipeUp({distance?: Number, duration?: Number, startX?: Number, startY?: Number}) => Device```](./device/swipeUp.md)
+:hammer: [```.swipeUp({x: Number, y: Number, distance: Number, duration?: Number}) => Promise```](./device/swipeUp.md)
 
 TODO: Description here.
 
-:warning: [```.swipeDown({distance?: Number, duration?: Number, startX?: Number, startY?: Number}) => Device```](./device/swipeDown.md)
+:hammer: [```.swipeDown({x: Number, y: Number, distance: Number, duration?: Number}) => Promise```](./device/swipeDown.md)
 
 TODO: Description here.
 
-:warning: [```.swipeLeft({distance?: Number, duration?: Number, startX?: Number, startY?: Number}) => Device```](./device/swipeLeft.md)
+:hammer: [```.swipeLeft({x: Number, y: Number, distance: Number, duration?: Number}) => Promise```](./device/swipeLeft.md)
 
 TODO: Description here.
 
-:warning: [```.swipeRight({distance?: Number, duration?: Number, startX?: Number, startY?: Number}) => Device```](./device/swipeRight.md)
+:hammer: [```.swipeRight({x: Number, y: Number, distance: Number, duration?: Number}) => Promise```](./device/swipeRight.md)
 
 TODO: Description here.
 
-:warning: [```.swipe({duration?: Number, startX: Number, startY: Number, endX: Number, endY: Number}) => Device```](./device/swipe.md)
+:hammer: [```.swipe({x: Number, y: Number, direction: Number, distance: Number, duration?: Number}) => Promise```](./device/swipe.md)
 
 TODO: Description here.
 
-:white_check_mark: [```.performGesture(gesture: Gesture) => Device```](./device/performGesture.md)
+:white_check_mark: [```.performGesture(gesture: Gesture) => Promise```](./device/performGesture.md)
 
 TODO: Description here.
 
-:white_check_mark: [```.setOrientation(orientation: "LANDSCAPE" | "PORTRAIT") => Device```](./device/setOrientation.md)
+:white_check_mark: [```.setOrientation(orientation: "LANDSCAPE" | "PORTRAIT") => Promise```](./device/setOrientation.md)
 
 TODO: Description here.
 
-:white_check_mark: [```.getOrientation() => Device```](./device/getOrientation.md)
+:white_check_mark: [```.getOrientation() => "LANDSCAPE" | "PORTRAIT"```](./device/getOrientation.md)
 
 TODO: Description here.

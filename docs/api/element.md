@@ -45,7 +45,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.getAttribute(attribute: String) => Element```](./element/getAttribute.md)
+:warning: [```.getAttribute(attribute: String) => Element```](./element/getAttribute.md)
 
 TODO: Description here.
 
@@ -69,18 +69,22 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.swipeUp({x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./element/swipeUp.md)
+:hammer: [```.swipeUp({x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./device/swipeUp.md)
 
 TODO: Description here.
 
-:warning: [```.swipeDown({x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./element/swipeDown.md)
+:hammer: [```.swipeDown({x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./device/swipeDown.md)
 
 TODO: Description here.
 
-:warning: [```.swipeLeft({x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./element/swipeLeft.md)
+:hammer: [```.swipeLeft({x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./device/swipeLeft.md)
 
 TODO: Description here.
 
-:warning: [```.swipeRight({x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./element/swipeRight.md)
+:hammer: [```.swipeRight({x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./device/swipeRight.md)
+
+TODO: Description here.
+
+:hammer: [```.swipe({x: Number, y: Number, direction: Number, distance: Number, duration?: Number}) => Element```](./device/swipe.md)
 
 TODO: Description here.
