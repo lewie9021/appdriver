@@ -214,7 +214,8 @@ class Element {
         }
 
         return pollExist(matcher)
-          .then((x) => resolve(x));
+          .then(resolve)
+          .catch(reject);
       }, reject);
     });
 

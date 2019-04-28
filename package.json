@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:example": "mocha examples/native-demo-app/tests/carousel-screen.spec.js"
   },
   "license": "MIT",
   "dependencies": {
     "appium": "1.12.1",
+    "mocha": "6.1.4",
     "node-fetch": "2.3.0"
   },
   "devDependencies": {
