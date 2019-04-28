@@ -183,23 +183,6 @@ class Element {
 
     return this;
   }
-
-  log(title) {
-    const currentValue = this.value;
-
-    this.value = new Promise((resolve, reject) => {
-      currentValue.then((x) => {
-        return delay(1000)
-          .then(() => {
-            console.log(title, x);
-
-            resolve(x);
-          });
-      }, reject);
-    });
-
-    return this;
-  }
 }
 
 const element = (matcher) => {
