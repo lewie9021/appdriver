@@ -61,6 +61,43 @@ class Element {
     return this;
   }
 
+  longPress({x = 0, y = 0, duration = 750} = {}) {
+    const currentValue = this.value;
+
+    this.value = new Promise((resolve, reject) => {
+      currentValue.then((value) => {
+        if (value.status === 7) {
+          throw new Error("Can't long press element that doesn't exist");
+        }
+
+        const actions = [{
+          type: "pointer",
+          id: "finger1",
+          parameters: {
+            pointerType: "touch"
+          },
+          actions: [
+            {type: "pointerMove", duration: 0, origin: {element: value.value.ELEMENT}, x, y},
+            {type: "pointerDown", button: 0},
+            {type: "pause", duration},
+            {type: "pointerUp", button: 0}
+          ]
+        }];
+
+        commands.interactions.actions(actions)
+          .then(({status, value}) => {
+            if (status !== 0) {
+              throw new Error("Failed to long press element");
+            }
+
+            return resolve(value);
+          });
+      }, reject);
+    });
+
+    return this;
+  }
+
   typeText(text) {
     const currentValue = this.value;
 

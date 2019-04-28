@@ -21,11 +21,11 @@ The `element` instance provides a way to interact with elements on the screen. Y
 ```
 ### Element API
 
-:white_check_mark: [```.tap() => Element```](./element/tap.md)
+:white_check_mark: [```.tap({x: Number, y: Number}) => Element```](./element/tap.md)
 
 TODO: Description here.
 
-:hammer: [```.longPress(duration?: Number) => Element```](./element/longPress.md)
+:white_check_mark: [```.longPress({x: Number, y: Number, duration?: Number}) => Element```](./element/longPress.md)
 
 TODO: Description here.
 
