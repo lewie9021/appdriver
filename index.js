@@ -1,6 +1,6 @@
 const { by } = require("./src/matchers");
 const commands = require("./src/commands");
-// const device = require("./src/device");
+const device = require("./src/device");
 // const gestures = require("./src/gestures");
 const capabilities = require("./src/capabilities");
 const { element } = require("./src/element");
@@ -11,20 +11,38 @@ const { delay } = require("./src/utils");
   const session = await commands.session.create(capabilities.iPhoneX);
 
   console.log("[2] Selecting element...");
-  const testId = "input-screen";
+  const testId = "form-screen";
   await element(by.label(testId))
     .waitToExist(by.label(testId));
 
-  console.log("[3] Inputting Text...");
-  const $element = await element(by.label("text-input"))
-    .tap()
-    .typeText("Hello World!");
+  const $slider = await element(by.label("slider-input"));
+  const size = await $slider.getSize();
+  const location = await $slider.getLocation({relative: true});
 
-  await delay(3000);
+  console.log("[3] Swiping slider...");
+  await device.performGesture([{
+    "type": "pointer",
+    "id": "finger1",
+    "parameters": {"pointerType": "touch"},
+    "actions": [
+      {"type": "pointerMove", "duration": 0, "origin": "viewport", "x": location.x, "y": location.y},
+      {"type": "pointerDown", "button": 0},
+      {"type": "pause", "duration": 500},
+      {"type": "pointerMove", "duration": 1000, "origin": "pointer", "x": size.width / 2, "y": 0},
+      {"type": "pointerUp", "button": 0}
+    ]
+  }]);
 
-  console.log("[4] Clearing Text...");
-  $element
-    .clearText();
+  // console.log("[3] Inputting Text...");
+  // const $element = await element(by.label("text-input"))
+  //   .tap()
+  //   .typeText("Hello World!");
+  //
+  // await delay(3000);
+  //
+  // console.log("[4] Clearing Text...");
+  // $element
+  //   .clearText();
 
 
 
