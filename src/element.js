@@ -88,6 +88,29 @@ class Element {
     return this;
   }
 
+  clearText() {
+    const currentValue = this.value;
+
+    this.value = new Promise((resolve, reject) => {
+      currentValue.then((value) => {
+        if (value.status === 7) {
+          throw new Error("Can't tap element that doesn't exist");
+        }
+
+        commands.element.actions.clearElement(value.value.ELEMENT)
+          .then(({status}) => {
+            if (status !== 0) {
+              throw new Error("Failed to clear text");
+            }
+
+            return resolve(value);
+          });
+      }, reject);
+    });
+
+    return this;
+  }
+
   getElementId() {
     return this.value.then((value) => {
       return value.value.ELEMENT;

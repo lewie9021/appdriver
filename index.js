@@ -16,11 +16,17 @@ const { delay } = require("./src/utils");
     .waitToExist(by.label(testId));
 
   console.log("[3] Inputting Text...");
-  await element(by.label("text-input"))
+  const $element = await element(by.label("text-input"))
     .tap()
     .typeText("Hello World!");
 
   await delay(3000);
+
+  console.log("[4] Clearing Text...");
+  $element
+    .clearText();
+
+
 
   // const viewport = await device.getViewport();
   // console.log("[3] viewport dimensions", viewport);

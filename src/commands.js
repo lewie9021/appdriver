@@ -98,6 +98,9 @@ module.exports = {
         };
 
         return post(`/session/${global.session.sessionId}/element/${elementId}/value`, null, payload);
+      },
+      clearElement: (elementId) => {
+        return post(`/session/${global.session.sessionId}/element/${elementId}/clear`);
       }
     }
   },

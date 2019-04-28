@@ -29,15 +29,11 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.typeText(text: String) => Element```](./element/typeText.md)
+:white_check_mark: [```.typeText(text: String) => Element```](./element/typeText.md)
 
 TODO: Description here.
 
-:hammer: [```.replaceText(text: String) => Element```](./element/replaceText.md)
-
-TODO: Description here.
-
-:hammer: [```.clearText() => Element```](./element/clearText.md)
+:white_check_mark: [```.clearText() => Element```](./element/clearText.md)
 
 TODO: Description here.
 
