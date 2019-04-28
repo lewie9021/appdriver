@@ -124,6 +124,33 @@ class Element {
       }
 
       return commands.element.attributes.size(value.value.ELEMENT)
+        .then(({status, value}) => {
+          if (status !== 0) {
+            throw new Error("Failed to get element size");
+          }
+
+          return value;
+        });
+    });
+  }
+
+  getLocation({relative = false}) {
+    return this.value.then((value) => {
+      if (value.status === 7) {
+        throw new Error("Can't get size of element that doesn't exist");
+      }
+
+      const command = relative
+        ? commands.element.attributes.locationInView(value.value.ELEMENT)
+        : commands.element.attributes.location(value.value.ELEMENT);
+
+      return command.then(({status, value}) => {
+        if (status !== 0) {
+          throw new Error(`Failed to get element ${relative ? "relative " : ""}location`);
+        }
+
+        return value;
+      });
     });
   }
 

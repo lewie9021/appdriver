@@ -86,6 +86,12 @@ module.exports = {
       exists: elementExists,
       displayed: (elementId) => {
         return get(`/session/${global.session.sessionId}/element/${elementId}/displayed`);
+      },
+      location: (elementId) => {
+        return get(`/session/${global.session.sessionId}/element/${elementId}/location`);
+      },
+      locationInView: (elementId) => {
+        return get(`/session/${global.session.sessionId}/element/${elementId}/location_in_view`);
       }
     },
     actions: {
