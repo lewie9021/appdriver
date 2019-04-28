@@ -4,7 +4,7 @@ const device = require("./src/device");
 // const gestures = require("./src/gestures");
 const capabilities = require("./src/capabilities");
 const { element } = require("./src/element");
-const { delay } = require("./src/utils");
+// const { delay } = require("./src/utils");
 
 (async () => {
   console.log("[1] Initialising session...");
@@ -27,8 +27,8 @@ const { delay } = require("./src/utils");
     "actions": [
       {"type": "pointerMove", "duration": 0, "origin": "viewport", "x": location.x, "y": location.y},
       {"type": "pointerDown", "button": 0},
-      {"type": "pause", "duration": 500},
-      {"type": "pointerMove", "duration": 1000, "origin": "pointer", "x": size.width / 2, "y": 0},
+      {"type": "pause", "duration": 250},
+      {"type": "pointerMove", "duration": 100, "origin": "pointer", "x": size.width / 2, "y": 0},
       {"type": "pointerUp", "button": 0}
     ]
   }]);
