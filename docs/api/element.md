@@ -37,11 +37,11 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.getLocation() => {x: Number, y: Number}```](./element/getLocation.md)
+:white_check_mark: [```.getLocation({relative: Boolean}) => {x: Number, y: Number}```](./element/getLocation.md)
 
 TODO: Description here.
 
-:hammer: [```.getSize() => {width: Number, height: Number}```](./element/getSize.md)
+:white_check_mark: [```.getSize() => {width: Number, height: Number}```](./element/getSize.md)
 
 TODO: Description here.
 
