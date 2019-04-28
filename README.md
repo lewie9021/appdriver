@@ -2,49 +2,42 @@
 
 A mobile focused, intuitive Appium client.
 
-### API
+### Examples
 
-#### Element
+##### Element selection with tap interaction.
 
-Example 2 (Selection + Action):
 ```javascript
 (async () => {
-  const $element = await element(by.id("my-element-by-testId"));
+  const $button = await element(by.label("button"));
   
-  await $element.longPress();
+  await $button.tap();
 })();
 ```
 
-Example 3 (Selection + Action):
+##### Element selection with text entry.
+
 ```javascript
 (async () => {
-  await element(by.id("my-element-by-testId"))
-    .tap()
+  const $textInput = await element(by.label("text-input"));
+  
+  await $textInput.typeText("Hello World!");
 })();
 ```
 
-Example 4 (Selection + Action):
-```javascript
-(async () => {
-  // Set input text.
-  const $element = await element(by.id("my-input-by-testId"))
-    .value("hello");
-})();
-```
+### Documentation
 
-Example 5 (Selection + Action):
-```javascript
-(async () => {
-  // Get text from input.
-  const inputText = await element(by.id("my-input-by-testId"))
-    .value();
-})();
-```
+- [Introduction](./docs)
+- [Guides](./docs/guides)
+- [API Reference](./docs/api)
+  - [Device](./docs/api/device.md)
+  - [Matchers](./docs/api/matchers.md)
+  - [Element](./docs/api/element.md)
+  - [Gestures](./docs/api/gestures.md)
+  - [Expect](./docs/api/expect.md)
 
-Example 6 (Selection + Action):
-```javascript
-(async () => {
-  const inputText = await element(by.id("my-input-by-testId"))
-    .value("hello", {speed: 0.3});
-})();
-```
+### TODOs
+
+- [ ] CLI to be configuration driven.
+- [ ] Implement test runner.
+- [ ] Support for parallel testing.
+- [ ] Host documentation on github.io.
