@@ -61,6 +61,33 @@ class Element {
     return this;
   }
 
+  typeText(text) {
+    const currentValue = this.value;
+
+    this.value = new Promise((resolve, reject) => {
+      currentValue.then((value) => {
+        if (value.status === 7) {
+          throw new Error("Can't tap element that doesn't exist");
+        }
+
+        commands.element.actions.sendKeys(value.value.ELEMENT, text.split(""))
+          .then(({status}) => {
+            if (status === 13 && global.session.platformName === "iOS") {
+              throw new Error("Failed to type text. Please make sure input via your computer's keyboard is disabled");
+            }
+
+            if (status !== 0) {
+              throw new Error("Failed to type text");
+            }
+
+            return resolve(value);
+          });
+      }, reject);
+    });
+
+    return this;
+  }
+
   getElementId() {
     return this.value.then((value) => {
       return value.value.ELEMENT;

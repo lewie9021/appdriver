@@ -25,6 +25,7 @@ module.exports = {
       return post("/session", null, payload)
         .then((data) => {
           if (data.status !== 0) {
+            console.error(data.value.message);
             throw new Error("There was a problem creating a session with the given capabilities.");
           }
 
@@ -90,6 +91,13 @@ module.exports = {
     actions: {
       click: (elementId) => {
         return post(`/session/${global.session.sessionId}/element/${elementId}/click`);
+      },
+      sendKeys: (elementId, value) => {
+        const payload = {
+          value
+        };
+
+        return post(`/session/${global.session.sessionId}/element/${elementId}/value`, null, payload);
       }
     }
   },

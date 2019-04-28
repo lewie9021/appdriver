@@ -1,30 +1,38 @@
 const { by } = require("./src/matchers");
 const commands = require("./src/commands");
-const device = require("./src/device");
-const gestures = require("./src/gestures");
+// const device = require("./src/device");
+// const gestures = require("./src/gestures");
 const capabilities = require("./src/capabilities");
 const { element } = require("./src/element");
+const { delay } = require("./src/utils");
 
 (async () => {
   console.log("[1] Initialising session...");
   const session = await commands.session.create(capabilities.iPhoneX);
 
   console.log("[2] Selecting element...");
-  const testId = "carousel-screen";
+  const testId = "input-screen";
   await element(by.label(testId))
     .waitToExist(by.label(testId));
 
-  const viewport = await device.getViewport();
-  console.log("[3] viewport dimensions", viewport);
+  console.log("[3] Inputting Text...");
+  await element(by.label("text-input"))
+    .tap()
+    .typeText("Hello World!");
 
-  const swipeLeft = gestures.swipeLeft({
-    x: viewport.width * 0.75,
-    y: viewport.height / 2,
-    distance: viewport.width * 0.75,
-  });
+  await delay(3000);
 
-  await device.performGesture([swipeLeft]);
-  await device.performGesture([swipeLeft]);
+  // const viewport = await device.getViewport();
+  // console.log("[3] viewport dimensions", viewport);
+
+  // const swipeLeft = gestures.swipeLeft({
+  //   x: viewport.width * 0.75,
+  //   y: viewport.height / 2,
+  //   distance: viewport.width * 0.75,
+  // });
+  //
+  // await device.performGesture([swipeLeft]);
+  // await device.performGesture([swipeLeft]);
 
   // await device.restartApp(capabilities.iPhoneX);
   // await device.resetApp(capabilities.iPhoneX);
