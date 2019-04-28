@@ -20,10 +20,6 @@ const by = {
         value: accessibilityId
       })
     }
-  }),
-  element: (element) => ({
-    type: "element",
-    value: element
   })
 };
 
