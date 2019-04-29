@@ -1,11 +1,8 @@
-const { by, element, device, commands } = require("../../../index");
+const { by, element, device } = require("../../../index");
 const gestures = require("../../../src/gestures");
-const capabilities = require("../config/capabilities");
 
 describe("Carousel Screen", () => {
   const screenTestId = "carousel-screen";
-
-  before(() => commands.session.create(capabilities.iPhoneX));
 
   it("works", async () => {
     console.log("[1] Waiting for screen to load...");

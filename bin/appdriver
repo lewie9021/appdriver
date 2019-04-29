@@ -1,0 +1,70 @@
+#!/usr/bin/env node
+
+const argv = require('yargs').argv;
+const Mocha = require("mocha");
+const path = require("path");
+const commands = require("../src/commands");
+
+const relativeConfigPath = argv.config;
+const configPath = path.join(process.cwd(), relativeConfigPath);
+const config = require(configPath);
+
+if (config.capabilities.length > 1) {
+  throw new Error("Multiple capabilities are not supported");
+}
+
+config.capabilities.forEach((capability) => {
+  commands.session.create(capability)
+    .then(() => {
+      // Instantiate a Mocha instance.
+      const mocha = new Mocha({
+        timeout: 30 * 1000
+      });
+
+      config.specs.forEach((relativeSpecPath) => {
+        const specPath = path.join(path.dirname(configPath), relativeSpecPath);
+
+        mocha.addFile(specPath);
+      });
+
+      // Run the tests.
+      const runner = mocha.run((failures) => {
+        process.exitCode = failures ? 1 : 0;  // exit with non-zero status if there were failures
+      });
+    });
+});
+
+// mocha.reporter(function(x, y) {
+//   // console.log(x);
+//   console.log(y);
+// });
+
+
+
+// runner.on("start", (x) => {
+//   console.log("START:", x);
+// });
+//
+// runner.on("ready", (x) => {
+//   console.log("READY:", x);
+// });
+//
+// runner.on("suite", (suite) => {
+//   console.log("SUITE", suite.fullTitle());
+// });
+//
+// runner.on("test", (test) => {
+//   console.log("TEST", test.fullTitle());
+// });
+//
+// runner.on("pass", (test) => {
+//   console.log("PASSED", test.fullTitle());
+// });
+//
+// runner.on("fail", (test) => {
+//   console.log("FAILED", test.fullTitle());
+// });
+//
+// runner.on("end", (x) => {
+//   console.log("END", x);
+// });
