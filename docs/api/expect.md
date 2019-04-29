@@ -54,11 +54,11 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.toContainValue(text: String) => Promise```](./expect/toContainValue.md)
+:hammer: [```.toHaveValueContain(text: String) => Promise```](./expect/toHaveValueContain.md)
 
 TODO: Description here.
 
-:hammer: [```.toMatchValue(pattern: Regex) => Promise```](./expect/toMatchValue.md)
+:hammer: [```.toHaveValueMatch(pattern: Regex) => Promise```](./expect/toHaveValueMatch.md)
 
 TODO: Description here.
 
