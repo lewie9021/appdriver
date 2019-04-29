@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "test:example": "mocha examples/native-demo-app/tests/carousel-screen.spec.js"
+    "test:example": "mocha --timeout=30000 examples/native-demo-app/tests/carousel-screen.spec.js"
   },
   "license": "MIT",
   "dependencies": {
