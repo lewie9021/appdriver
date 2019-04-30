@@ -83,6 +83,12 @@ module.exports = {
       size: (elementId) => {
         return get(`/session/${global.session.sessionId}/element/${elementId}/size`);
       },
+      text: (elementId) => {
+        return get(`/session/${global.session.sessionId}/element/${elementId}/text`);
+      },
+      value: (elementId) => {
+        return get(`/session/${global.session.sessionId}/element/${elementId}/attribute/value`);
+      },
       exists: elementExists,
       displayed: (elementId) => {
         return get(`/session/${global.session.sessionId}/element/${elementId}/displayed`);
@@ -92,6 +98,9 @@ module.exports = {
       },
       locationInView: (elementId) => {
         return get(`/session/${global.session.sessionId}/element/${elementId}/location_in_view`);
+      },
+      replaceValue: (elementId) => {
+        return post(`/session/${global.session.sessionId}/element/${elementId}/replace_value`);
       }
     },
     actions: {

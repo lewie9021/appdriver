@@ -221,6 +221,23 @@ class Element {
 
     return this;
   }
+
+  getText() {
+    return this.value.then((value) => {
+      if (value.status === 7) {
+        throw new Error("Can't get value of element that doesn't exist");
+      }
+
+      return commands.element.attributes.text(value.value.ELEMENT)
+        .then(({status, value}) => {
+          if (status !== 0) {
+            throw new Error("Failed to get element value");
+          }
+
+          return value;
+        });
+    });
+  }
 }
 
 const element = (matcher) => {
