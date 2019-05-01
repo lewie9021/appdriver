@@ -28,7 +28,7 @@ The `expect` utility is the out-of-the-box solution for asserting within tests. 
   })();
 ```
 
-### Expect API
+### Expect API (Element)
 
 :hammer: [```.not => Expect```](./expect/not.md)
 
@@ -71,5 +71,39 @@ TODO: Description here.
 TODO: Description here.
 
 :hammer: [```.toBeVisible() => Promise```](./expect/toBeVisible.md)
+
+TODO: Description here.
+
+### Expect API (Value)
+
+:hammer: [```.toHaveLength(value: Number) => Promise```](./expect/toHaveLength.md)
+
+TODO: Description here.
+
+:hammer: [```.toEqual(value: any) => Promise```](./expect/toEqual.md)
+
+TODO: Description here.
+
+:hammer: [```.toContain(value: any) => Promise```](./expect/toContain.md)
+
+TODO: Description here.
+
+:hammer: [```.toMatch(pattern: Regex) => Promise```](./expect/toMatch.md)
+
+TODO: Description here.
+
+:hammer: [```.toBeGreaterThenOrEqual(value: Number) => Promise```](./expect/toBeGreaterThenOrEqual.md)
+
+TODO: Description here.
+
+:hammer: [```.toBeGreaterThan(value: Number) => Promise```](./expect/toBeGreaterThan.md)
+
+TODO: Description here.
+
+:hammer: [```.toBeLessThanOrEqual(value: Number) => Promise```](./expect/toBeLessThanOrEqual.md)
+
+TODO: Description here.
+
+:hammer: [```.toBeLessThan(value: Number) => Promise```](./expect/toBeLessThan.md)
 
 TODO: Description here.
