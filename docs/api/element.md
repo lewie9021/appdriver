@@ -37,6 +37,14 @@ TODO: Description here.
 
 TODO: Description here.
 
+:hammer: [```.getText() => String```](./element/getText.md)
+
+TODO: Description here.
+
+:hammer: [```.getValue() => Any```](./element/getValue.md)
+
+TODO: Description here.
+
 :white_check_mark: [```.getLocation({relative: Boolean}) => {x: Number, y: Number}```](./element/getLocation.md)
 
 TODO: Description here.
@@ -45,7 +53,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.getAttribute(attribute: String) => Element```](./element/getAttribute.md)
+:hammer: [```.getAttribute(attribute: String) => Any```](./element/getAttribute.md)
 
 TODO: Description here.
 
@@ -65,7 +73,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.findElements(matcher: Matcher) => Element```](./element/findElements.md)
+:hammer: [```.findElements(matcher: Matcher) => Array<Element>```](./element/findElements.md)
 
 TODO: Description here.
 
