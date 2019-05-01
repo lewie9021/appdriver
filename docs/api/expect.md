@@ -1,6 +1,6 @@
 # Expect
 
-The `expect` utility is the out-of-the-box solution for asserting within tests. It is heavily inspired by Jest that favours a sane autocomplete system.
+The `expect` utility is the out-of-the-box solution for asserting within tests. It is heavily inspired by Jest, favouring a sane autocomplete system.
 
  ### Examples
  
