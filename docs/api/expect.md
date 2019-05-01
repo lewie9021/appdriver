@@ -34,7 +34,11 @@ The `expect` utility is the out-of-the-box solution for asserting within tests. 
 
 TODO: Description here.
 
-:hammer: [```.toHaveValue(value: String) => Promise```](./expect/toHaveValue.md)
+:hammer: [```.toHaveValue(value: String | Number) => Promise```](./expect/toHaveValue.md)
+
+TODO: Description here.
+
+:hammer: [```.toHaveText(text: String) => Promise```](./expect/toHaveText.md)
 
 TODO: Description here.
 
@@ -54,11 +58,11 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.toHaveValueContain(text: String) => Promise```](./expect/toHaveValueContain.md)
+:hammer: [```.toHaveTextContain(text: String) => Promise```](./expect/toHaveTextContain.md)
 
 TODO: Description here.
 
-:hammer: [```.toHaveValueMatch(pattern: Regex) => Promise```](./expect/toHaveValueMatch.md)
+:hammer: [```.toHaveTextMatch(pattern: Regex) => Promise```](./expect/toHaveTextMatch.md)
 
 TODO: Description here.
 
