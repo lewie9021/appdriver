@@ -78,6 +78,10 @@ TODO: Description here.
 
 TODO: Description here.
 
+:warning: [```.goBack() => Promise```](./device/goBack.md)
+
+TODO: Description here.
+
 :white_check_mark: [```.setOrientation(orientation: "LANDSCAPE" | "PORTRAIT") => Promise```](./device/setOrientation.md)
 
 TODO: Description here.
@@ -106,7 +110,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.setClipboard(options: {value: String, contentType?: String, label?: String}) => Promise```](./device/getGeoLocation.md)
+:warning: [```.setClipboard(options: {value: String, contentType?: String, label?: String}) => Promise```](./device/setClipboard.md)
 
 TODO: Description here.
 
