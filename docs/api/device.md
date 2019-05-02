@@ -30,6 +30,13 @@ The `device` object provides a way to interact within the application that's not
 
 ```javascript
 (async () => {
+  await device.performTouchId({successful: true});
+  await device.performFingerPrint({id: 1});
+})();
+```
+
+```javascript
+(async () => {
   await device.startScreenRecording({
     format: "mp4",
     quality: "high",
@@ -100,6 +107,14 @@ TODO: Description here.
 TODO: Description here.
 
 :warning: [```.toggleLocation() => Promise```](./device/toggleLocation.md)
+
+TODO: Description here.
+
+:warning: [```.performTouchId(options: {successful: Boolean}) => Promise```](./device/performTouchId.md)
+
+TODO: Description here.
+
+:warning: [```.performFingerPrint(options: {id?: Number}) => Promise```](./device/performFingerPrint.md)
 
 TODO: Description here.
 
