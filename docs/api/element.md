@@ -45,6 +45,22 @@ TODO: Description here.
 
 TODO: Description here.
 
+:warning: [```.exists() => Boolean```](./element/exists.md)
+
+TODO: Description here.
+
+:warning: [```.isDisplayed() => Boolean```](./element/isDisplayed.md)
+
+TODO: Description here.
+
+:warning: [```.isEnabled() => Boolean```](./element/isEnabled.md)
+
+TODO: Description here.
+
+:warning: [```.isSelected() => Boolean```](./element/isSelected.md)
+
+TODO: Description here.
+
 :white_check_mark: [```.getLocation({relative: Boolean}) => {x: Number, y: Number}```](./element/getLocation.md)
 
 TODO: Description here.
