@@ -40,7 +40,6 @@ A mobile focused, intuitive Appium client.
 
 ### TODOs
 
-- [ ] CLI to be configuration driven.
-- [ ] Implement test runner.
 - [ ] Support for parallel testing.
+- [ ] Support for multiple capabilities.
 - [ ] Host documentation on github.io.
