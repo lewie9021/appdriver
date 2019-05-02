@@ -28,7 +28,9 @@ The `expect` utility is the out-of-the-box solution for asserting within tests. 
   })();
 ```
 
-### Expect API (Element)
+### Expect API
+
+##### Element
 
 :hammer: [```.not => Expect```](./expect/not.md)
 
@@ -78,7 +80,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-### Expect API (Value)
+##### Value
 
 :hammer: [```.toHaveLength(value: Number) => Promise```](./expect/toHaveLength.md)
 
