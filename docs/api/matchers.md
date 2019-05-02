@@ -4,11 +4,27 @@ TODO
 
 ### Examples
  
-Test ID Matcher: 
+Find element with an ID of "input": 
 
 ```javascript
  (async () => {
    const $input = await element(by.id("input"));
+ })();
+```
+
+Find all elements that have an accessibility label starting with "list-item-".
+
+```javascript
+ (async () => {
+   const $listItems = await elements(by.label("list-item-*"));
+ })();
+```
+
+Find all elements that have an accessibility label containing "item".
+
+```javascript
+ (async () => {
+   const $listItems = await elements(by.label("*item*"));
  })();
 ```
 
