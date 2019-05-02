@@ -8,7 +8,7 @@ Swipe Gesture:
 
 ```javascript
 (async () => {
-  const $scrollView = await element(by.id("scroll-view"));
+  const $scrollView = await element(by.label("scroll-view"));
   const size = await $scrollView.getSize();
   const swipeUp = gestures.create()
     .press({
@@ -27,8 +27,8 @@ Drop 'n' Drag Gesture:
 
 ```javascript
 (async () => {
-  const $box = await element(by.id("box"));
-  const $destination = await element(by.id("destination"));
+  const $box = await element(by.label("box"));
+  const $destination = await element(by.label("destination"));
   const dragAndDrop = gestures.create()
     .press({element: $box})
     .wait(250)
@@ -43,7 +43,7 @@ Tap Gesture:
 
 ```javascript
 (async () => {
-  const $button = await element(by.id("button"));
+  const $button = await element(by.label("button"));
   const tap = gestures.create()
     .press()
     .release();
@@ -56,7 +56,7 @@ Double Tap Gesture:
 
 ```javascript
 (async () => {
-  const $button = await element(by.id("button"));
+  const $button = await element(by.label("button"));
   const tap = gestures.create()
     .press()
     .release();
@@ -70,7 +70,7 @@ Press Gesture:
 
 ```javascript
 (async () => {
-  const $button = await element(by.id("button"));
+  const $button = await element(by.label("button"));
   const longPress = gestures.create()
     .press()
     .wait(500)
@@ -84,7 +84,7 @@ Pinch Gesture:
 
 ```javascript
 (async () => {
-  const $scrollView = await element(by.id("scroll-view"));
+  const $scrollView = await element(by.label("scroll-view"));
   const size = await $scrollView.getSize();
   
   const swipeLeft = gestures.create()

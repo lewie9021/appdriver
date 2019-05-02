@@ -6,7 +6,7 @@ The `expect` utility is the out-of-the-box solution for asserting within tests. 
  
 ```javascript
  (async () => {
-   const $input = await element(by.id("input"));
+   const $input = await element(by.label("input"));
    
    await expect($input).toHaveValue("Example Text");
  })();
@@ -14,7 +14,7 @@ The `expect` utility is the out-of-the-box solution for asserting within tests. 
  
 ```javascript
   (async () => {
-    const $input = await element(by.id("input"));
+    const $input = await element(by.label("input"));
     
     await expect($input).toExist();
   })();
@@ -22,7 +22,7 @@ The `expect` utility is the out-of-the-box solution for asserting within tests. 
 
 ```javascript
   (async () => {
-    const $input = await element(by.id("input"));
+    const $input = await element(by.label("input"));
     
     await expect($input).not.toBeVisible();
   })();
