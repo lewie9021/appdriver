@@ -28,6 +28,23 @@ The `device` object provides a way to interact within the application that's not
 })();
 ```
 
+```javascript
+(async () => {
+  await device.startScreenRecording({
+    format: "mp4",
+    quality: "high",
+    size: {
+      width: 1280,
+      height: 720
+    }
+  });
+  
+  // Test code here...
+  
+  await device.stopScreenRecording(path.join(__dirname, "recordings", "test-case-1.mp4")); 
+})();
+```
+
 ### Device API
 
 :warning: [```.platform: "iOS" | "Android"```](./device/platform.md)
@@ -83,6 +100,14 @@ TODO: Description here.
 TODO: Description here.
 
 :warning: [```.toggleLocation() => Promise```](./device/toggleLocation.md)
+
+TODO: Description here.
+
+:warning: [```.startScreenRecording(options?: {format?: String, quality?: String, fps?: Number, bitRate?: Number, size?: {width: Number, height: Number}, maxDuration?: Number, forceRestart?: Boolean}) => Promise```](./device/startScreenRecording.md)
+
+TODO: Description here.
+
+:warning: [```.stopScreenRecording(filePath: String, options?: {username?: String, password?: String, method?: String}) => Promise```](./device/stopScreenRecording.md)
 
 TODO: Description here.
 
