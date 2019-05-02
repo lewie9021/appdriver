@@ -53,7 +53,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.isDisplayed() => Boolean```](./element/isDisplayed.md)
+:warning: [```.isVisible() => Boolean```](./element/isVisible.md)
 
 TODO: Description here.
 

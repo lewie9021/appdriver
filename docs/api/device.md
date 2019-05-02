@@ -82,11 +82,19 @@ TODO: Description here.
 
 TODO: Description here.
 
-:white_check_mark: [```.getOrientation() => "LANDSCAPE" | "PORTRAIT"```](./device/getOrientation.md)
+:white_check_mark: [```.getOrientation() => Promise<"LANDSCAPE" | "PORTRAIT">```](./device/getOrientation.md)
 
 TODO: Description here.
 
-:warning: [```.takeScreenshot(options?: {filePath?: String}) => {value: String, width: Number, height: Number}```](./device/takeScreenshot.md)
+:warning: [```.takeScreenshot(filePath?: String) => Promise<{value: String, width: Number, height: Number}>```](./device/takeScreenshot.md)
+
+TODO: Description here.
+
+:warning: [```.isKeyboardVisible() => Promise<Boolean>```](./device/isKeyboardVisible.md)
+
+TODO: Description here.
+
+:warning: [```.hideKeyboard() => Promise```](./device/hideKeyboard.md)
 
 TODO: Description here.
 
@@ -122,7 +130,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.stopScreenRecording(filePath: String, options?: {username?: String, password?: String, method?: String}) => Promise```](./device/stopScreenRecording.md)
+:warning: [```.stopScreenRecording(filePath?: String, options?: {username?: String, password?: String, method?: String}) => Promise```](./device/stopScreenRecording.md)
 
 TODO: Description here.
 
