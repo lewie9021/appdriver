@@ -4,23 +4,62 @@ A mobile focused, intuitive Appium client.
 
 ### Examples
 
-##### Element selection with tap interaction.
+##### Tap interaction
 
 ```javascript
 (async () => {
-  const $button = await element(by.label("button"));
-  
-  await $button.tap();
+  await element(by.label("button")).tap();
 })();
 ```
 
-##### Element selection with text entry.
+##### Text entry
 
 ```javascript
 (async () => {
   const $textInput = await element(by.label("text-input"));
   
-  await $textInput.typeText("Hello World!");
+  await $textInput
+    .tap()
+    .typeText("Hello World!");
+  
+  await expect($textInput).toHaveValue("Hello World!");
+})();
+```
+
+##### Swipe gesture
+
+```javascript
+(async () => {
+  await element(by.label("carousel-container"))
+    .swipeLeft({percentage: 0.75});
+  
+  await expect(element(by.label("carousel-page-2"))).toBeVisible();
+})();
+```
+
+##### Fuzzy match elements
+
+```javascript
+(async () => {
+  const $items = await elements(by.label("list-item-*"));
+  
+  await expect($items).toHaveLength(3);
+})();
+```
+
+##### Custom gestures
+
+```javascript
+(async () => {
+  const $box = await element(by.label("box"));
+  const $destination = await element(by.label("destination"));
+  const dragAndDrop = gestures.create()
+    .press({element: $box})
+    .wait(250)
+    .moveTo({element: $destination})
+    .release();
+  
+  await device.performGesture(dragAndDrop);
 })();
 ```
 
