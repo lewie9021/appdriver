@@ -150,6 +150,22 @@ TODO: Description here.
 
 TODO: Description here.
 
+:warning: [```.getSettings() => Promise<Object>```](./device/getSettings.md)
+
+TODO: Description here.
+
+:warning: [```.setSettings(settings: Object) => Promise```](./device/setSettings.md)
+
+TODO: Description here.
+
+:warning: [```.readFile(filePath: String) => Promise<String>```](./device/readFile.md)
+
+TODO: Description here.
+
+:warning: [```.writeFile(filePath: String, data: String) => Promise```](./device/writeFile.md)
+
+TODO: Description here.
+
 :hammer: [```.swipeUp({x: Number, y: Number, distance: Number, duration?: Number}) => Promise```](./device/swipeUp.md)
 
 TODO: Description here.
