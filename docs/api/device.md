@@ -106,15 +106,15 @@ TODO: Description here.
 
 TODO: Description here.
 
+:warning: [```.setGeoLocation(options: {latitude: Number, longitude: Number, altitude?: Number}) => Promise```](./device/setGeoLocation.md)
+
+TODO: Description here.
+
 :warning: [```.getClipboard(options? {contentType?: String}) => Promise<String>```](./device/getClipboard.md)
 
 TODO: Description here.
 
 :warning: [```.setClipboard(options: {value: String, contentType?: String, label?: String}) => Promise```](./device/setClipboard.md)
-
-TODO: Description here.
-
-:warning: [```.setGeoLocation(options: {latitude: Number, longitude: Number, altitude?: Number}) => Promise```](./device/setGeoLocation.md)
 
 TODO: Description here.
 
