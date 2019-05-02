@@ -33,6 +33,10 @@ TODO: Description here.
 
 TODO: Description here.
 
+:warning: [```.replaceText(text: String) => Element```](./element/replaceText.md)
+
+TODO: Description here.
+
 :white_check_mark: [```.clearText() => Element```](./element/clearText.md)
 
 TODO: Description here.
