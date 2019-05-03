@@ -191,13 +191,21 @@ class Element {
     });
   }
 
-  waitToBeVisible() {
+  waitToBeVisible(matcher) {
     const currentValue = this.value;
 
     this.value = new Promise((resolve, reject) => {
-      currentValue.then((value) => {
-        return pollDisplayed(value.value.ELEMENT)
-          .then(() => resolve(value));
+      currentValue.then((response) => {
+        if (response.status !== 0) { // Initial find didn't work or a previously chained call failed.
+          return pollExist(matcher)
+            .then(({value}) => {
+              return pollDisplayed(value.ELEMENT)
+                .then((res) => resolve(res));
+            });
+        }
+
+        return pollDisplayed(response.value.ELEMENT)
+          .then(() => resolve(response));
       }, reject);
     });
 

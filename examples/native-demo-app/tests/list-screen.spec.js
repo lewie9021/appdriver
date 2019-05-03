@@ -7,8 +7,18 @@ describe("List Screen", () => {
     console.log("[1] Waiting for screen to load...");
     await element(by.label(screenTestId)).waitToExist(by.label(screenTestId));
 
-    const response = await elements(by.label("list-item-*"));
+    const listItems = await elements(by.label("list-item-*"));
+    console.log("Found elements", listItems.length);
 
-    console.log(JSON.stringify(response.value, null, 2));
+    for (let i = 0; i < 10; i += 1) {
+      const $listItem = listItems[i];
+
+      await $listItem.tap();
+      await element(by.label("OK"))
+        .waitToBeVisible(by.label("OK"))
+        .tap();
+
+      console.log("item", i + 1);
+    }
   });
 });

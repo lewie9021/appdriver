@@ -81,7 +81,7 @@ const by = {
         ? commands.element.findElements
         : commands.element.findElement;
 
-      return command(getLabelQuery(accessibilityLabel))
+      return command(getLabelQuery(accessibilityLabel));
     }
   })
 };
