@@ -1,4 +1,5 @@
 const commands = require("./commands");
+const { ElementActionError } = require("./errors");
 const { delay } = require("./utils");
 
 const poll = (func, maxRetries = 10) => {
@@ -262,14 +263,10 @@ class Element {
     const currentValue = getValue(this.matcher, this.value);
 
     return currentValue.then((value) => {
-      if (value.status === 7) {
-        throw new Error("Can't get value of element that doesn't exist");
-      }
-
       return commands.element.attributes.text(value.value.ELEMENT)
         .then(({status, value}) => {
-          if (status !== 0) {
-            throw new Error("Failed to get element value");
+          if (status) {
+            throw new ElementActionError("Failed to get text for element.");
           }
 
           return value;
