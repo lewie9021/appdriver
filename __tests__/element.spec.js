@@ -24,8 +24,23 @@ afterEach(() => {
 });
 
 describe("Find Element", () => {
+  it("returns a selector", () => {
+    const selector = element(by.label("list-item"));
+
+    expect(selector).toBeInstanceOf(Element);
+    expect(commands.element.findElement).not.toBeCalled();
+  });
+
   it("returns an 'Element' that is 'thenable'", async () => {
-    const $element = await element(by.label("list-item"));
+    const selector = element(by.label("list-item"));
+
+    expect(selector).toBeInstanceOf(Element);
+    expect(typeof selector.then).toBe("function");
+  });
+
+  it("executes the matcher when awaited", async () => {
+    const selector = element(by.label("list-item"));
+    const $element = await selector;
 
     expect($element).toBeInstanceOf(Element);
     expect(commands.element.findElement).toBeCalledTimes(1);

@@ -39,16 +39,32 @@ const pollExist = (matcher) => {
   });
 };
 
+const getValue = (matcher, value) => {
+  return value || matcher.resolve();
+};
+
 class Element {
-  constructor(value) {
+  constructor({matcher, value = null, thenable = true}) {
+    this.matcher = matcher;
     this.value = value;
+
+    if (thenable) {
+      this.then = function (onResolved, onRejected) {
+        const value = getValue(this.matcher, this.value);
+
+        return value.then((value) => {
+          const promise = Promise.resolve(value);
+
+          onResolved(new Element({matcher, value: promise, thenable: false}));
+        }, onRejected);
+      };
+    }
   }
 
   tap() {
-    const currentValue = this.value;
-
-    this.value = new Promise((resolve, reject) => {
-      currentValue.then((value) => {
+    const value = getValue(this.matcher, this.value);
+    const nextValue = new Promise((resolve, reject) => {
+      value.then((value) => {
         if (value.status === 7) {
           throw new Error("Can't tap element that doesn't exist");
         }
@@ -58,7 +74,7 @@ class Element {
       }, reject);
     });
 
-    return this;
+    return new Element({matcher: this.matcher, value: nextValue});
   }
 
   longPress({x = 0, y = 0, duration = 750} = {}) {
@@ -249,17 +265,7 @@ class Element {
 }
 
 const element = (matcher) => {
-  let $element = new Element(matcher.resolve());
-
-  $element.then = function(resolve, reject) {
-    return this.value.then((value) => {
-      const promise = Promise.resolve(value);
-
-      resolve(new Element(promise));
-    }, reject);
-  };
-
-  return $element;
+  return new Element({matcher});
 };
 
 module.exports = {
