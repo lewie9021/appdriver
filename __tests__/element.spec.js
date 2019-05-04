@@ -3,10 +3,10 @@ const { by } = require("../src/matchers");
 const { delay } = require("../src/utils");
 const { element, Element } = require("../src/element.js");
 const elementFixture = require("./fixtures/element.json");
-const tapFixture = require("./fixtures/tap.json");
 const { ElementNotFoundError, ElementActionError } = require("../src/errors");
 const { createElementFixture } = require("./fixtures/fixtures");
 const { createElementTextFixture } = require("./fixtures/fixtures");
+const { createElementClickFixture } = require("./fixtures/fixtures");
 
 beforeEach(() => {
   jest.spyOn(commands.element, "findElement")
@@ -47,7 +47,7 @@ describe("Find Element", () => {
     jest.spyOn(commands.element.actions, "click")
       .mockImplementation(() => {
         return delay(1000)
-          .then(() => tapFixture);
+          .then(() => createElementClickFixture());
       });
 
     const $element = await element(by.label("list-item")).tap();
@@ -102,5 +102,61 @@ describe("getText", () => {
 
     expect(commands.element.findElement).toHaveBeenCalledTimes(1);
     expect(commands.element.attributes.text).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("tap", () => {
+  beforeEach(() => {
+    jest.spyOn(commands.element.actions, "click")
+      .mockImplementation(() => {
+        return delay(1000)
+          .then(() => createElementClickFixture());
+      });
+  });
+
+  it("returns an instance of Element to enable function chaining", async () => {
+    const $element = await element(by.label("product-title")).tap();
+
+    expect($element).toBeInstanceOf(Element);
+    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+    expect(commands.element.actions.click).toHaveBeenCalledTimes(1);
+  });
+
+  it("returns a new element to avoid unwanted mutation", async () => {
+    const $element = await element(by.label("list-item"));
+    const $newElement = await $element.tap();
+
+    // expect($newElement).toStrictEqual($element);
+
+    expect($newElement).not.toBe($element);
+  });
+
+  it("correctly propagates errors", async () => {
+    commands.element.findElement.mockReset();
+    jest.spyOn(commands.element, "findElement")
+      .mockImplementationOnce(() => {
+        return delay(1000)
+          .then(() => createElementFixture({status: 7, elementId: "elementId"}));
+      });
+
+    await expect(element(by.label("list-item")).tap())
+      .rejects.toThrow(ElementNotFoundError);
+
+    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+    expect(commands.element.actions.click).not.toHaveBeenCalledTimes(1);
+  });
+
+  it("correctly handles text attribute request errors", async () => {
+    commands.element.actions.click.mockReset();
+    jest.spyOn(commands.element.actions, "click")
+      .mockImplementation(() => {
+        return delay(1000)
+          .then(() => createElementClickFixture({status: 3}));
+      });
+    return expect(element(by.label("list-item")).tap())
+      .rejects.toThrow(new ElementActionError("Failed to tap element."));
+
+    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+    expect(commands.element.actions.click).toHaveBeenCalledTimes(1);
   });
 });

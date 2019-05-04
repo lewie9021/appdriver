@@ -26,7 +26,17 @@ const createElementTextFixture = ({
   value: text
 });
 
+const createElementClickFixture = ({
+ status = defaults.status,
+ sessionId = defaults.sessionId
+} = {}) => ({
+  status,
+  sessionId,
+  value: ""
+});
+
 module.exports = {
   createElementFixture,
+  createElementClickFixture,
   createElementTextFixture
 };

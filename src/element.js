@@ -75,12 +75,18 @@ class Element {
 
   tap() {
     return this._executeAction(({status, value}, done) => {
-      if (value.status === 7) {
-        throw new Error("Can't tap element that doesn't exist");
+      if (status) {
+        return done(new Error("Can't tap element that doesn't exist"));
       }
 
       commands.element.actions.click(value.ELEMENT)
-        .then(() => done(null))
+        .then(({status}) => {
+          if (status) {
+            return done(new ElementActionError("Failed to tap element."));
+          }
+
+          done(null);
+        })
         .catch((err) => done(err));
     });
   }
