@@ -116,3 +116,9 @@ TODO: Description here.
 :hammer: [```.swipe({x: Number, y: Number, direction: Number, distance: Number, duration?: Number}) => Element```](./device/swipe.md)
 
 TODO: Description here.
+
+:warning: [```.swipeIntoView({element: Element, orientation?: "PORTRAIT" | "LANDSCAPE", safeArea?: {top?: Number, right?: Number, bottom?: Number, left?: Number}}) => Element```](./device/swipeIntoView.md)
+
+To be used on scrollable elements, ensures 'element' is fully visible so that interactions such as 'tap' are successful.
+
+
