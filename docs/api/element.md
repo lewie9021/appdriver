@@ -117,8 +117,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.swipeIntoView({element: Element, orientation?: "PORTRAIT" | "LANDSCAPE", safeArea?: {top?: Number, right?: Number, bottom?: Number, left?: Number}}) => Element```](./device/swipeIntoView.md)
+:warning: [```.swipeIntoView(options: {element: Element, swipeGesture?: Gesture, safeArea?: {top?: Number, right?: Number, bottom?: Number, left?: Number}}) => Element```](./device/swipeIntoView.md)
 
-To be used on scrollable elements, ensures 'element' is fully visible so that interactions such as 'tap' are successful.
-
+To be used on scrollable elements, ensuring `element` is fully visible so that interactions are successful. Defaults `swipeGesture` to `gestures.swipeUp`.
 
