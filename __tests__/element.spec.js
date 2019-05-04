@@ -12,7 +12,7 @@ beforeEach(() => {
         .then(() => elementFixture);
     });
 
-  jest.spyOn(commands.element.actions, "tap")
+  jest.spyOn(commands.element.actions, "click")
     .mockImplementation(() => {
       return delay(1000)
         .then(() => tapFixture);
@@ -25,23 +25,17 @@ afterEach(() => {
 
 describe("Find Element", () => {
   it("returns an 'Element' that is 'thenable'", async () => {
-    const sessionId = "sessionId";
-    const testId = "testId";
-
-    const $element = await element(by.id(sessionId, testId));
+    const $element = await element(by.label("list-item"));
 
     expect($element).toBeInstanceOf(Element);
+    expect(commands.element.findElement).toBeCalledTimes(1);
   });
 
   it("allows chaining methods", async () => {
-    const sessionId = "sessionId";
-    const testId = "testId";
-
-    const $element = await element(by.id(sessionId, testId))
-      .tap();
+    const $element = await element(by.label("list-item")).tap();
 
     expect($element).toBeInstanceOf(Element);
     expect(commands.element.findElement).toHaveBeenCalledTimes(1);
-    expect(commands.element.actions.tap).toHaveBeenCalledTimes(1);
+    expect(commands.element.actions.click).toHaveBeenCalledTimes(1);
   });
 });
