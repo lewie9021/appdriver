@@ -61,24 +61,31 @@ class Element {
     }
   }
 
-  tap() {
+  _executeAction(action) {
     const value = getValue(this.matcher, this.value);
     const nextValue = new Promise((resolve, reject) => {
       value.then((value) => {
-        if (value.status === 7) {
-          throw new Error("Can't tap element that doesn't exist");
-        }
-
-        commands.element.actions.click(value.value.ELEMENT)
-          .then(() => resolve(value));
+        action(value, (err) => err ? reject(err) : resolve(value));
       }, reject);
     });
 
     return new Element({matcher: this.matcher, value: nextValue});
   }
 
+  tap() {
+    return this._executeAction(({status, value}, done) => {
+      if (value.status === 7) {
+        throw new Error("Can't tap element that doesn't exist");
+      }
+
+      commands.element.actions.click(value.ELEMENT)
+        .then(() => done(null))
+        .catch((err) => done(err));
+    });
+  }
+
   longPress({x = 0, y = 0, duration = 750} = {}) {
-    const currentValue = this.value;
+    const currentValue = getValue(this.matcher, this.value);
 
     this.value = new Promise((resolve, reject) => {
       currentValue.then((value) => {
@@ -115,7 +122,7 @@ class Element {
   }
 
   typeText(text) {
-    const currentValue = this.value;
+    const currentValue = getValue(this.matcher, this.value);
 
     this.value = new Promise((resolve, reject) => {
       currentValue.then((value) => {
@@ -142,7 +149,7 @@ class Element {
   }
 
   clearText() {
-    const currentValue = this.value;
+    const currentValue = getValue(this.matcher, this.value);
 
     this.value = new Promise((resolve, reject) => {
       currentValue.then((value) => {
@@ -164,14 +171,17 @@ class Element {
     return this;
   }
 
-  getElementId() {
+  // NOTE: NOT SUPPORTED!
+  _getElementId() {
     return this.value.then((value) => {
       return value.value.ELEMENT;
     })
   }
 
   getSize() {
-    return this.value.then((value) => {
+    const currentValue = getValue(this.matcher, this.value);
+
+    return currentValue.then((value) => {
       if (value.status === 7) {
         throw new Error("Can't get size of element that doesn't exist");
       }
@@ -188,7 +198,9 @@ class Element {
   }
 
   getLocation({relative = false}) {
-    return this.value.then((value) => {
+    const currentValue = getValue(this.matcher, this.value);
+
+    return currentValue.then((value) => {
       if (value.status === 7) {
         throw new Error("Can't get size of element that doesn't exist");
       }
@@ -208,7 +220,7 @@ class Element {
   }
 
   waitToBeVisible(matcher) {
-    const currentValue = this.value;
+    const currentValue = getValue(this.matcher, this.value);
 
     this.value = new Promise((resolve, reject) => {
       currentValue.then((response) => {
@@ -229,7 +241,7 @@ class Element {
   }
 
   waitToExist(matcher) {
-    const currentValue = this.value;
+    const currentValue = getValue(this.matcher, this.value);
 
     this.value = new Promise((resolve, reject) => {
       currentValue.then((value) => {
@@ -247,7 +259,9 @@ class Element {
   }
 
   getText() {
-    return this.value.then((value) => {
+    const currentValue = getValue(this.matcher, this.value);
+
+    return currentValue.then((value) => {
       if (value.status === 7) {
         throw new Error("Can't get value of element that doesn't exist");
       }
