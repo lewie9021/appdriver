@@ -1,9 +1,10 @@
 const commands = require("./commands");
-const { ElementActionError } = require("./errors");
+const { ElementNotFoundError, ElementActionError } = require("./errors");
 const { delay } = require("./utils");
 
-const poll = (func, {maxRetries = 5, interval = 1000, retryCount = 0}) => {
-  return func(retryCount + 1)
+const poll = (func, {maxRetries = 5, interval = 1000, attempts = 0}) => {
+  return func(attempts)
+    .then((data) => ({attempts: attempts + 1, data}))
     .catch((err) => {
       if (maxRetries <= 1) {
         throw err
@@ -13,7 +14,7 @@ const poll = (func, {maxRetries = 5, interval = 1000, retryCount = 0}) => {
         .then(() => poll(func, {
           maxRetries: maxRetries - 1,
           interval,
-          retryCount: retryCount + 1
+          attempts: attempts + 1
         }));
     });
 };
@@ -212,26 +213,54 @@ class Element {
   }
 
   waitToBeVisible() {
-    return this._executeAction(({status, value}, done) => {
-      if (status) {
-        return done(new Error("Can't clear text on element that doesn't exist"));
-      }
+    const value = getValue(this.matcher, this.value);
+    const nextValue = new Promise((resolve, reject) => {
+      value.then(({status, value}) => {
+        if (status) {
+          return reject(new Error("Can't retrieve element's 'displayed' attribute as it doesn't exist"));
+        }
 
-      poll(() => {
-        return commands.element.attributes.displayed(value.ELEMENT)
-          .then(({status, value}) => {
-            if (status) {
-              throw new ElementActionError("Failed retrieve element's 'displayed' attribute after 5 attempts (interval: 200ms).");
-            }
+        poll(() => {
+          return commands.element.attributes.displayed(value.ELEMENT)
+            .then(({status, value}) => {
+              if (status) {
+                throw new ElementActionError("Failed retrieve element's 'displayed' attribute after 5 attempts (interval: 200ms).");
+              }
 
-            if (!value) {
-              throw new ElementActionError("Element not visible after 5 attempts (interval: 200ms).");
-            }
-          })
-      }, {maxRetries: 5, interval: 200})
-        .then(() => done(null))
-        .catch((err) => done(err));
+              if (!value) {
+                throw new ElementActionError("Element not visible after 5 attempts (interval: 200ms).");
+              }
+            })
+        }, {maxRetries: 5, interval: 200})
+          .then(() => resolve())
+          .catch(reject);
+      }, (err) => {
+        if (err instanceof ElementNotFoundError) {
+          return poll(() => this.matcher.resolve(), {maxRetries: 5, interval: 200})
+            .then(({attempts, data}) => {
+              poll(() => {
+                return commands.element.attributes.displayed(value.ELEMENT)
+                  .then(({status, value}) => {
+                    if (status) {
+                      throw new ElementActionError("Failed retrieve element's 'displayed' attribute after 5 attempts (interval: 200ms).");
+                    }
+
+                    if (!value) {
+                      throw new ElementActionError("Element not visible after 5 attempts (interval: 200ms).");
+                    }
+                  })
+              }, {maxRetries: 5 - attempts, interval: 200})
+                .then(() => resolve(data)) // TODO: Needs test. Important as chained actions would have a missing element otherwise.
+                .catch(reject);
+            })
+            .catch(() => reject(new Error("Element not visible after 5 attempts (interval: 200ms).")));
+        }
+
+        reject(err);
+      });
     });
+
+    return new Element({matcher: this.matcher, value: nextValue});
   }
 
   waitToExist(matcher) {

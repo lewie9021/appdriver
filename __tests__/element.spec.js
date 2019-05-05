@@ -336,8 +336,33 @@ describe("waitToBeVisible", () => {
     expect(commands.element.attributes.displayed).toHaveBeenCalledTimes(5);
   });
 
-  xit("attempts to find the element instead of checking visibility if receives an ElementNotFound error", () => {
+  it("attempts to find the element before checking visibility if receives an ElementNotFound error", async () => {
+    commands.element.attributes.displayed.mockReset();
+    jest.spyOn(commands.element.attributes, "displayed")
+      .mockImplementation(() => {
+        return delay(200)
+          .then(() => createElementDisplayedFixture({displayed: false}));
+      });
+    commands.element.findElement.mockReset();
+    jest.spyOn(commands.element, "findElement")
+      .mockImplementationOnce(() => {
+        return delay(200)
+          .then(() => createElementFixture({status: 7, elementId: "elementId"}));
+      })
+      .mockImplementationOnce(() => {
+        return delay(200)
+          .then(() => createElementFixture({status: 7, elementId: "elementId"}));
+      })
+      .mockImplementationOnce(() => {
+        return delay(200)
+          .then(() => createElementFixture({elementId: "elementId"}));
+      });
 
+    await expect(element(by.label("button")).waitToBeVisible())
+      .rejects.toThrow(new Error("Element not visible after 5 attempts (interval: 200ms)."));
+
+    expect(commands.element.findElement).toHaveBeenCalledTimes(3);
+    expect(commands.element.attributes.displayed).toHaveBeenCalledTimes(3);
   });
 
   xit("correctly propagates errors", () => {
