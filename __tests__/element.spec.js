@@ -406,4 +406,47 @@ describe("waitToBeVisible", () => {
     expect(commands.element.findElement).toHaveBeenCalledTimes(1);
     expect(commands.element.attributes.displayed).toHaveBeenCalledTimes(1);
   });
+
+  describe("maxRetries parameter", () => {
+    beforeEach(() => {
+      commands.element.attributes.displayed.mockReset();
+      jest.spyOn(commands.element.attributes, "displayed")
+        .mockImplementation(() => {
+          return delay(200)
+            .then(() => createElementDisplayedFixture({displayed: false}));
+        });
+    });
+
+    it("customises the number of retries to make before throwing", async () => {
+      const maxRetries = 10;
+      await expect(element(by.label("button")).waitToBeVisible({maxRetries}))
+        .rejects.toThrow(new ElementActionError(`Element not visible after ${maxRetries} attempts (interval: 200ms).`));
+
+      expect(commands.element.attributes.displayed).toHaveBeenCalledTimes(maxRetries);
+    });
+
+    it("is factored into the number of retries made if the element doesn't exist", async () => {
+      commands.element.findElement.mockReset();
+      jest.spyOn(commands.element, "findElement")
+        .mockImplementationOnce(() => {
+          return delay(50)
+            .then(() => createElementFixture({status: 7, elementId: "elementId"}));
+        })
+        .mockImplementationOnce(() => {
+          return delay(50)
+            .then(() => createElementFixture({status: 7, elementId: "elementId"}));
+        })
+        .mockImplementationOnce(() => {
+          return delay(50)
+            .then(() => createElementFixture({elementId: "elementId"}));
+        });
+
+      const maxRetries = 8;
+      await expect(element(by.label("button")).waitToBeVisible({maxRetries}))
+        .rejects.toThrow(new ElementActionError(`Element not visible after ${maxRetries - 2} attempts (interval: 200ms).`));
+
+      expect(commands.element.attributes.displayed).toHaveBeenCalledTimes(maxRetries - 2);
+      expect(commands.element.findElement).toHaveBeenCalledTimes(3);
+    }, 10000);
+  })
 });
