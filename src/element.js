@@ -19,6 +19,21 @@ const poll = (func, {maxRetries = 5, interval = 1000, attempts = 0}) => {
     });
 };
 
+const pollDisplayed = (elementId, {maxRetries, interval}) => {
+  return poll(() => {
+    return commands.element.attributes.displayed(elementId)
+      .then(({status, value}) => {
+        if (status) {
+          throw new ElementActionError("Failed retrieve element's 'displayed' attribute after 5 attempts (interval: 200ms).");
+        }
+
+        if (!value) {
+          throw new ElementActionError("Element not visible after 5 attempts (interval: 200ms).");
+        }
+      })
+  }, {maxRetries, interval})
+};
+
 const pollExist = (matcher) => {
   return poll(() => {
     return commands.element.findElement({using: matcher.type, value: matcher.value})
@@ -215,41 +230,19 @@ class Element {
   waitToBeVisible() {
     const value = getValue(this.matcher, this.value);
     const nextValue = new Promise((resolve, reject) => {
-      value.then(({status, value}) => {
-        if (status) {
+      value.then((element) => {
+        if (element.status) {
           return reject(new Error("Can't retrieve element's 'displayed' attribute as it doesn't exist"));
         }
 
-        poll(() => {
-          return commands.element.attributes.displayed(value.ELEMENT)
-            .then(({status, value}) => {
-              if (status) {
-                throw new ElementActionError("Failed retrieve element's 'displayed' attribute after 5 attempts (interval: 200ms).");
-              }
-
-              if (!value) {
-                throw new ElementActionError("Element not visible after 5 attempts (interval: 200ms).");
-              }
-            })
-        }, {maxRetries: 5, interval: 200})
-          .then(() => resolve())
+        pollDisplayed(element.value.ELEMENT, {maxRetries: 5, interval: 200})
+          .then(() => resolve(element))
           .catch(reject);
       }, (err) => {
         if (err instanceof ElementNotFoundError) {
           return poll(() => this.matcher.resolve(), {maxRetries: 5, interval: 200})
             .then(({attempts, data}) => {
-              poll(() => {
-                return commands.element.attributes.displayed(value.ELEMENT)
-                  .then(({status, value}) => {
-                    if (status) {
-                      throw new ElementActionError("Failed retrieve element's 'displayed' attribute after 5 attempts (interval: 200ms).");
-                    }
-
-                    if (!value) {
-                      throw new ElementActionError("Element not visible after 5 attempts (interval: 200ms).");
-                    }
-                  })
-              }, {maxRetries: 5 - attempts, interval: 200})
+              pollDisplayed(data.value.ELEMENT, {maxRetries: 5 - attempts})
                 .then(() => resolve(data)) // TODO: Needs test. Important as chained actions would have a missing element otherwise.
                 .catch(reject);
             })
