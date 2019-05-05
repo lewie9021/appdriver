@@ -155,26 +155,21 @@ class Element {
   }
 
   clearText() {
-    const currentValue = getValue(this.matcher, this.value);
+    return this._executeAction(({status, value}, done) => {
+      if (status) {
+        return done(new Error("Can't clear text on element that doesn't exist"));
+      }
 
-    this.value = new Promise((resolve, reject) => {
-      currentValue.then((value) => {
-        if (value.status === 7) {
-          throw new Error("Can't tap element that doesn't exist");
-        }
+      commands.element.actions.clear(value.ELEMENT)
+        .then(({status}) => {
+          if (status) {
+            return done(new ElementActionError("Failed to clear text."));
+          }
 
-        commands.element.actions.clearElement(value.value.ELEMENT)
-          .then(({status}) => {
-            if (status !== 0) {
-              throw new Error("Failed to clear text");
-            }
-
-            return resolve(value);
-          });
-      }, reject);
+          done(null);
+        })
+        .catch((err) => done(err));
     });
-
-    return this;
   }
 
   // NOTE: NOT SUPPORTED!

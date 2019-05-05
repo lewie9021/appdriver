@@ -46,10 +46,17 @@ const createElementValueFixture = ({
   sessionId = defaults.sessionId
 } = {}) => createFixture({status, sessionId});
 
+// /session/:sessionId/element/:elementId/clear.
+const createElementClearFixture = ({
+  status = defaults.status,
+  sessionId = defaults.sessionId
+} = {}) => createFixture({status, sessionId});
+
 module.exports = {
   createFixture,
   createElementFixture,
   createElementClickFixture,
   createElementTextFixture,
-  createElementValueFixture
+  createElementValueFixture,
+  createElementClearFixture
 };

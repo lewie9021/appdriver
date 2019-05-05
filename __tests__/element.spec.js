@@ -8,6 +8,7 @@ const { createElementFixture } = require("./fixtures/fixtures");
 const { createElementTextFixture } = require("./fixtures/fixtures");
 const { createElementClickFixture } = require("./fixtures/fixtures");
 const { createElementValueFixture } = require("./fixtures/fixtures");
+const { createElementClearFixture } = require("./fixtures/fixtures");
 
 beforeEach(() => {
   jest.spyOn(commands.element, "findElement")
@@ -238,5 +239,59 @@ describe("typeText", () => {
 
     expect(commands.element.findElement).toHaveBeenCalledTimes(1);
     expect(commands.element.actions.click).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("clearText", () => {
+  beforeEach(() => {
+    jest.spyOn(commands.element.actions, "clear")
+      .mockImplementation(() => {
+        return delay(1000)
+          .then(() => createElementClearFixture());
+      });
+  });
+
+  it("returns an instance of Element to enable function chaining", async () => {
+    const $element = await element(by.label("text-input")).clearText();
+
+    expect($element).toBeInstanceOf(Element);
+    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+    expect(commands.element.actions.clear).toHaveBeenCalledTimes(1);
+  });
+
+  it("returns a new element to avoid unwanted mutation", async () => {
+    const $element = await element(by.label("text-input"));
+    const $newElement = await $element.clearText();
+
+    expect($newElement).not.toBe($element);
+  });
+
+  it("correctly propagates errors", async () => {
+    commands.element.findElement.mockReset();
+    jest.spyOn(commands.element, "findElement")
+      .mockImplementation(() => {
+        return delay(1000)
+          .then(() => createElementFixture({status: 7, elementId: "elementId"}));
+      });
+
+    await expect(element(by.label("text-input")).clearText())
+      .rejects.toThrow(ElementNotFoundError);
+
+    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+    expect(commands.element.actions.clear).not.toHaveBeenCalledTimes(1);
+  });
+
+  it("correctly handles clear action request errors", async () => {
+    commands.element.actions.clear.mockReset();
+    jest.spyOn(commands.element.actions, "clear")
+      .mockImplementation(() => {
+        return delay(1000)
+          .then(() => createElementClearFixture({status: 3}));
+      });
+    return expect(element(by.label("text-input")).clearText())
+      .rejects.toThrow(new ElementActionError("Failed to clear text."));
+
+    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+    expect(commands.element.actions.clear).toHaveBeenCalledTimes(1);
   });
 });
