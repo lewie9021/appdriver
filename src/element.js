@@ -2,29 +2,20 @@ const commands = require("./commands");
 const { ElementActionError } = require("./errors");
 const { delay } = require("./utils");
 
-const poll = (func, maxRetries = 10) => {
-  return func()
+const poll = (func, {maxRetries = 5, interval = 1000, retryCount = 0}) => {
+  return func(retryCount + 1)
     .catch((err) => {
       if (maxRetries <= 1) {
         throw err
       }
 
-      return delay(1000)
-        .then(() => poll(func, maxRetries - 1));
+      return delay(interval)
+        .then(() => poll(func, {
+          maxRetries: maxRetries - 1,
+          interval,
+          retryCount: retryCount + 1
+        }));
     });
-};
-
-const pollDisplayed = (elementId) => {
-  return poll(() => {
-    return commands.element.attributes.displayed(elementId)
-      .then((x) => {
-        if (!x.value) {
-          throw new Error("Element not displayed");
-        }
-
-        return x;
-      });
-  });
 };
 
 const pollExist = (matcher) => {
@@ -37,7 +28,7 @@ const pollExist = (matcher) => {
 
         return x;
       });
-  });
+  }, {maxRetries: 10});
 };
 
 const getValue = (matcher, value) => {
@@ -220,25 +211,27 @@ class Element {
     });
   }
 
-  waitToBeVisible(matcher) {
-    const currentValue = getValue(this.matcher, this.value);
+  waitToBeVisible() {
+    return this._executeAction(({status, value}, done) => {
+      if (status) {
+        return done(new Error("Can't clear text on element that doesn't exist"));
+      }
 
-    this.value = new Promise((resolve, reject) => {
-      currentValue.then((response) => {
-        if (response.status !== 0) { // Initial find didn't work or a previously chained call failed.
-          return pollExist(matcher)
-            .then(({value}) => {
-              return pollDisplayed(value.ELEMENT)
-                .then((res) => resolve(res));
-            });
-        }
+      poll(() => {
+        return commands.element.attributes.displayed(value.ELEMENT)
+          .then(({status, value}) => {
+            if (status) {
+              throw new ElementActionError("Failed retrieve element's 'displayed' attribute after 5 attempts (interval: 200ms).");
+            }
 
-        return pollDisplayed(response.value.ELEMENT)
-          .then(() => resolve(response));
-      }, reject);
+            if (!value) {
+              throw new ElementActionError("Element not visible after 5 attempts (interval: 200ms).");
+            }
+          })
+      }, {maxRetries: 5, interval: 200})
+        .then(() => done(null))
+        .catch((err) => done(err));
     });
-
-    return this;
   }
 
   waitToExist(matcher) {

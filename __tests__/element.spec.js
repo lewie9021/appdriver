@@ -9,6 +9,7 @@ const { createElementTextFixture } = require("./fixtures/fixtures");
 const { createElementClickFixture } = require("./fixtures/fixtures");
 const { createElementValueFixture } = require("./fixtures/fixtures");
 const { createElementClearFixture } = require("./fixtures/fixtures");
+const { createElementDisplayedFixture } = require("./fixtures/fixtures");
 
 beforeEach(() => {
   jest.spyOn(commands.element, "findElement")
@@ -293,5 +294,57 @@ describe("clearText", () => {
 
     expect(commands.element.findElement).toHaveBeenCalledTimes(1);
     expect(commands.element.actions.clear).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("waitToBeVisible", () => {
+  beforeEach(() => {
+    jest.spyOn(commands.element.attributes, "displayed")
+      .mockImplementation(() => {
+        return delay(200)
+          .then(() => createElementDisplayedFixture({displayed: true}));
+      });
+  });
+
+  it("returns an instance of Element to enable function chaining", async () => {
+    const $element = await element(by.label("button")).waitToBeVisible();
+
+    expect($element).toBeInstanceOf(Element);
+    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+    expect(commands.element.attributes.displayed).toHaveBeenCalledTimes(1);
+  });
+
+  it("returns a new element to avoid unwanted mutation", async () => {
+    const $element = await element(by.label("button"));
+    const $newElement = await $element.waitToBeVisible();
+
+    expect($newElement).not.toBe($element);
+  });
+
+  it("polls for visibility up to 5 times before throwing", async () => {
+    commands.element.attributes.displayed.mockReset();
+    jest.spyOn(commands.element.attributes, "displayed")
+      .mockImplementation(() => {
+        return delay(200)
+          .then(() => createElementDisplayedFixture({displayed: false}));
+      });
+
+    await expect(element(by.label("button")).waitToBeVisible())
+      .rejects.toThrow(new Error("Element not visible after 5 attempts (interval: 200ms)."));
+
+    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+    expect(commands.element.attributes.displayed).toHaveBeenCalledTimes(5);
+  });
+
+  xit("attempts to find the element instead of checking visibility if receives an ElementNotFound error", () => {
+
+  });
+
+  xit("correctly propagates errors", () => {
+
+  });
+
+  xit("correctly handles displayed attribute request errors", () => {
+
   });
 });
