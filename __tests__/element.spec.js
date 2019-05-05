@@ -448,5 +448,44 @@ describe("waitToBeVisible", () => {
       expect(commands.element.attributes.displayed).toHaveBeenCalledTimes(maxRetries - 2);
       expect(commands.element.findElement).toHaveBeenCalledTimes(3);
     }, 10000);
-  })
+  });
+
+  // TODO: Needs better coverage that just asserting the error message value.
+  describe("interval parameter", () => {
+    beforeEach(() => {
+      commands.element.attributes.displayed.mockReset();
+      jest.spyOn(commands.element.attributes, "displayed")
+        .mockImplementation(() => {
+          return delay(200)
+            .then(() => createElementDisplayedFixture({displayed: false}));
+        });
+    });
+
+    it("customises the time between requests when polling", async () => {
+      const interval = 50;
+      await expect(element(by.label("button")).waitToBeVisible({interval}))
+        .rejects.toThrow(new ElementActionError(`Element not visible after 5 attempts (interval: ${interval}ms).`));
+    });
+
+    it("is factored into the request polling if the element doesn't exist", async () => {
+      commands.element.findElement.mockReset();
+      jest.spyOn(commands.element, "findElement")
+        .mockImplementationOnce(() => {
+          return delay(50)
+            .then(() => createElementFixture({status: 7, elementId: "elementId"}));
+        })
+        .mockImplementationOnce(() => {
+          return delay(50)
+            .then(() => createElementFixture({status: 7, elementId: "elementId"}));
+        })
+        .mockImplementationOnce(() => {
+          return delay(50)
+            .then(() => createElementFixture({elementId: "elementId"}));
+        });
+
+      const interval = 50;
+      await expect(element(by.label("button")).waitToBeVisible({interval}))
+        .rejects.toThrow(new ElementActionError(`Element not visible after 3 attempts (interval: ${interval}ms).`));
+    }, 10000);
+  });
 });

@@ -24,11 +24,11 @@ const pollDisplayed = (elementId, {maxRetries, interval}) => {
     return commands.element.attributes.displayed(elementId)
       .then(({status, value}) => {
         if (status) {
-          throw new ElementActionError(`Failed retrieve element's 'displayed' attribute after ${maxRetries} attempts (interval: 200ms).`);
+          throw new ElementActionError(`Failed retrieve element's 'displayed' attribute after ${maxRetries} attempts (interval: ${interval}ms).`);
         }
 
         if (!value) {
-          throw new ElementActionError(`Element not visible after ${maxRetries} attempts (interval: 200ms).`);
+          throw new ElementActionError(`Element not visible after ${maxRetries} attempts (interval: ${interval}ms).`);
         }
       })
   }, {maxRetries, interval})
@@ -227,28 +227,25 @@ class Element {
     });
   }
 
-  waitToBeVisible({maxRetries = 5} = {}) {
+  waitToBeVisible(options = {}) {
+    const maxRetries = options.maxRetries || 5;
+    const interval = options.interval || 200;
+
     const value = getValue(this.matcher, this.value);
     const nextValue = new Promise((resolve, reject) => {
       value.then((element) => {
-        if (element.status) {
-          return reject(new Error("Can't retrieve element's 'displayed' attribute as it doesn't exist"));
-        }
-
-        pollDisplayed(element.value.ELEMENT, {maxRetries, interval: 200})
+        pollDisplayed(element.value.ELEMENT, {maxRetries, interval})
           .then(() => resolve(element))
           .catch(reject);
       }, (err) => {
         if (err instanceof ElementNotFoundError) {
-          console.log("Got ElementNotFoundError");
-
-          return poll(() => this.matcher.resolve(), {maxRetries, interval: 200})
+          return poll(() => this.matcher.resolve(), {maxRetries, interval})
             .then(({attempts, data}) => {
-              pollDisplayed(data.value.ELEMENT, {maxRetries: maxRetries - attempts})
+              pollDisplayed(data.value.ELEMENT, {maxRetries: maxRetries - attempts, interval})
                 .then(() => resolve(data))
                 .catch(reject);
             })
-            .catch(() => reject(new Error(`Element not visible after ${maxRetries} attempts (interval: 200ms).`)));
+            .catch(() => reject(new Error(`Element not visible after ${maxRetries} attempts (interval: ${interval}ms).`)));
         }
 
         reject(err);
