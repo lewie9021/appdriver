@@ -7,17 +7,23 @@ const { ElementNotFoundError, ElementActionError } = require("../src/errors");
 const { createElementFixture } = require("./fixtures/fixtures");
 const { createElementTextFixture } = require("./fixtures/fixtures");
 const { createElementClickFixture } = require("./fixtures/fixtures");
+const { createElementValueFixture } = require("./fixtures/fixtures");
 
 beforeEach(() => {
   jest.spyOn(commands.element, "findElement")
-    .mockImplementationOnce(() => {
+    .mockImplementation(() => {
       return delay(1000)
         .then(() => elementFixture);
     });
+
+  global.session = {
+    platformName: "iOS"
+  };
 });
 
 afterEach(() => {
   jest.resetAllMocks();
+  global.session = null;
 });
 
 describe("Find Element", () => {
@@ -78,7 +84,7 @@ describe("getText", () => {
   it("correctly propagates errors", async () => {
     commands.element.findElement.mockReset();
     jest.spyOn(commands.element, "findElement")
-      .mockImplementationOnce(() => {
+      .mockImplementation(() => {
         return delay(1000)
           .then(() => createElementFixture({status: 7, elementId: "elementId"}));
       });
@@ -126,15 +132,13 @@ describe("tap", () => {
     const $element = await element(by.label("list-item"));
     const $newElement = await $element.tap();
 
-    // expect($newElement).toStrictEqual($element);
-
     expect($newElement).not.toBe($element);
   });
 
   it("correctly propagates errors", async () => {
     commands.element.findElement.mockReset();
     jest.spyOn(commands.element, "findElement")
-      .mockImplementationOnce(() => {
+      .mockImplementation(() => {
         return delay(1000)
           .then(() => createElementFixture({status: 7, elementId: "elementId"}));
       });
@@ -146,7 +150,7 @@ describe("tap", () => {
     expect(commands.element.actions.click).not.toHaveBeenCalledTimes(1);
   });
 
-  it("correctly handles text attribute request errors", async () => {
+  it("correctly handles click action request errors", async () => {
     commands.element.actions.click.mockReset();
     jest.spyOn(commands.element.actions, "click")
       .mockImplementation(() => {
@@ -155,6 +159,82 @@ describe("tap", () => {
       });
     return expect(element(by.label("list-item")).tap())
       .rejects.toThrow(new ElementActionError("Failed to tap element."));
+
+    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+    expect(commands.element.actions.click).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("typeText", () => {
+  beforeEach(() => {
+    jest.spyOn(commands.element.actions, "sendKeys")
+      .mockImplementation(() => {
+        return delay(1000)
+          .then(() => createElementValueFixture());
+      });
+  });
+
+  it("returns an instance of Element to enable function chaining", async () => {
+    const $element = await element(by.label("text-input")).typeText("Hello World!");
+
+    expect($element).toBeInstanceOf(Element);
+    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+    expect(commands.element.actions.sendKeys).toHaveBeenCalledTimes(1);
+  });
+
+  it("throws if no text isn't a string", async () => {
+    await expect(element(by.label("text-input")).typeText())
+      .rejects.toThrow(new Error("Failed to type text. 'text' must be a string, instead got undefined."));
+
+    await expect(element(by.label("text-input")).typeText(1000))
+      .rejects.toThrow(new Error("Failed to type text. 'text' must be a string, instead got number."));
+  });
+
+  it("returns a new element to avoid unwanted mutation", async () => {
+    const $element = await element(by.label("text-input"));
+    const $newElement = await $element.typeText("Hello World!");
+
+    expect($newElement).not.toBe($element);
+  });
+
+  it("correctly propagates errors", async () => {
+    commands.element.findElement.mockReset();
+    jest.spyOn(commands.element, "findElement")
+      .mockImplementation(() => {
+        return delay(1000)
+          .then(() => createElementFixture({status: 7, elementId: "elementId"}));
+      });
+
+    await expect(element(by.label("text-input")).typeText("Hello World!"))
+      .rejects.toThrow(ElementNotFoundError);
+
+    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+    expect(commands.element.actions.sendKeys).not.toHaveBeenCalledTimes(1);
+  });
+
+  it("correctly handles send key request errors", async () => {
+    commands.element.actions.sendKeys.mockReset();
+    jest.spyOn(commands.element.actions, "sendKeys")
+      .mockImplementation(() => {
+        return delay(1000)
+          .then(() => createElementValueFixture({status: 3}));
+      });
+    return expect(element(by.label("text-input")).typeText("Hello World!"))
+      .rejects.toThrow(new ElementActionError("Failed to type text."));
+
+    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+    expect(commands.element.actions.click).toHaveBeenCalledTimes(1);
+  });
+
+  it("correctly handles case when hardware keyboard is attached on iOS simulator", async () => {
+    commands.element.actions.sendKeys.mockReset();
+    jest.spyOn(commands.element.actions, "sendKeys")
+      .mockImplementation(() => {
+        return delay(1000)
+          .then(() => createElementValueFixture({status: 13}));
+      });
+    return expect(element(by.label("text-input")).typeText("Hello World!"))
+      .rejects.toThrow(new ElementActionError("Failed to type text. Make sure hardware keyboard is disconnected from iOS simulator."));
 
     expect(commands.element.findElement).toHaveBeenCalledTimes(1);
     expect(commands.element.actions.click).toHaveBeenCalledTimes(1);

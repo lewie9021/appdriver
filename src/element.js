@@ -129,30 +129,29 @@ class Element {
   }
 
   typeText(text) {
-    const currentValue = getValue(this.matcher, this.value);
+    return this._executeAction(({status, value}, done) => {
+      if (status) {
+        return done(new Error("Can't type text on element that doesn't exist"));
+      }
 
-    this.value = new Promise((resolve, reject) => {
-      currentValue.then((value) => {
-        if (value.status === 7) {
-          throw new Error("Can't tap element that doesn't exist");
-        }
+      if (typeof text !== "string") {
+        return done(new Error(`Failed to type text. 'text' must be a string, instead got ${typeof text}.`));
+      }
 
-        commands.element.actions.sendKeys(value.value.ELEMENT, text.split(""))
-          .then(({status}) => {
-            if (status === 13 && global.session.platformName === "iOS") {
-              throw new Error("Failed to type text. Please make sure input via your computer's keyboard is disabled");
-            }
+      commands.element.actions.sendKeys(value.ELEMENT, text.split(""))
+        .then(({status}) => {
+          if (status === 13 && global.session.platformName === "iOS") {
+            return done(new Error("Failed to type text. Make sure hardware keyboard is disconnected from iOS simulator."));
+          }
 
-            if (status !== 0) {
-              throw new Error("Failed to type text");
-            }
+          if (status) {
+            return done(new Error("Failed to type text."));
+          }
 
-            return resolve(value);
-          });
-      }, reject);
+          done(null);
+        })
+        .catch((err) => done(err));
     });
-
-    return this;
   }
 
   clearText() {

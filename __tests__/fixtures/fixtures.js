@@ -3,6 +3,17 @@ const defaults = {
   sessionId: "sessionId"
 };
 
+const createFixture = ({
+  status = defaults.status,
+  sessionId = defaults.sessionId,
+  value = null
+}) => ({
+  status,
+  sessionId,
+  value
+});
+
+// /session/:sessionId/element/:elementId.
 const createElementFixture = ({
   status = defaults.status,
   sessionId = defaults.sessionId,
@@ -16,27 +27,29 @@ const createElementFixture = ({
   }
 });
 
+// /session/:sessionId/element/:elementId/text.
 const createElementTextFixture = ({
   status = defaults.status,
   sessionId = defaults.sessionId,
   text
-}) => ({
-  status,
-  sessionId,
-  value: text
-});
+} = {}) => createFixture({status, sessionId, value: text});
 
+// /session/:sessionId/element/:elementId/click.
 const createElementClickFixture = ({
  status = defaults.status,
  sessionId = defaults.sessionId
-} = {}) => ({
-  status,
-  sessionId,
-  value: ""
-});
+} = {}) => createFixture({status, sessionId, value: ""});
+
+// /session/:sessionId/element/:elementId/value.
+const createElementValueFixture = ({
+  status = defaults.status,
+  sessionId = defaults.sessionId
+} = {}) => createFixture({status, sessionId});
 
 module.exports = {
+  createFixture,
   createElementFixture,
   createElementClickFixture,
-  createElementTextFixture
+  createElementTextFixture,
+  createElementValueFixture
 };
