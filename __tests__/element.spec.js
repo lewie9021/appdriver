@@ -369,6 +369,24 @@ describe("waitToBeVisible", () => {
     expect(commands.element.attributes.displayed).toHaveBeenCalledTimes(3);
   });
 
+  it("forwards new element.value if findElement request is required to check visibility", async () => {
+    const elementFixture = createElementFixture({elementId: "elementId"});
+
+    jest.spyOn(commands.element, "findElement")
+      .mockImplementationOnce(() => {
+        return delay(200)
+          .then(() => createElementFixture({status: 7, elementId: "elementId"}));
+      })
+      .mockImplementationOnce(() => {
+        return delay(200)
+          .then(() => elementFixture);
+      });
+
+    const $element = await element(by.label("button")).waitToBeVisible();
+
+    await expect($element.value).resolves.toEqual(elementFixture);
+  });
+
   xit("correctly propagates errors", () => {
 
   });

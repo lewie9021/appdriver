@@ -243,7 +243,7 @@ class Element {
           return poll(() => this.matcher.resolve(), {maxRetries: 5, interval: 200})
             .then(({attempts, data}) => {
               pollDisplayed(data.value.ELEMENT, {maxRetries: 5 - attempts})
-                .then(() => resolve(data)) // TODO: Needs test. Important as chained actions would have a missing element otherwise.
+                .then(() => resolve(data))
                 .catch(reject);
             })
             .catch(() => reject(new Error("Element not visible after 5 attempts (interval: 200ms).")));
