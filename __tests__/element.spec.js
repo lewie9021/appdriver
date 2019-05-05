@@ -128,6 +128,7 @@ describe("tap", () => {
     expect($element).toBeInstanceOf(Element);
     expect(commands.element.findElement).toHaveBeenCalledTimes(1);
     expect(commands.element.actions.click).toHaveBeenCalledTimes(1);
+    await expect($element.value).resolves.toEqual(elementFixture);
   });
 
   it("returns a new element to avoid unwanted mutation", async () => {
@@ -182,6 +183,7 @@ describe("typeText", () => {
     expect($element).toBeInstanceOf(Element);
     expect(commands.element.findElement).toHaveBeenCalledTimes(1);
     expect(commands.element.actions.sendKeys).toHaveBeenCalledTimes(1);
+    await expect($element.value).resolves.toEqual(elementFixture);
   });
 
   it("throws if no text isn't a string", async () => {
@@ -258,6 +260,7 @@ describe("clearText", () => {
     expect($element).toBeInstanceOf(Element);
     expect(commands.element.findElement).toHaveBeenCalledTimes(1);
     expect(commands.element.actions.clear).toHaveBeenCalledTimes(1);
+    await expect($element.value).resolves.toEqual(elementFixture);
   });
 
   it("returns a new element to avoid unwanted mutation", async () => {
@@ -312,6 +315,7 @@ describe("waitToBeVisible", () => {
     expect($element).toBeInstanceOf(Element);
     expect(commands.element.findElement).toHaveBeenCalledTimes(1);
     expect(commands.element.attributes.displayed).toHaveBeenCalledTimes(1);
+    await expect($element.value).resolves.toEqual(elementFixture);
   });
 
   it("returns a new element to avoid unwanted mutation", async () => {
