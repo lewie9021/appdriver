@@ -15,7 +15,7 @@ describe("List Screen", () => {
 
       await $listItem.tap();
       await element(by.label("OK"))
-        .waitToBeVisible(by.label("OK"))
+        .waitToBeVisible()
         .tap();
 
       console.log("item", i + 1);

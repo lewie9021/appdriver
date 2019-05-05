@@ -10,7 +10,15 @@ const elements = async (matcher) => {
       sessionId: response.sessionId
     };
 
-    return new Element(Promise.resolve(value));
+    // TODO: Crude implementation to maintain consistency.
+    // Could probably use element.exist check before returning value?.
+    const elementMatcher = {
+      type: "element id",
+      value: element.ELEMENT,
+      resolve: () => Promise.resolve(element)
+    };
+
+    return new Element({matcher: elementMatcher, value: Promise.resolve(value)});
   });
 };
 
