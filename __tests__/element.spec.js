@@ -13,7 +13,7 @@ const { createElementClearFixture } = require("./fixtures/fixtures");
 beforeEach(() => {
   jest.spyOn(commands.element, "findElement")
     .mockImplementation(() => {
-      return delay(1000)
+      return delay(200)
         .then(() => elementFixture);
     });
 
@@ -53,7 +53,7 @@ describe("Find Element", () => {
   it("allows chaining methods", async () => {
     jest.spyOn(commands.element.actions, "click")
       .mockImplementation(() => {
-        return delay(1000)
+        return delay(200)
           .then(() => createElementClickFixture());
       });
 
@@ -69,7 +69,7 @@ describe("getText", () => {
   beforeEach(() => {
     jest.spyOn(commands.element.attributes, "text")
       .mockImplementation(() => {
-        return delay(1000)
+        return delay(200)
           .then(() => createElementTextFixture({text: "Title Text"}));
       });
   });
@@ -86,7 +86,7 @@ describe("getText", () => {
     commands.element.findElement.mockReset();
     jest.spyOn(commands.element, "findElement")
       .mockImplementation(() => {
-        return delay(1000)
+        return delay(200)
           .then(() => createElementFixture({status: 7, elementId: "elementId"}));
       });
 
@@ -101,7 +101,7 @@ describe("getText", () => {
     commands.element.attributes.text.mockReset();
     jest.spyOn(commands.element.attributes, "text")
       .mockImplementation(() => {
-        return delay(1000)
+        return delay(200)
           .then(() => createElementTextFixture({status: 3, text: null}));
       });
     await expect(element(by.label("product-title")).getText())
@@ -116,7 +116,7 @@ describe("tap", () => {
   beforeEach(() => {
     jest.spyOn(commands.element.actions, "click")
       .mockImplementation(() => {
-        return delay(1000)
+        return delay(200)
           .then(() => createElementClickFixture());
       });
   });
@@ -140,7 +140,7 @@ describe("tap", () => {
     commands.element.findElement.mockReset();
     jest.spyOn(commands.element, "findElement")
       .mockImplementation(() => {
-        return delay(1000)
+        return delay(200)
           .then(() => createElementFixture({status: 7, elementId: "elementId"}));
       });
 
@@ -155,7 +155,7 @@ describe("tap", () => {
     commands.element.actions.click.mockReset();
     jest.spyOn(commands.element.actions, "click")
       .mockImplementation(() => {
-        return delay(1000)
+        return delay(200)
           .then(() => createElementClickFixture({status: 3}));
       });
     return expect(element(by.label("list-item")).tap())
@@ -170,7 +170,7 @@ describe("typeText", () => {
   beforeEach(() => {
     jest.spyOn(commands.element.actions, "sendKeys")
       .mockImplementation(() => {
-        return delay(1000)
+        return delay(200)
           .then(() => createElementValueFixture());
       });
   });
@@ -202,7 +202,7 @@ describe("typeText", () => {
     commands.element.findElement.mockReset();
     jest.spyOn(commands.element, "findElement")
       .mockImplementation(() => {
-        return delay(1000)
+        return delay(200)
           .then(() => createElementFixture({status: 7, elementId: "elementId"}));
       });
 
@@ -217,7 +217,7 @@ describe("typeText", () => {
     commands.element.actions.sendKeys.mockReset();
     jest.spyOn(commands.element.actions, "sendKeys")
       .mockImplementation(() => {
-        return delay(1000)
+        return delay(200)
           .then(() => createElementValueFixture({status: 3}));
       });
     return expect(element(by.label("text-input")).typeText("Hello World!"))
@@ -231,7 +231,7 @@ describe("typeText", () => {
     commands.element.actions.sendKeys.mockReset();
     jest.spyOn(commands.element.actions, "sendKeys")
       .mockImplementation(() => {
-        return delay(1000)
+        return delay(200)
           .then(() => createElementValueFixture({status: 13}));
       });
     return expect(element(by.label("text-input")).typeText("Hello World!"))
@@ -246,7 +246,7 @@ describe("clearText", () => {
   beforeEach(() => {
     jest.spyOn(commands.element.actions, "clear")
       .mockImplementation(() => {
-        return delay(1000)
+        return delay(200)
           .then(() => createElementClearFixture());
       });
   });
@@ -270,7 +270,7 @@ describe("clearText", () => {
     commands.element.findElement.mockReset();
     jest.spyOn(commands.element, "findElement")
       .mockImplementation(() => {
-        return delay(1000)
+        return delay(200)
           .then(() => createElementFixture({status: 7, elementId: "elementId"}));
       });
 
@@ -285,7 +285,7 @@ describe("clearText", () => {
     commands.element.actions.clear.mockReset();
     jest.spyOn(commands.element.actions, "clear")
       .mockImplementation(() => {
-        return delay(1000)
+        return delay(200)
           .then(() => createElementClearFixture({status: 3}));
       });
     return expect(element(by.label("text-input")).clearText())
