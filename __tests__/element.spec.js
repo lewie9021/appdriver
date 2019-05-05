@@ -387,11 +387,23 @@ describe("waitToBeVisible", () => {
     await expect($element.value).resolves.toEqual(elementFixture);
   });
 
-  xit("correctly propagates errors", () => {
-
+  it("correctly propagates errors", async () => {
+    await expect(element(by.label("button")).tap().waitToBeVisible())
+      .rejects.toThrow(ElementActionError);
   });
 
-  xit("correctly handles displayed attribute request errors", () => {
+  it("correctly handles displayed attribute request errors", () => {
+    commands.element.attributes.displayed.mockReset();
+    jest.spyOn(commands.element.attributes, "displayed")
+      .mockImplementation(() => {
+        return delay(200)
+          .then(() => createElementDisplayedFixture({displayed: false}));
+      });
 
+    return expect(element(by.label("button")).waitToBeVisible())
+      .rejects.toThrow(new ElementActionError("Element not visible after 5 attempts (interval: 200ms)."));
+
+    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+    expect(commands.element.attributes.displayed).toHaveBeenCalledTimes(1);
   });
 });
