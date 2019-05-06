@@ -42,10 +42,12 @@ const getViewport = () => {
     });
 };
 
-const performGesture = (actions) => {
+const performGesture = async (gesture) => {
+  const actions = await gesture.resolve();
+
   return commands.interactions.actions(actions)
     .then(({status}) => {
-      if (status !== 0) {
+      if (status) {
         throw new Error("Failed to perform gesture.");
       }
     });

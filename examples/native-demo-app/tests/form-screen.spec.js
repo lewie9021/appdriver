@@ -1,4 +1,4 @@
-const { by, element, device, commands } = require("../../../index");
+const { by, element, device, commands, gestures } = require("../../../index");
 const capabilities = require("../config/capabilities");
 
 (async () => {
@@ -22,18 +22,13 @@ const capabilities = require("../config/capabilities");
   const location = await $slider.getLocation({relative: true});
 
   console.log("[5] Swiping slider...");
-  await device.performGesture([{
-    "type": "pointer",
-    "id": "finger1",
-    "parameters": {"pointerType": "touch"},
-    "actions": [
-      {"type": "pointerMove", "duration": 0, "origin": "viewport", "x": location.x, "y": location.y},
-      {"type": "pointerDown", "button": 0},
-      {"type": "pause", "duration": 250},
-      {"type": "pointerMove", "duration": 100, "origin": "pointer", "x": size.width / 2, "y": 0},
-      {"type": "pointerUp", "button": 0}
-    ]
-  }]);
+  await device.performGesture(
+    gestures.swipeRight({
+      x: location.x,
+      y: location.y,
+      distance: size.width / 2
+    })
+  );
 
   console.log("[6] Long press...");
   await element(by.label("button")).longPress();

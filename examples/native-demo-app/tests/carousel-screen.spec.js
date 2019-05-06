@@ -18,9 +18,9 @@ describe("Carousel Screen", () => {
     });
 
     console.log("[3] Swiping to next page...");
-    await device.performGesture([swipeLeft]);
+    await device.performGesture(swipeLeft);
 
     console.log("[4] Swiping to next page...");
-    await device.performGesture([swipeLeft]);
+    await device.performGesture(swipeLeft);
   });
 });
