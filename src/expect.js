@@ -1,19 +1,19 @@
 class Expect {
-  constructor(element) {
-    this.element = element;
+  constructor(value) {
+    this.value = value;
   }
 
-  async toHaveValue(value) {
-    const elementText = await this.element.getText();
+  async toHaveText(value) {
+    const elementText = await this.value.getText();
 
     if (elementText !== value) {
-      throw new Error(`Expected element to have value '${value}' but instead got '${elementText}'`);
+      throw new Error(`Expected element to have value '${value}' but instead got '${elementText}'.`);
     }
   }
 }
 
-const expect = (element) => {
-  return new Expect(element);
+const expect = (value) => {
+  return new Expect(value);
 };
 
 module.exports = expect;
