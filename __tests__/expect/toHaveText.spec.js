@@ -25,5 +25,5 @@ it("throws if expectation is not met", async () => {
   const $element = await element(by.label("product-title"));
 
   await expect(assert($element).toHaveText(expectedText))
-    .rejects.toThrow(new Error(`Expected element to have value '${expectedText}' but instead got '${actualText}'.`));
+    .rejects.toThrow(new Error(`Expected element to have text '${expectedText}' but instead got '${actualText}'.`));
 });

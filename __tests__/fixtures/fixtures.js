@@ -43,8 +43,9 @@ const createElementClickFixture = ({
 // /session/:sessionId/element/:elementId/value.
 const createElementValueFixture = ({
   status = defaults.status,
-  sessionId = defaults.sessionId
-} = {}) => createFixture({status, sessionId});
+  sessionId = defaults.sessionId,
+  value
+} = {}) => createFixture({status, sessionId, value});
 
 // /session/:sessionId/element/:elementId/clear.
 const createElementClearFixture = ({

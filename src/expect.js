@@ -7,6 +7,14 @@ class Expect {
     const elementText = await this.value.getText();
 
     if (elementText !== value) {
+      throw new Error(`Expected element to have text '${value}' but instead got '${elementText}'.`);
+    }
+  }
+
+  async toHaveValue(value) {
+    const elementText = await this.value.getValue();
+
+    if (elementText !== value) {
       throw new Error(`Expected element to have value '${value}' but instead got '${elementText}'.`);
     }
   }

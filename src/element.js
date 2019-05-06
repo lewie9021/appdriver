@@ -286,6 +286,22 @@ class Element {
         });
     });
   }
+
+  // TODO: Needs to be more intelligent.
+  getValue() {
+    const currentValue = getValue(this.matcher, this.value);
+
+    return currentValue.then((value) => {
+      return commands.element.attributes.value(value.value.ELEMENT)
+        .then(({status, value}) => {
+          if (status) {
+            throw new ElementActionError("Failed to get value for element.");
+          }
+
+          return value;
+        });
+    });
+  }
 }
 
 const element = (matcher) => {
