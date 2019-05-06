@@ -5,7 +5,7 @@ describe("List Screen", () => {
 
   it("works", async () => {
     console.log("[1] Waiting for screen to load...");
-    await element(by.label(screenTestId)).waitToExist(by.label(screenTestId));
+    await element(by.label(screenTestId)).waitToBeVisible();
 
     const listItems = await elements(by.label("list-item-*"));
     console.log("Found elements", listItems.length);
