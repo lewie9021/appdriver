@@ -109,15 +109,15 @@ Pinch Gesture:
 
 ### Gesture API
 
-:warning: [```.press({x?: Number, y?: Number}) => Gesture```](./gesture/press.md)
+:warning: [```.press(options?: {x?: Number, y?: Number, relative?: Boolean}) => Gesture```](./gesture/press.md)
 
 TODO: Description here.
 
-:warning: [```.wait(milliseconds: Number) => Gesture```](./gesture/wait.md)
+:warning: [```.wait(options: {duration: Number}) => Gesture```](./gesture/wait.md)
 
 TODO: Description here.
 
-:warning: [```.moveTo({x?: Number, y?: Number, element?: Element}) => Gesture```](./gesture/moveTo.md)
+:warning: [```.moveTo(options: {x: Number, y: Number, relative?: Boolean, element?: Element}) => Gesture```](./gesture/moveTo.md)
 
 TODO: Description here.
 
