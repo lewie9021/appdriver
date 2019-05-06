@@ -31,21 +31,15 @@ const swipeDown = {
 };
 
 // Note: Having type: "pointerMove", origin: "pointer", and duration: <= 10 doesn't work on Android.
-const swipeLeft = ({x, y, distance}) => ({
-  id: "finger1",
-  type: "pointer",
-  parameters: {
-    pointerType: "touch"
-  },
-  actions: [
-    {type: "pointerMove", duration: 0, origin: "viewport", x, y},
-    {type: "pointerDown", button: 0},
-    {type: "pause", duration: 250},
-    {type: "pointerMove", duration: 50, origin: "pointer", x: distance * -1, y: 0},
-    {type: "pointerUp", button: 0},
-    {type: "pause", duration: 500}
-  ]
-});
+const swipeLeft = ({x, y, distance}) => {
+  const gesture = create()
+    .press({x, y})
+    .wait({duration: 250})
+    .moveTo({x: distance, y: 0, relative: true, duration: 50})
+    .release();
+
+  return gesture._getActions();
+};
 
 const swipeRight = {
   "type": "pointer",
