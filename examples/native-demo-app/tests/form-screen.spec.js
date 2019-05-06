@@ -1,4 +1,4 @@
-const { by, element, device, gestures } = require("../../../index");
+const { by, element, device, gestures, expect } = require("../../../index");
 
 describe("Form Screen", () => {
   const screenTestId = "form-screen";
@@ -11,6 +11,8 @@ describe("Form Screen", () => {
     const $element = await element(by.label("text-input"))
       .tap()
       .typeText("Hello World!");
+
+    await expect($element).toHaveValue("Hello World!");
 
     console.log("[3] Clearing Text...");
     $element.clearText();
