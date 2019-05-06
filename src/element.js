@@ -241,9 +241,8 @@ class Element {
         if (err instanceof ElementNotFoundError) {
           return poll(() => this.matcher.resolve(), {maxRetries, interval})
             .then(({attempts, data}) => {
-              pollDisplayed(data.value.ELEMENT, {maxRetries: maxRetries - attempts, interval})
+              return pollDisplayed(data.value.ELEMENT, {maxRetries: maxRetries - attempts, interval})
                 .then(() => resolve(data))
-                .catch(reject);
             })
             .catch(() => reject(new Error(`Element not visible after ${maxRetries} attempts (interval: ${interval}ms).`)));
         }
