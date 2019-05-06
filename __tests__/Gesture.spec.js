@@ -249,4 +249,50 @@ describe("Common Gestures", () => {
       ]
     });
   });
+
+  it("correctly defines a swipe up gesture", () => {
+    const longPress = new Gesture()
+      .press({x: 150, y: 300})
+      .wait({duration: 250})
+      .moveTo({x: 0, y: -100, relative: true, duration: 50})
+      .release();
+
+    expect(longPress._getActions()).toEqual({
+      id: "finger1",
+      type: "pointer",
+      parameters: {
+        pointerType: "touch"
+      },
+      actions: [
+        {type: "pointerMove", duration: 0, origin: "viewport", x: 150, y: 300},
+        {type: "pointerDown", button: 0},
+        {type: "pause", duration: 250},
+        {type: "pointerMove", duration: 50, origin: "pointer", x: 0, y: -100},
+        {type: "pointerUp", button: 0}
+      ]
+    });
+  });
+
+  it("correctly defines a swipe down gesture", () => {
+    const longPress = new Gesture()
+      .press({x: 150, y: 200})
+      .wait({duration: 250})
+      .moveTo({x: 0, y: 100, relative: true, duration: 50})
+      .release();
+
+    expect(longPress._getActions()).toEqual({
+      id: "finger1",
+      type: "pointer",
+      parameters: {
+        pointerType: "touch"
+      },
+      actions: [
+        {type: "pointerMove", duration: 0, origin: "viewport", x: 150, y: 200},
+        {type: "pointerDown", button: 0},
+        {type: "pause", duration: 250},
+        {type: "pointerMove", duration: 50, origin: "pointer", x: 0, y: 100},
+        {type: "pointerUp", button: 0}
+      ]
+    });
+  });
 });
