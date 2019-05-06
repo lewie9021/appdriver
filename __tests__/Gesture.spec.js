@@ -6,7 +6,7 @@ describe("press", () => {
 
     gesture.press();
 
-    expect(gesture.resolve()).toEqual({
+    expect(gesture.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -15,7 +15,7 @@ describe("press", () => {
       actions: [
         {type: "pointerDown", button: 0}
       ]
-    });
+    }]);
   });
 
   it("allows function chaining", () => {
@@ -31,7 +31,7 @@ describe("press", () => {
 
     gesture.press({x: 100, y: 100});
 
-    expect(gesture.resolve()).toEqual({
+    expect(gesture.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -41,7 +41,7 @@ describe("press", () => {
         {type: "pointerMove", duration: 0, origin: "viewport", x: 100, y: 100},
         {type: "pointerDown", button: 0}
       ]
-    });
+    }]);
   });
 
   it("supports passing relative x and y coordinates", () => {
@@ -49,7 +49,7 @@ describe("press", () => {
 
     gesture.press({relative: true, x: 100, y: 100});
 
-    expect(gesture.resolve()).toEqual({
+    expect(gesture.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -59,7 +59,7 @@ describe("press", () => {
         {type: "pointerMove", duration: 0, origin: "pointer", x: 100, y: 100},
         {type: "pointerDown", button: 0}
       ]
-    });
+    }]);
   });
 });
 
@@ -69,7 +69,7 @@ describe("wait", () => {
 
     gesture.wait({duration: 100});
 
-    expect(gesture.resolve()).toEqual({
+    expect(gesture.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -78,7 +78,7 @@ describe("wait", () => {
       actions: [
         {type: "pause", duration: 100}
       ]
-    });
+    }]);
   });
 
   it("allows function chaining", () => {
@@ -96,7 +96,7 @@ describe("moveTo", () => {
 
     gesture.moveTo({x: 100, y: 100});
 
-    expect(gesture.resolve()).toEqual({
+    expect(gesture.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -105,7 +105,7 @@ describe("moveTo", () => {
       actions: [
         {type: "pointerMove", duration: 0, origin: "viewport", x: 100, y: 100}
       ]
-    });
+    }]);
   });
 
   it("allows function chaining", () => {
@@ -121,7 +121,7 @@ describe("moveTo", () => {
 
     gesture.moveTo({x: 100, y: 100, relative: true});
 
-    expect(gesture.resolve()).toEqual({
+    expect(gesture.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -130,7 +130,7 @@ describe("moveTo", () => {
       actions: [
         {type: "pointerMove", duration: 0, origin: "pointer", x: 100, y: 100}
       ]
-    });
+    }]);
   });
 });
 
@@ -140,7 +140,7 @@ describe("release", () => {
 
     gesture.release();
 
-    expect(gesture.resolve()).toEqual({
+    expect(gesture.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -149,7 +149,7 @@ describe("release", () => {
       actions: [
         {type: "pointerUp", button: 0}
       ]
-    });
+    }]);
   });
 
   it("allows function chaining", () => {
@@ -168,7 +168,7 @@ describe("Common Gestures", () => {
       .wait({duration: 100})
       .release();
 
-    expect(tap.resolve()).toEqual({
+    expect(tap.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -180,7 +180,7 @@ describe("Common Gestures", () => {
         {type: "pause", duration: 100},
         {type: "pointerUp", button: 0}
       ]
-    })
+    }])
   });
 
   it("correctly defines a long press gesture", () => {
@@ -189,7 +189,7 @@ describe("Common Gestures", () => {
       .wait({duration: 1000})
       .release();
 
-    expect(longPress.resolve()).toEqual({
+    expect(longPress.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -201,7 +201,7 @@ describe("Common Gestures", () => {
         {type: "pause", duration: 1000},
         {type: "pointerUp", button: 0}
       ]
-    });
+    }]);
   });
 
   it("correctly defines a swipe left gesture", () => {
@@ -211,7 +211,7 @@ describe("Common Gestures", () => {
       .moveTo({x: -100, y: 0, relative: true, duration: 50})
       .release();
 
-    expect(longPress.resolve()).toEqual({
+    expect(longPress.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -224,7 +224,7 @@ describe("Common Gestures", () => {
         {type: "pointerMove", duration: 50, origin: "pointer", x: -100, y: 0},
         {type: "pointerUp", button: 0}
       ]
-    });
+    }]);
   });
 
   it("correctly defines a swipe right gesture", () => {
@@ -234,7 +234,7 @@ describe("Common Gestures", () => {
       .moveTo({x: 100, y: 0, relative: true, duration: 50})
       .release();
 
-    expect(longPress.resolve()).toEqual({
+    expect(longPress.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -247,7 +247,7 @@ describe("Common Gestures", () => {
         {type: "pointerMove", duration: 50, origin: "pointer", x: 100, y: 0},
         {type: "pointerUp", button: 0}
       ]
-    });
+    }]);
   });
 
   it("correctly defines a swipe up gesture", () => {
@@ -257,7 +257,7 @@ describe("Common Gestures", () => {
       .moveTo({x: 0, y: -100, relative: true, duration: 50})
       .release();
 
-    expect(longPress.resolve()).toEqual({
+    expect(longPress.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -270,7 +270,7 @@ describe("Common Gestures", () => {
         {type: "pointerMove", duration: 50, origin: "pointer", x: 0, y: -100},
         {type: "pointerUp", button: 0}
       ]
-    });
+    }]);
   });
 
   it("correctly defines a swipe down gesture", () => {
@@ -280,7 +280,7 @@ describe("Common Gestures", () => {
       .moveTo({x: 0, y: 100, relative: true, duration: 50})
       .release();
 
-    expect(longPress.resolve()).toEqual({
+    expect(longPress.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -293,6 +293,6 @@ describe("Common Gestures", () => {
         {type: "pointerMove", duration: 50, origin: "pointer", x: 0, y: 100},
         {type: "pointerUp", button: 0}
       ]
-    });
+    }]);
   });
 });

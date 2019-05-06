@@ -5,8 +5,8 @@ class Gesture {
     this.actions = [];
   }
 
-  resolve() {
-    return {
+  async resolve() {
+    return [{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -41,7 +41,7 @@ class Gesture {
             return result;
         }
       }, [])
-    };
+    }];
   }
 
   press(options = {}) {
