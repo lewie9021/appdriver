@@ -33,7 +33,7 @@ Rotate Gesture:
 
 ### Gestures API
 
-:warning: [```.create() => Gesture```](./gestures/create.md)
+:white_check_mark: [```.create() => Gesture```](./gestures/create.md)
 
 TODO: Description here.
 
@@ -53,7 +53,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.longPress({x: Number, y: Number, duration: Number}) => Gesture```](./gestures/doubleTap.md)
+:white_check_mark: [```.longPress({x: Number, y: Number, duration: Number}) => Gesture```](./gestures/longPress.md)
 
 TODO: Description here.
 
@@ -65,11 +65,11 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.swipeLeft({x: Number, y: Number, distance: Number, percentage?: Number, duration?: Number}) => Gesture```](./gestures/swipeLeft.md)
+:white_check_mark: [```.swipeLeft({x: Number, y: Number, distance: Number, percentage?: Number, duration?: Number}) => Gesture```](./gestures/swipeLeft.md)
 
 TODO: Description here.
 
-:warning: [```.swipeRight({x: Number, y: Number, distance: Number, percentage?: Number, duration?: Number}) => Gesture```](./gestures/swipeRight.md)
+:white_check_mark: [```.swipeRight({x: Number, y: Number, distance: Number, percentage?: Number, duration?: Number}) => Gesture```](./gestures/swipeRight.md)
 
 TODO: Description here.
 

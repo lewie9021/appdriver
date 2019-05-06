@@ -30,6 +30,13 @@ const swipeDown = {
   ]
 };
 
+const longPress = ({x, y, duration = 750}) => {
+  return create()
+    .press({x, y})
+    .wait({duration})
+    .release();
+};
+
 // Note: Having type: "pointerMove", origin: "pointer", and duration: <= 10 doesn't work on Android.
 const swipeLeft = ({x, y, distance}) => {
   return create()
@@ -51,6 +58,7 @@ module.exports = {
   create,
   swipeUp,
   swipeDown,
+  longPress,
   swipeLeft,
   swipeRight
 };

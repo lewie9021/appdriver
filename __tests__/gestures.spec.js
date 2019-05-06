@@ -9,6 +9,32 @@ describe("create", () => {
   });
 });
 
+describe("longPress", () => {
+  it("returns a 'Gesture'", () => {
+    const result = gestures.longPress({x: 150, y: 250});
+
+    expect(result).toBeInstanceOf(Gesture);
+  });
+
+  it("correctly defines a longPress gesture", () => {
+    const result = gestures.longPress({x: 150, y: 250});
+
+    expect(result.resolve()).toEqual({
+      id: "finger1",
+      type: "pointer",
+      parameters: {
+        pointerType: "touch"
+      },
+      actions: [
+        {type: "pointerMove", duration: 0, origin: "viewport", x: 150, y: 250},
+        {type: "pointerDown", button: 0},
+        {type: "pause", duration: 750},
+        {type: "pointerUp", button: 0}
+      ]
+    });
+  });
+});
+
 describe("swipeLeft", () => {
   it("returns a 'Gesture'", () => {
     const result = gestures.swipeLeft({x: 150, y: 200, distance: 100});
