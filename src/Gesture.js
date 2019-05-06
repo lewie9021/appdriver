@@ -1,3 +1,5 @@
+const { isNumber } = require("./utils");
+
 class Gesture {
   constructor() {
     this.actions = [];
@@ -33,7 +35,11 @@ class Gesture {
     };
   }
 
-  press() {
+  press(options = {}) {
+    if (isNumber(options.x) && isNumber(options.y)) {
+      this.moveTo({x: options.x, y: options.y});
+    }
+
     this.actions.push({
       type: "press"
     });

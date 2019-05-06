@@ -21,9 +21,27 @@ describe("press", () => {
   it("allows function chaining", () => {
     const gesture = new Gesture();
 
-    const result = gesture.press({x: 100, y: 100});
+    const result = gesture.press();
 
     expect(result).toBeInstanceOf(Gesture);
+  });
+
+  it("supports passing x and y options", () => {
+    const gesture = new Gesture();
+
+    gesture.press({x: 100, y: 100});
+
+    expect(gesture._getActions()).toEqual({
+      id: "finger1",
+      type: "pointer",
+      parameters: {
+        pointerType: "touch"
+      },
+      actions: [
+        {type: "pointerMove", duration: 0, origin: "viewport", x: 100, y: 100},
+        {type: "pointerDown", button: 0}
+      ]
+    });
   });
 });
 
