@@ -1,6 +1,6 @@
 # Element
 
-The `element` instance provides a way to interact with elements on the screen. You will need to use a `matcher` object to define how elements are found. The most common is `by.label` which finds elements by accessibility id.
+The `element` instance provides a way to interact with elements on the screen. You will need to use a `matcher` object to define how elements are found. The most common is `by.label` which finds elements by accessibility label.
 
 ### Examples
 
@@ -41,7 +41,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.getText() => String```](./element/getText.md)
+:white_check_mark: [```.getText() => String```](./element/getText.md)
 
 TODO: Description here.
 
@@ -81,7 +81,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.waitToBeVisible(options?: {interval?: Number, maxRetries?: Number}) => Element```](./element/waitToBeVisible.md)
+:white_check_mark: [```.waitToBeVisible(options?: {interval?: Number, maxRetries?: Number}) => Element```](./element/waitToBeVisible.md)
 
 TODO: Description here.
 
