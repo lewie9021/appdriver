@@ -43,6 +43,24 @@ describe("press", () => {
       ]
     });
   });
+
+  it("supports passing relative x and y coordinates", () => {
+    const gesture = new Gesture();
+
+    gesture.press({relative: true, x: 100, y: 100});
+
+    expect(gesture._getActions()).toEqual({
+      id: "finger1",
+      type: "pointer",
+      parameters: {
+        pointerType: "touch"
+      },
+      actions: [
+        {type: "pointerMove", duration: 0, origin: "pointer", x: 100, y: 100},
+        {type: "pointerDown", button: 0}
+      ]
+    });
+  });
 });
 
 describe("wait", () => {
@@ -96,6 +114,23 @@ describe("moveTo", () => {
     const result = gesture.moveTo({x: 100, y: 100});
 
     expect(result).toBeInstanceOf(Gesture);
+  });
+
+  it("supports moving to a relative coordinate", () => {
+    const gesture = new Gesture();
+
+    gesture.moveTo({x: 100, y: 100, relative: true});
+
+    expect(gesture._getActions()).toEqual({
+      id: "finger1",
+      type: "pointer",
+      parameters: {
+        pointerType: "touch"
+      },
+      actions: [
+        {type: "pointerMove", duration: 0, origin: "pointer", x: 100, y: 100}
+      ]
+    });
   });
 });
 
