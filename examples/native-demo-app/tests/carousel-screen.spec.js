@@ -6,7 +6,7 @@ describe("Carousel Screen", () => {
 
   it("works", async () => {
     console.log("[1] Waiting for screen to load...");
-    await element(by.label(screenTestId)).waitToExist(by.label(screenTestId));
+    await element(by.label(screenTestId)).waitToBeVisible();
 
     const viewport = await device.getViewport();
     console.log("[2] viewport dimensions", viewport);
