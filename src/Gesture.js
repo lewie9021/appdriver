@@ -5,7 +5,7 @@ class Gesture {
     this.actions = [];
   }
 
-  _getActions() {
+  resolve() {
     return {
       id: "finger1",
       type: "pointer",

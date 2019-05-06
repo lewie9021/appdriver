@@ -6,7 +6,7 @@ describe("press", () => {
 
     gesture.press();
 
-    expect(gesture._getActions()).toEqual({
+    expect(gesture.resolve()).toEqual({
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -31,7 +31,7 @@ describe("press", () => {
 
     gesture.press({x: 100, y: 100});
 
-    expect(gesture._getActions()).toEqual({
+    expect(gesture.resolve()).toEqual({
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -49,7 +49,7 @@ describe("press", () => {
 
     gesture.press({relative: true, x: 100, y: 100});
 
-    expect(gesture._getActions()).toEqual({
+    expect(gesture.resolve()).toEqual({
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -69,7 +69,7 @@ describe("wait", () => {
 
     gesture.wait({duration: 100});
 
-    expect(gesture._getActions()).toEqual({
+    expect(gesture.resolve()).toEqual({
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -96,7 +96,7 @@ describe("moveTo", () => {
 
     gesture.moveTo({x: 100, y: 100});
 
-    expect(gesture._getActions()).toEqual({
+    expect(gesture.resolve()).toEqual({
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -121,7 +121,7 @@ describe("moveTo", () => {
 
     gesture.moveTo({x: 100, y: 100, relative: true});
 
-    expect(gesture._getActions()).toEqual({
+    expect(gesture.resolve()).toEqual({
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -140,7 +140,7 @@ describe("release", () => {
 
     gesture.release();
 
-    expect(gesture._getActions()).toEqual({
+    expect(gesture.resolve()).toEqual({
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -168,7 +168,7 @@ describe("Common Gestures", () => {
       .wait({duration: 100})
       .release();
 
-    expect(tap._getActions()).toEqual({
+    expect(tap.resolve()).toEqual({
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -189,7 +189,7 @@ describe("Common Gestures", () => {
       .wait({duration: 1000})
       .release();
 
-    expect(longPress._getActions()).toEqual({
+    expect(longPress.resolve()).toEqual({
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -211,7 +211,7 @@ describe("Common Gestures", () => {
       .moveTo({x: -100, y: 0, relative: true, duration: 50})
       .release();
 
-    expect(longPress._getActions()).toEqual({
+    expect(longPress.resolve()).toEqual({
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -234,7 +234,7 @@ describe("Common Gestures", () => {
       .moveTo({x: 100, y: 0, relative: true, duration: 50})
       .release();
 
-    expect(longPress._getActions()).toEqual({
+    expect(longPress.resolve()).toEqual({
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -257,7 +257,7 @@ describe("Common Gestures", () => {
       .moveTo({x: 0, y: -100, relative: true, duration: 50})
       .release();
 
-    expect(longPress._getActions()).toEqual({
+    expect(longPress.resolve()).toEqual({
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -280,7 +280,7 @@ describe("Common Gestures", () => {
       .moveTo({x: 0, y: 100, relative: true, duration: 50})
       .release();
 
-    expect(longPress._getActions()).toEqual({
+    expect(longPress.resolve()).toEqual({
       id: "finger1",
       type: "pointer",
       parameters: {
