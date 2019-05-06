@@ -123,12 +123,7 @@ module.exports = {
         return post(`/session/${global.session.sessionId}/element/${elementId}/value`, null, payload);
       },
       clear: (elementId) => {
-        return post(`/session/${global.session.sessionId}/element/${elementId}/clear`)
-          .then((x) => {
-            console.log(JSON.stringify(x, null, 2));
-
-            return x;
-          });
+        return post(`/session/${global.session.sessionId}/element/${elementId}/clear`);
       }
     }
   },
