@@ -1,3 +1,9 @@
+const Gesture = require("./Gesture");
+
+const create = () => {
+  return new Gesture();
+};
+
 const swipeUp = {
   "type": "pointer",
   "id": "finger1",
@@ -55,6 +61,7 @@ const swipeRight = {
 };
 
 module.exports = {
+  create,
   swipeUp,
   swipeDown,
   swipeLeft,
