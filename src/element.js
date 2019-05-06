@@ -80,6 +80,13 @@ class Element {
     return new Element({matcher: this.matcher, value: nextValue});
   }
 
+  // NOTE: NOT SUPPORTED!
+  // _getElementId() {
+  //   return this.value.then((value) => {
+  //     return value.value.ELEMENT;
+  //   })
+  // }
+
   tap() {
     return this._executeAction(({status, value}, done) => {
       if (status) {
@@ -179,13 +186,6 @@ class Element {
     });
   }
 
-  // NOTE: NOT SUPPORTED!
-  _getElementId() {
-    return this.value.then((value) => {
-      return value.value.ELEMENT;
-    })
-  }
-
   getSize() {
     const currentValue = getValue(this.matcher, this.value);
 
@@ -210,7 +210,7 @@ class Element {
 
     return currentValue.then((value) => {
       if (value.status === 7) {
-        throw new Error("Can't get size of element that doesn't exist");
+        throw new Error("Can't get location of element that doesn't exist.");
       }
 
       const command = relative
@@ -219,7 +219,7 @@ class Element {
 
       return command.then(({status, value}) => {
         if (status !== 0) {
-          throw new Error(`Failed to get element ${relative ? "relative " : ""}location`);
+          throw new Error(`Failed to get element ${relative ? "relative " : ""}location.`);
         }
 
         return value;
