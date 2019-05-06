@@ -37,50 +37,50 @@ Rotate Gesture:
 
 TODO: Description here.
 
-:warning: [```.parallel(Array<Gesture>) => Gesture```](./gestures/parallel.md)
+:hammer: [```.parallel(Array<Gesture>) => Gesture```](./gestures/parallel.md)
 
 TODO: Description here.
 
-:warning: [```.series(Array<Gesture>) => Gesture```](./gestures/series.md)
+:hammer: [```.series(Array<Gesture>) => Gesture```](./gestures/series.md)
 
 TODO: Description here.
 
-:warning: [```.tap({x: Number, y: Number, duration: Number}) => Gesture```](./gestures/tap.md)
+:hammer: [```.tap({x: Number, y: Number, duration: Number, element?: Element}) => Gesture```](./gestures/tap.md)
 
 TODO: Description here.
 
-:warning: [```.doubleTap({x: Number, y: Number, duration: Number}) => Gesture```](./gestures/doubleTap.md)
+:hammer: [```.doubleTap({x: Number, y: Number, duration: Number, element?: Element}) => Gesture```](./gestures/doubleTap.md)
 
 TODO: Description here.
 
-:white_check_mark: [```.longPress({x: Number, y: Number, duration: Number}) => Gesture```](./gestures/longPress.md)
+:white_check_mark: :hammer: [```.longPress({x: Number, y: Number, duration: Number, element?: Element}) => Gesture```](./gestures/longPress.md)
 
 TODO: Description here.
 
-:warning: [```.swipeUp({x: Number, y: Number, distance: Number, percentage?: Number, duration?: Number}) => Gesture```](./gestures/swipeUp.md)
+:hammer: [```.swipeUp({x: Number, y: Number, distance: Number, percentage?: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/swipeUp.md)
 
 TODO: Description here.
 
-:warning: [```.swipeDown({x: Number, y: Number, distance: Number, duration?: Number}) => Gesture```](./gestures/swipeDown.md)
+:hammer: [```.swipeDown({x: Number, y: Number, distance: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/swipeDown.md)
 
 TODO: Description here.
 
-:white_check_mark: [```.swipeLeft({x: Number, y: Number, distance: Number, percentage?: Number, duration?: Number}) => Gesture```](./gestures/swipeLeft.md)
+:white_check_mark: :hammer: [```.swipeLeft({x: Number, y: Number, distance: Number, percentage?: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/swipeLeft.md)
 
 TODO: Description here.
 
-:white_check_mark: [```.swipeRight({x: Number, y: Number, distance: Number, percentage?: Number, duration?: Number}) => Gesture```](./gestures/swipeRight.md)
+:white_check_mark: :hammer: [```.swipeRight({x: Number, y: Number, distance: Number, percentage?: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/swipeRight.md)
 
 TODO: Description here.
 
-:warning: [```.pinch({x: Number, y: Number, distance: Number, duration?: Number}) => Gesture```](./gestures/pinch.md)
+:hammer: [```.pinch({x: Number, y: Number, distance: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/pinch.md)
 
 TODO: Description here.
 
-:warning: [```.spread({x: Number, y: Number, distance: Number, duration?: Number}) => Gesture```](./gestures/spread.md)
+:hammer: [```.spread({x: Number, y: Number, distance: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/spread.md)
 
 TODO: Description here.
 
-:warning: [```.rotate({x: Number, y: Number, radius: Number: degrees: [start: Number, end: Number], duration?: Number, step?: Number}) => Gesture```](./gestures/rotate.md)
+:hammer: [```.rotate({x: Number, y: Number, radius: Number: degrees: [start: Number, end: Number], duration?: Number, step?: Number, element?: Element}) => Gesture```](./gestures/rotate.md)
 
 TODO: Description here

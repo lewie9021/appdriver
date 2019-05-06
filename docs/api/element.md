@@ -21,7 +21,7 @@ The `element` instance provides a way to interact with elements on the screen. Y
 ```
 ### Element API
 
-:white_check_mark: [```.tap({x?: Number, y?: Number}) => Element```](./element/tap.md)
+:white_check_mark: :hammer: [```.tap({x?: Number, y?: Number}) => Element```](./element/tap.md)
 
 TODO: Description here.
 

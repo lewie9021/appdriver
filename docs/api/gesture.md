@@ -113,7 +113,7 @@ Pinch Gesture:
 
 ### Gesture API
 
-:white_check_mark: [```.press(options?: {x?: Number, y?: Number, relative?: Boolean, element?: Element}) => Gesture```](./gesture/press.md)
+:white_check_mark: :hammer: [```.press(options?: {x?: Number, y?: Number, relative?: Boolean, element?: Element}) => Gesture```](./gesture/press.md)
 
 TODO: Description here.
 
@@ -121,7 +121,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:white_check_mark: [```.moveTo(options: {x: Number, y: Number, relative?: Boolean, element?: Element}) => Gesture```](./gesture/moveTo.md)
+:white_check_mark: :hammer: [```.moveTo(options: {x: Number, y: Number, relative?: Boolean, element?: Element}) => Gesture```](./gesture/moveTo.md)
 
 TODO: Description here.
 

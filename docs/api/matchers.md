@@ -44,7 +44,7 @@ Find element with text 'Click Me!''.
 
 TODO: Description here.
 
-:hammer: [```by.label(accessibilityLabel: String) => Matcher```](./matchers/label.md)
+:white_check_mark: [```by.label(accessibilityLabel: String) => Matcher```](./matchers/label.md)
 
 TODO: Description here.
 
