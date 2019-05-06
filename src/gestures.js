@@ -1,3 +1,9 @@
+const Gesture = require("./Gesture");
+
+const create = () => {
+  return new Gesture();
+};
+
 const swipeUp = {
   "type": "pointer",
   "id": "finger1",
@@ -24,39 +30,35 @@ const swipeDown = {
   ]
 };
 
-// Note: Having type: "pointerMove", origin: "pointer", and duration: <= 10 doesn't work on Android.
-const swipeLeft = ({x, y, distance}) => ({
-  id: "finger1",
-  type: "pointer",
-  parameters: {
-    pointerType: "touch"
-  },
-  actions: [
-    {type: "pointerMove", duration: 0, origin: "viewport", x, y},
-    {type: "pointerDown", button: 0},
-    {type: "pause", duration: 250},
-    {type: "pointerMove", duration: 50, origin: "pointer", x: distance * -1, y: 0},
-    {type: "pointerUp", button: 0},
-    {type: "pause", duration: 500}
-  ]
-});
+const longPress = ({x, y, duration = 750}) => {
+  return create()
+    .press({x, y})
+    .wait({duration})
+    .release();
+};
 
-const swipeRight = {
-  "type": "pointer",
-  "id": "finger1",
-  "parameters": {"pointerType": "touch"},
-  "actions": [
-    {"type": "pointerMove", "duration": 0, "origin": "viewport", "x": 150, "y": 150},
-    {"type": "pointerDown", "button": 0},
-    {"type": "pause", "duration": 500},
-    {"type": "pointerMove", "duration": 1000, "origin": "pointer", "x": 100, "y": 0},
-    {"type": "pointerUp", "button": 0}
-  ]
+// Note: Having type: "pointerMove", origin: "pointer", and duration: <= 10 doesn't work on Android.
+const swipeLeft = ({x, y, distance}) => {
+  return create()
+    .press({x, y})
+    .wait({duration: 250})
+    .moveTo({x: distance * -1, y: 0, relative: true, duration: 50})
+    .release();
+};
+
+const swipeRight = ({x, y, distance}) => {
+  return create()
+    .press({x, y})
+    .wait({duration: 250})
+    .moveTo({x: distance, y: 0, relative: true, duration: 50})
+    .release();
 };
 
 module.exports = {
+  create,
   swipeUp,
   swipeDown,
+  longPress,
   swipeLeft,
   swipeRight
 };

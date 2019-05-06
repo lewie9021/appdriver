@@ -31,7 +31,7 @@ Drop 'n' Drag Gesture:
   const $destination = await element(by.label("destination"));
   const dragAndDrop = gestures.create()
     .press({element: $box})
-    .wait(250)
+    .wait({duration: 250})
     .moveTo({element: $destination})
     .release();
   
@@ -60,7 +60,11 @@ Double Tap Gesture:
   const tap = gestures.create()
     .press()
     .release();
-  const doubleTap = gestures.series([tap, gestures.wait(50), tap]);
+  const doubleTap = gestures.series([
+    tap,
+    gestures.wait({duration: 50}),
+    tap
+  ]);
   
   await $button.performGesture(doubleTap);
 })();
@@ -73,7 +77,7 @@ Press Gesture:
   const $button = await element(by.label("button"));
   const longPress = gestures.create()
     .press()
-    .wait(500)
+    .wait({duration: 500})
     .release();
   
   await $button.performGesture(longPress);
@@ -109,18 +113,18 @@ Pinch Gesture:
 
 ### Gesture API
 
-:warning: [```.press({x?: Number, y?: Number}) => Gesture```](./gesture/press.md)
+:white_check_mark: :hammer: [```.press(options?: {x?: Number, y?: Number, relative?: Boolean, element?: Element}) => Gesture```](./gesture/press.md)
 
 TODO: Description here.
 
-:warning: [```.wait(milliseconds: Number) => Gesture```](./gesture/wait.md)
+:white_check_mark: [```.wait(options: {duration: Number}) => Gesture```](./gesture/wait.md)
 
 TODO: Description here.
 
-:warning: [```.moveTo({x?: Number, y?: Number, element?: Element}) => Gesture```](./gesture/moveTo.md)
+:white_check_mark: :hammer: [```.moveTo(options: {x: Number, y: Number, relative?: Boolean, element?: Element}) => Gesture```](./gesture/moveTo.md)
 
 TODO: Description here.
 
-:warning: [```.release() => Gesture```](./gesture/release.md)
+:white_check_mark: [```.release() => Gesture```](./gesture/release.md)
 
 TODO: Description here.

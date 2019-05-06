@@ -6,7 +6,7 @@ describe("Carousel Screen", () => {
 
   it("works", async () => {
     console.log("[1] Waiting for screen to load...");
-    await element(by.label(screenTestId)).waitToExist(by.label(screenTestId));
+    await element(by.label(screenTestId)).waitToBeVisible();
 
     const viewport = await device.getViewport();
     console.log("[2] viewport dimensions", viewport);
@@ -18,9 +18,9 @@ describe("Carousel Screen", () => {
     });
 
     console.log("[3] Swiping to next page...");
-    await device.performGesture([swipeLeft]);
+    await device.performGesture(swipeLeft);
 
     console.log("[4] Swiping to next page...");
-    await device.performGesture([swipeLeft]);
+    await device.performGesture(swipeLeft);
   });
 });

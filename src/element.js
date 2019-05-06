@@ -1,29 +1,37 @@
 const commands = require("./commands");
+const { ElementNotFoundError, ElementActionError } = require("./errors");
 const { delay } = require("./utils");
 
-const poll = (func, maxRetries = 10) => {
-  return func()
+const poll = (func, {maxRetries = 5, interval = 1000, attempts = 0}) => {
+  return func(attempts)
+    .then((data) => ({attempts: attempts + 1, data}))
     .catch((err) => {
       if (maxRetries <= 1) {
         throw err
       }
 
-      return delay(1000)
-        .then(() => poll(func, maxRetries - 1));
+      return delay(interval)
+        .then(() => poll(func, {
+          maxRetries: maxRetries - 1,
+          interval,
+          attempts: attempts + 1
+        }));
     });
 };
 
-const pollDisplayed = (elementId) => {
+const pollDisplayed = (elementId, {maxRetries, interval}) => {
   return poll(() => {
     return commands.element.attributes.displayed(elementId)
-      .then((x) => {
-        if (!x.value) {
-          throw new Error("Element not displayed");
+      .then(({status, value}) => {
+        if (status) {
+          throw new ElementActionError(`Failed retrieve element's 'displayed' attribute after ${maxRetries} attempts (interval: ${interval}ms).`);
         }
 
-        return x;
-      });
-  });
+        if (!value) {
+          throw new ElementActionError(`Element not visible after ${maxRetries} attempts (interval: ${interval}ms).`);
+        }
+      })
+  }, {maxRetries, interval})
 };
 
 const pollExist = (matcher) => {
@@ -36,33 +44,69 @@ const pollExist = (matcher) => {
 
         return x;
       });
-  });
+  }, {maxRetries: 10});
+};
+
+const getValue = (matcher, value) => {
+  return value || matcher.resolve();
 };
 
 class Element {
-  constructor(value) {
+  constructor({matcher, value = null, thenable = true}) {
+    this.matcher = matcher;
     this.value = value;
+
+    if (thenable) {
+      this.then = function (onResolved, onRejected) {
+        const value = getValue(this.matcher, this.value);
+
+        return value.then((value) => {
+          const promise = Promise.resolve(value);
+
+          onResolved(new Element({matcher, value: promise, thenable: false}));
+        }, onRejected);
+      };
+    }
   }
 
-  tap() {
-    const currentValue = this.value;
-
-    this.value = new Promise((resolve, reject) => {
-      currentValue.then((value) => {
-        if (value.status === 7) {
-          throw new Error("Can't tap element that doesn't exist");
-        }
-
-        commands.element.actions.click(value.value.ELEMENT)
-          .then(() => resolve(value));
+  _executeAction(action) {
+    const value = getValue(this.matcher, this.value);
+    const nextValue = new Promise((resolve, reject) => {
+      value.then((value) => {
+        action(value, (err) => err ? reject(err) : resolve(value));
       }, reject);
     });
 
-    return this;
+    return new Element({matcher: this.matcher, value: nextValue});
+  }
+
+  // NOTE: NOT SUPPORTED!
+  // _getElementId() {
+  //   return this.value.then((value) => {
+  //     return value.value.ELEMENT;
+  //   })
+  // }
+
+  tap() {
+    return this._executeAction(({status, value}, done) => {
+      if (status) {
+        return done(new Error("Can't tap element that doesn't exist"));
+      }
+
+      commands.element.actions.click(value.ELEMENT)
+        .then(({status}) => {
+          if (status) {
+            return done(new ElementActionError("Failed to tap element."));
+          }
+
+          done(null);
+        })
+        .catch((err) => done(err));
+    });
   }
 
   longPress({x = 0, y = 0, duration = 750} = {}) {
-    const currentValue = this.value;
+    const currentValue = getValue(this.matcher, this.value);
 
     this.value = new Promise((resolve, reject) => {
       currentValue.then((value) => {
@@ -99,63 +143,53 @@ class Element {
   }
 
   typeText(text) {
-    const currentValue = this.value;
+    return this._executeAction(({status, value}, done) => {
+      if (status) {
+        return done(new Error("Can't type text on element that doesn't exist"));
+      }
 
-    this.value = new Promise((resolve, reject) => {
-      currentValue.then((value) => {
-        if (value.status === 7) {
-          throw new Error("Can't tap element that doesn't exist");
-        }
+      if (typeof text !== "string") {
+        return done(new Error(`Failed to type text. 'text' must be a string, instead got ${typeof text}.`));
+      }
 
-        commands.element.actions.sendKeys(value.value.ELEMENT, text.split(""))
-          .then(({status}) => {
-            if (status === 13 && global.session.platformName === "iOS") {
-              throw new Error("Failed to type text. Please make sure input via your computer's keyboard is disabled");
-            }
+      commands.element.actions.sendKeys(value.ELEMENT, text.split(""))
+        .then(({status}) => {
+          if (status === 13 && global.session.platformName === "iOS") {
+            return done(new Error("Failed to type text. Make sure hardware keyboard is disconnected from iOS simulator."));
+          }
 
-            if (status !== 0) {
-              throw new Error("Failed to type text");
-            }
+          if (status) {
+            return done(new Error("Failed to type text."));
+          }
 
-            return resolve(value);
-          });
-      }, reject);
+          done(null);
+        })
+        .catch((err) => done(err));
     });
-
-    return this;
   }
 
   clearText() {
-    const currentValue = this.value;
+    return this._executeAction(({status, value}, done) => {
+      if (status) {
+        return done(new Error("Can't clear text on element that doesn't exist"));
+      }
 
-    this.value = new Promise((resolve, reject) => {
-      currentValue.then((value) => {
-        if (value.status === 7) {
-          throw new Error("Can't tap element that doesn't exist");
-        }
+      commands.element.actions.clear(value.ELEMENT)
+        .then(({status}) => {
+          if (status) {
+            return done(new ElementActionError("Failed to clear text."));
+          }
 
-        commands.element.actions.clearElement(value.value.ELEMENT)
-          .then(({status}) => {
-            if (status !== 0) {
-              throw new Error("Failed to clear text");
-            }
-
-            return resolve(value);
-          });
-      }, reject);
+          done(null);
+        })
+        .catch((err) => done(err));
     });
-
-    return this;
-  }
-
-  getElementId() {
-    return this.value.then((value) => {
-      return value.value.ELEMENT;
-    })
   }
 
   getSize() {
-    return this.value.then((value) => {
+    const currentValue = getValue(this.matcher, this.value);
+
+    return currentValue.then((value) => {
       if (value.status === 7) {
         throw new Error("Can't get size of element that doesn't exist");
       }
@@ -172,9 +206,11 @@ class Element {
   }
 
   getLocation({relative = false}) {
-    return this.value.then((value) => {
+    const currentValue = getValue(this.matcher, this.value);
+
+    return currentValue.then((value) => {
       if (value.status === 7) {
-        throw new Error("Can't get size of element that doesn't exist");
+        throw new Error("Can't get location of element that doesn't exist.");
       }
 
       const command = relative
@@ -183,7 +219,7 @@ class Element {
 
       return command.then(({status, value}) => {
         if (status !== 0) {
-          throw new Error(`Failed to get element ${relative ? "relative " : ""}location`);
+          throw new Error(`Failed to get element ${relative ? "relative " : ""}location.`);
         }
 
         return value;
@@ -191,29 +227,35 @@ class Element {
     });
   }
 
-  waitToBeVisible(matcher) {
-    const currentValue = this.value;
+  waitToBeVisible(options = {}) {
+    const maxRetries = options.maxRetries || 5;
+    const interval = options.interval || 200;
 
-    this.value = new Promise((resolve, reject) => {
-      currentValue.then((response) => {
-        if (response.status !== 0) { // Initial find didn't work or a previously chained call failed.
-          return pollExist(matcher)
-            .then(({value}) => {
-              return pollDisplayed(value.ELEMENT)
-                .then((res) => resolve(res));
-            });
+    const value = getValue(this.matcher, this.value);
+    const nextValue = new Promise((resolve, reject) => {
+      value.then((element) => {
+        pollDisplayed(element.value.ELEMENT, {maxRetries, interval})
+          .then(() => resolve(element))
+          .catch(reject);
+      }, (err) => {
+        if (err instanceof ElementNotFoundError) {
+          return poll(() => this.matcher.resolve(), {maxRetries, interval})
+            .then(({attempts, data}) => {
+              return pollDisplayed(data.value.ELEMENT, {maxRetries: maxRetries - attempts, interval})
+                .then(() => resolve(data))
+            })
+            .catch(() => reject(new Error(`Element not visible after ${maxRetries} attempts (interval: ${interval}ms).`)));
         }
 
-        return pollDisplayed(response.value.ELEMENT)
-          .then(() => resolve(response));
-      }, reject);
+        reject(err);
+      });
     });
 
-    return this;
+    return new Element({matcher: this.matcher, value: nextValue});
   }
 
   waitToExist(matcher) {
-    const currentValue = this.value;
+    const currentValue = getValue(this.matcher, this.value);
 
     this.value = new Promise((resolve, reject) => {
       currentValue.then((value) => {
@@ -231,15 +273,29 @@ class Element {
   }
 
   getText() {
-    return this.value.then((value) => {
-      if (value.status === 7) {
-        throw new Error("Can't get value of element that doesn't exist");
-      }
+    const currentValue = getValue(this.matcher, this.value);
 
+    return currentValue.then((value) => {
       return commands.element.attributes.text(value.value.ELEMENT)
         .then(({status, value}) => {
-          if (status !== 0) {
-            throw new Error("Failed to get element value");
+          if (status) {
+            throw new ElementActionError("Failed to get text for element.");
+          }
+
+          return value;
+        });
+    });
+  }
+
+  // TODO: Needs to be more intelligent.
+  getValue() {
+    const currentValue = getValue(this.matcher, this.value);
+
+    return currentValue.then((value) => {
+      return commands.element.attributes.value(value.value.ELEMENT)
+        .then(({status, value}) => {
+          if (status) {
+            throw new ElementActionError("Failed to get value for element.");
           }
 
           return value;
@@ -249,17 +305,7 @@ class Element {
 }
 
 const element = (matcher) => {
-  let $element = new Element(matcher.resolve());
-
-  $element.then = function(resolve, reject) {
-    return this.value.then((value) => {
-      const promise = Promise.resolve(value);
-
-      resolve(new Element(promise));
-    }, reject);
-  };
-
-  return $element;
+  return new Element({matcher});
 };
 
 module.exports = {

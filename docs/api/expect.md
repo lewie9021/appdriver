@@ -36,7 +36,7 @@ The `expect` utility is the out-of-the-box solution for asserting within tests. 
 
 TODO: Description here.
 
-:hammer: [```.toHaveValue(value: String | Number) => Promise```](./expect/toHaveValue.md)
+:hammer: [```.toHaveValue(value: String | Number | Boolean) => Promise```](./expect/toHaveValue.md)
 
 TODO: Description here.
 

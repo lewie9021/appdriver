@@ -1,8 +1,8 @@
 # Elements
 
-:hammer: [```elements(matcher: Matcher) => Array<Element>```](./)
+:white_check_mark: [```elements(matcher: Matcher) => Array<Element>```](./)
 
-The `elements` function provides a way to select multiple elements on the screen. You will need to use a `matcher` object to define how elements are found. The most common is `by.label` which finds elements by accessibility id.
+The `elements` function provides a way to select multiple elements on the screen. You will need to use a `matcher` object to define how elements are found. The most common is `by.label` which finds elements by accessibility label.
 
 ### Examples
 

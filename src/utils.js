@@ -4,6 +4,11 @@ const delay = (ms) => {
   });
 };
 
+const isNumber = (x) => {
+  return typeof x === "number";
+};
+
 module.exports = {
-  delay
+  delay,
+  isNumber
 };

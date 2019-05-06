@@ -1,4 +1,5 @@
 const commands = require("./commands");
+const { ElementNotFoundError } = require("./errors");
 
 // Very crude implementation that supports simple fuzzy matching, e.g. "list-item-*", "*item*", and "*-item"
 // TODO: Needs to escape value to avoid unexpected behaviour.
@@ -81,7 +82,14 @@ const by = {
         ? commands.element.findElements
         : commands.element.findElement;
 
-      return command(getLabelQuery(accessibilityLabel));
+      return command(getLabelQuery(accessibilityLabel))
+        .then((response) => {
+          if (response.status) {
+            throw new ElementNotFoundError(`Failed to find element.`);
+          }
+
+          return response;
+        });
     }
   })
 };

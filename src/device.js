@@ -2,7 +2,7 @@ const commands = require("./commands");
 
 const restartApp = (capabilities) => {
   if (!capabilities.noReset) {
-    return Promise.reject(new Error("'noReset' must be set to 'true' in session capabilities to use this command."));
+    return Promise.reject(new Error("'noReset' must be 'true' in session capabilities to use this command."));
   }
 
   return commands.device.app.resetApp()
@@ -15,7 +15,7 @@ const restartApp = (capabilities) => {
 
 const resetApp = (capabilities) => {
   if (capabilities.noReset) {
-    return Promise.reject(new Error("'noReset' must not be set to 'true' in session capabilities to use this command."));
+    return Promise.reject(new Error("'noReset' must not be 'true' in session capabilities to use this command."));
   }
 
   return commands.device.app.resetApp()
@@ -42,10 +42,12 @@ const getViewport = () => {
     });
 };
 
-const performGesture = (actions) => {
+const performGesture = async (gesture) => {
+  const actions = await gesture.resolve();
+
   return commands.interactions.actions(actions)
     .then(({status}) => {
-      if (status !== 0) {
+      if (status) {
         throw new Error("Failed to perform gesture.");
       }
     });
