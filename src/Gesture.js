@@ -26,6 +26,10 @@ class Gesture {
             return result.concat([
               {type: "pointerMove", duration: action.duration, origin: "viewport", x: action.x, y: action.y}
             ]);
+          case "release":
+            return result.concat([
+              {type: "pointerUp", button: 0}
+            ]);
           default:
             return result;
         }
@@ -68,6 +72,14 @@ class Gesture {
       duration,
       x,
       y
+    });
+
+    return this;
+  }
+
+  release() {
+    this.actions.push({
+      type: "release"
     });
 
     return this;
