@@ -90,7 +90,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.getViewport() => Promise<{width: Number, height: Number}>```](./device/getViewport.md)
+:white_check_mark: [```.getViewport() => Promise<{width: Number, height: Number}>```](./device/getViewport.md)
 
 TODO: Description here.
 
