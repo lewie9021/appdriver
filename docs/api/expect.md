@@ -76,7 +76,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.toBeVisible() => Promise```](./expect/toBeVisible.md)
+:white_check_mark: [```.toBeVisible() => Promise```](./expect/toBeVisible.md)
 
 TODO: Description here.
 
