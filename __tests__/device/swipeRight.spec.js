@@ -76,3 +76,77 @@ it("correctly executes gesture with duration parameter", async () => {
     ]
   }]);
 });
+
+it("defaults x to 0", async () => {
+  mockCommand(commands.session.getWindowRect, () => createSessionWindowRectFixture({width: 1000, height: 1600}));
+  mockCommand(commands.interactions.actions, () => createFixture());
+
+  await device.swipeRight({y: 200, distance: 500});
+  await device.swipeRight({y: 200, percentage: 0.75});
+
+  expect(commands.interactions.actions).toHaveBeenNthCalledWith(1, [{
+    id: "finger1",
+    type: "pointer",
+    parameters: {
+      pointerType: "touch"
+    },
+    actions: [
+      {type: "pointerMove", duration: 0, origin: "viewport", x: 0, y: 200},
+      {type: "pointerDown", button: 0},
+      {type: "pause", duration: 250},
+      {type: "pointerMove", duration: 50, origin: "pointer", x: 500, y: 0},
+      {type: "pointerUp", button: 0}
+    ]
+  }]);
+  expect(commands.interactions.actions).toHaveBeenNthCalledWith(2, [{
+    id: "finger1",
+    type: "pointer",
+    parameters: {
+      pointerType: "touch"
+    },
+    actions: [
+      {type: "pointerMove", duration: 0, origin: "viewport", x: 0, y: 200},
+      {type: "pointerDown", button: 0},
+      {type: "pause", duration: 250},
+      {type: "pointerMove", duration: 50, origin: "pointer", x: 750, y: 0},
+      {type: "pointerUp", button: 0}
+    ]
+  }]);
+});
+
+it("defaults y value to 0", async () => {
+  mockCommand(commands.session.getWindowRect, () => createSessionWindowRectFixture({width: 1000, height: 1600}));
+  mockCommand(commands.interactions.actions, () => createFixture());
+
+  await device.swipeRight({x: 350, distance: 150});
+  await device.swipeRight({x: 500, percentage: 0.2});
+
+  expect(commands.interactions.actions).toHaveBeenNthCalledWith(1, [{
+    id: "finger1",
+    type: "pointer",
+    parameters: {
+      pointerType: "touch"
+    },
+    actions: [
+      {type: "pointerMove", duration: 0, origin: "viewport", x: 350, y: 0},
+      {type: "pointerDown", button: 0},
+      {type: "pause", duration: 250},
+      {type: "pointerMove", duration: 50, origin: "pointer", x: 150, y: 0},
+      {type: "pointerUp", button: 0}
+    ]
+  }]);
+  expect(commands.interactions.actions).toHaveBeenNthCalledWith(2, [{
+    id: "finger1",
+    type: "pointer",
+    parameters: {
+      pointerType: "touch"
+    },
+    actions: [
+      {type: "pointerMove", duration: 0, origin: "viewport", x: 500, y: 0},
+      {type: "pointerDown", button: 0},
+      {type: "pause", duration: 250},
+      {type: "pointerMove", duration: 50, origin: "pointer", x: 200, y: 0},
+      {type: "pointerUp", button: 0}
+    ]
+  }]);
+});
