@@ -170,23 +170,23 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.swipeUp({x: Number, y: Number, distance?: Number, percentage?: Number, duration?: Number}) => Promise```](./device/swipeUp.md)
+:hammer: [```.swipeUp(options: {x?: Number, y?: Number, distance?: Number, percentage?: Number, duration?: Number}) => Promise```](./device/swipeUp.md)
 
 TODO: Description here.
 
-:hammer: [```.swipeDown({x: Number, y: Number, distance?: Number, percentage?: Number, duration?: Number}) => Promise```](./device/swipeDown.md)
+:hammer: [```.swipeDown(options: {x?: Number, y?: Number, distance?: Number, percentage?: Number, duration?: Number}) => Promise```](./device/swipeDown.md)
 
 TODO: Description here.
 
-:white_check_mark: [```.swipeLeft({x: Number, y: Number, distance?: Number, percentage?: Number, duration?: Number}) => Promise```](./device/swipeLeft.md)
+:white_check_mark: [```.swipeLeft(options; {x?: Number, y?: Number, distance?: Number, percentage?: Number, duration?: Number}) => Promise```](./device/swipeLeft.md)
 
 TODO: Description here.
 
-:white_check_mark: [```.swipeRight({x: Number, y: Number, distance?: Number, percentage?: Number, duration?: Number}) => Promise```](./device/swipeRight.md)
+:white_check_mark: [```.swipeRight(options: {x?: Number, y?: Number, distance?: Number, percentage?: Number, duration?: Number}) => Promise```](./device/swipeRight.md)
 
 TODO: Description here.
 
-:hammer: [```.swipe({x: Number, y: Number, direction: Number, distance: Number, duration?: Number}) => Promise```](./device/swipe.md)
+:hammer: [```.swipe(options: {x?: Number, y?: Number, direction: Number, distance: Number, duration?: Number}) => Promise```](./device/swipe.md)
 
 TODO: Description here.
 
