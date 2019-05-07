@@ -132,6 +132,23 @@ describe("moveTo", () => {
       ]
     }]);
   });
+
+  it("supports defining a duration", () => {
+    const gesture = new Gesture();
+
+    gesture.moveTo({x: 100, y: 100, duration: 75});
+
+    expect(gesture.resolve()).resolves.toEqual([{
+      id: "finger1",
+      type: "pointer",
+      parameters: {
+        pointerType: "touch"
+      },
+      actions: [
+        {type: "pointerMove", duration: 75, origin: "viewport", x: 100, y: 100}
+      ]
+    }]);
+  });
 });
 
 describe("release", () => {
