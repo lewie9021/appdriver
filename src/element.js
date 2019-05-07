@@ -302,6 +302,21 @@ class Element {
         });
     });
   }
+
+  isVisible() {
+    const currentValue = getValue(this.matcher, this.value);
+
+    return currentValue.then((value) => {
+      return commands.element.attributes.displayed(value.value.ELEMENT)
+        .then(({status, value}) => {
+          if (status) {
+            throw new ElementActionError("Failed to get visibility status of element.");
+          }
+
+          return value;
+        });
+    });
+  }
 }
 
 const element = (matcher) => {
