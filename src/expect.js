@@ -18,6 +18,14 @@ class Expect {
       throw new Error(`Expected element to have value '${value}' but instead got '${elementText}'.`);
     }
   }
+
+  async toBeVisible() {
+    const elementIsVisible = await this.value.isVisible();
+
+    if (elementIsVisible !== true) {
+      throw new Error(`Expected element to be visible but instead got '${elementIsVisible}'.`);
+    }
+  }
 }
 
 const expect = (value) => {
