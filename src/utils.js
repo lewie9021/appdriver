@@ -8,7 +8,12 @@ const isNumber = (x) => {
   return typeof x === "number";
 };
 
+const isUndefined = (x) => {
+  return typeof x === "undefined";
+};
+
 module.exports = {
   delay,
-  isNumber
+  isNumber,
+  isUndefined
 };

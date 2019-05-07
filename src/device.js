@@ -1,5 +1,6 @@
 const commands = require("./commands");
 const gestures = require("./gestures");
+const { isUndefined } = require("./utils");
 
 const restartApp = (capabilities) => {
   if (!capabilities.noReset) {
@@ -81,7 +82,9 @@ const swipeLeft = async ({x, y, distance, percentage, duration}) => {
     swipeDistance = viewport.width * percentage;
   }
 
-  const gesture = gestures.swipeLeft({x, y, distance: swipeDistance, duration});
+  const xCoordinate = isUndefined(x) ? swipeDistance : x;
+  const yCoordinate = isUndefined(y) ? 0 : y;
+  const gesture = gestures.swipeLeft({x: xCoordinate, y: yCoordinate, distance: swipeDistance, duration});
 
   return performGesture(gesture);
 };
