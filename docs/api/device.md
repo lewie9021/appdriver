@@ -190,6 +190,6 @@ TODO: Description here.
 
 TODO: Description here.
 
-:white_check_mark: [```.performGesture(gesture: Gesture) => Promise```](./device/performGesture.md)
+:hammer: [```.performGesture(gesture: Gesture) => Promise```](./device/performGesture.md)
 
 TODO: Description here.

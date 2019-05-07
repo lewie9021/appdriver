@@ -25,7 +25,7 @@ The `element` instance provides a way to interact with elements on the screen. Y
 
 TODO: Description here.
 
-:white_check_mark: [```.longPress({x?: Number, y?: Number, duration?: Number}) => Element```](./element/longPress.md)
+:hammer: [```.longPress({x?: Number, y?: Number, duration?: Number}) => Element```](./element/longPress.md)
 
 TODO: Description here.
 
@@ -65,7 +65,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:white_check_mark: [```.getLocation({relative: Boolean}) => {x: Number, y: Number}```](./element/getLocation.md)
+:hammer: [```.getLocation({relative: Boolean}) => {x: Number, y: Number}```](./element/getLocation.md)
 
 TODO: Description here.
 
