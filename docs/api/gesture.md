@@ -121,7 +121,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:white_check_mark: :hammer: [```.moveTo(options: {x: Number, y: Number, relative?: Boolean, element?: Element}) => Gesture```](./gesture/moveTo.md)
+:white_check_mark: :hammer: [```.moveTo(options: {x: Number, y: Number, relative?: Boolean, duration?: Number, element?: Element}) => Gesture```](./gesture/moveTo.md)
 
 TODO: Description here.
 
