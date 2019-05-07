@@ -57,7 +57,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.swipeUp({x: Number, y: Number, distance: Number, percentage?: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/swipeUp.md)
+:hammer: [```.swipeUp({x: Number, y: Number, distance: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/swipeUp.md)
 
 TODO: Description here.
 
@@ -65,11 +65,11 @@ TODO: Description here.
 
 TODO: Description here.
 
-:white_check_mark: :hammer: [```.swipeLeft({x: Number, y: Number, distance: Number, percentage?: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/swipeLeft.md)
+:white_check_mark: :hammer: [```.swipeLeft({x: Number, y: Number, distance: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/swipeLeft.md)
 
 TODO: Description here.
 
-:white_check_mark: :hammer: [```.swipeRight({x: Number, y: Number, distance: Number, percentage?: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/swipeRight.md)
+:white_check_mark: :hammer: [```.swipeRight({x: Number, y: Number, distance: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/swipeRight.md)
 
 TODO: Description here.
 
