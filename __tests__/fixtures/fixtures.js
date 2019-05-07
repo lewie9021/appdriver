@@ -60,6 +60,13 @@ const createElementDisplayedFixture = ({
   displayed
 }) => createFixture({status, sessionId, value: displayed});
 
+const createSessionWindowRectFixture = ({
+  status = defaults.status,
+  sessionId = defaults.sessionId,
+  width,
+  height
+}) => createFixture({status, sessionId, value: {width, height, x: 0, y: 0}})
+
 module.exports = {
   createFixture,
   createElementFixture,
@@ -67,5 +74,6 @@ module.exports = {
   createElementTextFixture,
   createElementValueFixture,
   createElementClearFixture,
-  createElementDisplayedFixture
+  createElementDisplayedFixture,
+  createSessionWindowRectFixture
 };

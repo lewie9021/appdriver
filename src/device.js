@@ -34,8 +34,6 @@ const getViewport = () => {
       }
 
       return {
-        x: value.x,
-        y: value.y,
         width: value.width,
         height: value.height
       }
