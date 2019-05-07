@@ -190,14 +190,10 @@ class Element {
     const currentValue = getValue(this.matcher, this.value);
 
     return currentValue.then((value) => {
-      if (value.status === 7) {
-        throw new Error("Can't get size of element that doesn't exist");
-      }
-
       return commands.element.attributes.size(value.value.ELEMENT)
         .then(({status, value}) => {
-          if (status !== 0) {
-            throw new Error("Failed to get element size");
+          if (status) {
+            throw new Error("Failed to get element size.");
           }
 
           return value;

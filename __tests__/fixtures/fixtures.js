@@ -60,12 +60,21 @@ const createElementDisplayedFixture = ({
   displayed
 }) => createFixture({status, sessionId, value: displayed});
 
+// /session/:sessionId/element/:elementId/size.
+const createElementSizeFixture = ({
+  status = defaults.status,
+  sessionId = defaults.sessionId,
+  width,
+  height
+}) => createFixture({status, sessionId, value: {width, height}});
+
+// /session/:sessionId/window/rect.
 const createSessionWindowRectFixture = ({
   status = defaults.status,
   sessionId = defaults.sessionId,
   width,
   height
-}) => createFixture({status, sessionId, value: {width, height, x: 0, y: 0}})
+}) => createFixture({status, sessionId, value: {width, height, x: 0, y: 0}});
 
 module.exports = {
   createFixture,
@@ -75,5 +84,6 @@ module.exports = {
   createElementValueFixture,
   createElementClearFixture,
   createElementDisplayedFixture,
+  createElementSizeFixture,
   createSessionWindowRectFixture
 };
