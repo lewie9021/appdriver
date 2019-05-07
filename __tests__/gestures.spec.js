@@ -19,7 +19,7 @@ describe("longPress", () => {
   it("correctly defines a longPress gesture", () => {
     const result = gestures.longPress({x: 150, y: 250});
 
-    expect(result.resolve()).resolves.toEqual([{
+    return expect(result.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -45,7 +45,7 @@ describe("swipeLeft", () => {
   it("correctly defines a swipe left gesture", () => {
     const result = gestures.swipeLeft({x: 150, y: 200, distance: 100});
 
-    expect(result.resolve()).resolves.toEqual([{
+    return expect(result.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -72,7 +72,7 @@ describe("swipeRight", () => {
   it("correctly defines a swipe right gesture", () => {
     const result = gestures.swipeRight({x: 150, y: 200, distance: 100});
 
-    expect(result.resolve()).resolves.toEqual([{
+    return expect(result.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
