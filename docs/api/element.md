@@ -49,7 +49,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.exists() => Boolean```](./element/exists.md)
+:hammer: [```.exists() => Boolean```](./element/exists.md)
 
 TODO: Description here.
 
