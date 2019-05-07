@@ -8,7 +8,7 @@ The `device` object provides a way to interact within the application that's not
 (async () => {
   const swipeUp = gestures.create()
     .press({x: 160, y: 200})
-    .wait(250)
+    .wait({duration: 250})
     .moveTo({y: 100})
     .release();
   
@@ -170,19 +170,19 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.swipeUp({x: Number, y: Number, distance: Number, duration?: Number}) => Promise```](./device/swipeUp.md)
+:hammer: [```.swipeUp({x: Number, y: Number, distance?: Number, percentage?: Number, duration?: Number}) => Promise```](./device/swipeUp.md)
 
 TODO: Description here.
 
-:hammer: [```.swipeDown({x: Number, y: Number, distance: Number, duration?: Number}) => Promise```](./device/swipeDown.md)
+:hammer: [```.swipeDown({x: Number, y: Number, distance?: Number, percentage?: Number, duration?: Number}) => Promise```](./device/swipeDown.md)
 
 TODO: Description here.
 
-:hammer: [```.swipeLeft({x: Number, y: Number, distance: Number, duration?: Number}) => Promise```](./device/swipeLeft.md)
+:hammer: [```.swipeLeft({x: Number, y: Number, distance?: Number, percentage?: Number, duration?: Number}) => Promise```](./device/swipeLeft.md)
 
 TODO: Description here.
 
-:hammer: [```.swipeRight({x: Number, y: Number, distance: Number, duration?: Number}) => Promise```](./device/swipeRight.md)
+:hammer: [```.swipeRight({x: Number, y: Number, distance?: Number, percentage?: Number, duration?: Number}) => Promise```](./device/swipeRight.md)
 
 TODO: Description here.
 
