@@ -53,7 +53,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.isVisible() => Boolean```](./element/isVisible.md)
+:white_check_mark: [```.isVisible() => Boolean```](./element/isVisible.md)
 
 TODO: Description here.
 
