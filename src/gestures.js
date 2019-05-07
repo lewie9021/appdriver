@@ -38,11 +38,11 @@ const longPress = ({x, y, duration = 750}) => {
 };
 
 // Note: Having type: "pointerMove", origin: "pointer", and duration: <= 10 doesn't work on Android.
-const swipeLeft = ({x, y, distance}) => {
+const swipeLeft = ({x, y, distance, duration = 50}) => {
   return create()
     .press({x, y})
     .wait({duration: 250})
-    .moveTo({x: distance * -1, y: 0, relative: true, duration: 50})
+    .moveTo({x: distance * -1, y: 0, relative: true, duration})
     .release();
 };
 

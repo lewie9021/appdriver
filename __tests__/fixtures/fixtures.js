@@ -7,7 +7,7 @@ const createFixture = ({
   status = defaults.status,
   sessionId = defaults.sessionId,
   value = null
-}) => ({
+} = {}) => ({
   status,
   sessionId,
   value

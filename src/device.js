@@ -1,4 +1,5 @@
 const commands = require("./commands");
+const gestures = require("./gestures");
 
 const restartApp = (capabilities) => {
   if (!capabilities.noReset) {
@@ -71,11 +72,26 @@ const setOrientation = (orientation) => {
     });
 };
 
+const swipeLeft = async ({x, y, distance, percentage, duration}) => {
+  let swipeDistance = distance;
+
+  if (percentage) {
+    const viewport = await getViewport();
+
+    swipeDistance = viewport.width * percentage;
+  }
+
+  const gesture = gestures.swipeLeft({x, y, distance: swipeDistance, duration});
+
+  return performGesture(gesture);
+};
+
 module.exports = {
   resetApp,
   restartApp,
   getViewport,
   performGesture,
   getOrientation,
-  setOrientation
+  setOrientation,
+  swipeLeft
 };
