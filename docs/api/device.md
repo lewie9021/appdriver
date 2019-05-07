@@ -90,6 +90,10 @@ TODO: Description here.
 
 TODO: Description here.
 
+:warning: [```.getViewport() => Promise<{width: Number, height: Number}>```](./device/getViewport.md)
+
+TODO: Description here.
+
 :warning: [```.takeScreenshot(filePath?: String) => Promise<{value: String, width: Number, height: Number}>```](./device/takeScreenshot.md)
 
 TODO: Description here.
