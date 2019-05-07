@@ -46,11 +46,11 @@ const swipeLeft = ({x, y, distance, duration = 50}) => {
     .release();
 };
 
-const swipeRight = ({x, y, distance}) => {
+const swipeRight = ({x, y, distance, duration = 50}) => {
   return create()
     .press({x, y})
     .wait({duration: 250})
-    .moveTo({x: distance, y: 0, relative: true, duration: 50})
+    .moveTo({x: distance, y: 0, relative: true, duration})
     .release();
 };
 

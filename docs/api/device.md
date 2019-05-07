@@ -178,11 +178,11 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.swipeLeft({x: Number, y: Number, distance?: Number, percentage?: Number, duration?: Number}) => Promise```](./device/swipeLeft.md)
+:white_check_mark: [```.swipeLeft({x: Number, y: Number, distance?: Number, percentage?: Number, duration?: Number}) => Promise```](./device/swipeLeft.md)
 
 TODO: Description here.
 
-:hammer: [```.swipeRight({x: Number, y: Number, distance?: Number, percentage?: Number, duration?: Number}) => Promise```](./device/swipeRight.md)
+:white_check_mark: [```.swipeRight({x: Number, y: Number, distance?: Number, percentage?: Number, duration?: Number}) => Promise```](./device/swipeRight.md)
 
 TODO: Description here.
 

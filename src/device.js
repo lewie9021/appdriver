@@ -86,6 +86,20 @@ const swipeLeft = async ({x, y, distance, percentage, duration}) => {
   return performGesture(gesture);
 };
 
+const swipeRight = async ({x, y, distance, percentage, duration}) => {
+  let swipeDistance = distance;
+
+  if (percentage) {
+    const viewport = await getViewport();
+
+    swipeDistance = viewport.width * percentage;
+  }
+
+  const gesture = gestures.swipeRight({x, y, distance: swipeDistance, duration});
+
+  return performGesture(gesture);
+};
+
 module.exports = {
   resetApp,
   restartApp,
@@ -93,5 +107,6 @@ module.exports = {
   performGesture,
   getOrientation,
   setOrientation,
-  swipeLeft
+  swipeLeft,
+  swipeRight
 };

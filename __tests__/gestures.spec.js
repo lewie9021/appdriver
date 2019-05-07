@@ -60,6 +60,25 @@ describe("swipeLeft", () => {
       ]
     }]);
   });
+
+  it("correctly defines a swipe left gesture with duration parameter", () => {
+    const result = gestures.swipeLeft({x: 150, y: 200, distance: 100, duration: 75});
+
+    return expect(result.resolve()).resolves.toEqual([{
+      id: "finger1",
+      type: "pointer",
+      parameters: {
+        pointerType: "touch"
+      },
+      actions: [
+        {type: "pointerMove", duration: 0, origin: "viewport", x: 150, y: 200},
+        {type: "pointerDown", button: 0},
+        {type: "pause", duration: 250},
+        {type: "pointerMove", duration: 75, origin: "pointer", x: -100, y: 0},
+        {type: "pointerUp", button: 0}
+      ]
+    }]);
+  });
 });
 
 describe("swipeRight", () => {
@@ -83,6 +102,25 @@ describe("swipeRight", () => {
         {type: "pointerDown", button: 0},
         {type: "pause", duration: 250},
         {type: "pointerMove", duration: 50, origin: "pointer", x: 100, y: 0},
+        {type: "pointerUp", button: 0}
+      ]
+    }]);
+  });
+
+  it("correctly defines a swipe right gesture with duration parameter", () => {
+    const result = gestures.swipeRight({x: 150, y: 200, distance: 100, duration: 75});
+
+    return expect(result.resolve()).resolves.toEqual([{
+      id: "finger1",
+      type: "pointer",
+      parameters: {
+        pointerType: "touch"
+      },
+      actions: [
+        {type: "pointerMove", duration: 0, origin: "viewport", x: 150, y: 200},
+        {type: "pointerDown", button: 0},
+        {type: "pause", duration: 250},
+        {type: "pointerMove", duration: 75, origin: "pointer", x: 100, y: 0},
         {type: "pointerUp", button: 0}
       ]
     }]);
