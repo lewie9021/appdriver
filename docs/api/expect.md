@@ -82,7 +82,7 @@ TODO: Description here.
 
 ##### Value
 
-:hammer: [```.toHaveLength(value: Number) => Promise```](./expect/toHaveLength.md)
+:white_check_mark: [```.toHaveLength(length: Number) => Promise```](./expect/toHaveLength.md)
 
 TODO: Description here.
 
