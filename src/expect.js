@@ -1,3 +1,19 @@
+const getValueType = (value) => {
+  if (Array.isArray(value)) {
+    return "array";
+  }
+
+  if (value === null) {
+    return "null";
+  }
+
+  if (Promise.resolve(value) === value) {
+    return "Promise";
+  }
+
+  return typeof value;
+};
+
 class Expect {
   constructor(value) {
     this.value = value;
@@ -24,6 +40,18 @@ class Expect {
 
     if (elementIsVisible !== true) {
       throw new Error(`Expected element to be visible but instead got '${elementIsVisible}'.`);
+    }
+  }
+
+  async toHaveLength(length) {
+    const validTypes = ["array", "object", "string"];
+    const valueType = getValueType(this.value);
+    const valueLength = validTypes.includes(valueType)
+      ? this.value.length
+      : 0;
+
+    if (valueLength !== length) {
+      throw new Error(`Expected ${valueType} to have length '${length}' but instead got '${valueLength}'.`);
     }
   }
 }
