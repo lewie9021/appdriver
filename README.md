@@ -66,16 +66,19 @@ A mobile focused, intuitive Appium client.
 ### Documentation
 
 - [Introduction](./docs)
+- [Getting Started](./docs/getting-started)
+  - [Installing Appium](./docs/installing-appium.md)
+  - [Installing AppDriver](./docs/installing-appdriver.md)
 - [Guides](./docs/guides)
-  - [Installation](./docs/guides/installation.md)
   - [Finding Elements](./docs/guides/finding-elements.md)
 - [API Reference](./docs/api)
-  - [Device](./docs/api/device.md)
   - [Matchers](./docs/api/matchers.md)
   - [Element](./docs/api/element.md)
   - [Elements](./docs/api/elements.md)
+  - [Device](./docs/api/device.md)
   - [Gestures](./docs/api/gestures.md)
   - [Expect](./docs/api/expect.md)
+- [Change Log](./CHANGELOG.md)
 
 ### TODOs
 
