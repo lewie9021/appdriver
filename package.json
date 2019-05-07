@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "jest __tests__",
+    "test": "jest",
     "test:example": "./bin/appdriver --config examples/native-demo-app/config/local.config.js"
   },
   "license": "MIT",
@@ -16,5 +16,10 @@
   "devDependencies": {
     "@types/jest": "24.0.11",
     "jest": "24.7.1"
+  },
+  "jest": {
+    "testMatch": [
+      "<rootDir>/__tests__/**/*.spec.js"
+    ]
   }
 }
