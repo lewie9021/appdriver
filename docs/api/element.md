@@ -45,7 +45,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.getValue() => Any```](./element/getValue.md)
+:white_check_mark: :hammer: [```.getValue() => Any```](./element/getValue.md)
 
 TODO: Description here.
 
@@ -65,7 +65,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.getLocation({relative: Boolean}) => {x: Number, y: Number}```](./element/getLocation.md)
+:white_check_mark: :hammer: [```.getLocation({relative: Boolean}) => {x: Number, y: Number}```](./element/getLocation.md)
 
 TODO: Description here.
 
