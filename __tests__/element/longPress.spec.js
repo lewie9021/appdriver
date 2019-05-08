@@ -15,7 +15,7 @@ afterEach(() => {
 it("returns an instance of Element to enable function chaining", async () => {
   const elementFixture = createElementFixture({elementId: "elementId"});
   mockCommand(commands.element.findElement, () => elementFixture);
-  mockCommand(commands.interactions.actions, () => createFixture());
+  mockCommand(commands.interactions.actions, () => createFixture({value: {}}));
 
   const $element = await element(by.label("button")).longPress();
 
@@ -27,7 +27,7 @@ it("returns an instance of Element to enable function chaining", async () => {
 
 it("returns a new element to avoid unwanted mutation", async () => {
   mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-  mockCommand(commands.interactions.actions, () => createFixture());
+  mockCommand(commands.interactions.actions, () => createFixture({value: {}}));
 
   const $element = await element(by.label("button"));
   const $newElement = await $element.longPress();
@@ -37,7 +37,7 @@ it("returns a new element to avoid unwanted mutation", async () => {
 
 it("correctly propagates errors", async () => {
   mockCommand(commands.element.findElement, () => createElementFixture({status: 7, elementId: "elementId"}));
-  mockCommand(commands.interactions.actions, () => createFixture());
+  mockCommand(commands.interactions.actions, () => createFixture({value: {}}));
 
   await expect(element(by.label("button")).longPress())
     .rejects.toThrow(ElementNotFoundError);
