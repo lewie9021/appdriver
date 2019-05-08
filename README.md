@@ -2,6 +2,10 @@
 
 A mobile focused, intuitive Appium client.
 
+### Notice
+
+**This project is currently in the Alpha stage**, meaning the API is subject to change and may be missing functionality detailed in the documentation. If you're interested in the project's roadmap, feel free to take a look at the [Beta release project board](https://github.com/lewie9021/appdriver/projects/2).
+
 ### Goal
 
 The goal of this project is to offer a mobile focused E2E testing framework that's "batteries included". It should provide a familiar interface for running tests, an assertion library orientated around E2E testing, and first class support for common operations.
