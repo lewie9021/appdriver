@@ -1,4 +1,11 @@
+jest.mock("../src/commands");
+const commands = require("../src/commands");
+
+const { by } = require("../src/matchers");
+const { element } = require("../src/element.js");
 const Gesture = require("../src/Gesture");
+const { createElementFixture } = require("./fixtures/fixtures");
+const mockCommand = require("./helpers/mockCommand");
 
 describe("press", () => {
   it("adds a press action to the sequence", () => {
@@ -6,7 +13,7 @@ describe("press", () => {
 
     gesture.press();
 
-    expect(gesture.resolve()).resolves.toEqual([{
+    return expect(gesture.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -31,7 +38,7 @@ describe("press", () => {
 
     gesture.press({x: 100, y: 100});
 
-    expect(gesture.resolve()).resolves.toEqual([{
+    return expect(gesture.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -49,7 +56,7 @@ describe("press", () => {
 
     gesture.press({relative: true, x: 100, y: 100});
 
-    expect(gesture.resolve()).resolves.toEqual([{
+    return expect(gesture.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -69,7 +76,7 @@ describe("wait", () => {
 
     gesture.wait({duration: 100});
 
-    expect(gesture.resolve()).resolves.toEqual([{
+    return expect(gesture.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -96,7 +103,7 @@ describe("moveTo", () => {
 
     gesture.moveTo({x: 100, y: 100});
 
-    expect(gesture.resolve()).resolves.toEqual([{
+    return expect(gesture.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -121,7 +128,7 @@ describe("moveTo", () => {
 
     gesture.moveTo({x: 100, y: 100, relative: true});
 
-    expect(gesture.resolve()).resolves.toEqual([{
+    return expect(gesture.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -138,7 +145,7 @@ describe("moveTo", () => {
 
     gesture.moveTo({x: 100, y: 100, duration: 75});
 
-    expect(gesture.resolve()).resolves.toEqual([{
+    return expect(gesture.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -146,6 +153,26 @@ describe("moveTo", () => {
       },
       actions: [
         {type: "pointerMove", duration: 75, origin: "viewport", x: 100, y: 100}
+      ]
+    }]);
+  });
+
+  it("supports moving to a coordinate relative to the given element", () => {
+    mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
+
+    const gesture = new Gesture();
+    const $element = element(by.label("button"));
+
+    gesture.moveTo({x: 100, y: 32, duration: 75, element: $element});
+
+    return expect(gesture.resolve()).resolves.toEqual([{
+      id: "finger1",
+      type: "pointer",
+      parameters: {
+        pointerType: "touch"
+      },
+      actions: [
+        {type: "pointerMove", duration: 75, origin: {element: "elementId"}, x: 100, y: 32}
       ]
     }]);
   });
@@ -185,7 +212,7 @@ describe("Common Gestures", () => {
       .wait({duration: 100})
       .release();
 
-    expect(tap.resolve()).resolves.toEqual([{
+    return expect(tap.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -206,7 +233,7 @@ describe("Common Gestures", () => {
       .wait({duration: 1000})
       .release();
 
-    expect(longPress.resolve()).resolves.toEqual([{
+    return expect(longPress.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -228,7 +255,7 @@ describe("Common Gestures", () => {
       .moveTo({x: -100, y: 0, relative: true, duration: 50})
       .release();
 
-    expect(longPress.resolve()).resolves.toEqual([{
+    return expect(longPress.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -251,7 +278,7 @@ describe("Common Gestures", () => {
       .moveTo({x: 100, y: 0, relative: true, duration: 50})
       .release();
 
-    expect(longPress.resolve()).resolves.toEqual([{
+    return expect(longPress.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -274,7 +301,7 @@ describe("Common Gestures", () => {
       .moveTo({x: 0, y: -100, relative: true, duration: 50})
       .release();
 
-    expect(longPress.resolve()).resolves.toEqual([{
+    return expect(longPress.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -297,7 +324,7 @@ describe("Common Gestures", () => {
       .moveTo({x: 0, y: 100, relative: true, duration: 50})
       .release();
 
-    expect(longPress.resolve()).resolves.toEqual([{
+    return expect(longPress.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {

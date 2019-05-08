@@ -80,12 +80,13 @@ class Element {
     return new Element({matcher: this.matcher, value: nextValue});
   }
 
-  // NOTE: NOT SUPPORTED!
-  // _getElementId() {
-  //   return this.value.then((value) => {
-  //     return value.value.ELEMENT;
-  //   })
-  // }
+  _getElementId() {
+    const value = getValue(this.matcher, this.value);
+
+    return value.then((value) => {
+      return value.value.ELEMENT;
+    });
+  }
 
   tap() {
     return this._executeAction(({status, value}, done) => {

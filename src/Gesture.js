@@ -6,13 +6,28 @@ class Gesture {
   }
 
   async resolve() {
+    const resolvedActions = await Promise.all(
+      this.actions.map(async (action) => {
+        if (action.element) {
+          const elementId = await action.element._getElementId();
+
+          return {
+            ...action,
+            element: elementId
+          };
+        }
+
+        return action;
+      })
+    );
+
     return [{
       id: "finger1",
       type: "pointer",
       parameters: {
         pointerType: "touch"
       },
-      actions: this.actions.reduce((result, action) => {
+      actions: resolvedActions.reduce((result, action) => {
         switch (action.type) {
           case "press":
             return result.concat([{
@@ -28,7 +43,11 @@ class Gesture {
             return result.concat([{
               type: "pointerMove",
               duration: action.duration,
-              origin: action.relative ? "pointer" : "viewport",
+              origin: action.element
+                ? {element: action.element}
+                : action.relative
+                  ? "pointer"
+                  : "viewport",
               x: action.x,
               y: action.y
             }]);
@@ -74,6 +93,7 @@ class Gesture {
   moveTo(options) {
     const relative = options.relative || false;
     const duration = options.duration || 0;
+    const element = options.element || null;
     const x = options.x;
     const y = options.y;
 
@@ -81,6 +101,7 @@ class Gesture {
       type: "move",
       relative,
       duration,
+      element,
       x,
       y
     });
