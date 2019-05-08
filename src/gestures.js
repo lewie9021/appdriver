@@ -4,9 +4,9 @@ const create = () => {
   return new Gesture();
 };
 
-const longPress = ({x, y, duration = 750}) => {
+const longPress = ({x, y, duration = 750, element}) => {
   return create()
-    .press({x, y})
+    .press({x, y, element})
     .wait({duration})
     .release();
 };

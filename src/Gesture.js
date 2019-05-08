@@ -68,7 +68,8 @@ class Gesture {
       this.moveTo({
         x: options.x,
         y: options.y,
-        relative: options.relative
+        relative: options.relative,
+        element: options.element
       });
     }
 

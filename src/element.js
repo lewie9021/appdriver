@@ -1,4 +1,5 @@
 const commands = require("./commands");
+const gestures = require("./gestures");
 const { ElementNotFoundError, ElementActionError } = require("./errors");
 const { delay } = require("./utils");
 
@@ -107,30 +108,23 @@ class Element {
   }
 
   longPress({x = 0, y = 0, duration = 750} = {}) {
-    return this._executeAction(({value}, done) => {
-      const actions = [{
-        type: "pointer",
-        id: "finger1",
-        parameters: {
-          pointerType: "touch"
-        },
-        actions: [
-          {type: "pointerMove", duration: 0, origin: {element: value.ELEMENT}, x, y},
-          {type: "pointerDown", button: 0},
-          {type: "pause", duration},
-          {type: "pointerUp", button: 0}
-        ]
-      }];
+    return this._executeAction((value, done) => {
+      const $element = new Element({matcher: this.matcher, value: Promise.resolve(value)});
 
-      commands.interactions.actions(actions)
-        .then(({status}) => {
-          if (status) {
-            return done(new ElementActionError("Failed to long press element."));
-          }
+      return gestures.longPress({x, y, duration, element: $element})
+        .resolve()
+        .then((actions) => {
+          commands.interactions.actions(actions)
+            .then(({status}) => {
+              if (status) {
+              return done(new ElementActionError("Failed to long press element."));
+              }
 
-          done(null);
-        })
-        .catch((err) => done(err));
+              done(null);
+            })
+            .catch((err) => done(err));
+          })
+          .catch((err) => done(err));
     });
   }
 
