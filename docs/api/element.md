@@ -25,7 +25,7 @@ The `element` instance provides a way to interact with elements on the screen. Y
 
 TODO: Description here.
 
-:hammer: [```.longPress({x?: Number, y?: Number, duration?: Number}) => Element```](./element/longPress.md)
+:white_check_mark: [```.longPress(options?: {x?: Number, y?: Number, duration?: Number}) => Element```](./element/longPress.md)
 
 TODO: Description here.
 
