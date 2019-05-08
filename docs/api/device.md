@@ -170,11 +170,11 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.swipeUp(options: {x?: Number, y?: Number, distance?: Number, percentage?: Number, duration?: Number}) => Promise```](./device/swipeUp.md)
+:white_check_mark: [```.swipeUp(options: {x?: Number, y?: Number, distance?: Number, percentage?: Number, duration?: Number}) => Promise```](./device/swipeUp.md)
 
 TODO: Description here.
 
-:hammer: [```.swipeDown(options: {x?: Number, y?: Number, distance?: Number, percentage?: Number, duration?: Number}) => Promise```](./device/swipeDown.md)
+:white_check_mark: [```.swipeDown(options: {x?: Number, y?: Number, distance?: Number, percentage?: Number, duration?: Number}) => Promise```](./device/swipeDown.md)
 
 TODO: Description here.
 
