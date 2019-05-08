@@ -106,40 +106,31 @@ class Element {
   }
 
   longPress({x = 0, y = 0, duration = 750} = {}) {
-    const currentValue = getValue(this.matcher, this.value);
+    return this._executeAction(({value}, done) => {
+      const actions = [{
+        type: "pointer",
+        id: "finger1",
+        parameters: {
+          pointerType: "touch"
+        },
+        actions: [
+          {type: "pointerMove", duration: 0, origin: {element: value.ELEMENT}, x, y},
+          {type: "pointerDown", button: 0},
+          {type: "pause", duration},
+          {type: "pointerUp", button: 0}
+        ]
+      }];
 
-    this.value = new Promise((resolve, reject) => {
-      currentValue.then((value) => {
-        if (value.status === 7) {
-          throw new Error("Can't long press element that doesn't exist");
-        }
+      commands.interactions.actions(actions)
+        .then(({status}) => {
+          if (status) {
+            return done(new ElementActionError("Failed to long press element."));
+          }
 
-        const actions = [{
-          type: "pointer",
-          id: "finger1",
-          parameters: {
-            pointerType: "touch"
-          },
-          actions: [
-            {type: "pointerMove", duration: 0, origin: {element: value.value.ELEMENT}, x, y},
-            {type: "pointerDown", button: 0},
-            {type: "pause", duration},
-            {type: "pointerUp", button: 0}
-          ]
-        }];
-
-        commands.interactions.actions(actions)
-          .then(({status, value}) => {
-            if (status !== 0) {
-              throw new Error("Failed to long press element");
-            }
-
-            return resolve(value);
-          });
-      }, reject);
+          done(null);
+        })
+        .catch((err) => done(err));
     });
-
-    return this;
   }
 
   typeText(text) {
