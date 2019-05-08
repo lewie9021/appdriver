@@ -121,6 +121,22 @@ const swipeUp = async ({x, y, distance, percentage, duration}) => {
   return performGesture(gesture);
 };
 
+const swipeDown = async ({x, y, distance, percentage, duration}) => {
+  let swipeDistance = distance;
+
+  if (percentage) {
+    const viewport = await getViewport();
+
+    swipeDistance = viewport.height * percentage;
+  }
+
+  const xCoordinate = isUndefined(x) ? 0 : x;
+  const yCoordinate = isUndefined(y) ? 0 : y;
+  const gesture = gestures.swipeDown({x: xCoordinate, y: yCoordinate, distance: swipeDistance, duration});
+
+  return performGesture(gesture);
+};
+
 module.exports = {
   resetApp,
   restartApp,
@@ -130,5 +146,6 @@ module.exports = {
   setOrientation,
   swipeLeft,
   swipeRight,
-  swipeUp
+  swipeUp,
+  swipeDown
 };
