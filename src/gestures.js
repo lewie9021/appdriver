@@ -4,19 +4,6 @@ const create = () => {
   return new Gesture();
 };
 
-const swipeUp = {
-  "type": "pointer",
-  "id": "finger1",
-  "parameters": {"pointerType": "touch"},
-  "actions": [
-    {"type": "pointerMove", "duration": 0, "origin": "viewport", "x": 100, "y": 250},
-    {"type": "pointerDown", "button": 0},
-    {"type": "pause", "duration": 500},
-    {"type": "pointerMove", "duration": 1000, "origin": "pointer", "x": 0, "y": -100},
-    {"type": "pointerUp", "button": 0}
-  ]
-};
-
 const swipeDown = {
   "type": "pointer",
   "id": "finger1",
@@ -51,6 +38,14 @@ const swipeRight = ({x, y, distance, duration = 50}) => {
     .press({x, y})
     .wait({duration: 250})
     .moveTo({x: distance, y: 0, relative: true, duration})
+    .release();
+};
+
+const swipeUp = ({x, y, distance, duration = 50}) => {
+  return create()
+    .press({x, y})
+    .wait({duration: 250})
+    .moveTo({x: 0, y: distance * -1, relative: true, duration})
     .release();
 };
 
