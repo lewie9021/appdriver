@@ -76,6 +76,14 @@ const createSessionWindowRectFixture = ({
   height
 }) => createFixture({status, sessionId, value: {width, height, x: 0, y: 0}});
 
+// /session/:sessionId/element/:elementId/location.
+const createElementLocationFixture = ({
+  status = defaults.status,
+  sessionId = defaults.sessionId,
+  x,
+  y
+}) => createFixture({status, sessionId, value: {x, y}});
+
 module.exports = {
   createFixture,
   createElementFixture,
@@ -85,5 +93,6 @@ module.exports = {
   createElementClearFixture,
   createElementDisplayedFixture,
   createElementSizeFixture,
-  createSessionWindowRectFixture
+  createSessionWindowRectFixture,
+  createElementLocationFixture
 };

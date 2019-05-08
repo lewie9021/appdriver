@@ -187,17 +187,13 @@ class Element {
     });
   }
 
-  getLocation({relative = false}) {
+  getLocation({relative = false} = {}) {
     const currentValue = getValue(this.matcher, this.value);
 
-    return currentValue.then((value) => {
-      if (value.status === 7) {
-        throw new Error("Can't get location of element that doesn't exist.");
-      }
-
+    return currentValue.then(({value}) => {
       const command = relative
-        ? commands.element.attributes.locationInView(value.value.ELEMENT)
-        : commands.element.attributes.location(value.value.ELEMENT);
+        ? commands.element.attributes.locationInView(value.ELEMENT)
+        : commands.element.attributes.location(value.ELEMENT);
 
       return command.then(({status, value}) => {
         if (status !== 0) {
