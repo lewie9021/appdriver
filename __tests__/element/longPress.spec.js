@@ -25,6 +25,105 @@ it("returns an instance of Element to enable function chaining", async () => {
   await expect($element.value).resolves.toEqual(elementFixture);
 });
 
+it("executes a long press gesture", async () => {
+  const elementId = "elementId";
+  mockCommand(commands.element.findElement, () => createElementFixture({elementId}));
+  mockCommand(commands.interactions.actions, () => createFixture({value: {}}));
+
+  await element(by.label("button")).longPress();
+
+  expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+  expect(commands.interactions.actions).toHaveBeenCalledTimes(1);
+  expect(commands.interactions.actions).toBeCalledWith([{
+    id: "finger1",
+    type: "pointer",
+    parameters: {
+      pointerType: "touch"
+    },
+    actions: [
+      {type: "pointerMove", duration: 0, origin: {element: elementId}, x: 0, y: 0},
+      {type: "pointerDown", button: 0},
+      {type: "pause", duration: 750},
+      {type: "pointerUp", button: 0}
+    ]
+  }])
+});
+
+it("accepts an x parameter to offset from the left of the element", async () => {
+  const elementId = "elementId";
+  const x = 100;
+  mockCommand(commands.element.findElement, () => createElementFixture({elementId}));
+  mockCommand(commands.interactions.actions, () => createFixture({value: {}}));
+
+  await element(by.label("button")).longPress({x});
+
+  expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+  expect(commands.interactions.actions).toHaveBeenCalledTimes(1);
+  expect(commands.interactions.actions).toBeCalledWith([{
+    id: "finger1",
+    type: "pointer",
+    parameters: {
+      pointerType: "touch"
+    },
+    actions: [
+      {type: "pointerMove", duration: 0, origin: {element: elementId}, x, y: 0},
+      {type: "pointerDown", button: 0},
+      {type: "pause", duration: 750},
+      {type: "pointerUp", button: 0}
+    ]
+  }])
+});
+
+it("accepts an y parameter to offset from the top of the element", async () => {
+  const elementId = "elementId";
+  const y = 32;
+  mockCommand(commands.element.findElement, () => createElementFixture({elementId}));
+  mockCommand(commands.interactions.actions, () => createFixture({value: {}}));
+
+  await element(by.label("button")).longPress({y});
+
+  expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+  expect(commands.interactions.actions).toHaveBeenCalledTimes(1);
+  expect(commands.interactions.actions).toBeCalledWith([{
+    id: "finger1",
+    type: "pointer",
+    parameters: {
+      pointerType: "touch"
+    },
+    actions: [
+      {type: "pointerMove", duration: 0, origin: {element: elementId}, x: 0, y},
+      {type: "pointerDown", button: 0},
+      {type: "pause", duration: 750},
+      {type: "pointerUp", button: 0}
+    ]
+  }])
+});
+
+it("accepts a duration parameter to redefine how long to perform the press action", async () => {
+  const elementId = "elementId";
+  const duration = 1000;
+  mockCommand(commands.element.findElement, () => createElementFixture({elementId}));
+  mockCommand(commands.interactions.actions, () => createFixture({value: {}}));
+
+  await element(by.label("button")).longPress({duration});
+
+  expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+  expect(commands.interactions.actions).toHaveBeenCalledTimes(1);
+  expect(commands.interactions.actions).toBeCalledWith([{
+    id: "finger1",
+    type: "pointer",
+    parameters: {
+      pointerType: "touch"
+    },
+    actions: [
+      {type: "pointerMove", duration: 0, origin: {element: elementId}, x: 0, y: 0},
+      {type: "pointerDown", button: 0},
+      {type: "pause", duration},
+      {type: "pointerUp", button: 0}
+    ]
+  }])
+});
+
 it("returns a new element to avoid unwanted mutation", async () => {
   mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
   mockCommand(commands.interactions.actions, () => createFixture({value: {}}));
