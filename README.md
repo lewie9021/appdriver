@@ -4,7 +4,7 @@ A mobile focused, intuitive Appium client.
 
 ### Notice
 
-**This project is currently in the Alpha stage**, meaning the API is subject to change and may be missing functionality detailed in the documentation. If you're interested in the project's roadmap, feel free to take a look at the [Beta release project board](https://github.com/lewie9021/appdriver/projects/2).
+**This project is currently in the Alpha stages of development**, meaning the API is subject to change and may be missing functionality detailed in the documentation. If you're interested in the project's roadmap, feel free to take a look at the [Beta release project board](https://github.com/lewie9021/appdriver/projects/2).
 
 ### Goal
 
