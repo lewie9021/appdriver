@@ -65,7 +65,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:white_check_mark: :hammer: [```.getLocation({relative: Boolean}) => {x: Number, y: Number}```](./element/getLocation.md)
+:white_check_mark: [```.getLocation({relative: Boolean}) => {x: Number, y: Number}```](./element/getLocation.md)
 
 TODO: Description here.
 
