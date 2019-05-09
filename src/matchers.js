@@ -6,7 +6,7 @@ const { ElementNotFoundError, ElementsNotFoundError } = require("./errors");
 // TODO: Needs Android support for "*-item" type of queries.
 const getLabelQuery = (accessibilityLabel) => {
   if (accessibilityLabel.startsWith("*") && accessibilityLabel.endsWith("*")) {
-    const query = accessibilityLabel.substr(1, accessibilityLabel.length - 1);
+    const query = accessibilityLabel.substr(1, accessibilityLabel.length - 2);
 
     switch (global.session.platformName) {
       case "iOS":

@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`supports fetching a single matching element 1`] = `
+Object {
+  "using": "accessibility id",
+  "value": "button",
+}
+`;
+
+exports[`supports fetching elements containing the a accessibility label (Android) 1`] = `
+Object {
+  "using": "-android uiautomator",
+  "value": "new UiSelector().descriptionContains(\\"-item-\\")",
+}
+`;
+
+exports[`supports fetching elements containing the a accessibility label (iOS) 1`] = `
+Object {
+  "using": "-ios predicate string",
+  "value": "name CONTAINS '-item-'",
+}
+`;
+
+exports[`supports fetching elements starting with a given accessibility label (Android) 1`] = `
+Object {
+  "using": "-android uiautomator",
+  "value": "new UiSelector().descriptionStartsWith(\\"list-item-\\")",
+}
+`;
+
+exports[`supports fetching elements starting with a given accessibility label (iOS) 1`] = `
+Object {
+  "using": "-ios predicate string",
+  "value": "name BEGINSWITH 'list-item-'",
+}
+`;
+
+exports[`supports fetching multiple matching elements 1`] = `
+Object {
+  "using": "accessibility id",
+  "value": "button",
+}
+`;
