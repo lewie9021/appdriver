@@ -1,6 +1,6 @@
 const commands = require("./commands");
 const gestures = require("./gestures");
-const { isUndefined } = require("./utils");
+const { delay, isUndefined } = require("./utils");
 
 const restartApp = (capabilities) => {
   if (!capabilities.noReset) {
@@ -137,6 +137,12 @@ const swipeDown = async ({x, y, distance, percentage, duration}) => {
   return performGesture(gesture);
 };
 
+const wait = (options) => {
+  const duration = options.duration;
+
+  return delay(duration);
+};
+
 module.exports = {
   resetApp,
   restartApp,
@@ -147,5 +153,6 @@ module.exports = {
   swipeLeft,
   swipeRight,
   swipeUp,
-  swipeDown
+  swipeDown,
+  wait
 };
