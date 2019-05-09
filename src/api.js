@@ -46,7 +46,20 @@ const post = (path, params, payload) => {
     .then((res) => res.json())
 };
 
+const del = (path) => {
+  const opts = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+
+  return fetch(`${BASE_URL}${path}`, opts)
+    .then((res) => res.json())
+};
+
 module.exports = {
   get,
-  post
+  post,
+  del
 };

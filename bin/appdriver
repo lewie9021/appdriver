@@ -15,7 +15,7 @@ if (config.capabilities.length > 1) {
 
 config.capabilities.forEach((capability) => {
   commands.session.create(capability)
-    .then(() => {
+    .then(({sessionId}) => {
       // Instantiate a Mocha instance.
       const mocha = new Mocha({
         timeout: 30 * 1000
@@ -29,7 +29,11 @@ config.capabilities.forEach((capability) => {
 
       // Run the tests.
       const runner = mocha.run((failures) => {
-        process.exitCode = failures ? 1 : 0;  // exit with non-zero status if there were failures
+        commands.session.end(sessionId)
+          .then(() => {
+            process.exitCode = failures ? 1 : 0;  // exit with non-zero status if there were failures
+          })
+          .catch(() => console.log("Failed to close session."));
       });
     });
 });

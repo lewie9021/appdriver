@@ -1,4 +1,4 @@
-const { get, post } = require("./api");
+const { get, post, del } = require("./api");
 
 global.session = null;
 
@@ -37,8 +37,15 @@ module.exports = {
           global.session = session;
 
           return session;
-        })
-        .then();
+        });
+    },
+    end: (sessionId) => {
+      return del(`/session/${sessionId}`)
+        .then(({status}) => {
+          if (status) {
+            throw new Error("There was a problem ending the session.");
+          }
+        });
     },
     takeScreenshot: () => {
       return get(`/session/${global.session.sessionId}/screenshot`);
