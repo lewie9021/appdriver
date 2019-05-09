@@ -35,17 +35,19 @@ const pollDisplayed = (elementId, {maxRetries, interval}) => {
   }, {maxRetries, interval})
 };
 
-const pollExist = (matcher) => {
+const pollExist = (elementId, {maxRetries, interval}) => {
   return poll(() => {
-    return commands.element.findElement({using: matcher.type, value: matcher.value})
-      .then((x) => {
-        if (x.status) {
-          throw new Error("Element doesn't exist");
+    return commands.element.attributes.exists(elementId)
+      .then(({status, value}) => {
+        if (status) {
+          throw new ElementActionError(`Failed retrieve element's 'existence' status after ${maxRetries} attempts (interval: ${interval}ms).`);
         }
 
-        return x;
-      });
-  }, {maxRetries: 10});
+        if (!value) {
+          throw new ElementActionError(`Element not found after ${maxRetries} attempts (interval: ${interval}ms).`);
+        }
+      })
+  }, {maxRetries, interval})
 };
 
 const getValue = (matcher, value) => {
@@ -232,22 +234,31 @@ class Element {
     return new Element({matcher: this.matcher, value: nextValue});
   }
 
-  waitToExist(matcher) {
-    const currentValue = getValue(this.matcher, this.value);
+  waitToExist(options = {}) {
+    const maxRetries = options.maxRetries || 5;
+    const interval = options.interval || 200;
 
-    this.value = new Promise((resolve, reject) => {
-      currentValue.then((value) => {
-        if (value.status === 0) {
-          return resolve(value);
+    const value = getValue(this.matcher, this.value);
+    const nextValue = new Promise((resolve, reject) => {
+      value.then((element) => {
+        pollExist(element.value.ELEMENT, {maxRetries, interval})
+          .then(() => resolve(element))
+          .catch(reject);
+      }, (err) => {
+        if (err instanceof ElementNotFoundError) {
+          return poll(() => this.matcher.resolve(), {maxRetries, interval})
+            .then(({attempts, data}) => {
+              return pollExist(data.value.ELEMENT, {maxRetries: maxRetries - attempts, interval})
+                .then(() => resolve(data))
+            })
+            .catch(() => reject(new Error(`Element not found after ${maxRetries} attempts (interval: ${interval}ms).`)));
         }
 
-        return pollExist(matcher)
-          .then(resolve)
-          .catch(reject);
-      }, reject);
+        reject(err);
+      });
     });
 
-    return this;
+    return new Element({matcher: this.matcher, value: nextValue});
   }
 
   getText() {

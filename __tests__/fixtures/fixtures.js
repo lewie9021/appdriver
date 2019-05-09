@@ -60,6 +60,13 @@ const createElementDisplayedFixture = ({
   displayed
 }) => createFixture({status, sessionId, value: displayed});
 
+// /session/:sessionId/element/:elementId/exists.
+const createElementExistsFixture = ({
+  status = defaults.status,
+  sessionId = defaults.sessionId,
+  exists
+}) => createFixture({status, sessionId, value: exists});
+
 // /session/:sessionId/element/:elementId/size.
 const createElementSizeFixture = ({
   status = defaults.status,
@@ -92,6 +99,7 @@ module.exports = {
   createElementValueFixture,
   createElementClearFixture,
   createElementDisplayedFixture,
+  createElementExistsFixture,
   createElementSizeFixture,
   createSessionWindowRectFixture,
   createElementLocationFixture
