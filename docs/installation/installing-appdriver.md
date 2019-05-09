@@ -6,8 +6,8 @@ Once Appium is correctly configured, simply install AppDriver via NPM:
 
 ```bash
 # npm
-npm i appdriver --save-dev
+npm i appdriver
 
 # yarn
-yarn add -D appdriver
+yarn add appdriver
 ```

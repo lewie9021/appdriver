@@ -6,12 +6,14 @@ Let's create a test script that taps a button and asserts that a message appears
 ```javascript
 const { element, by, expect } = require("appdriver");
 
-describe("Native Demo App", () => {
+describe("My First Testing App", () => {
   it("displays 'Hello World!' when the button is tapped", async () => {
-    await element(by.label("button")).tap();
-    
-    const $alert = await element(by.label("alert")).waitToBeVisible();
-    
+    await element(by.label("button"))
+      .waitToBeVisible()
+      .tap();
+
+    const $alert = await element(by.label("message")).waitToBeVisible();
+
     await expect($alert).toHaveText("Hello World!");
   });
 });
@@ -25,9 +27,11 @@ Before we can run our test script, we must first define our AppDriver configurat
 
 **config/local.config.js**
 ```javascript
+const path = require("path");
+
 const simulators = {
   iPhoneX: {
-    app: "<path to .app file>",
+    app: path.join(__dirname, "app", "MyFirstTestingApp.zip"),
     platformName: "iOS",
     platformVersion: "12.1",
     deviceName: "iPhone X",
