@@ -27,6 +27,19 @@ const createElementFixture = ({
   }
 });
 
+const createElementsFixture = ({
+  status = defaults.status,
+  sessionId = defaults.sessionId,
+  elementIds = []
+}) => ({
+  status,
+  sessionId,
+  value: elementIds.map((elementId) => ({
+    "element-6066-11e4-a52e-4f735466cecf": elementId,
+    ELEMENT: elementId
+  }))
+});
+
 // /session/:sessionId/element/:elementId/text.
 const createElementTextFixture = ({
   status = defaults.status,
@@ -94,6 +107,7 @@ const createElementLocationFixture = ({
 module.exports = {
   createFixture,
   createElementFixture,
+  createElementsFixture,
   createElementClickFixture,
   createElementTextFixture,
   createElementValueFixture,
