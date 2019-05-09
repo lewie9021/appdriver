@@ -1,5 +1,7 @@
 # Element
 
+:white_check_mark: [```element(matcher: Matcher) => Element```](./)
+
 The `element` instance provides a way to interact with elements on the screen. You will need to use a `matcher` object to define how elements are found. The most common is `by.label` which finds elements by accessibility label.
 
 ### Examples
