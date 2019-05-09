@@ -1,4 +1,4 @@
-# Gestures
+# Gesture
 
 The `gesture` instance has several methods to define a gesture and can be used in combination with `gestures.series` and `gestures.parallel` to create complex gestures such as pinch and rotate. `gesture` instances can be used with either the `device` or `element` objects via their `.performGesture()` method. To create a `gesture` instance, you must use `gestures.create()`.
 
@@ -113,7 +113,7 @@ Pinch Gesture:
 
 ### Gesture API
 
-:white_check_mark: :hammer: [```.press(options?: {x?: Number, y?: Number, relative?: Boolean, element?: Element}) => Gesture```](./gesture/press.md)
+:white_check_mark: [```.press(options?: {x?: Number, y?: Number, relative?: Boolean, element?: Element}) => Gesture```](./gesture/press.md)
 
 TODO: Description here.
 
@@ -121,7 +121,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:white_check_mark: :hammer: [```.moveTo(options: {x: Number, y: Number, relative?: Boolean, duration?: Number, element?: Element}) => Gesture```](./gesture/moveTo.md)
+:white_check_mark: [```.moveTo(options: {x: Number, y: Number, relative?: Boolean, duration?: Number, element?: Element}) => Gesture```](./gesture/moveTo.md)
 
 TODO: Description here.
 
