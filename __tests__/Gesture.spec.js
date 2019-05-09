@@ -68,6 +68,27 @@ describe("press", () => {
       ]
     }]);
   });
+
+  it("supports passing an element, making x and y coordinates relative to it", () => {
+    mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
+
+    const gesture = new Gesture();
+    const $element = element(by.label("button"));
+
+    gesture.press({element: $element, x: 100, y: 100});
+
+    return expect(gesture.resolve()).resolves.toEqual([{
+      id: "finger1",
+      type: "pointer",
+      parameters: {
+        pointerType: "touch"
+      },
+      actions: [
+        {type: "pointerMove", duration: 0, origin: {element: "elementId"}, x: 100, y: 100},
+        {type: "pointerDown", button: 0}
+      ]
+    }]);
+  });
 });
 
 describe("wait", () => {
