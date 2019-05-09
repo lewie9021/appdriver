@@ -17,7 +17,7 @@ describe("Native Demo App", () => {
 });
 ```
 
-Before we can run our test script, we must first define an AppDriver configuration file:
+Before we can run our test script, we must first define our AppDriver configuration file:
 
 > Note: Configuration of AppDriver is currently very basic.
 > - 'specs' only supports paths directly to files (no fuzzy matching).
@@ -25,11 +25,8 @@ Before we can run our test script, we must first define an AppDriver configurati
 
 **config/local.config.js**
 ```javascript
-module.exports = {
-  specs: [
-    "../tests/hello-world.e2e.js"
-  ],
-  capabilities: [{
+const simulators = {
+  iPhoneX: {
     app: "<path to .app file>",
     platformName: "iOS",
     platformVersion: "12.1",
@@ -38,7 +35,16 @@ module.exports = {
     wdaLocalPort: 8100,
     waitForQuiescence: false,
     noReset: true
-  }]
+  }
+};
+
+module.exports = {
+  specs: [
+    "../tests/hello-world.e2e.js"
+  ],
+  capabilities: [
+    simulators.iPhoneX
+  ]
 };
 ```
 
@@ -50,13 +56,13 @@ Now that we have configured AppDriver, it is time to run test script:
 
 Should you wish to alias the command above, simply modify your package.json file with a script command:
 
-```json
+```json5
 {
-  ...
+  // ...
   "scripts": {
-      ...
+      // ...
       "test:e2e": "appdriver --config ./config/local.config.js"
   }
-  ...
+  // ...
 }
 ```
