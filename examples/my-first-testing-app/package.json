@@ -1,0 +1,17 @@
+{
+  "name": "my-first-testing-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "appdriver --config ./config/local.config.js"
+  },
+  "dependencies": {
+    "appdriver": "file:../../"
+  },
+  "author": "Lewis Barnes",
+  "license": "MIT"
+}
