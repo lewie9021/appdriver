@@ -70,6 +70,10 @@ TODO: Description here.
 
 TODO: Description here.
 
+:hammer: [```.wait(options: {duration: Number}) => Promise```](./device/wait.md)
+
+TODO: Description here.
+
 :white_check_mark: [```.restartApp() => Promise```](./device/restartApp.md)
 
 TODO: Description here.
