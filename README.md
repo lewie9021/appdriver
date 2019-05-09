@@ -86,7 +86,7 @@ Unlike Appium based clients, [Detox](https://github.com/wix/Detox) is yet to sup
   - [Appium](./docs/installation/installing-appium.md)
   - [AppDriver](./docs/installation/installing-appdriver.md)
 - [Guides](docs/installation)
-  - [Writing Your First Test](docs/guides/writing-first-test.md)
+  - [Writing Your First Test](docs/guides/writing-your-first-test.md)
   - [Finding Elements](docs/guides/finding-elements.md)
 - [API Reference](./docs/api)
   - [Matchers](./docs/api/matchers.md)
