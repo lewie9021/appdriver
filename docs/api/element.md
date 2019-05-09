@@ -85,7 +85,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.waitToExist(options; {interval?: Number, maxRetries?: Number}) => Element```](./element/waitToExist.md)
+:white_check_mark: [```.waitToExist(options; {interval?: Number, maxRetries?: Number}) => Element```](./element/waitToExist.md)
 
 TODO: Description here.
 
