@@ -1,19 +1,20 @@
 {
   "name": "appdriver",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha.1",
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "test:example": "./bin/appdriver --config examples/native-demo-app/config/local.config.js"
+    "test:native-demo-app": "./bin/appdriver --config examples/native-demo-app/config/local.config.js",
+    "test:my-first-testing-app": "./bin/appdriver --config examples/my-first-testing-app/config/local.config.js"
   },
   "license": "MIT",
   "dependencies": {
-    "appium": "1.12.1",
     "mocha": "6.1.4",
     "node-fetch": "2.3.0",
     "yargs": "13.2.2"
   },
   "devDependencies": {
+    "appium": "1.12.1",
     "@types/jest": "24.0.11",
     "jest": "24.7.1"
   },
