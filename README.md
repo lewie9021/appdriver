@@ -4,7 +4,7 @@ A mobile focused, intuitive Appium client.
 
 ### Notice
 
-**This project is currently in the Alpha stages of development**, meaning the API is subject to change and may be missing functionality detailed in the documentation. If you're interested in the project's roadmap, feel free to take a look at the [Beta release project board](https://github.com/lewie9021/appdriver/projects/2).
+**This project is currently in the Alpha stages of development**, meaning the API is subject to change and may be missing functionality detailed in the documentation. If you're interested in the project's roadmap, feel free to check out the [Projects tab](https://github.com/lewie9021/appdriver/projects).
 
 ### Goal
 
@@ -12,9 +12,11 @@ The goal of this project is to offer a mobile focused E2E testing framework that
 
 ### Motivation
 
-After using [WebdriverIO](https://github.com/webdriverio/webdriverio) for several months on a real world project, I found it was frustrating to perform even basic tasks without first spending hours trying to figure out the correct syntax, before working on a solution that often required writing my own helper function(s).
+After using [WebdriverIO](https://github.com/webdriverio/webdriverio) for several months on a real world project, I found it was frustrating to perform even basic tasks without spending hours figuring out the correct syntax, that often led to writing my own helper function(s).
 
-I initially started this project as a proof of concept, taking inspiration from [Detox](https://github.com/wix/Detox), [WebdriverIO](https://github.com/webdriverio/webdriverio), [WD.js](https://github.com/admc/wd), and [Jest](https://github.com/facebook/jest). I really liked the syntactic style of [Detox](https://github.com/wix/Detox) and wanted to see how it might look when paired with the ([Mobile](https://github.com/SeleniumHQ/mobile-spec/blob/master/spec-draft.md)) [JSON Wire Protocol](https://w3c.github.io/webdriver/).
+I feel the major Appium based clients focus too heavily on the Web, giving the impression that mobile is an afterthought. As someone that's relatively new to mobile test automation, I was frequently forced down a trial and error path as the documentation was either sprase or simply non-existent.
+
+Initially, I started this project as a proof of concept, taking inspiration from [Detox](https://github.com/wix/Detox), [WebdriverIO](https://github.com/webdriverio/webdriverio), [WD.js](https://github.com/admc/wd), and [Jest](https://github.com/facebook/jest). I really liked the syntactic style of [Detox](https://github.com/wix/Detox) and wanted to see how it might look when paired with the ([Mobile](https://github.com/SeleniumHQ/mobile-spec/blob/master/spec-draft.md)) [JSON Wire Protocol](https://w3c.github.io/webdriver/).
 
 Unlike Appium based clients, [Detox](https://github.com/wix/Detox) is yet to support running tests in the cloud and on [real iOS devices](https://github.com/wix/detox/issues/95). For me, this was a limitation I simply couldn't ignore. I feel it's critical in ensuring tests run quickly and provide the confidence that the application works as expected on a variety of real devices.
 
