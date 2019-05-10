@@ -2,6 +2,8 @@
 
 A mobile focused, intuitive Appium client.
 
+<img src="https://github.com/lewie9021/appdriver/blob/master/docs/assets/demo.gif">
+
 ### Notice
 
 **This project is currently in the Alpha stages of development**, meaning the API is subject to change and may be missing functionality detailed in the documentation. If you're interested in the project's roadmap, feel free to check out the [Projects tab](https://github.com/lewie9021/appdriver/projects).
