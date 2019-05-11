@@ -94,6 +94,14 @@ module.exports = {
 
       return post(`/session/${global.session.sessionId}/elements`, null, payload);
     },
+    findElementsFromElement: (elementId, {using, value}) => {
+      const payload = {
+        using,
+        value
+      };
+
+      return post(`/session/${global.session.sessionId}/element/${elementId}/elements`, null, payload);
+    },
     attributes: {
       size: (elementId) => {
         return get(`/session/${global.session.sessionId}/element/${elementId}/size`);
