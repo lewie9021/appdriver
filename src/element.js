@@ -265,7 +265,55 @@ class Element {
     const currentValue = getValue(this.matcher, this.value);
 
     return currentValue.then((value) => {
-      return commands.element.attributes.text(value.value.ELEMENT)
+      const elementId = value.value.ELEMENT;
+
+      if (session.platformName === "Android") {
+        return commands.element.attributes.className(elementId)
+          .then(({status, value}) => {
+            if (status) {
+              throw new ElementActionError("Failed to get text for element.");
+            }
+
+            // Check if the element is a TextView.
+            if (value === "android.widget.TextView") {
+              return commands.element.attributes.text(elementId)
+                .then(({status, value}) => {
+                  if (status) {
+                    throw new ElementActionError("Failed to get text for element.");
+                  }
+
+                  return value;
+                });
+            }
+
+            return commands.element.findElementsFromElement(elementId, {using: "class name", value: "android.widget.TextView"})
+              .then(({status, value}) => {
+                if (status) {
+                  throw new ElementActionError("Failed to get text for element.");
+                }
+
+                const textElementIds = value.map((x) => x.ELEMENT);
+                const tasks = textElementIds.map((elementId) => {
+                  return commands.element.attributes.text(elementId)
+                    .then(({status, value}) => {
+                      if (status) {
+                        throw new ElementActionError("Failed to get text for element.");
+                      }
+
+                      return value;
+                    });
+                });
+
+                return Promise.all(tasks)
+                  .then((textFragments) => {
+                    return textFragments.join("");
+                  });
+              });
+          });
+      }
+
+
+      return commands.element.attributes.text(elementId)
         .then(({status, value}) => {
           if (status) {
             throw new ElementActionError("Failed to get text for element.");
