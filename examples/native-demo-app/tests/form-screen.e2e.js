@@ -2,21 +2,24 @@ const { by, element, device, gestures, expect } = require("../../../index");
 
 describe("Form Screen", () => {
   before(async () => {
+    await element(by.label("menu-screen")).waitToBeVisible();
+    await element(by.label("list-item-form-screen")).tap();
     await element(by.label("form-screen")).waitToBeVisible();
   });
 
   it("supports text input", async () => {
-    const $element = await element(by.label("text-input"))
+    const $textInput = await element(by.label("text-input"))
       .tap()
       .typeText("Hello World!");
 
-    await expect($element).toHaveValue("Hello World!");
+    await expect($textInput).toHaveValue("Hello World!");
   });
 
   it("supports clearing text", async () => {
     const $element = await element(by.label("text-input")).clearText();
 
-    await expect($element).toHaveValue(null);
+    // TODO: iOS returns null, Android returns ""...
+    await expect($element).toHaveValue("");
   });
 
   it("supports sliders", async () => {
@@ -38,6 +41,7 @@ describe("Form Screen", () => {
 
     await device.wait({duration: 200});
 
+    // TODO: Doesn't work on Android.
     await element(by.label("OK")).tap();
   });
 
@@ -48,6 +52,7 @@ describe("Form Screen", () => {
 
     await device.wait({duration: 200});
 
+    // TODO: Doesn't work on Android.
     await element(by.label("OK")).tap();
   });
 });

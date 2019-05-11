@@ -110,6 +110,10 @@ module.exports = {
         return get(`/session/${global.session.sessionId}/element/${elementId}/text`);
       },
       value: (elementId) => {
+        if (global.session.platformName === "Android") {
+          return get(`/session/${global.session.sessionId}/element/${elementId}/text`);
+        }
+
         return get(`/session/${global.session.sessionId}/element/${elementId}/attribute/value`);
       },
       className: (elementId) => {
