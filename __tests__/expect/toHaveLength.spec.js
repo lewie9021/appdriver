@@ -31,5 +31,5 @@ it("throws if expectation is not met", async () => {
     .rejects.toThrow(new Error("Expected null to have length '12' but instead got '0'."));
 
   await expect(assert(Promise.resolve()).toHaveLength(12))
-    .rejects.toThrow(new Error("Expected Promise to have length '12' but instead got '0'."));
+    .rejects.toThrow(new Error("Expected promise to have length '12' but instead got '0'."));
 });

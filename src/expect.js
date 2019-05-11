@@ -1,18 +1,4 @@
-const getValueType = (value) => {
-  if (Array.isArray(value)) {
-    return "array";
-  }
-
-  if (value === null) {
-    return "null";
-  }
-
-  if (Promise.resolve(value) === value) {
-    return "Promise";
-  }
-
-  return typeof value;
-};
+const { getValueType } = require("./utils");
 
 class Expect {
   constructor(value) {
@@ -44,9 +30,9 @@ class Expect {
   }
 
   async toHaveLength(length) {
-    const validTypes = ["array", "object", "string"];
+    const supportedTypes = ["array", "object", "string"];
     const valueType = getValueType(this.value);
-    const valueLength = validTypes.includes(valueType)
+    const valueLength = supportedTypes.includes(valueType)
       ? this.value.length
       : 0;
 
