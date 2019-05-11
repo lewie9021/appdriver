@@ -75,7 +75,7 @@ Unlike Appium based clients, [Detox](https://github.com/wix/Detox) is yet to sup
   const $destination = await element(by.label("destination"));
   const dragAndDrop = gestures.create()
     .press({element: $box})
-    .wait(250)
+    .wait({duration: 250})
     .moveTo({element: $destination})
     .release();
   
@@ -100,9 +100,3 @@ Unlike Appium based clients, [Detox](https://github.com/wix/Detox) is yet to sup
   - [Gestures](./docs/api/gestures.md)
   - [Expect](./docs/api/expect.md)
 - [Change Log](./CHANGELOG.md)
-
-### TODOs
-
-- [ ] Support for parallel testing.
-- [ ] Support for multiple capabilities.
-- [ ] Host documentation on github.io.
