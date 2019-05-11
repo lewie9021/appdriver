@@ -1,8 +1,10 @@
-const path = require("path");
+const getAppPath = require("./getAppPath");
+
+const development = false;
 
 const simulators = {
   iPhoneX: {
-    app: path.join(__dirname, "app", "NativeDemoApp.zip"),
+    app: getAppPath("iOS", development),
     platformName: "iOS",
     platformVersion: "12.1",
     deviceName: "iPhone X",
@@ -15,7 +17,7 @@ const simulators = {
 
 const emulators = {
   pixel2: {
-    app: path.join(__dirname, "app", "native-app-demo.apk"), // TODO.
+    app: getAppPath("Android", development),
     platformName: "Android",
     platformVersion: "8.1",
     deviceName: "Pixel_2_API_27",
@@ -32,6 +34,7 @@ module.exports = {
     "../tests/form-screen.e2e.js"
   ],
   capabilities: [
-    simulators.iPhoneX
+    simulators.iPhoneX,
+    // emulators.pixel2
   ]
 };
