@@ -2,12 +2,12 @@
   "name": "appdriver",
   "version": "1.0.0-alpha.1",
   "main": "index.js",
+  "bin": "./bin/appdriver",
   "scripts": {
     "test": "jest",
     "test:native-demo-app": "./bin/appdriver --config examples/native-demo-app/config/local.config.js",
     "test:my-first-testing-app": "./bin/appdriver --config examples/my-first-testing-app/config/local.config.js"
   },
-  "license": "MIT",
   "dependencies": {
     "mocha": "6.1.4",
     "node-fetch": "2.3.0",
@@ -18,11 +18,18 @@
     "appium": "1.12.1",
     "jest": "24.7.1"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lewie9021/appdriver.git"
+  },
+  "homepage": "https://github.com/lewie9021/appdriver#readme",
+  "bugs": "https://github.com/lewie9021/appdriver/issues",
+  "author": "Lewis Barnes",
+  "license": "MIT",
   "files": [
     "src",
     "bin"
   ],
-  "bin": "./bin/appdriver",
   "jest": {
     "testMatch": [
       "<rootDir>/__tests__/**/*.spec.js"
