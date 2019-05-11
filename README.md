@@ -2,7 +2,7 @@
 
 A mobile focused, intuitive Appium client.
 
-<img src="https://github.com/lewie9021/appdriver/blob/master/docs/assets/demo.gif">
+<img src="https://raw.githubusercontent.com/lewie9021/appdriver/master/docs/assets/demo.gif">
 
 ### Notice
 
