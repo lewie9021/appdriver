@@ -104,6 +104,9 @@ module.exports = {
       value: (elementId) => {
         return get(`/session/${global.session.sessionId}/element/${elementId}/attribute/value`);
       },
+      className: (elementId) => {
+        return get(`/session/${global.session.sessionId}/element/${elementId}/attribute/className`);
+      },
       exists: elementExists,
       displayed: (elementId) => {
         return get(`/session/${global.session.sessionId}/element/${elementId}/displayed`);
