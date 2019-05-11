@@ -1,4 +1,4 @@
-const { by, element, elements, commands } = require("../../../index");
+const { by, element, elements } = require("../../../index");
 
 describe("List Screen", () => {
   const screenTestId = "list-screen";
