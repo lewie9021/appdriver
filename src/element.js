@@ -292,9 +292,8 @@ class Element {
                   throw new ElementActionError("Failed to get text for element.");
                 }
 
-                const textElementIds = value.map((x) => x.ELEMENT);
-                const tasks = textElementIds.map((elementId) => {
-                  return commands.element.attributes.text(elementId)
+                const tasks = value.map((x) => {
+                  return commands.element.attributes.text(x.ELEMENT)
                     .then(({status, value}) => {
                       if (status) {
                         throw new ElementActionError("Failed to get text for element.");
@@ -305,13 +304,10 @@ class Element {
                 });
 
                 return Promise.all(tasks)
-                  .then((textFragments) => {
-                    return textFragments.join("");
-                  });
+                  .then((textFragments) => textFragments.join(""));
               });
           });
       }
-
 
       return commands.element.attributes.text(elementId)
         .then(({status, value}) => {
