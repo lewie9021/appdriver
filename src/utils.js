@@ -54,6 +54,19 @@ const getValueType = (value) => {
   return typeof value;
 };
 
+const platform = {
+  select: ({ios, android}) => {
+    switch (global.session.platformName) {
+      case "iOS":
+        return ios();
+      case "Android":
+        return android();
+      default:
+        throw new Error("Platform not supported");
+    }
+  }
+};
+
 module.exports = {
   delay,
   log,
@@ -64,5 +77,6 @@ module.exports = {
   isArray,
   isNull,
   isUndefined,
-  getValueType
+  getValueType,
+  platform
 };
