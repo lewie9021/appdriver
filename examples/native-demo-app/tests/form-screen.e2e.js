@@ -18,7 +18,6 @@ describe("Form Screen", () => {
   it("supports clearing text", async () => {
     const $element = await element(by.label("text-input")).clearText();
 
-    // TODO: iOS returns null, Android returns ""...
     await expect($element).toHaveValue("");
   });
 
@@ -34,6 +33,12 @@ describe("Form Screen", () => {
         distance: size.width / 2
       })
     );
+  });
+
+  it("supports switches", async () => {
+    const $switch = await element(by.label("switch"));
+
+    await expect($switch).toHaveValue(true);
   });
 
   it("supports the tap gesture", async () => {

@@ -54,6 +54,19 @@ const getValue = (matcher, value) => {
   return value || matcher.resolve();
 };
 
+const parseValue = (className, rawValue) => {
+  switch (className) {
+    case "XCUIElementTypeTextField":
+      return rawValue || "";
+    case "XCUIElementTypeSwitch":
+      return rawValue === "1";
+    case "android.widget.Switch":
+      return rawValue === "ON";
+    default:
+      return rawValue;
+  }
+};
+
 class Element {
   constructor({matcher, value = null, thenable = true}) {
     this.matcher = matcher;
@@ -320,18 +333,32 @@ class Element {
     });
   }
 
-  // TODO: Needs to be more intelligent.
   getValue() {
     const currentValue = getValue(this.matcher, this.value);
 
     return currentValue.then((value) => {
-      return commands.element.attributes.value(value.value.ELEMENT)
+      const elementId = value.value.ELEMENT;
+
+      const command = session.platformName === "iOS"
+        ? commands.element.attributes.name
+        : commands.element.attributes.className;
+
+      return command(elementId)
         .then(({status, value}) => {
           if (status) {
             throw new ElementActionError("Failed to get value for element.");
           }
 
-          return value;
+          const className = value;
+
+          return commands.element.attributes.value(elementId)
+            .then(({status, value}) => {
+              if (status) {
+                throw new ElementActionError("Failed to get value for element.");
+              }
+
+              return parseValue(className, value);
+            });
         });
     });
   }

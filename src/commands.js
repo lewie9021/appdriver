@@ -116,8 +116,12 @@ module.exports = {
 
         return get(`/session/${global.session.sessionId}/element/${elementId}/attribute/value`);
       },
+      // Not supported on iOS
       className: (elementId) => {
         return get(`/session/${global.session.sessionId}/element/${elementId}/attribute/className`);
+      },
+      name: (elementId) => {
+        return get(`/session/${global.session.sessionId}/element/${elementId}/name`);
       },
       exists: elementExists,
       displayed: (elementId) => {
