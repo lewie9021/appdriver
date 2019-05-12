@@ -60,6 +60,23 @@ const getLabelQuery = (accessibilityLabel) => {
   return {
     using: "accessibility id",
     value: accessibilityLabel
+  };
+};
+
+const getTextQuery = (text) => {
+  switch (global.session.platformName) {
+    case "iOS":
+      return {
+        using: "-ios predicate string",
+        value: `label = '${text}'`
+      };
+    case "Android":
+      return {
+        using: "-android uiautomator",
+        value: `new UiSelector().text("${text}")`
+      };
+    default:
+      throw new Error("Platform not supported");
   }
 };
 
@@ -83,6 +100,28 @@ const by = {
         : commands.element.findElement;
 
       return command(getLabelQuery(accessibilityLabel))
+        .then((response) => {
+          if (response.status) {
+            if (multiple) {
+              throw new ElementsNotFoundError("Failed to find elements.");
+            } else {
+              throw new ElementNotFoundError("Failed to find element.");
+            }
+          }
+
+          return response;
+        });
+    }
+  }),
+  text: (text) => ({
+    type: "text",
+    value: text,
+    resolve: (multiple) => {
+      const command = multiple
+        ? commands.element.findElements
+        : commands.element.findElement;
+
+      return command(getTextQuery(text))
         .then((response) => {
           if (response.status) {
             if (multiple) {
