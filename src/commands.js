@@ -1,4 +1,5 @@
 const { get, post, del } = require("./api");
+const { platform } = require("./utils");
 
 global.session = null;
 
@@ -100,14 +101,28 @@ module.exports = {
         value
       };
 
-      return post(`/session/${global.session.sessionId}/element/${elementId}/elements`, null, payload);
+      return post(`/session/${global.session.sessionId}/element/${elementId}/elements`, null, payload)
+        .then(({status, value}) => {
+          if (status) {
+            throw new Error("Failed to get elements from element.");
+          }
+
+          return value;
+        })
     },
     attributes: {
       size: (elementId) => {
         return get(`/session/${global.session.sessionId}/element/${elementId}/size`);
       },
       text: (elementId) => {
-        return get(`/session/${global.session.sessionId}/element/${elementId}/text`);
+        return get(`/session/${global.session.sessionId}/element/${elementId}/text`)
+          .then(({status, value}) => {
+            if (status) {
+              throw new Error("Failed to get element text.");
+            }
+
+            return value;
+          });
       },
       value: (elementId) => {
         if (global.session.platformName === "Android") {
@@ -116,6 +131,22 @@ module.exports = {
 
         return get(`/session/${global.session.sessionId}/element/${elementId}/attribute/value`);
       },
+      type: (elementId) => {
+        const spec = {
+          ios: () => get(`/session/${global.session.sessionId}/element/${elementId}/name`),
+          android: () => get(`/session/${global.session.sessionId}/element/${elementId}/attribute/className`)
+        };
+
+        return platform.select(spec)
+          .then(({status, value}) => {
+            if (status) {
+              throw new Error("Failed to get element type.");
+            }
+
+            return value;
+          });
+      },
+
       // Not supported on iOS
       className: (elementId) => {
         return get(`/session/${global.session.sessionId}/element/${elementId}/attribute/className`);

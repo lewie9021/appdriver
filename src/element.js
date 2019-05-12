@@ -1,7 +1,7 @@
 const commands = require("./commands");
 const gestures = require("./gestures");
 const { ElementNotFoundError, ElementActionError } = require("./errors");
-const { delay } = require("./utils");
+const { delay, platform } = require("./utils");
 
 const poll = (func, {maxRetries = 5, interval = 1000, attempts = 0}) => {
   return func(attempts)
@@ -280,56 +280,38 @@ class Element {
     return currentValue.then((value) => {
       const elementId = value.value.ELEMENT;
 
-      if (session.platformName === "Android") {
-        return commands.element.attributes.className(elementId)
-          .then(({status, value}) => {
-            if (status) {
+      return platform.select({
+        ios: () => {
+          return commands.element.attributes.text(elementId)
+            .catch(() => {
               throw new ElementActionError("Failed to get text for element.");
-            }
+            });
+        },
+        android: () => {
+          return commands.element.attributes.type(elementId)
+            .then((elementType) => {
+              if (elementType === "android.widget.TextView") {
+                return commands.element.attributes.text(elementId);
+              }
 
-            // Check if the element is a TextView.
-            if (value === "android.widget.TextView") {
-              return commands.element.attributes.text(elementId)
-                .then(({status, value}) => {
-                  if (status) {
-                    throw new ElementActionError("Failed to get text for element.");
-                  }
+              const query = {
+                using: "class name",
+                value: "android.widget.TextView"
+              };
 
-                  return value;
+              return commands.element.findElementsFromElement(elementId, query)
+                .then((textElements) => {
+                  const tasks = textElements.map((x) => commands.element.attributes.text(x.ELEMENT));
+
+                  return Promise.all(tasks)
+                    .then((textFragments) => textFragments.join(""));
                 });
-            }
-
-            return commands.element.findElementsFromElement(elementId, {using: "class name", value: "android.widget.TextView"})
-              .then(({status, value}) => {
-                if (status) {
-                  throw new ElementActionError("Failed to get text for element.");
-                }
-
-                const tasks = value.map((x) => {
-                  return commands.element.attributes.text(x.ELEMENT)
-                    .then(({status, value}) => {
-                      if (status) {
-                        throw new ElementActionError("Failed to get text for element.");
-                      }
-
-                      return value;
-                    });
-                });
-
-                return Promise.all(tasks)
-                  .then((textFragments) => textFragments.join(""));
-              });
-          });
-      }
-
-      return commands.element.attributes.text(elementId)
-        .then(({status, value}) => {
-          if (status) {
-            throw new ElementActionError("Failed to get text for element.");
-          }
-
-          return value;
-        });
+            })
+            .catch(() => {
+              throw new ElementActionError("Failed to get text for element.");
+            });
+        }
+      });
     });
   }
 
