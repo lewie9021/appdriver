@@ -15,7 +15,7 @@ Swipe Gesture:
       x: size.width / 2,
       y: size.height / 2
     })
-    .wait(250)
+    .wait({duration: 250})
     .moveTo({y: (size.height / 2) - 100})
     .release();
   
