@@ -1,4 +1,4 @@
-# `.tap({x?: Number, y?: Number}) => Element`
+# `.tap(options?: {x?: Number, y?: Number}) => Element`
 
 TODO: Description here.
 
