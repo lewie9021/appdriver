@@ -4,9 +4,9 @@ TODO: Description here.
 
 #### Parameters
 
-1. `options` (Object):
-  - `options.x` (Number): x offset from left of element.
-  - `options.y` (Number): y offset from top of element.
+1. `options = {}` (Object?):
+  - `options.x = 0` (Number?): x offset from left of element.
+  - `options.y = 0` (Number?): y offset from top of element.
 
 #### Returns
 
