@@ -23,7 +23,7 @@ The `element` instance provides a way to interact with elements on the screen. Y
 ```
 ### Element API
 
-:white_check_mark: :hammer: [```.tap({x?: Number, y?: Number}) => Element```](./element/tap.md)
+:white_check_mark: :hammer: [```.tap(options? {x?: Number, y?: Number}) => Element```](./element/tap.md)
 
 TODO: Description here.
 
@@ -67,7 +67,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:white_check_mark: [```.getLocation({relative: Boolean}) => {x: Number, y: Number}```](./element/getLocation.md)
+:white_check_mark: [```.getLocation(options?: {relative?: Boolean}) => {x: Number, y: Number}```](./element/getLocation.md)
 
 TODO: Description here.
 
@@ -87,7 +87,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:white_check_mark: [```.waitToExist(options; {interval?: Number, maxRetries?: Number}) => Element```](./element/waitToExist.md)
+:white_check_mark: [```.waitToExist(options?: {interval?: Number, maxRetries?: Number}) => Element```](./element/waitToExist.md)
 
 TODO: Description here.
 
@@ -99,23 +99,23 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.swipeUp({x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./device/swipeUp.md)
+:hammer: [```.swipeUp(options: {x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./device/swipeUp.md)
 
 TODO: Description here.
 
-:hammer: [```.swipeDown({x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./device/swipeDown.md)
+:hammer: [```.swipeDown(options: {x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./device/swipeDown.md)
 
 TODO: Description here.
 
-:hammer: [```.swipeLeft({x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./device/swipeLeft.md)
+:hammer: [```.swipeLeft(options: {x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./device/swipeLeft.md)
 
 TODO: Description here.
 
-:hammer: [```.swipeRight({x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./device/swipeRight.md)
+:hammer: [```.swipeRight(options: {x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./device/swipeRight.md)
 
 TODO: Description here.
 
-:hammer: [```.swipe({x: Number, y: Number, direction: Number, distance: Number, duration?: Number}) => Element```](./device/swipe.md)
+:hammer: [```.swipe(options: {x: Number, y: Number, direction: Number, distance: Number, duration?: Number}) => Element```](./device/swipe.md)
 
 TODO: Description here.
 
