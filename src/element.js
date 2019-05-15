@@ -1,5 +1,6 @@
 const commands = require("./commands");
 const gestures = require("./gestures");
+const { getSession } = require("./session");
 const { ElementNotFoundError, ElementActionError } = require("./errors");
 const { delay, platform } = require("./utils");
 
@@ -155,7 +156,7 @@ class Element {
 
       commands.element.actions.sendKeys(value.ELEMENT, text.split(""))
         .then(({status}) => {
-          if (status === 13 && global.session.platformName === "iOS") {
+          if (status === 13 && getSession("platformName") === "iOS") {
             return done(new Error("Failed to type text. Make sure hardware keyboard is disconnected from iOS simulator."));
           }
 

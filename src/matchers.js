@@ -1,4 +1,5 @@
 const commands = require("./commands");
+const { getSession } = require("./session");
 const { ElementNotFoundError, ElementsNotFoundError } = require("./errors");
 
 // Very crude implementation that supports simple fuzzy matching, e.g. "list-item-*", "*item*", and "*-item"
@@ -8,7 +9,7 @@ const getLabelQuery = (accessibilityLabel) => {
   if (accessibilityLabel.startsWith("*") && accessibilityLabel.endsWith("*")) {
     const query = accessibilityLabel.substr(1, accessibilityLabel.length - 2);
 
-    switch (global.session.platformName) {
+    switch (getSession("platformName")) {
       case "iOS":
         return {
           using: "-ios predicate string",
@@ -27,7 +28,7 @@ const getLabelQuery = (accessibilityLabel) => {
   if (accessibilityLabel.endsWith("*")) {
     const query = accessibilityLabel.substr(0, accessibilityLabel.length - 1);
 
-    switch (global.session.platformName) {
+    switch (getSession("platformName")) {
       case "iOS":
         return {
           using: "-ios predicate string",
@@ -46,7 +47,7 @@ const getLabelQuery = (accessibilityLabel) => {
   if (accessibilityLabel.startsWith("*")) {
     const query = accessibilityLabel.substr(1);
 
-    switch (global.session.platformName) {
+    switch (getSession("platformName")) {
       case "iOS":
         return {
           using: "-ios predicate string",
@@ -64,7 +65,7 @@ const getLabelQuery = (accessibilityLabel) => {
 };
 
 const getTextQuery = (text) => {
-  switch (global.session.platformName) {
+  switch (getSession("platformName")) {
     case "iOS":
       return {
         using: "-ios predicate string",
