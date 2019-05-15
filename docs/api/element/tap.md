@@ -1,6 +1,6 @@
 # `.tap(options?: {x?: Number, y?: Number}) => Element`
 
-TODO: Description here.
+Performs tap gesture on element.
 
 #### Parameters
 
