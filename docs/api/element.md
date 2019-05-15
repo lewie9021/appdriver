@@ -47,39 +47,39 @@ TODO: Description here.
 
 Wipes the contents of a text element.
 
-:white_check_mark: [```.getText() => String```](./element/getText.md)
+:white_check_mark: [```.getText() => Promise<String>```](./element/getText.md)
 
 Retrieves inner text content of element.
 
-:white_check_mark: :hammer: [```.getValue() => Any```](./element/getValue.md)
+:white_check_mark: :hammer: [```.getValue() => Promise<Any>```](./element/getValue.md)
 
 Retrieves value property of element.
 
-:hammer: [```.exists() => Boolean```](./element/exists.md)
+:hammer: [```.exists() => Promise<Boolean>```](./element/exists.md)
 
 Retrieves existence status of element.
 
-:white_check_mark: [```.isVisible() => Boolean```](./element/isVisible.md)
+:white_check_mark: [```.isVisible() => Promise<Boolean>```](./element/isVisible.md)
 
 Retrieves visibility status of element.
 
-:warning: [```.isEnabled() => Boolean```](./element/isEnabled.md)
+:warning: [```.isEnabled() => Promise<Boolean>```](./element/isEnabled.md)
 
 TODO: Description here.
 
-:warning: [```.isSelected() => Boolean```](./element/isSelected.md)
+:warning: [```.isSelected() => Promise<Boolean>```](./element/isSelected.md)
 
 TODO: Description here.
 
-:white_check_mark: [```.getLocation(options?: {relative?: Boolean}) => {x: Number, y: Number}```](./element/getLocation.md)
+:white_check_mark: [```.getLocation(options?: {relative?: Boolean}) => Promise<{x: Number, y: Number}>```](./element/getLocation.md)
 
 Retrieves x and y coordinates of element.
 
-:white_check_mark: [```.getSize() => {width: Number, height: Number}```](./element/getSize.md)
+:white_check_mark: [```.getSize() => Promise<{width: Number, height: Number}>```](./element/getSize.md)
 
 Retrieves width and height dimensions of element.
 
-:hammer: [```.getAttribute(attribute: String) => Any```](./element/getAttribute.md)
+:hammer: [```.getAttribute(attribute: String) => Promise<Any>```](./element/getAttribute.md)
 
 TODO: Description here.
 
