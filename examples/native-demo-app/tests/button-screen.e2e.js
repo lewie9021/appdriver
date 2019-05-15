@@ -8,9 +8,11 @@ describe("Button Screen", () => {
   });
 
   it("works", async () => {
+    const $screen = await element(by.label("button-screen"));
     const $button = await element(by.label("button"));
     const $text = await element(by.label("text"));
 
+    await expect($screen).toHaveText("Press Me! Hello World");
     await expect($button).toHaveText("Press Me!");
     await expect($text).toHaveText("Hello World");
   });

@@ -49,30 +49,6 @@ const testPlatform = (platformName) => {
     expect(commands.element.findElement).toHaveBeenCalledTimes(1);
     expect(commands.element.attributes.text).toHaveBeenCalledTimes(1);
   });
-
-  it("returns inner text if element isn't directly text", async () => {
-    const viewElementType = platformName === "iOS"
-      ? "XCUIElementTypeOther"
-      : "android.view.ViewGroup";
-
-    mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-    mockCommand(commands.element.attributes.type, () => viewElementType);
-    mockCommand(commands.element.findElementsFromElement, () => [
-      {"element-6066-11e4-a52e-4f735466cecf": "elementId1", ELEMENT: "elementId1"},
-      {"element-6066-11e4-a52e-4f735466cecf": "elementId2", ELEMENT: "elementId2"}
-    ]);
-    mockCommand(commands.element.attributes.text, [
-      () => "Hello ",
-      () => "World!"
-    ]);
-
-    const result = await element(by.label("product-title")).getText();
-
-    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
-    expect(commands.element.findElementsFromElement).toHaveBeenCalledTimes(1);
-    expect(commands.element.attributes.text).toHaveBeenCalledTimes(2);
-    expect(result).toEqual("Hello World!");
-  });
 };
 
 afterEach(() => {
@@ -87,6 +63,27 @@ describe("iOS", () => {
   });
 
   testPlatform("iOS");
+
+  it("returns inner text if element isn't directly text", async () => {
+    mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
+    mockCommand(commands.element.attributes.type, () => "XCUIElementTypeOther");
+    mockCommand(commands.element.findElementsFromElement, () => [
+      {"element-6066-11e4-a52e-4f735466cecf": "elementId1", ELEMENT: "elementId1"},
+      {"element-6066-11e4-a52e-4f735466cecf": "elementId2", ELEMENT: "elementId2"}
+    ]);
+    mockCommand(commands.element.attributes.text, [
+      () => "",
+      () => "Hello",
+      () => "World!"
+    ]);
+
+    const result = await element(by.label("product-title")).getText();
+
+    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+    expect(commands.element.findElementsFromElement).toHaveBeenCalledTimes(1);
+    expect(commands.element.attributes.text).toHaveBeenCalledTimes(3);
+    expect(result).toEqual("Hello World!");
+  });
 });
 
 describe("Android", () => {
@@ -97,4 +94,24 @@ describe("Android", () => {
   });
 
   testPlatform("Android");
+
+  it("returns inner text if element isn't directly text", async () => {
+    mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
+    mockCommand(commands.element.attributes.type, () => "android.view.ViewGroup");
+    mockCommand(commands.element.findElementsFromElement, () => [
+      {"element-6066-11e4-a52e-4f735466cecf": "elementId1", ELEMENT: "elementId1"},
+      {"element-6066-11e4-a52e-4f735466cecf": "elementId2", ELEMENT: "elementId2"}
+    ]);
+    mockCommand(commands.element.attributes.text, [
+      () => "Hello",
+      () => "World!"
+    ]);
+
+    const result = await element(by.label("product-title")).getText();
+
+    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+    expect(commands.element.findElementsFromElement).toHaveBeenCalledTimes(1);
+    expect(commands.element.attributes.text).toHaveBeenCalledTimes(2);
+    expect(result).toEqual("Hello World!");
+  });
 });

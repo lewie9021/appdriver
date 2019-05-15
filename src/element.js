@@ -289,17 +289,24 @@ class Element {
                 return commands.element.attributes.text(elementId);
               }
 
-              const query = {
-                using: "-ios predicate string",
-                value: `type == "XCUIElementTypeStaticText"`
-              };
+              return commands.element.attributes.text(elementId)
+                .then((text) => {
+                  if (text) {
+                    return text;
+                  }
 
-              return commands.element.findElementsFromElement(elementId, query)
-                .then((textElements) => {
-                  const tasks = textElements.map((x) => commands.element.attributes.text(x.ELEMENT));
+                  const query = {
+                    using: "-ios predicate string",
+                    value: `type == "XCUIElementTypeStaticText"`
+                  };
 
-                  return Promise.all(tasks)
-                    .then((textFragments) => textFragments.join(""));
+                  return commands.element.findElementsFromElement(elementId, query)
+                    .then((textElements) => {
+                      const tasks = textElements.map((x) => commands.element.attributes.text(x.ELEMENT));
+
+                      return Promise.all(tasks)
+                        .then((textFragments) => textFragments.join(" "));
+                    });
                 });
             })
             .catch(() => {
@@ -323,7 +330,7 @@ class Element {
                   const tasks = textElements.map((x) => commands.element.attributes.text(x.ELEMENT));
 
                   return Promise.all(tasks)
-                    .then((textFragments) => textFragments.join(""));
+                    .then((textFragments) => textFragments.join(" "));
                 });
             })
             .catch(() => {
