@@ -88,6 +88,18 @@ describe("iOS", () => {
     expect(commands.element.attributes.value).toHaveBeenCalledTimes(1);
     expect(result).toEqual(false);
   });
+
+  it("correctly handles native slider element value", async () => {
+    mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
+    mockCommand(commands.element.attributes.type, () => "XCUIElementTypeSlider");
+    mockCommand(commands.element.attributes.value, () => createElementValueFixture({value: "50%"}));
+
+    const result = await element(by.label("slider")).getValue();
+
+    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+    expect(commands.element.attributes.value).toHaveBeenCalledTimes(1);
+    expect(result).toEqual(0.5);
+  });
 });
 
 describe("Android", () => {
@@ -121,5 +133,17 @@ describe("Android", () => {
     expect(commands.element.findElement).toHaveBeenCalledTimes(1);
     expect(commands.element.attributes.value).toHaveBeenCalledTimes(1);
     expect(result).toEqual(false);
+  });
+
+  it("correctly handles native slider element value", async () => {
+    mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
+    mockCommand(commands.element.attributes.type, () => "android.widget.SeekBar");
+    mockCommand(commands.element.attributes.value, () => createElementValueFixture({value: "5.0"}));
+
+    const result = await element(by.label("slider")).getValue();
+
+    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+    expect(commands.element.attributes.value).toHaveBeenCalledTimes(1);
+    expect(result).toEqual(5);
   });
 });

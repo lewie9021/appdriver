@@ -55,14 +55,18 @@ const getValue = (matcher, value) => {
   return value || matcher.resolve();
 };
 
-const parseValue = (className, rawValue) => {
-  switch (className) {
+const parseValue = (elementType, rawValue) => {
+  switch (elementType) {
     case "XCUIElementTypeTextField":
       return rawValue || "";
     case "XCUIElementTypeSwitch":
       return rawValue === "1";
     case "android.widget.Switch":
       return rawValue === "ON";
+    case "XCUIElementTypeSlider":
+      return parseFloat(rawValue.replace("%", "")) / 100;
+    case "android.widget.SeekBar":
+      return parseFloat(rawValue);
     default:
       return rawValue;
   }
@@ -354,6 +358,8 @@ class Element {
               if (status) {
                 throw new ElementActionError("Failed to get value for element.");
               }
+
+
 
               return parseValue(elementType, value);
             });
