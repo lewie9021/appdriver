@@ -4,7 +4,11 @@
 
 The `element` instance provides a way to interact with elements on the screen. You will need to use a `matcher` object to define how elements are found. The most common is `by.label` which finds elements by accessibility label.
 
-### Examples
+#### Parameters
+
+1. `matcher` ([Matcher](./matchers.md)): Matcher object defining the element search query.
+
+#### Examples
 
 ```javascript
 (async () => {
@@ -21,7 +25,7 @@ The `element` instance provides a way to interact with elements on the screen. Y
     .swipeUp({distance: 100});
 })();
 ```
-### Element API
+#### Element API
 
 :white_check_mark: :hammer: [```.tap(options? {x?: Number, y?: Number}) => Element```](./element/tap.md)
 
