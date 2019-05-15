@@ -8,6 +8,8 @@ describe("Form Screen", () => {
   });
 
   it("supports text input", async () => {
+    await expect(element(by.label("text-input"))).toHaveValue("");
+
     const $textInput = await element(by.label("text-input"))
       .tap()
       .typeText("Hello World!");
