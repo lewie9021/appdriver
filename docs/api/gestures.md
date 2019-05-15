@@ -1,6 +1,8 @@
 # Gestures
 
-The `gestures` object provides a way to create gestures within the application to be used with either the `device` or `element` objects using their `.performGesture()` method.
+The `gestures` object provides a toolbox of presets and utility functions for composing a range of custom gestures. All gestures must be executed in one of the following contexts:
+- Device: `device.performGesture()`
+- Element: `element.performGesture()`
 
 ### Examples
 
