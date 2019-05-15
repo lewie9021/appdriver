@@ -282,7 +282,25 @@ class Element {
 
       return platform.select({
         ios: () => {
-          return commands.element.attributes.text(elementId)
+          return commands.element.attributes.type(elementId)
+            .then((elementType) => {
+              if (elementType === "XCUIElementTypeStaticText") {
+                return commands.element.attributes.text(elementId);
+              }
+
+              const query = {
+                using: "-ios predicate string",
+                value: `type == "XCUIElementTypeStaticText"`
+              };
+
+              return commands.element.findElementsFromElement(elementId, query)
+                .then((textElements) => {
+                  const tasks = textElements.map((x) => commands.element.attributes.text(x.ELEMENT));
+
+                  return Promise.all(tasks)
+                    .then((textFragments) => textFragments.join(""));
+                });
+            })
             .catch(() => {
               throw new ElementActionError("Failed to get text for element.");
             });
