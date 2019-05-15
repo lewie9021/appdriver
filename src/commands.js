@@ -1,7 +1,6 @@
 const { get, post, del } = require("./api");
 const { platform } = require("./utils");
-
-global.session = null;
+const { getSession, setSession } = require("./session");
 
 const elementExists = (matcher) => {
   return matcher.resolve()
@@ -30,14 +29,10 @@ module.exports = {
             throw new Error("There was a problem creating a session with the given capabilities.");
           }
 
-          const session = {
+          return setSession({
             ...data.value,
             sessionId: data.sessionId
-          };
-
-          global.session = session;
-
-          return session;
+          });
         });
     },
     end: (sessionId) => {
@@ -46,35 +41,37 @@ module.exports = {
           if (status) {
             throw new Error("There was a problem ending the session.");
           }
+
+          setSession(null);
         });
     },
     takeScreenshot: () => {
-      return get(`/session/${global.session.sessionId}/screenshot`);
+      return get(`/session/${getSession("sessionId")}/screenshot`);
     },
     getWindowRect: () => {
-      return get(`/session/${global.session.sessionId}/window/rect`);
+      return get(`/session/${getSession("sessionId")}/window/rect`);
     },
     getOrientation: () => {
-      return get(`/session/${global.session.sessionId}/orientation`);
+      return get(`/session/${getSession("sessionId")}/orientation`);
     },
     setOrientation: (orientation) => {
       const payload = {
         orientation
       };
 
-      return post(`/session/${global.session.sessionId}/orientation`, null, payload);
+      return post(`/session/${getSession("sessionId")}/orientation`, null, payload);
     }
   },
   device: {
     app: {
       closeApp: () => {
-        return post(`/session/${global.session.sessionId}/appium/app/close`);
+        return post(`/session/${getSession("sessionId")}/appium/app/close`);
       },
       launchApp: () => {
-        return post(`/session/${global.session.sessionId}/appium/app/launch`);
+        return post(`/session/${getSession("sessionId")}/appium/app/launch`);
       },
       resetApp: () => {
-        return post(`/session/${global.session.sessionId}/appium/app/reset`);
+        return post(`/session/${getSession("sessionId")}/appium/app/reset`);
       }
     }
   },
@@ -85,7 +82,7 @@ module.exports = {
         value
       };
 
-      return post(`/session/${global.session.sessionId}/element`, null, payload);
+      return post(`/session/${getSession("sessionId")}/element`, null, payload);
     },
     findElements: ({using, value}) => {
       const payload = {
@@ -93,7 +90,7 @@ module.exports = {
         value
       };
 
-      return post(`/session/${global.session.sessionId}/elements`, null, payload);
+      return post(`/session/${getSession("sessionId")}/elements`, null, payload);
     },
     findElementsFromElement: (elementId, {using, value}) => {
       const payload = {
@@ -101,7 +98,7 @@ module.exports = {
         value
       };
 
-      return post(`/session/${global.session.sessionId}/element/${elementId}/elements`, null, payload)
+      return post(`/session/${getSession("sessionId")}/element/${elementId}/elements`, null, payload)
         .then(({status, value}) => {
           if (status) {
             throw new Error("Failed to get elements from element.");
@@ -112,10 +109,10 @@ module.exports = {
     },
     attributes: {
       size: (elementId) => {
-        return get(`/session/${global.session.sessionId}/element/${elementId}/size`);
+        return get(`/session/${getSession("sessionId")}/element/${elementId}/size`);
       },
       text: (elementId) => {
-        return get(`/session/${global.session.sessionId}/element/${elementId}/text`)
+        return get(`/session/${getSession("sessionId")}/element/${elementId}/text`)
           .then(({status, value}) => {
             if (status) {
               throw new Error("Failed to get element text.");
@@ -126,15 +123,15 @@ module.exports = {
       },
       value: (elementId) => {
         if (global.session.platformName === "Android") {
-          return get(`/session/${global.session.sessionId}/element/${elementId}/text`);
+          return get(`/session/${getSession("sessionId")}/element/${elementId}/text`);
         }
 
-        return get(`/session/${global.session.sessionId}/element/${elementId}/attribute/value`);
+        return get(`/session/${getSession("sessionId")}/element/${elementId}/attribute/value`);
       },
       type: (elementId) => {
         const spec = {
-          ios: () => get(`/session/${global.session.sessionId}/element/${elementId}/name`),
-          android: () => get(`/session/${global.session.sessionId}/element/${elementId}/attribute/className`)
+          ios: () => get(`/session/${getSession("sessionId")}/element/${elementId}/name`),
+          android: () => get(`/session/${getSession("sessionId")}/element/${elementId}/attribute/className`)
         };
 
         return platform.select(spec)
@@ -149,44 +146,44 @@ module.exports = {
 
       // Not supported on iOS
       className: (elementId) => {
-        return get(`/session/${global.session.sessionId}/element/${elementId}/attribute/className`);
+        return get(`/session/${getSession("sessionId")}/element/${elementId}/attribute/className`);
       },
       name: (elementId) => {
-        return get(`/session/${global.session.sessionId}/element/${elementId}/name`);
+        return get(`/session/${getSession("sessionId")}/element/${elementId}/name`);
       },
       exists: elementExists,
       displayed: (elementId) => {
-        return get(`/session/${global.session.sessionId}/element/${elementId}/displayed`);
+        return get(`/session/${getSession("sessionId")}/element/${elementId}/displayed`);
       },
       location: (elementId) => {
-        return get(`/session/${global.session.sessionId}/element/${elementId}/location`);
+        return get(`/session/${getSession("sessionId")}/element/${elementId}/location`);
       },
       locationInView: (elementId) => {
-        return get(`/session/${global.session.sessionId}/element/${elementId}/location_in_view`);
+        return get(`/session/${getSession("sessionId")}/element/${elementId}/location_in_view`);
       },
       replaceValue: (elementId) => {
-        return post(`/session/${global.session.sessionId}/element/${elementId}/replace_value`);
+        return post(`/session/${getSession("sessionId")}/element/${elementId}/replace_value`);
       }
     },
     actions: {
       click: (elementId) => {
-        return post(`/session/${global.session.sessionId}/element/${elementId}/click`);
+        return post(`/session/${getSession("sessionId")}/element/${elementId}/click`);
       },
       sendKeys: (elementId, value) => {
         const payload = {
           value
         };
 
-        return post(`/session/${global.session.sessionId}/element/${elementId}/value`, null, payload);
+        return post(`/session/${getSession("sessionId")}/element/${elementId}/value`, null, payload);
       },
       clear: (elementId) => {
-        return post(`/session/${global.session.sessionId}/element/${elementId}/clear`);
+        return post(`/session/${getSession("sessionId")}/element/${elementId}/clear`);
       }
     }
   },
   interactions: {
     actions: (actions) => {
-      return post(`/session/${global.session.sessionId}/actions`, null, {actions});
+      return post(`/session/${getSession("sessionId")}/actions`, null, {actions});
     }
   }
 };

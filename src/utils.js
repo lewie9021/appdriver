@@ -1,3 +1,5 @@
+const session = require("./session");
+
 const delay = (ms) => {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
@@ -56,7 +58,9 @@ const getValueType = (value) => {
 
 const platform = {
   select: ({ios, android}) => {
-    switch (global.session.platformName) {
+    const { platformName } = session.getSession();
+
+    switch (platformName) {
       case "iOS":
         return ios();
       case "Android":
