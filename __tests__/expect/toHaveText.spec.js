@@ -7,7 +7,6 @@ const { by, element, expect: assert } = require("../../index");
 const { ElementActionError } = require("../../src/errors");
 const mockCommand = require("../helpers/mockCommand");
 const { createElementFixture } = require("../fixtures/fixtures");
-const { createElementTextFixture } = require("../fixtures/fixtures");
 
 beforeAll(() => {
   session.getSession.mockReturnValue({

@@ -122,7 +122,7 @@ module.exports = {
           });
       },
       value: (elementId) => {
-        if (global.session.platformName === "Android") {
+        if (getSession("platformName") === "Android") {
           return get(`/session/${getSession("sessionId")}/element/${elementId}/text`);
         }
 
@@ -142,11 +142,6 @@ module.exports = {
 
             return value;
           });
-      },
-
-      // Not supported on iOS
-      className: (elementId) => {
-        return get(`/session/${getSession("sessionId")}/element/${elementId}/attribute/className`);
       },
       name: (elementId) => {
         return get(`/session/${getSession("sessionId")}/element/${elementId}/name`);

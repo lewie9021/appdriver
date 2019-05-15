@@ -321,11 +321,7 @@ class Element {
     return currentValue.then((value) => {
       const elementId = value.value.ELEMENT;
 
-      const command = session.platformName === "iOS"
-        ? commands.element.attributes.name
-        : commands.element.attributes.className;
-
-      return command(elementId)
+      return commands.element.attributes.type(elementId)
         .then(({status, value}) => {
           if (status) {
             throw new ElementActionError("Failed to get value for element.");
