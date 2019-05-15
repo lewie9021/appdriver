@@ -1,6 +1,6 @@
 # Device
 
-The `device` object provides a way to interact within the application that's not directly linked to an element.
+The `device` object provides a way of performing interactions within the application that aren't directly linked with elements.
 
 ### Examples
 
