@@ -1,5 +1,7 @@
 jest.mock("../../src/commands");
+jest.mock("../../src/session");
 const commands = require("../../src/commands");
+const session = require("../../src/session");
 
 const { by, element, expect: assert } = require("../../index");
 const { ElementActionError } = require("../../src/errors");
@@ -7,9 +9,15 @@ const mockCommand = require("../helpers/mockCommand");
 const { createElementFixture } = require("../fixtures/fixtures");
 const { createElementTextFixture } = require("../fixtures/fixtures");
 
+beforeAll(() => {
+  session.getSession.mockReturnValue({
+    platformName: "iOS"
+  });
+});
+
 it("doesn't throw if expectation is met", async () => {
   mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-  mockCommand(commands.element.attributes.text, () => createElementTextFixture({text: "My Product"}));
+  mockCommand(commands.element.attributes.text, () => "My Product");
 
   const $element = await element(by.label("product-title"));
 
@@ -21,7 +29,7 @@ it("throws if expectation is not met", async () => {
   const actualText = "My Other Product";
   const expectedText = "My Product";
   mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-  mockCommand(commands.element.attributes.text, () => createElementTextFixture({text: actualText}));
+  mockCommand(commands.element.attributes.text, () => actualText);
 
   const $element = await element(by.label("product-title"));
 
@@ -32,7 +40,7 @@ it("throws if expectation is not met", async () => {
 // TODO: Could maybe wrap the error?
 it("correctly propagates errors", async () => {
   mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-  mockCommand(commands.element.attributes.text, () => createElementTextFixture({status: 3}));
+  mockCommand(commands.element.attributes.text, () => Promise.reject(new Error("Error!")));
 
   const $element = await element(by.label("product-title"));
 
