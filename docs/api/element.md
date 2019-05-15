@@ -29,15 +29,15 @@ The `element` instance provides a way to interact with elements on the screen. Y
 
 :white_check_mark: :hammer: [```.tap(options? {x?: Number, y?: Number}) => Element```](./element/tap.md)
 
-TODO: Description here.
+Performs tap gesture on element.
 
 :white_check_mark: [```.longPress(options?: {x?: Number, y?: Number, duration?: Number}) => Element```](./element/longPress.md)
 
-TODO: Description here.
+Performs long press gesture on element.
 
 :white_check_mark: [```.typeText(text: String) => Element```](./element/typeText.md)
 
-TODO: Description here.
+Using the virtual keyboard, types the given text into a text element.
 
 :warning: [```.replaceText(text: String) => Element```](./element/replaceText.md)
 
@@ -45,23 +45,23 @@ TODO: Description here.
 
 :white_check_mark: [```.clearText() => Element```](./element/clearText.md)
 
-TODO: Description here.
+Wipes the contents of a text element.
 
 :white_check_mark: [```.getText() => String```](./element/getText.md)
 
-TODO: Description here.
+Retrieves inner text content of element.
 
 :white_check_mark: :hammer: [```.getValue() => Any```](./element/getValue.md)
 
-TODO: Description here.
+Retrieves value property of element.
 
 :hammer: [```.exists() => Boolean```](./element/exists.md)
 
-TODO: Description here.
+Retrieves existence status of element.
 
 :white_check_mark: [```.isVisible() => Boolean```](./element/isVisible.md)
 
-TODO: Description here.
+Retrieves visibility status of element.
 
 :warning: [```.isEnabled() => Boolean```](./element/isEnabled.md)
 
@@ -73,11 +73,11 @@ TODO: Description here.
 
 :white_check_mark: [```.getLocation(options?: {relative?: Boolean}) => {x: Number, y: Number}```](./element/getLocation.md)
 
-TODO: Description here.
+Retrieves x and y coordinates of element.
 
 :white_check_mark: [```.getSize() => {width: Number, height: Number}```](./element/getSize.md)
 
-TODO: Description here.
+Retrieves width and height dimensions of element.
 
 :hammer: [```.getAttribute(attribute: String) => Any```](./element/getAttribute.md)
 
