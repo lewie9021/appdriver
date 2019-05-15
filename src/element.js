@@ -348,20 +348,14 @@ class Element {
       const elementId = value.value.ELEMENT;
 
       return commands.element.attributes.type(elementId)
-        .then(({status, value}) => {
-          if (status) {
-            throw new ElementActionError("Failed to get value for element.");
-          }
-
-          const className = value;
-
+        .then((elementType) => {
           return commands.element.attributes.value(elementId)
             .then(({status, value}) => {
               if (status) {
                 throw new ElementActionError("Failed to get value for element.");
               }
 
-              return parseValue(className, value);
+              return parseValue(elementType, value);
             });
         });
     });
