@@ -64,6 +64,30 @@ describe("iOS", () => {
   });
 
   testPlatform("iOS");
+
+  it("correctly handles native switch element value (ON)", async () => {
+    mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
+    mockCommand(commands.element.attributes.type, () => "XCUIElementTypeSwitch");
+    mockCommand(commands.element.attributes.value, () => createElementValueFixture({value: "1"}));
+
+    const result = await element(by.label("switch")).getValue();
+
+    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+    expect(commands.element.attributes.value).toHaveBeenCalledTimes(1);
+    expect(result).toEqual(true);
+  });
+
+  it("correctly handles native switch element value (OFF)", async () => {
+    mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
+    mockCommand(commands.element.attributes.type, () => "XCUIElementTypeSwitch");
+    mockCommand(commands.element.attributes.value, () => createElementValueFixture({value: "0"}));
+
+    const result = await element(by.label("switch")).getValue();
+
+    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+    expect(commands.element.attributes.value).toHaveBeenCalledTimes(1);
+    expect(result).toEqual(false);
+  });
 });
 
 describe("Android", () => {
@@ -74,4 +98,28 @@ describe("Android", () => {
   });
 
   testPlatform("Android");
+
+  it("correctly handles native switch element value (ON)", async () => {
+    mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
+    mockCommand(commands.element.attributes.type, () => "android.widget.Switch");
+    mockCommand(commands.element.attributes.value, () => createElementValueFixture({value: "ON"}));
+
+    const result = await element(by.label("switch")).getValue();
+
+    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+    expect(commands.element.attributes.value).toHaveBeenCalledTimes(1);
+    expect(result).toEqual(true);
+  });
+
+  it("correctly handles native switch element value (OFF)", async () => {
+    mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
+    mockCommand(commands.element.attributes.type, () => "android.widget.Switch");
+    mockCommand(commands.element.attributes.value, () => createElementValueFixture({value: "OFF"}));
+
+    const result = await element(by.label("switch")).getValue();
+
+    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+    expect(commands.element.attributes.value).toHaveBeenCalledTimes(1);
+    expect(result).toEqual(false);
+  });
 });
