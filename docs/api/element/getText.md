@@ -1,10 +1,10 @@
-# `.getText() => String`
+# `.getText() => Promise<String>`
 
 Retrieves text content of element.
 
 #### Returns
 
-`String`: Element text contents.
+`Promise` (String): Element text contents.
 
 #### Examples
 
