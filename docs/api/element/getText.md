@@ -12,6 +12,7 @@ Text:
 ```jsx
 // Application Code (React Native).
 import { Text } from "react-native";
+import { setTestId } from "appdriver";
 
 const App = () => (
   <Text {...setTestId("text")}>
@@ -41,7 +42,8 @@ Button:
 Text Input:
 ```jsx
 // Application Code (React Native).
-import { Text } from "react-native";
+import { TextInput } from "react-native";
+import { setTestId } from "appdriver";
 
 const App = () => (
   <TextInput
