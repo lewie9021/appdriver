@@ -39,7 +39,18 @@ Button:
 ```
 
 Text Input:
-```javascript
+```jsx
+// Application Code (React Native).
+import { Text } from "react-native";
+
+const App = () => (
+  <TextInput
+    {...setTestId("text-input")}
+    value="Hello World!"
+  />
+);
+
+// Test Script (Node.js).
 (async () => {
   const text = await element(by.label("text-input")).getText();
   
