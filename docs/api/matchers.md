@@ -46,7 +46,7 @@ Find element(s) by their ID. For Android this is the `resource-id` attribute, wh
 
 :white_check_mark: [```by.label(accessibilityLabel: String) => Matcher```](./matchers/label.md)
 
-TODO: Description here.
+Find element(s) by their accessibility label. For Android this is the `content-desc` attribute, whereas for iOS it's the `accessibility-id` attribute.
 
 :warning: [```by.text(text: String) => Matcher```](./matchers/text.md)
 
