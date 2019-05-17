@@ -55,7 +55,7 @@ const getValue = (matcher, value) => {
   return value || matcher.resolve();
 };
 
-const parseValue = (elementType, rawValue) => {
+const parseValue = (rawValue, elementType, options) => {
   switch (elementType) {
     case "XCUIElementTypeTextField":
       return rawValue || "";
@@ -64,7 +64,11 @@ const parseValue = (elementType, rawValue) => {
     case "android.widget.Switch":
       return rawValue === "ON";
     case "XCUIElementTypeSlider":
-      return parseFloat(rawValue.replace("%", "")) / 100;
+      if (!options || !options.sliderRange) {
+        throw new Error("You must provide a 'sliderRange' option when dealing with slider elements.");
+      }
+
+      return ((options.sliderRange[1] - options.sliderRange[0]) * parseFloat(rawValue.replace("%", ""))) / 100;
     case "android.widget.SeekBar":
       return parseFloat(rawValue);
     default:
@@ -345,7 +349,7 @@ class Element {
     });
   }
 
-  getValue() {
+  getValue(options) {
     const currentValue = getValue(this.matcher, this.value);
 
     return currentValue.then((value) => {
@@ -359,9 +363,7 @@ class Element {
                 throw new ElementActionError("Failed to get value for element.");
               }
 
-
-
-              return parseValue(elementType, value);
+              return parseValue(value, elementType, options);
             });
         });
     });

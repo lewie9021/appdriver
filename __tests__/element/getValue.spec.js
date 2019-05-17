@@ -94,11 +94,23 @@ describe("iOS", () => {
     mockCommand(commands.element.attributes.type, () => "XCUIElementTypeSlider");
     mockCommand(commands.element.attributes.value, () => createElementValueFixture({value: "50%"}));
 
-    const result = await element(by.label("slider")).getValue();
+    const result = await element(by.label("slider")).getValue({sliderRange: [0, 5]});
 
     expect(commands.element.findElement).toHaveBeenCalledTimes(1);
     expect(commands.element.attributes.value).toHaveBeenCalledTimes(1);
-    expect(result).toEqual(0.5);
+    expect(result).toEqual(2.5);
+  });
+
+  it("throws if 'sliderRange' is not provided for native slider elements", async () => {
+    mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
+    mockCommand(commands.element.attributes.type, () => "XCUIElementTypeSlider");
+    mockCommand(commands.element.attributes.value, () => createElementValueFixture({value: "50%"}));
+
+    await expect(element(by.label("slider")).getValue())
+      .rejects.toThrow(new Error("You must provide a 'sliderRange' option when dealing with slider elements."));
+
+    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
+    expect(commands.element.attributes.value).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -138,12 +150,12 @@ describe("Android", () => {
   it("correctly handles native slider element value", async () => {
     mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
     mockCommand(commands.element.attributes.type, () => "android.widget.SeekBar");
-    mockCommand(commands.element.attributes.value, () => createElementValueFixture({value: "5.0"}));
+    mockCommand(commands.element.attributes.value, () => createElementValueFixture({value: "2.5"}));
 
-    const result = await element(by.label("slider")).getValue();
+    const result = await element(by.label("slider")).getValue({sliderRange: [0, 5]});
 
     expect(commands.element.findElement).toHaveBeenCalledTimes(1);
     expect(commands.element.attributes.value).toHaveBeenCalledTimes(1);
-    expect(result).toEqual(5);
+    expect(result).toEqual(2.5);
   });
 });
