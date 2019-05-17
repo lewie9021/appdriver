@@ -1,61 +1,46 @@
 const commands = require("./commands");
-const { getSession } = require("./session");
+const { platform } = require("./utils");
 const { ElementNotFoundError, ElementsNotFoundError } = require("./errors");
 
-// Very crude implementation that supports simple fuzzy matching, e.g. "list-item-*", "*item*", and "*-item"
+const isContainsQuery = (query) => {
+  return query.startsWith("*") && query.endsWith("*");
+};
+
+const isEndsWithQuery = (query) => {
+  return query.endsWith("*");
+};
+
+// Very crude implementation that supports simple fuzzy matching, e.g. "list-item-*" and "*item*"
 // TODO: Needs to escape value to avoid unexpected behaviour.
-// TODO: Needs Android support for "*-item" type of queries.
 const getLabelQuery = (accessibilityLabel) => {
-  if (accessibilityLabel.startsWith("*") && accessibilityLabel.endsWith("*")) {
+  if (isContainsQuery(accessibilityLabel)) {
     const query = accessibilityLabel.substr(1, accessibilityLabel.length - 2);
 
-    switch (getSession("platformName")) {
-      case "iOS":
-        return {
-          using: "-ios predicate string",
-          value: `name CONTAINS '${query}'`
-        };
-      case "Android":
-        return {
-          using: "-android uiautomator",
-          value: `new UiSelector().descriptionContains("${query}")`
-        };
-      default:
-        throw new Error(`Label '${accessibilityLabel}' is not supported.`);
-    }
+    return platform.select({
+      ios: () => ({
+        using: "-ios predicate string",
+        value: `name CONTAINS '${query}'`
+      }),
+      android: () => ({
+        using: "-android uiautomator",
+        value: `new UiSelector().descriptionContains("${query}")`
+      })
+    });
   }
 
-  if (accessibilityLabel.endsWith("*")) {
+  if (isEndsWithQuery(accessibilityLabel)) {
     const query = accessibilityLabel.substr(0, accessibilityLabel.length - 1);
 
-    switch (getSession("platformName")) {
-      case "iOS":
-        return {
-          using: "-ios predicate string",
-          value: `name BEGINSWITH '${query}'`
-        };
-      case "Android":
-        return {
-          using: "-android uiautomator",
-          value: `new UiSelector().descriptionStartsWith("${query}")`
-        };
-      default:
-        throw new Error(`Label '${accessibilityLabel}' is not supported.`);
-    }
-  }
-
-  if (accessibilityLabel.startsWith("*")) {
-    const query = accessibilityLabel.substr(1);
-
-    switch (getSession("platformName")) {
-      case "iOS":
-        return {
-          using: "-ios predicate string",
-          value: `name ENDSWITH '${query}'`
-        };
-      default:
-        throw new Error(`Label '${accessibilityLabel}' is not supported.`);
-    }
+    return platform.select({
+      ios: () => ({
+        using: "-ios predicate string",
+        value: `name BEGINSWITH '${query}'`
+      }),
+      android: () => ({
+        using: "-android uiautomator",
+        value: `new UiSelector().descriptionStartsWith("${query}")`
+      })
+    });
   }
 
   return {
@@ -65,20 +50,46 @@ const getLabelQuery = (accessibilityLabel) => {
 };
 
 const getTextQuery = (text) => {
-  switch (getSession("platformName")) {
-    case "iOS":
-      return {
+  if (isContainsQuery(text)) {
+    const query = text.substr(1, text.length - 2);
+
+    return platform.select({
+      ios: () => ({
         using: "-ios predicate string",
-        value: `label = '${text}'`
-      };
-    case "Android":
-      return {
+        value: `label CONTAINS '${query}'`
+      }),
+      android: () => ({
         using: "-android uiautomator",
-        value: `new UiSelector().text("${text}")`
-      };
-    default:
-      throw new Error("Platform not supported");
+        value: `new UiSelector().textContains("${query}")`
+      })
+    });
   }
+
+  if (isEndsWithQuery(text)) {
+    const query = text.substr(0, text.length - 1);
+
+    return platform.select({
+      ios: () => ({
+        using: "-ios predicate string",
+        value: `label BEGINSWITH '${query}'`
+      }),
+      android: () => ({
+        using: "-android uiautomator",
+        value: `new UiSelector().textStartsWith("${query}")`
+      })
+    });
+  }
+
+  return platform.select({
+    ios: () => ({
+      using: "-ios predicate string",
+      value: `label = '${text}'`
+    }),
+    android: () => ({
+      using: "-android uiautomator",
+      value: `new UiSelector().text("${text}")`
+    })
+  });
 };
 
 const by = {
