@@ -98,7 +98,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.takeScreenshot(filePath?: String) => Promise<{value: String, width: Number, height: Number}>```](./device/takeScreenshot.md)
+:warning: [```.takeScreenshot(options: {filePath: String}) => Promise```](./device/takeScreenshot.md)
 
 TODO: Description here.
 
@@ -150,7 +150,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.stopScreenRecording(filePath?: String, options?: {username?: String, password?: String, method?: String}) => Promise```](./device/stopScreenRecording.md)
+:warning: [```.stopScreenRecording(options: {filePath: String, username?: String, password?: String, method?: String}) => Promise```](./device/stopScreenRecording.md)
 
 TODO: Description here.
 
@@ -166,11 +166,11 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.readFile(filePath: String) => Promise<String>```](./device/readFile.md)
+:warning: [```.readFile(options: {filePath: String}) => Promise<String>```](./device/readFile.md)
 
 TODO: Description here.
 
-:warning: [```.writeFile(filePath: String, data: String) => Promise```](./device/writeFile.md)
+:warning: [```.writeFile(options: {filePath: String, data: String}) => Promise```](./device/writeFile.md)
 
 TODO: Description here.
 
