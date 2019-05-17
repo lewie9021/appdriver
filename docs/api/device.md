@@ -70,7 +70,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:white_check_mark: [```.wait(options: {duration: Number}) => Promise```](./device/wait.md)
+:white_check_mark: :hammer: [```.wait(duration: Number) => Promise```](./device/wait.md)
 
 TODO: Description here.
 
