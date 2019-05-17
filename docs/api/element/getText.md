@@ -76,4 +76,4 @@ const App = () => (
 
 #### Related methods
 
-- [`.getValue() => Any`](./getValue.md)
+- [`.getValue() => Promise<Any>`](./getValue.md)
