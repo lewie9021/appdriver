@@ -42,7 +42,7 @@ Find element with text 'Click Me!''.
 
 :hammer: [```by.id(id: String) => Matcher```](./matchers/id.md)
 
-TODO: Description here.
+Find element(s) by their ID. For Android this is the `resource-id` attribute, whereas for iOS it's the `name` attribute.
 
 :white_check_mark: [```by.label(accessibilityLabel: String) => Matcher```](./matchers/label.md)
 
