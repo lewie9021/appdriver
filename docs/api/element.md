@@ -83,15 +83,15 @@ Retrieves width and height dimensions of element.
 
 TODO: Description here.
 
-:hammer: [```.waitFor(factory: () => Promise<Boolean>, options?: {interval?: Number, maxRetries?: Number}) => Element```](./element/waitFor.md)
+:hammer: [```.waitFor(factory: () => Promise<Boolean>, options?: {interval?: Number, maxDuration?: Number}) => Element```](./element/waitFor.md)
 
 TODO: Description here.
 
-:white_check_mark: [```.waitToBeVisible(options?: {interval?: Number, maxRetries?: Number}) => Element```](./element/waitToBeVisible.md)
+:white_check_mark: :hammer: [```.waitToBeVisible(options?: {interval?: Number, maxDuration?: Number}) => Element```](./element/waitToBeVisible.md)
 
 TODO: Description here.
 
-:white_check_mark: [```.waitToExist(options?: {interval?: Number, maxRetries?: Number}) => Element```](./element/waitToExist.md)
+:white_check_mark: :hammer: [```.waitToExist(options?: {interval?: Number, maxDuration?: Number}) => Element```](./element/waitToExist.md)
 
 TODO: Description here.
 
