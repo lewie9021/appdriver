@@ -99,4 +99,5 @@ Unlike Appium based clients, [Detox](https://github.com/wix/Detox) is yet to sup
   - [Device](./docs/api/device.md)
   - [Gestures](./docs/api/gestures.md)
   - [Expect](./docs/api/expect.md)
+  - [Utilities](./docs/api/utilities.md)
 - [Change Log](./CHANGELOG.md)
