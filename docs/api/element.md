@@ -91,7 +91,15 @@ TODO: Description here.
 
 TODO: Description here.
 
+:warning: [```.waitToBeInvisible(options?: {interval?: Number, maxDuration?: Number}) => Element```](./element/waitNotToBeVisible.md)
+
+TODO: Description here.
+
 :white_check_mark: :hammer: [```.waitToExist(options?: {interval?: Number, maxDuration?: Number}) => Element```](./element/waitToExist.md)
+
+TODO: Description here.
+
+:warning: [```.waitToNotExist(options?: {interval?: Number, maxDuration?: Number}) => Element```](./element/waitToExist.md)
 
 TODO: Description here.
 
