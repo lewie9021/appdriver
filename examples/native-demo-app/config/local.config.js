@@ -31,6 +31,8 @@ const emulators = {
 
 module.exports = {
   specs: [
+    // "../tests/button-screen.e2e.js"
+    // "../tests/carousel-screen.e2e.js"
     "../tests/form-screen.e2e.js"
   ],
   capabilities: [
