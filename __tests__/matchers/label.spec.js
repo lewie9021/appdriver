@@ -1,4 +1,5 @@
 jest.mock("../../src/commands");
+jest.mock("../../src/session");
 const commands = require("../../src/commands");
 
 const { by } = require("../../src/matchers");
@@ -8,7 +9,9 @@ const mockCommand = require("../helpers/mockCommand");
 const mockSession = require("../helpers/mockSession");
 
 beforeEach(() => {
-  mockSession();
+  mockSession({
+    platformName: "iOS"
+  });
 });
 
 afterEach(() => {

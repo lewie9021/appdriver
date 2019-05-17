@@ -1,4 +1,5 @@
 jest.mock("../../src/commands");
+jest.mock("../../src/session");
 const commands = require("../../src/commands");
 
 const { by } = require("../../src/matchers");
@@ -7,11 +8,12 @@ const { ElementNotFoundError, ElementActionError } = require("../../src/errors")
 const { createElementFixture } = require("../fixtures/fixtures");
 const { createElementValueFixture } = require("../fixtures/fixtures");
 const mockCommand = require("../helpers/mockCommand");
+const mockSession = require("../helpers/mockSession");
 
-beforeAll(() => {
-  global.session = {
+beforeEach(() => {
+  mockSession({
     platformName: "iOS"
-  };
+  })
 });
 
 afterEach(() => {

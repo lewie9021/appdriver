@@ -1,13 +1,13 @@
 jest.mock("../../src/commands");
 jest.mock("../../src/session");
 const commands = require("../../src/commands");
-const session = require("../../src/session");
 
 const { by } = require("../../src/matchers");
 const { element } = require("../../src/element.js");
 const { ElementNotFoundError, ElementActionError } = require("../../src/errors");
 const { createElementFixture } = require("../fixtures/fixtures");
 const mockCommand = require("../helpers/mockCommand");
+const mockSession = require("../helpers/mockSession");
 
 const testPlatform = (platformName) => {
   const textElementType = platformName === "iOS"
@@ -57,7 +57,7 @@ afterEach(() => {
 
 describe("iOS", () => {
   beforeEach(() => {
-    session.getSession.mockReturnValue({
+    mockSession({
       platformName: "iOS"
     });
   });
@@ -88,7 +88,7 @@ describe("iOS", () => {
 
 describe("Android", () => {
   beforeEach(() => {
-    session.getSession.mockReturnValue({
+    mockSession({
       platformName: "Android"
     });
   });
