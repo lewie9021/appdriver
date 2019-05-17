@@ -31,7 +31,21 @@ const { element, by } = require("appdriver");
 ```
 
 Button:
-```javascript
+```jsx
+// Application Code (React Native).
+import { TouchableOpacity, Text } from "react-native";
+import { setTestId } from "appdriver";
+
+const App = () => (
+  <TouchableOpacity
+    {...setTestId("button")}
+    onPress={() => alert("Hello World!")}
+  >
+    <Text>Press Me!</Text>
+  </TouchableOpacity>
+);
+
+// Test Script (Node.js)
 (async () => {
   const text = await element(by.label("button")).getText();
   
