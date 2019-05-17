@@ -35,6 +35,8 @@ describe("Form Screen", () => {
         distance: size.width / 2
       })
     );
+
+    await expect(element(by.label("slider-input"))).toHaveValue(5, {sliderRange: [0, 10]});
   });
 
   it("supports switches", async () => {
