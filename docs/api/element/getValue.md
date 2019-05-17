@@ -4,7 +4,7 @@ Retrieves value property of element.
 
 #### Returns
 
-`Any`: Element value property.
+`Promise` (Any): Element value property.
 
 #### Examples
 
