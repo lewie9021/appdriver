@@ -40,14 +40,14 @@ Find element with text 'Click Me!''.
 
 ### Matchers API
 
-:hammer: [```by.id(id: String) => Matcher```](./matchers/id.md)
+:hammer: [```by.id(id: String) => Matcher```](./matchers/byId.md)
 
 Find element(s) by their ID. For Android this is the `resource-id` attribute, whereas for iOS it's the `name` attribute.
 
-:white_check_mark: [```by.label(accessibilityLabel: String) => Matcher```](./matchers/label.md)
+:white_check_mark: [```by.label(accessibilityLabel: String) => Matcher```](./matchers/byLabel.md)
 
 Find element(s) by their accessibility label. For Android this is the `content-desc` attribute, whereas for iOS it's the `accessibility-id` attribute.
 
-:warning: [```by.text(text: String) => Matcher```](./matchers/text.md)
+:white_check_mark: [```by.text(text: String) => Matcher```](./matchers/byText.md)
 
-TODO: Description here.
+Find element(s) by their text value.
