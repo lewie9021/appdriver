@@ -15,7 +15,7 @@ const matchRequest = (url, opts) => {
   return matches.find((x) => !x.called) || matches[matches.length - 1];
 };
 
-const fetchMock = (url, opts) => {
+const fetchMock = async (url, opts) => {
   let request = matchRequest(url, opts);
 
   if (!request) {
