@@ -102,11 +102,11 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.isKeyboardVisible() => Promise<Boolean>```](./device/isKeyboardVisible.md)
+:hammer: [```.isKeyboardVisible() => Promise<Boolean>```](./device/isKeyboardVisible.md)
 
 TODO: Description here.
 
-:warning: [```.hideKeyboard() => Promise```](./device/hideKeyboard.md)
+:hammer: [```.hideKeyboard() => Promise```](./device/hideKeyboard.md)
 
 TODO: Description here.
 
