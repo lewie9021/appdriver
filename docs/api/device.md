@@ -54,15 +54,15 @@ The `device` object provides a way of performing interactions within the applica
 
 ### Device API
 
-:warning: [```.platform: "iOS" | "Android"```](./device/platform.md)
+:hammer: [```.platform: "iOS" | "Android"```](./device/platform.md)
 
 TODO: Description here.
 
-:warning: [```.platformVersion: String```](./device/platformVersion.md)
+:hammer: [```.platformVersion: String```](./device/platformVersion.md)
 
 TODO: Description here.
 
-:warning: [```.name: String```](./device/name.md)
+:hammer: [```.name: String```](./device/name.md)
 
 TODO: Description here.
 
