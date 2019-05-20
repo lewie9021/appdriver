@@ -98,7 +98,15 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.takeScreenshot(options: {filePath: String}) => Promise```](./device/takeScreenshot.md)
+:warning: [```.takeScreenshot(options?: {filePath?: String}) => Promise```](./device/takeScreenshot.md)
+
+TODO: Description here.
+
+:warning: [```.startScreenRecording(options?: {filePath?: String, remote? {username?: String, password?: String, method?: String}, format?: String, quality?: String, fps?: Number, bitRate?: Number, size?: {width: Number, height: Number}, maxDuration?: Number, forceRestart?: Boolean}) => Promise```](./device/startScreenRecording.md)
+
+TODO: Description here.
+
+:warning: [```.stopScreenRecording() => Promise```](./device/stopScreenRecording.md)
 
 TODO: Description here.
 
@@ -143,14 +151,6 @@ TODO: Description here.
 TODO: Description here.
 
 :warning: [```.performFingerPrint(options: {id?: Number}) => Promise```](./device/performFingerPrint.md)
-
-TODO: Description here.
-
-:warning: [```.startScreenRecording(options?: {format?: String, quality?: String, fps?: Number, bitRate?: Number, size?: {width: Number, height: Number}, maxDuration?: Number, forceRestart?: Boolean}) => Promise```](./device/startScreenRecording.md)
-
-TODO: Description here.
-
-:warning: [```.stopScreenRecording(options: {filePath: String, username?: String, password?: String, method?: String}) => Promise```](./device/stopScreenRecording.md)
 
 TODO: Description here.
 
