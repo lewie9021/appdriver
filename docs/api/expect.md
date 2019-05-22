@@ -44,7 +44,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.toHaveValueGreaterThenOrEqual(value: Number) => Promise```](./expect/toHaveValueGreaterThenOrEqual.md)
+:hammer: [```.toHaveValueGreaterThanOrEqual(value: Number) => Promise```](./expect/toHaveValueGreaterThanOrEqual.md)
 
 TODO: Description here.
 
@@ -52,7 +52,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.toHaveValueLessThanOrEqual(value: Number) => Promise```](./expect/toHaveValueGreaterThenOrEqual.md)
+:hammer: [```.toHaveValueLessThanOrEqual(value: Number) => Promise```](./expect/toHaveValueGreaterThanOrEqual.md)
 
 TODO: Description here.
 
@@ -98,7 +98,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.toBeGreaterThenOrEqual(value: Number) => Promise```](./expect/toBeGreaterThenOrEqual.md)
+:hammer: [```.toBeGreaterThanOrEqual(value: Number) => Promise```](./expect/toBeGreaterThanOrEqual.md)
 
 TODO: Description here.
 
