@@ -36,7 +36,7 @@ The `expect` utility is the out-of-the-box solution for asserting within tests. 
 
 TODO: Description here.
 
-:white_check_mark: [```.toHaveValue(value: String | Number | Boolean) => Promise```](./expect/toHaveValue.md)
+:white_check_mark: [```.toHaveValue(value: Any, options?: Object) => Promise```](./expect/toHaveValue.md)
 
 TODO: Description here.
 
@@ -68,7 +68,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.toHaveAttribute(attribute: String, value: String|Number) => Promise```](./expect/toHaveAttribute.md)
+:hammer: [```.toHaveAttribute(attribute: String, value: Any) => Promise```](./expect/toHaveAttribute.md)
 
 TODO: Description here.
 
@@ -86,11 +86,11 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.toEqual(value: any) => Promise```](./expect/toEqual.md)
+:hammer: [```.toEqual(value: Any) => Promise```](./expect/toEqual.md)
 
 TODO: Description here.
 
-:hammer: [```.toContain(value: any) => Promise```](./expect/toContain.md)
+:hammer: [```.toContain(value: Any) => Promise```](./expect/toContain.md)
 
 TODO: Description here.
 
