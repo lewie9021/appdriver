@@ -90,6 +90,14 @@ TODO: Description here.
 
 TODO: Description here.
 
+:hammer: [```.toBeTruthy() => Promise```](./expect/toBeTruthy.md)
+
+TODO: Description here.
+
+:hammer: [```.toBeFalsy() => Promise```](./expect/toBeFalsy.md)
+
+TODO: Description here.
+
 :hammer: [```.toContain(value: Any) => Promise```](./expect/toContain.md)
 
 TODO: Description here.
