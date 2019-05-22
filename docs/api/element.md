@@ -83,7 +83,7 @@ Retrieves width and height dimensions of element.
 
 TODO: Description here.
 
-:hammer: [```.waitFor(factory: () => Promise<Boolean>, options?: {interval?: Number, maxDuration?: Number}) => Element```](./element/waitFor.md)
+:hammer: [```.waitFor(condition: () => Promise, options?: {interval?: Number, maxDuration?: Number}) => Element```](./element/waitFor.md)
 
 TODO: Description here.
 
