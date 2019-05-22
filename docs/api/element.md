@@ -27,11 +27,11 @@ The `element` instance provides a way to interact with elements on the screen. Y
 ```
 #### Element API
 
-:white_check_mark: :hammer: [```.tap(options? {x?: Number, y?: Number}) => Element```](./element/tap.md)
+:white_check_mark: :hammer: [```.tap(options?: Options) => Element```](./element/tap.md)
 
 Performs tap gesture on element.
 
-:white_check_mark: [```.longPress(options?: {x?: Number, y?: Number, duration?: Number}) => Element```](./element/longPress.md)
+:white_check_mark: [```.longPress(options?: Options) => Element```](./element/longPress.md)
 
 Performs long press gesture on element.
 
@@ -71,11 +71,11 @@ TODO: Description here.
 
 TODO: Description here.
 
-:white_check_mark: [```.getLocation(options?: {relative?: Boolean}) => Promise<{x: Number, y: Number}>```](./element/getLocation.md)
+:white_check_mark: [```.getLocation(options?: Object) => Promise<Object>```](./element/getLocation.md)
 
 Retrieves x and y coordinates of element.
 
-:white_check_mark: [```.getSize() => Promise<{width: Number, height: Number}>```](./element/getSize.md)
+:white_check_mark: [```.getSize() => Promise<Object>```](./element/getSize.md)
 
 Retrieves width and height dimensions of element.
 
@@ -87,7 +87,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:white_check_mark: :hammer: [```.waitToBeVisible(options?: {interval?: Number, maxDuration?: Number}) => Element```](./element/waitToBeVisible.md)
+:white_check_mark: :hammer: [```.waitToBeVisible(options?: Object) => Element```](./element/waitToBeVisible.md)
 
 TODO: Description here.
 
@@ -95,7 +95,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:white_check_mark: :hammer: [```.waitToExist(options?: {interval?: Number, maxDuration?: Number}) => Element```](./element/waitToExist.md)
+:white_check_mark: :hammer: [```.waitToExist(options?: Object) => Element```](./element/waitToExist.md)
 
 TODO: Description here.
 
