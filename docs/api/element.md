@@ -1,6 +1,8 @@
 # Element
 
-:white_check_mark: [```element(matcher: Matcher) => Element```](./)
+[```element(matcher: Matcher) => Element```](./)
+
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 The `element` instance provides a way to interact with elements on the screen. You will need to use a `matcher` object to define how elements are found. The most common is `by.label` which finds elements by accessibility label.
 
@@ -39,103 +41,153 @@ Performs tap gesture on element.
 
 Performs long press gesture on element.
 
-:white_check_mark: [```.typeText(text: String) => Element```](./element/typeText.md)
+[```.typeText(text: String) => Element```](./element/typeText.md)
+
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 Using the virtual keyboard, types the given text into a text element.
 
-:warning: [```.replaceText(text: String) => Element```](./element/replaceText.md)
+[```.replaceText(text: String) => Element```](./element/replaceText.md)
+
+<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:white_check_mark: [```.clearText() => Element```](./element/clearText.md)
+[```.clearText() => Element```](./element/clearText.md)
+
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 Wipes the contents of a text element.
 
-:white_check_mark: [```.getText() => Promise<String>```](./element/getText.md)
+[```.getText() => Promise<String>```](./element/getText.md)
+
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 Retrieves inner text content of element.
 
-:white_check_mark: :hammer: [```.getValue() => Promise<Any>```](./element/getValue.md)
+[```.getValue() => Promise<Any>```](./element/getValue.md)
+
+<img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
 Retrieves value property of element.
 
-:hammer: [```.exists() => Promise<Boolean>```](./element/exists.md)
+[```.exists() => Promise<Boolean>```](./element/exists.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 Retrieves existence status of element.
 
-:white_check_mark: [```.isVisible() => Promise<Boolean>```](./element/isVisible.md)
+[```.isVisible() => Promise<Boolean>```](./element/isVisible.md)
+
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 Retrieves visibility status of element.
 
-:warning: [```.isEnabled() => Promise<Boolean>```](./element/isEnabled.md)
+[```.isEnabled() => Promise<Boolean>```](./element/isEnabled.md)
+
+<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:warning: [```.isSelected() => Promise<Boolean>```](./element/isSelected.md)
+[```.isSelected() => Promise<Boolean>```](./element/isSelected.md)
+
+<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:white_check_mark: [```.getLocation(options?: Object) => Promise<Object>```](./element/getLocation.md)
+[```.getLocation(options?: Object) => Promise<Object>```](./element/getLocation.md)
+
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 Retrieves x and y coordinates of element.
 
-:white_check_mark: [```.getSize() => Promise<Object>```](./element/getSize.md)
+[```.getSize() => Promise<Object>```](./element/getSize.md)
+
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 Retrieves width and height dimensions of element.
 
-:hammer: [```.getAttribute(attribute: String) => Promise<Any>```](./element/getAttribute.md)
+[```.getAttribute(attribute: String) => Promise<Any>```](./element/getAttribute.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.waitFor(condition: () => Promise, options?: {interval?: Number, maxDuration?: Number}) => Element```](./element/waitFor.md)
+[```.waitFor(condition: () => Promise, options?: {interval?: Number, maxDuration?: Number}) => Element```](./element/waitFor.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:white_check_mark: :hammer: [```.waitToBeVisible(options?: Object) => Element```](./element/waitToBeVisible.md)
+[```.waitToBeVisible(options?: Object) => Element```](./element/waitToBeVisible.md)
+
+<img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
 TODO: Description here.
 
-:warning: [```.waitToBeInvisible(options?: {interval?: Number, maxDuration?: Number}) => Element```](./element/waitNotToBeVisible.md)
+[```.waitToBeInvisible(options?: {interval?: Number, maxDuration?: Number}) => Element```](./element/waitNotToBeVisible.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:white_check_mark: :hammer: [```.waitToExist(options?: Object) => Element```](./element/waitToExist.md)
+[```.waitToExist(options?: Object) => Element```](./element/waitToExist.md)
+
+<img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
 TODO: Description here.
 
-:warning: [```.waitToNotExist(options?: {interval?: Number, maxDuration?: Number}) => Element```](./element/waitToExist.md)
+[```.waitToNotExist(options?: {interval?: Number, maxDuration?: Number}) => Element```](./element/waitToExist.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.findElement(matcher: Matcher) => Element```](./element/findElement.md)
+[```.findElement(matcher: Matcher) => Element```](./element/findElement.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.findElements(matcher: Matcher) => Array<Element>```](./element/findElements.md)
+[```.findElements(matcher: Matcher) => Array<Element>```](./element/findElements.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.swipeUp(options: {x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./device/swipeUp.md)
+[```.swipeUp(options: {x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./device/swipeUp.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.swipeDown(options: {x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./device/swipeDown.md)
+[```.swipeDown(options: {x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./device/swipeDown.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.swipeLeft(options: {x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./device/swipeLeft.md)
+[```.swipeLeft(options: {x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./device/swipeLeft.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.swipeRight(options: {x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./device/swipeRight.md)
+[```.swipeRight(options: {x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./device/swipeRight.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.swipe(options: {x: Number, y: Number, direction: Number, distance: Number, duration?: Number}) => Element```](./device/swipe.md)
+[```.swipe(options: {x: Number, y: Number, direction: Number, distance: Number, duration?: Number}) => Element```](./device/swipe.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:warning: [```.swipeIntoView(options: {element: Element, swipeGesture?: Gesture, safeArea?: {top?: Number, right?: Number, bottom?: Number, left?: Number}}) => Element```](./device/swipeIntoView.md)
+[```.swipeIntoView(options: {element: Element, swipeGesture?: Gesture, safeArea?: {top?: Number, right?: Number, bottom?: Number, left?: Number}}) => Element```](./device/swipeIntoView.md)
+
+<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 To be used on scrollable elements, ensuring `element` is fully visible so that interactions are successful. Defaults `swipeGesture` to `gestures.swipeUp`.
 
