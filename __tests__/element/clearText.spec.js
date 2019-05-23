@@ -1,33 +1,33 @@
-jest.mock("../../src/commands");
-const commands = require("../../src/commands");
+const appiumServer = require("../helpers/appiumServer");
+const fetch = require("node-fetch");
 
 const { by } = require("../../src/matchers");
-const { element, Element } = require("../../src/element.js");
+const { element, Element } = require("../../src/element");
 const { ElementNotFoundError, ElementActionError } = require("../../src/errors");
 const { createElementFixture } = require("../fixtures/fixtures");
 const { createElementClearFixture } = require("../fixtures/fixtures");
 const mockCommand = require("../helpers/mockCommand");
 
 afterEach(() => {
-  jest.resetAllMocks();
+  appiumServer.resetMocks();
 });
 
 it("returns an instance of Element to enable function chaining", async () => {
   const elementFixture = createElementFixture({elementId: "elementId"});
-  mockCommand(commands.element.findElement, () => elementFixture);
-  mockCommand(commands.element.actions.clear, () => createElementClearFixture());
+
+  appiumServer.mockFindElement({elementId: "elementId"});
+  appiumServer.mockClearElement();
 
   const $element = await element(by.label("text-input")).clearText();
 
   expect($element).toBeInstanceOf(Element);
-  expect(commands.element.findElement).toHaveBeenCalledTimes(1);
-  expect(commands.element.actions.clear).toHaveBeenCalledTimes(1);
+  expect(fetch).toHaveBeenCalledTimes(2);
   await expect($element.value).resolves.toEqual(elementFixture);
 });
 
 it("returns a new element to avoid unwanted mutation", async () => {
-  mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-  mockCommand(commands.element.actions.clear, () => createElementClearFixture());
+  appiumServer.mockFindElement({elementId: "elementId"});
+  appiumServer.mockClearElement();
 
   const $element = await element(by.label("text-input"));
   const $newElement = await $element.clearText();
@@ -36,23 +36,25 @@ it("returns a new element to avoid unwanted mutation", async () => {
 });
 
 it("correctly propagates errors", async () => {
-  mockCommand(commands.element.findElement, () => createElementFixture({status: 7, elementId: "elementId"}));
-  mockCommand(commands.element.actions.clear, () => createElementClearFixture());
+  appiumServer.mockFindElement({status: 7, elementId: "elementId"});
+  appiumServer.mockClearElement();
 
   await expect(element(by.label("text-input")).clearText())
     .rejects.toThrow(ElementNotFoundError);
 
-  expect(commands.element.findElement).toHaveBeenCalledTimes(1);
-  expect(commands.element.actions.clear).not.toHaveBeenCalledTimes(1);
+  expect(fetch).toHaveBeenCalledTimes(1);
+  expect(fetch).toHaveBeenLastCalledWith(
+    expect.stringContaining("/session/sessionId/element"),
+    expect.anything()
+  );
 });
 
 it("correctly handles clear action request errors", async () => {
-  mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-  mockCommand(commands.element.actions.clear, () => createElementClearFixture({status: 3}));
+  appiumServer.mockFindElement({elementId: "elementId"});
+  appiumServer.mockClearElement({status: 3});
 
-  return expect(element(by.label("text-input")).clearText())
+  await expect(element(by.label("text-input")).clearText())
     .rejects.toThrow(new ElementActionError("Failed to clear text."));
 
-  expect(commands.element.findElement).toHaveBeenCalledTimes(1);
-  expect(commands.element.actions.clear).toHaveBeenCalledTimes(1);
+  expect(fetch).toHaveBeenCalledTimes(2);
 });

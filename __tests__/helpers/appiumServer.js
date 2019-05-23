@@ -5,10 +5,17 @@ const mockRequests = require("./mockRequests");
 
 const BASE_URL = "http://localhost:4723/wd/hub";
 
-const mockElementClick = ({status = 0} = {}) => {
+const mockClickElement = ({status = 0} = {}) => {
   mockRequests.post({
     url: `${BASE_URL}/session/sessionId/element/elementId/click`,
     response: fixtures.createElementClickFixture({status})
+  });
+};
+
+const mockClearElement = ({status} = {}) => {
+  mockRequests.post({
+    url: `${BASE_URL}/session/sessionId/element/elementId/clear`,
+    response: fixtures.createElementClearFixture({status})
   });
 };
 
@@ -32,7 +39,8 @@ const resetMocks = () => {
 
 module.exports = {
   mockFindElement,
-  mockElementClick,
+  mockClickElement,
+  mockClearElement,
   mockActions,
   resetMocks
 };

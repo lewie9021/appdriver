@@ -1,7 +1,7 @@
 const appiumServer = require("../helpers/appiumServer");
 
 const { by } = require("../../src/matchers");
-const { element, Element } = require("../../src/element.js");
+const { element, Element } = require("../../src/element");
 const { ElementNotFoundError, ElementActionError } = require("../../src/errors");
 const { createElementFixture } = require("../fixtures/fixtures");
 
@@ -13,7 +13,7 @@ it("returns an instance of Element to enable function chaining", async () => {
   const elementFixture = createElementFixture({elementId: "elementId"});
 
   appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementClick();
+  appiumServer.mockClickElement();
 
   const $element = await element(by.label("product-title")).tap();
 
@@ -23,7 +23,7 @@ it("returns an instance of Element to enable function chaining", async () => {
 
 it("returns a new element to avoid unwanted mutation", async () => {
   appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementClick();
+  appiumServer.mockClickElement();
 
   const $element = await element(by.label("list-item"));
   const $newElement = await $element.tap();
@@ -33,7 +33,7 @@ it("returns a new element to avoid unwanted mutation", async () => {
 
 it("correctly propagates errors", async () => {
   appiumServer.mockFindElement({status: 7});
-  appiumServer.mockElementClick();
+  appiumServer.mockClickElement();
 
   await expect(element(by.label("list-item")).tap())
     .rejects.toThrow(ElementNotFoundError);
@@ -41,7 +41,7 @@ it("correctly propagates errors", async () => {
 
 it("correctly handles click action request errors", async () => {
   appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementClick({status: 3});
+  appiumServer.mockClickElement({status: 3});
 
   return expect(element(by.label("list-item")).tap())
     .rejects.toThrow(new ElementActionError("Failed to tap element."));
