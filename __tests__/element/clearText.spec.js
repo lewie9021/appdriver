@@ -5,8 +5,6 @@ const { by } = require("../../src/matchers");
 const { element, Element } = require("../../src/element");
 const { ElementNotFoundError, ElementActionError } = require("../../src/errors");
 const { createElementFixture } = require("../fixtures/fixtures");
-const { createElementClearFixture } = require("../fixtures/fixtures");
-const mockCommand = require("../helpers/mockCommand");
 
 afterEach(() => {
   appiumServer.resetMocks();

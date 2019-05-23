@@ -12,6 +12,13 @@ const mockClickElement = ({status = 0} = {}) => {
   });
 };
 
+const mockElementSendKeys = ({status} = {}) => {
+  mockRequests.post({
+    url: `${BASE_URL}/session/sessionId/element/elementId/value`,
+    response: fixtures.createElementValueFixture({status})
+  });
+};
+
 const mockClearElement = ({status} = {}) => {
   mockRequests.post({
     url: `${BASE_URL}/session/sessionId/element/elementId/clear`,
@@ -40,6 +47,7 @@ const resetMocks = () => {
 module.exports = {
   mockFindElement,
   mockClickElement,
+  mockElementSendKeys,
   mockClearElement,
   mockActions,
   resetMocks
