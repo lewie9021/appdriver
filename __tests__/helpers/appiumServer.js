@@ -19,6 +19,13 @@ const mockFindElement = ({status, elementId} = {}) => {
   });
 };
 
+const mockActions = ({status} = {}) => {
+  mockRequests.post({
+    url: `${BASE_URL}/session/sessionId/actions`,
+    response: fixtures.createFixture({status, value: {}})
+  });
+};
+
 const resetMocks = () => {
   mockRequests.reset();
 };
@@ -26,5 +33,6 @@ const resetMocks = () => {
 module.exports = {
   mockFindElement,
   mockElementClick,
+  mockActions,
   resetMocks
 };
