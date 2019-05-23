@@ -27,11 +27,15 @@ The `element` instance provides a way to interact with elements on the screen. Y
 ```
 #### Element API
 
-:white_check_mark: :hammer: [```.tap(options?: Options) => Element```](./element/tap.md)
+[```.tap(options?: Options) => Element```](./element/tap.md)
+
+<img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
 Performs tap gesture on element.
 
-:white_check_mark: [```.longPress(options?: Options) => Element```](./element/longPress.md)
+[```.longPress(options?: Options) => Element```](./element/longPress.md)
+
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 Performs long press gesture on element.
 
