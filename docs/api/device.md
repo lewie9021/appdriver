@@ -18,7 +18,7 @@ The `device` object provides a way of performing interactions within the applica
 
 ```javascript
 (async () => {
-  await device.setOrientation("portrait");
+  await device.setOrientation("PORTRAIT");
 })();
 ```
 
@@ -115,7 +115,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-[```.getViewport() => Promise<{width: Number, height: Number}>```](./device/getViewport.md)
+[```.getViewport() => Promise<Object>```](./device/getViewport.md)
 
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 

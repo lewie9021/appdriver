@@ -1,4 +1,4 @@
-# `.getViewport() => Promise<{width: Number, height: Number}>`
+# `.getViewport() => Promise<Object>`
 
 TODO: Description here.
 

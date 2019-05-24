@@ -1,8 +1,8 @@
-# `.waitFor(condition: (element: Element) => Promise, options?: {interval?: Number, maxDuration?: Number}) => Element`
+# `.waitFor(fn: Function<Promise>, options?: Object) => Element`
 
 #### Parameters
 
-1. `condition` (Function):
+1. `fn` (Function):
   - `element` (Element): Reference to current element to apply assertions against.
   - `[ReturnType]` (Promise): Returning a Promise that rejects will trigger a retry until successfully resolving or exceeding `options.maxDuration`.
 2. `options` (Object?):
@@ -19,7 +19,7 @@ TODO: Examples here.
 
 #### Related methods
 
-- [`.waitToBeVisible(options?) => Element`](./waitToBeVisible.md)
-- [`.waitToExist(options?) => Element`](./waitToExist.md)
-- [`.waitToBeInvisible(options?) => Element`](./waitToBeInvisible.md)
-- [`.waitToNotExist(options?) => Element`](./waitToNotExist.md)
+- [`.waitToBeVisible(options?: Object) => Element`](./waitToBeVisible.md)
+- [`.waitToExist(options?: Object) => Element`](./waitToExist.md)
+- [`.waitToBeInvisible(options?: Object) => Element`](./waitToBeInvisible.md)
+- [`.waitToNotExist(options?: Object) => Element`](./waitToNotExist.md)
