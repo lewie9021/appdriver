@@ -29,13 +29,13 @@ The `element` instance provides a way to interact with elements on the screen. Y
 ```
 #### Element API
 
-[```.tap(options?: Options) => Element```](./element/tap.md)
+[```.tap(options?: Object) => Element```](./element/tap.md)
 
 <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
 Performs tap gesture on element.
 
-[```.longPress(options?: Options) => Element```](./element/longPress.md)
+[```.longPress(options?: Object) => Element```](./element/longPress.md)
 
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
@@ -47,7 +47,7 @@ Performs long press gesture on element.
 
 Using the virtual keyboard, types the given text into a text element.
 
-[```.replaceText(text: String) => Element```](./element/replaceText.md)
+:warning: [```.replaceText(text: String) => Element```](./element/replaceText.md)
 
 <img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
@@ -65,7 +65,7 @@ Wipes the contents of a text element.
 
 Retrieves inner text content of element.
 
-[```.getValue() => Promise<Any>```](./element/getValue.md)
+[```.getValue(options?: Object) => Promise<Any>```](./element/getValue.md)
 
 <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
@@ -83,13 +83,13 @@ Retrieves existence status of element.
 
 Retrieves visibility status of element.
 
-[```.isEnabled() => Promise<Boolean>```](./element/isEnabled.md)
+:warning: [```.isEnabled() => Promise<Boolean>```](./element/isEnabled.md)
 
 <img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-[```.isSelected() => Promise<Boolean>```](./element/isSelected.md)
+:warning: [```.isSelected() => Promise<Boolean>```](./element/isSelected.md)
 
 <img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
@@ -113,7 +113,7 @@ Retrieves width and height dimensions of element.
 
 TODO: Description here.
 
-[```.waitFor(condition: () => Promise, options?: {interval?: Number, maxDuration?: Number}) => Element```](./element/waitFor.md)
+[```.waitFor(fn: Function<Promise>, options?: Object) => Element```](./element/waitFor.md)
 
 <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
@@ -185,7 +185,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-[```.swipeIntoView(options: {element: Element, swipeGesture?: Gesture, safeArea?: {top?: Number, right?: Number, bottom?: Number, left?: Number}}) => Element```](./device/swipeIntoView.md)
+:warning: [```.swipeIntoView(options: {element: Element, swipeGesture?: Gesture, safeArea?: {top?: Number, right?: Number, bottom?: Number, left?: Number}}) => Element```](./device/swipeIntoView.md)
 
 <img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
