@@ -38,6 +38,7 @@ The `device` object provides a way of performing interactions within the applica
 ```javascript
 (async () => {
   await device.startScreenRecording({
+    filePath: path.join(__dirname, "recordings", "test-case-1.mp4"),
     format: "mp4",
     quality: "high",
     size: {
@@ -48,7 +49,7 @@ The `device` object provides a way of performing interactions within the applica
   
   // Test code here...
   
-  await device.stopScreenRecording(path.join(__dirname, "recordings", "test-case-1.mp4")); 
+  await device.stopScreenRecording(); 
 })();
 ```
 
