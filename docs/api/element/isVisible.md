@@ -1,10 +1,10 @@
-# `.isVisible() => Boolean`
+# `.isVisible() => Promise<Boolean>`
 
 Retrieves visibility status of element.
 
 #### Returns
 
-`Boolean`: Element visibility status.
+`Promise` (Boolean): Element visibility status.
 
 #### Examples
 

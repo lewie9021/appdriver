@@ -12,5 +12,4 @@ TODO: Examples here.
 
 #### Related methods
 
-
 - [`.typeText(text: String) => Element`](./typeText.md)

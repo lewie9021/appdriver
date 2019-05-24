@@ -12,5 +12,4 @@ TODO: Examples here.
 
 #### Related methods
 
-
 - [`.getText() => Promios<String>`](./getText.md)

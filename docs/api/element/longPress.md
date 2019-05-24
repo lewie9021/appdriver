@@ -1,4 +1,4 @@
-# `.longPress(options?: {x?: Number, y?: Number, duration?: Number}) => Element`
+# `.longPress(options?: Object) => Element`
 
 Performs long press gesture on element.
 
@@ -19,4 +19,4 @@ TODO: Examples here.
 
 #### Related methods
 
-- [`.tap(options) => Element`](./tap.md)
+- [`.tap(options?: Object) => Element`](./tap.md)

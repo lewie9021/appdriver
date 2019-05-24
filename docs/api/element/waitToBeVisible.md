@@ -18,7 +18,7 @@ TODO: Examples here.
 
 #### Related methods
 
-- [`.waitFor(factory, options?) => Element`](./waitFor.md)
-- [`.waitToExist(options?) => Element`](./waitToExist.md)
-- [`.waitToBeInvisible(options?) => Element`](./waitToBeInvisible.md)
-- [`.waitToNotExist(options?) => Element`](./waitToNotExist.md)
+- [`.waitFor(fn: Function<Promise>, options?: Object) => Element`](./waitFor.md)
+- [`.waitToExist(options?: Object) => Element`](./waitToExist.md)
+- [`.waitToBeInvisible(options?: Object) => Element`](./waitToBeInvisible.md)
+- [`.waitToNotExist(options?: Object) => Element`](./waitToNotExist.md)

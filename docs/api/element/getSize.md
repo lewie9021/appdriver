@@ -1,10 +1,10 @@
-# `.getSize() => {width: Number, height: Number}`
+# `.getSize() => Promise<Object>`
 
 Retrieves width and height dimensions of element.
 
 #### Returns
 
-`Object`:
+`Promise` (Object):
   - `width` (Number): Width of element.
   - `height` (Number): Height of element.
 

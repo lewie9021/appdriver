@@ -1,4 +1,4 @@
-# `.getLocation(options?: {relative?: Boolean}) => {x: Number, y: Number}`
+# `.getLocation(options?: Object) => Promise<Object>`
 
 Retrieves x and y coordinates of element.
 
@@ -9,7 +9,7 @@ Retrieves x and y coordinates of element.
 
 #### Returns
 
-`Object`:
+`Promise` (Object):
   - `x` (Number): x coordinate of element.
   - `y` (Number): y coordinate of element.
 

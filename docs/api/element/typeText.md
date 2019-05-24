@@ -16,5 +16,4 @@ TODO: Examples here.
 
 #### Related methods
 
-
-- [`.clearText() => Element`](./replaceText.md)
+- [`.clearText() => Element`](./clearText.md)
