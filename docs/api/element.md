@@ -29,13 +29,13 @@ The `element` instance provides a way to interact with elements on the screen. Y
 ```
 #### Element API
 
-[```.tap(options?: Options) => Element```](./element/tap.md)
+[```.tap(options?: Object) => Element```](./element/tap.md)
 
 <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
 Performs tap gesture on element.
 
-[```.longPress(options?: Options) => Element```](./element/longPress.md)
+[```.longPress(options?: Object) => Element```](./element/longPress.md)
 
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
@@ -65,7 +65,7 @@ Wipes the contents of a text element.
 
 Retrieves inner text content of element.
 
-[```.getValue() => Promise<Any>```](./element/getValue.md)
+[```.getValue(options?: Object) => Promise<Any>```](./element/getValue.md)
 
 <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
@@ -113,7 +113,7 @@ Retrieves width and height dimensions of element.
 
 TODO: Description here.
 
-[```.waitFor(condition: () => Promise, options?: {interval?: Number, maxDuration?: Number}) => Element```](./element/waitFor.md)
+[```.waitFor(fn: Function<Promise>, options?: Object) => Element```](./element/waitFor.md)
 
 <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
