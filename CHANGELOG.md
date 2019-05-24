@@ -1,5 +1,21 @@
 # Change Log
 
+## [v1.0.0-alpha.3] - 2019-05-24
+
+### Added
+
+- NPM version badge to README.
+- Status badges to methods to improve development visibility.
+
+### Changed
+
+- Began refactoring tests to instead mock at the fetch level.
+- Confirmed function signature of `.waitFor` method.
+- Confirmed `.platform`, `.platformVersion`, and `.name` properties.
+- `.startScreenRecording` method to accept `filePath`, simplifying `.stopScreenRecording`.
+- `.setClipboard` method to accept `value` as its first parameter.
+- `.readFile` and `.writeFile` methods to no longer nests parameters within an object.
+
 ## [v1.0.0-alpha.2] - 2019-05-17
 
 ### Added
