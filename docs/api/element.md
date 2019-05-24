@@ -47,7 +47,7 @@ Performs long press gesture on element.
 
 Using the virtual keyboard, types the given text into a text element.
 
-[```.replaceText(text: String) => Element```](./element/replaceText.md)
+:warning: [```.replaceText(text: String) => Element```](./element/replaceText.md)
 
 <img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
@@ -83,13 +83,13 @@ Retrieves existence status of element.
 
 Retrieves visibility status of element.
 
-[```.isEnabled() => Promise<Boolean>```](./element/isEnabled.md)
+:warning: [```.isEnabled() => Promise<Boolean>```](./element/isEnabled.md)
 
 <img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-[```.isSelected() => Promise<Boolean>```](./element/isSelected.md)
+:warning: [```.isSelected() => Promise<Boolean>```](./element/isSelected.md)
 
 <img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
@@ -185,7 +185,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-[```.swipeIntoView(options: {element: Element, swipeGesture?: Gesture, safeArea?: {top?: Number, right?: Number, bottom?: Number, left?: Number}}) => Element```](./device/swipeIntoView.md)
+:warning: [```.swipeIntoView(options: {element: Element, swipeGesture?: Gesture, safeArea?: {top?: Number, right?: Number, bottom?: Number, left?: Number}}) => Element```](./device/swipeIntoView.md)
 
 <img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
