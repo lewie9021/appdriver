@@ -32,92 +32,136 @@ The `expect` utility is the out-of-the-box solution for asserting within tests. 
 
 ##### Element
 
-:hammer: [```.not => Expect```](./expect/not.md)
+[```.not => Expect```](./expect/not.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:white_check_mark: [```.toHaveValue(value: Any, options?: Object) => Promise```](./expect/toHaveValue.md)
+[```.toHaveValue(value: Any, options?: Object) => Promise```](./expect/toHaveValue.md)
+
+<img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
 TODO: Description here.
 
-:white_check_mark: [```.toHaveText(text: String) => Promise```](./expect/toHaveText.md)
+[```.toHaveText(text: String) => Promise```](./expect/toHaveText.md)
+
+<img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
 TODO: Description here.
 
-:hammer: [```.toHaveValueGreaterThanOrEqual(value: Number) => Promise```](./expect/toHaveValueGreaterThanOrEqual.md)
+[```.toHaveValueGreaterThanOrEqual(value: Number) => Promise```](./expect/toHaveValueGreaterThanOrEqual.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.toHaveValueGreaterThan(value: Number) => Promise```](./expect/toHaveValueGreaterThan.md)
+[```.toHaveValueGreaterThan(value: Number) => Promise```](./expect/toHaveValueGreaterThan.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.toHaveValueLessThanOrEqual(value: Number) => Promise```](./expect/toHaveValueGreaterThanOrEqual.md)
+[```.toHaveValueLessThanOrEqual(value: Number) => Promise```](./expect/toHaveValueGreaterThanOrEqual.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.toHaveValueLessThan(value: Number) => Promise```](./expect/toHaveValueLessThan.md)
+[```.toHaveValueLessThan(value: Number) => Promise```](./expect/toHaveValueLessThan.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.toHaveTextContain(text: String) => Promise```](./expect/toHaveTextContain.md)
+[```.toHaveTextContain(text: String) => Promise```](./expect/toHaveTextContain.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.toHaveTextMatch(pattern: Regex) => Promise```](./expect/toHaveTextMatch.md)
+[```.toHaveTextMatch(pattern: Regex) => Promise```](./expect/toHaveTextMatch.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.toHaveAttribute(attribute: String, value: Any) => Promise```](./expect/toHaveAttribute.md)
+[```.toHaveAttribute(attribute: String, value: Any) => Promise```](./expect/toHaveAttribute.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.toExist() => Promise```](./expect/toExist.md)
+[```.toExist() => Promise```](./expect/toExist.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:white_check_mark: [```.toBeVisible() => Promise```](./expect/toBeVisible.md)
+[```.toBeVisible() => Promise```](./expect/toBeVisible.md)
+
+<img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
 TODO: Description here.
 
 ##### Value
 
-:white_check_mark: [```.toHaveLength(length: Number) => Promise```](./expect/toHaveLength.md)
+[```.toHaveLength(length: Number) => Promise```](./expect/toHaveLength.md)
+
+<img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
 TODO: Description here.
 
-:hammer: [```.toEqual(value: Any) => Promise```](./expect/toEqual.md)
+[```.toEqual(value: Any) => Promise```](./expect/toEqual.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.toBeTruthy() => Promise```](./expect/toBeTruthy.md)
+[```.toBeTruthy() => Promise```](./expect/toBeTruthy.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.toBeFalsy() => Promise```](./expect/toBeFalsy.md)
+[```.toBeFalsy() => Promise```](./expect/toBeFalsy.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.toContain(value: Any) => Promise```](./expect/toContain.md)
+[```.toContain(value: Any) => Promise```](./expect/toContain.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.toMatch(pattern: Regex) => Promise```](./expect/toMatch.md)
+[```.toMatch(pattern: Regex) => Promise```](./expect/toMatch.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.toBeGreaterThanOrEqual(value: Number) => Promise```](./expect/toBeGreaterThanOrEqual.md)
+[```.toBeGreaterThanOrEqual(value: Number) => Promise```](./expect/toBeGreaterThanOrEqual.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.toBeGreaterThan(value: Number) => Promise```](./expect/toBeGreaterThan.md)
+[```.toBeGreaterThan(value: Number) => Promise```](./expect/toBeGreaterThan.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.toBeLessThanOrEqual(value: Number) => Promise```](./expect/toBeLessThanOrEqual.md)
+[```.toBeLessThanOrEqual(value: Number) => Promise```](./expect/toBeLessThanOrEqual.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.toBeLessThan(value: Number) => Promise```](./expect/toBeLessThan.md)
+[```.toBeLessThan(value: Number) => Promise```](./expect/toBeLessThan.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
