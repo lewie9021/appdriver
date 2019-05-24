@@ -130,7 +130,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.setClipboard(options: {value: String, contentType?: String, label?: String}) => Promise```](./device/setClipboard.md)
+:warning: [```.setClipboard(value: String, options?: {contentType?: String, label?: String}) => Promise```](./device/setClipboard.md)
 
 TODO: Description here.
 
@@ -166,11 +166,11 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.readFile(options: {filePath: String}) => Promise<String>```](./device/readFile.md)
+:warning: [```.readFile(filePath: String) => Promise<String>```](./device/readFile.md)
 
 TODO: Description here.
 
-:warning: [```.writeFile(options: {filePath: String, data: String}) => Promise```](./device/writeFile.md)
+:warning: [```.writeFile(filePath: String, data: String) => Promise```](./device/writeFile.md)
 
 TODO: Description here.
 
