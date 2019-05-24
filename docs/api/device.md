@@ -139,11 +139,15 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.isKeyboardVisible() => Promise<Boolean>```](./device/isKeyboardVisible.md)
+[```.isKeyboardVisible() => Promise<Boolean>```](./device/isKeyboardVisible.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.hideKeyboard() => Promise```](./device/hideKeyboard.md)
+[```.hideKeyboard() => Promise```](./device/hideKeyboard.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
@@ -255,10 +259,14 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.swipe(options: {x?: Number, y?: Number, direction: Number, distance: Number, duration?: Number}) => Promise```](./device/swipe.md)
+[```.swipe(options: {x?: Number, y?: Number, direction: Number, distance: Number, duration?: Number}) => Promise```](./device/swipe.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.performGesture(gesture: Gesture) => Promise```](./device/performGesture.md)
+[```.performGesture(gesture: Gesture) => Promise```](./device/performGesture.md)
+
+<img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
 TODO: Description here.
