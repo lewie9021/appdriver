@@ -1,13 +1,11 @@
-jest.mock("../../src/commands");
-jest.mock("../../src/session");
-const commands = require("../../src/commands");
+const appiumServer = require("../helpers/appiumServer");
+const fetch = require("node-fetch");
 
-const { by } = require("../../src/matchers");
-const { element } = require("../../src/element.js");
-const { ElementNotFoundError, ElementActionError } = require("../../src/errors");
-const { createElementFixture } = require("../fixtures/fixtures");
-const mockCommand = require("../helpers/mockCommand");
+jest.mock("../../src/session");
 const mockSession = require("../helpers/mockSession");
+
+const { element, by } = require("../../");
+const { ElementNotFoundError, ElementActionError } = require("../../src/errors");
 
 const testPlatform = (platformName) => {
   const textElementType = platformName === "iOS"
@@ -15,49 +13,47 @@ const testPlatform = (platformName) => {
     : "android.widget.TextView";
 
   it("returns the element's text value", async () => {
-    mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-    mockCommand(commands.element.attributes.type, () => textElementType);
-    mockCommand(commands.element.attributes.text, () => "Title Text");
+    appiumServer.mockFindElement({elementId: "elementId"});
+    appiumServer.mockElementType({elementId: "elementId", type: textElementType});
+    appiumServer.mockElementText({elementId: "elementId", text: "Title Text"});
 
     const result = await element(by.label("product-title")).getText();
 
-    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
-    expect(commands.element.attributes.text).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledTimes(3);
     expect(result).toEqual("Title Text");
   });
 
   it("correctly propagates errors", async () => {
-    mockCommand(commands.element.findElement, () => createElementFixture({status: 7, elementId: "elementId"}));
-    mockCommand(commands.element.attributes.type, () => textElementType);
-    mockCommand(commands.element.attributes.text, () => "Title Text");
+    appiumServer.mockFindElement({status: 7, elementId: "elementId"});
+    appiumServer.mockElementType({elementId: "elementId", type: textElementType});
+    appiumServer.mockElementText({elementId: "elementId", text: "Title Text"});
 
     await expect(element(by.label("product-title")).getText())
       .rejects.toThrow(ElementNotFoundError);
 
-    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
-    expect(commands.element.attributes.text).not.toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledTimes(1);
   });
 
   it("correctly handles text attribute request errors", async () => {
-    mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-    mockCommand(commands.element.attributes.type, () => textElementType);
-    mockCommand(commands.element.attributes.text, () => Promise.reject(new Error("Error!")));
+    appiumServer.mockFindElement({elementId: "elementId"});
+    appiumServer.mockElementType({elementId: "elementId", type: textElementType});
+    appiumServer.mockElementText({elementId: "elementId", status: 3});
 
     await expect(element(by.label("product-title")).getText())
       .rejects.toThrow(new ElementActionError("Failed to get text for element."));
 
-    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
-    expect(commands.element.attributes.text).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledTimes(3);
   });
 };
 
 afterEach(() => {
-  jest.resetAllMocks();
+  appiumServer.resetMocks();
 });
 
 describe("iOS", () => {
   beforeEach(() => {
     mockSession({
+      sessionId: "sessionId",
       platformName: "iOS"
     });
   });
@@ -65,23 +61,16 @@ describe("iOS", () => {
   testPlatform("iOS");
 
   it("returns inner text if element isn't directly text", async () => {
-    mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-    mockCommand(commands.element.attributes.type, () => "XCUIElementTypeOther");
-    mockCommand(commands.element.findElementsFromElement, () => [
-      {"element-6066-11e4-a52e-4f735466cecf": "elementId1", ELEMENT: "elementId1"},
-      {"element-6066-11e4-a52e-4f735466cecf": "elementId2", ELEMENT: "elementId2"}
-    ]);
-    mockCommand(commands.element.attributes.text, [
-      () => "",
-      () => "Hello",
-      () => "World!"
-    ]);
+    appiumServer.mockFindElement({elementId: "elementId"});
+    appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeOther"});
+    appiumServer.mockFindElementsFromElement({elementId: "elementId", elements: ["elementId2", "elementId3"]});
+    appiumServer.mockElementText({elementId: "elementId", text: ""});
+    appiumServer.mockElementText({elementId: "elementId2", text: "Hello"});
+    appiumServer.mockElementText({elementId: "elementId3", text: "World!"});
 
     const result = await element(by.label("product-title")).getText();
 
-    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
-    expect(commands.element.findElementsFromElement).toHaveBeenCalledTimes(1);
-    expect(commands.element.attributes.text).toHaveBeenCalledTimes(3);
+    expect(fetch).toHaveBeenCalledTimes(6);
     expect(result).toEqual("Hello World!");
   });
 });
@@ -89,6 +78,7 @@ describe("iOS", () => {
 describe("Android", () => {
   beforeEach(() => {
     mockSession({
+      sessionId: "sessionId",
       platformName: "Android"
     });
   });
@@ -96,22 +86,15 @@ describe("Android", () => {
   testPlatform("Android");
 
   it("returns inner text if element isn't directly text", async () => {
-    mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-    mockCommand(commands.element.attributes.type, () => "android.view.ViewGroup");
-    mockCommand(commands.element.findElementsFromElement, () => [
-      {"element-6066-11e4-a52e-4f735466cecf": "elementId1", ELEMENT: "elementId1"},
-      {"element-6066-11e4-a52e-4f735466cecf": "elementId2", ELEMENT: "elementId2"}
-    ]);
-    mockCommand(commands.element.attributes.text, [
-      () => "Hello",
-      () => "World!"
-    ]);
+    appiumServer.mockFindElement({elementId: "elementId"});
+    appiumServer.mockElementType({elementId: "elementId", type: "android.view.ViewGroup"});
+    appiumServer.mockFindElementsFromElement({elementId: "elementId", elements: ["elementId2", "elementId3"]});
+    appiumServer.mockElementText({elementId: "elementId2", text: "Hello"});
+    appiumServer.mockElementText({elementId: "elementId3", text: "World!"});
 
     const result = await element(by.label("product-title")).getText();
 
-    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
-    expect(commands.element.findElementsFromElement).toHaveBeenCalledTimes(1);
-    expect(commands.element.attributes.text).toHaveBeenCalledTimes(2);
+    expect(fetch).toHaveBeenCalledTimes(5);
     expect(result).toEqual("Hello World!");
   });
 });

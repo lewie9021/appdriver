@@ -12,6 +12,24 @@ const mockClickElement = ({status = 0} = {}) => {
   });
 };
 
+const mockElementType = ({status, elementId, type}) => {
+  mockRequests.get({
+    url: `${BASE_URL}/session/sessionId/element/${elementId}/name`,
+    response: fixtures.createFixture({status, value: type})
+  });
+  mockRequests.get({
+    url: `${BASE_URL}/session/sessionId/element/elementId/attribute/className`,
+    response: fixtures.createFixture({status, value: type})
+  });
+};
+
+const mockElementText = ({status, elementId, text}) => {
+  mockRequests.get({
+    url: `${BASE_URL}/session/sessionId/element/${elementId}/text`,
+    response: fixtures.createFixture({status, value: text})
+  });
+};
+
 const mockElementSendKeys = ({status} = {}) => {
   mockRequests.post({
     url: `${BASE_URL}/session/sessionId/element/elementId/value`,
@@ -26,10 +44,17 @@ const mockClearElement = ({status} = {}) => {
   });
 };
 
-const mockFindElement = ({status, elementId} = {}) => {
+const mockFindElement = ({status, elementId}) => {
   mockRequests.post({
     url: `${BASE_URL}/session/sessionId/element`,
     response: fixtures.createElementFixture({status, elementId})
+  });
+};
+
+const mockFindElementsFromElement = ({status, elementId, elements}) => {
+  mockRequests.post({
+    url: `${BASE_URL}/session/sessionId/element/${elementId}/elements`,
+    response: fixtures.createElementsFixture({status, elementIds: elements})
   });
 };
 
@@ -46,9 +71,12 @@ const resetMocks = () => {
 
 module.exports = {
   mockFindElement,
+  mockFindElementsFromElement,
   mockClickElement,
   mockElementSendKeys,
   mockClearElement,
+  mockElementType,
+  mockElementText,
   mockActions,
   resetMocks
 };
