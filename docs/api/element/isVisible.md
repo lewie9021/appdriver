@@ -12,4 +12,4 @@ TODO: Examples here.
 
 #### Related methods
 
-- [`.exists() => Boolean`](./exists.md)
+- [`.exists() => Promise<Boolean>`](./exists.md)
