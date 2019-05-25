@@ -14,4 +14,4 @@ TODO: Examples here.
 
 #### Related methods
 
-- [`.getLocation() => Object`](./getLocation.md)
+- [`.getLocation(options?: Object) => Promise<Object>`](./getLocation.md)
