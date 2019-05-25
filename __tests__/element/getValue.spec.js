@@ -1,14 +1,11 @@
-jest.mock("../../src/commands");
-jest.mock("../../src/session");
-const commands = require("../../src/commands");
-const session = require("../../src/session");
+const appiumServer = require("../helpers/appiumServer");
+const fetch = require("node-fetch");
 
-const { by } = require("../../src/matchers");
-const { element } = require("../../src/element.js");
+jest.mock("../../src/session");
+const mockSession = require("../helpers/mockSession");
+
+const { element, by } = require("../../");
 const { ElementNotFoundError, ElementActionError } = require("../../src/errors");
-const { createElementFixture } = require("../fixtures/fixtures");
-const { createElementValueFixture } = require("../fixtures/fixtures");
-const mockCommand = require("../helpers/mockCommand");
 
 const testPlatform = (platformName) => {
   const inputElementType = platformName === "iOS"
@@ -16,49 +13,47 @@ const testPlatform = (platformName) => {
     : "android.widget.EditText";
 
   it("returns the element's value", async () => {
-    mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-    mockCommand(commands.element.attributes.type, () => inputElementType);
-    mockCommand(commands.element.attributes.value, () => createElementValueFixture({value: "Hello World!"}));
+    appiumServer.mockFindElement({elementId: "elementId"});
+    appiumServer.mockElementType({elementId: "elementId", type: inputElementType});
+    appiumServer.mockElementValue({elementId: "elementId", value: "Hello World!"});
+    appiumServer.mockElementText({elementId: "elementId", text: "Hello World!"});
 
     const result = await element(by.label("text-input")).getValue();
 
-    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
-    expect(commands.element.attributes.value).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledTimes(3);
     expect(result).toEqual("Hello World!");
   });
 
   it("correctly propagates errors", async () => {
-    mockCommand(commands.element.findElement, () => createElementFixture({status: 7, elementId: "elementId"}));
-    mockCommand(commands.element.attributes.type, () => inputElementType);
-    mockCommand(commands.element.attributes.value, () => createElementValueFixture({value: "Hello World!"}));
+    appiumServer.mockFindElement({status: 7, elementId: "elementId"});
 
     await expect(element(by.label("text-input")).getValue())
       .rejects.toThrow(ElementNotFoundError);
 
-    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
-    expect(commands.element.attributes.value).not.toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledTimes(1);
   });
 
   it("correctly handles value attribute request errors", async () => {
-    mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-    mockCommand(commands.element.attributes.type, () => inputElementType);
-    mockCommand(commands.element.attributes.value, () => createElementValueFixture({status: 3}));
+    appiumServer.mockFindElement({elementId: "elementId"});
+    appiumServer.mockElementType({elementId: "elementId", type: inputElementType});
+    appiumServer.mockElementValue({elementId: "elementId", status: 3});
+    appiumServer.mockElementText({elementId: "elementId", status: 3});
 
     await expect(element(by.label("text-input")).getValue())
       .rejects.toThrow(new ElementActionError("Failed to get value for element."));
 
-    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
-    expect(commands.element.attributes.value).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledTimes(3);
   });
 };
 
 afterEach(() => {
-  jest.resetAllMocks();
+  appiumServer.resetMocks();
 });
 
 describe("iOS", () => {
   beforeEach(() => {
-    session.getSession.mockReturnValue({
+    mockSession({
+      sessionId: "sessionId",
       platformName: "iOS"
     });
   });
@@ -66,57 +61,54 @@ describe("iOS", () => {
   testPlatform("iOS");
 
   it("correctly handles native switch element value (ON)", async () => {
-    mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-    mockCommand(commands.element.attributes.type, () => "XCUIElementTypeSwitch");
-    mockCommand(commands.element.attributes.value, () => createElementValueFixture({value: "1"}));
+    appiumServer.mockFindElement({elementId: "elementId"});
+    appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeSwitch"});
+    appiumServer.mockElementValue({elementId: "elementId", value: "1"});
 
     const result = await element(by.label("switch")).getValue();
 
-    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
-    expect(commands.element.attributes.value).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledTimes(3);
     expect(result).toEqual(true);
   });
 
   it("correctly handles native switch element value (OFF)", async () => {
-    mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-    mockCommand(commands.element.attributes.type, () => "XCUIElementTypeSwitch");
-    mockCommand(commands.element.attributes.value, () => createElementValueFixture({value: "0"}));
+    appiumServer.mockFindElement({elementId: "elementId"});
+    appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeSwitch"});
+    appiumServer.mockElementValue({elementId: "elementId", value: "0"});
 
     const result = await element(by.label("switch")).getValue();
 
-    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
-    expect(commands.element.attributes.value).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledTimes(3);
     expect(result).toEqual(false);
   });
 
   it("correctly handles native slider element value", async () => {
-    mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-    mockCommand(commands.element.attributes.type, () => "XCUIElementTypeSlider");
-    mockCommand(commands.element.attributes.value, () => createElementValueFixture({value: "50%"}));
+    appiumServer.mockFindElement({elementId: "elementId"});
+    appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeSlider"});
+    appiumServer.mockElementValue({elementId: "elementId", value: "50%"});
 
     const result = await element(by.label("slider")).getValue({sliderRange: [0, 5]});
 
-    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
-    expect(commands.element.attributes.value).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledTimes(3);
     expect(result).toEqual(2.5);
   });
 
   it("throws if 'sliderRange' is not provided for native slider elements", async () => {
-    mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-    mockCommand(commands.element.attributes.type, () => "XCUIElementTypeSlider");
-    mockCommand(commands.element.attributes.value, () => createElementValueFixture({value: "50%"}));
+    appiumServer.mockFindElement({elementId: "elementId"});
+    appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeSlider"});
+    appiumServer.mockElementValue({elementId: "elementId", value: "50%"});
 
     await expect(element(by.label("slider")).getValue())
       .rejects.toThrow(new Error("You must provide a 'sliderRange' option when dealing with slider elements."));
 
-    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
-    expect(commands.element.attributes.value).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledTimes(3);
   });
 });
 
 describe("Android", () => {
   beforeEach(() => {
-    session.getSession.mockReturnValue({
+    mockSession({
+      sessionId: "sessionId",
       platformName: "Android"
     });
   });
@@ -124,38 +116,35 @@ describe("Android", () => {
   testPlatform("Android");
 
   it("correctly handles native switch element value (ON)", async () => {
-    mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-    mockCommand(commands.element.attributes.type, () => "android.widget.Switch");
-    mockCommand(commands.element.attributes.value, () => createElementValueFixture({value: "ON"}));
+    appiumServer.mockFindElement({elementId: "elementId"});
+    appiumServer.mockElementType({elementId: "elementId", type: "android.widget.Switch"});
+    appiumServer.mockElementText({elementId: "elementId", text: "ON"});
 
     const result = await element(by.label("switch")).getValue();
 
-    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
-    expect(commands.element.attributes.value).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledTimes(3);
     expect(result).toEqual(true);
   });
 
   it("correctly handles native switch element value (OFF)", async () => {
-    mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-    mockCommand(commands.element.attributes.type, () => "android.widget.Switch");
-    mockCommand(commands.element.attributes.value, () => createElementValueFixture({value: "OFF"}));
+    appiumServer.mockFindElement({elementId: "elementId"});
+    appiumServer.mockElementType({elementId: "elementId", type: "android.widget.Switch"});
+    appiumServer.mockElementText({elementId: "elementId", text: "OFF"});
 
     const result = await element(by.label("switch")).getValue();
 
-    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
-    expect(commands.element.attributes.value).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledTimes(3);
     expect(result).toEqual(false);
   });
 
   it("correctly handles native slider element value", async () => {
-    mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-    mockCommand(commands.element.attributes.type, () => "android.widget.SeekBar");
-    mockCommand(commands.element.attributes.value, () => createElementValueFixture({value: "2.5"}));
+    appiumServer.mockFindElement({elementId: "elementId"});
+    appiumServer.mockElementType({elementId: "elementId", type: "android.widget.SeekBar"});
+    appiumServer.mockElementText({elementId: "elementId", text: "2.5"});
 
     const result = await element(by.label("slider")).getValue({sliderRange: [0, 5]});
 
-    expect(commands.element.findElement).toHaveBeenCalledTimes(1);
-    expect(commands.element.attributes.value).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledTimes(3);
     expect(result).toEqual(2.5);
   });
 });

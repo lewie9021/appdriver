@@ -122,11 +122,12 @@ module.exports = {
           });
       },
       value: (elementId) => {
-        if (getSession("platformName") === "Android") {
-          return get(`/session/${getSession("sessionId")}/element/${elementId}/text`);
-        }
+        const spec = {
+          ios: () => get(`/session/${getSession("sessionId")}/element/${elementId}/attribute/value`),
+          android: () => get(`/session/${getSession("sessionId")}/element/${elementId}/text`)
+        };
 
-        return get(`/session/${getSession("sessionId")}/element/${elementId}/attribute/value`);
+        return platform.select(spec);
       },
       type: (elementId) => {
         const spec = {

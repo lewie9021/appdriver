@@ -30,6 +30,13 @@ const mockElementText = ({status, elementId, text}) => {
   });
 };
 
+const mockElementValue = ({status, elementId, value}) => {
+  mockRequests.get({
+    url: `${BASE_URL}/session/sessionId/element/${elementId}/attribute/value`,
+    response: fixtures.createFixture({status, value})
+  });
+};
+
 const mockElementSendKeys = ({status} = {}) => {
   mockRequests.post({
     url: `${BASE_URL}/session/sessionId/element/elementId/value`,
@@ -77,6 +84,7 @@ module.exports = {
   mockClearElement,
   mockElementType,
   mockElementText,
+  mockElementValue,
   mockActions,
   resetMocks
 };
