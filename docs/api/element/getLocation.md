@@ -19,4 +19,4 @@ TODO: Examples here.
 
 #### Related methods
 
-- [`.getSize() => Object`](./getSize.md)
+- [`.getSize() => Promise<Object>`](./getSize.md)
