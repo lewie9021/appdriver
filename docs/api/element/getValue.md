@@ -1,4 +1,4 @@
-# `.getValue(options?: Options) => Promise<Any>`
+# `.getValue(options?: Object) => Promise<Any>`
 
 Retrieves value property of element.
 
@@ -17,4 +17,4 @@ TODO: Examples here.
 
 #### Related methods
 
-- [`.getText() => Promios<String>`](./getText.md)
+- [`.getText() => Promise<String>`](./getText.md)
