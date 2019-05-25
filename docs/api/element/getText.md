@@ -76,4 +76,4 @@ const App = () => (
 
 #### Related methods
 
-- [`.getValue() => Promise<Any>`](./getValue.md)
+- [`.getValue(options?: Object) => Promise<Any>`](./getValue.md)
