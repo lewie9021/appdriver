@@ -1,6 +1,11 @@
-# `.getValue() => Promise<Any>`
+# `.getValue(options?: Options) => Promise<Any>`
 
 Retrieves value property of element.
+
+#### Parameters
+
+1. `options` (Object?):
+  - `options.sliderRange` (Tuple<Number, Number>?): Provides cross-platform consistency when retrieving slider values.
 
 #### Returns
 
