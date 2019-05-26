@@ -36,19 +36,21 @@ const pollDisplayed = (elementId, {maxRetries, interval}) => {
   }, {maxRetries, interval})
 };
 
-const pollExist = (elementId, {maxRetries, interval}) => {
+const pollExist = (matcher, {maxRetries, interval}) => {
   return poll(() => {
-    return commands.element.attributes.exists(elementId)
-      .then(({status, value}) => {
-        if (status) {
+    return matcher.resolve()
+      .then((response) => {
+        if (response.status) {
           throw new ElementActionError(`Failed retrieve element's 'existence' status after ${maxRetries} attempts (interval: ${interval}ms).`);
         }
 
-        if (!value) {
+        if (!response.value) {
           throw new ElementActionError(`Element not found after ${maxRetries} attempts (interval: ${interval}ms).`);
         }
+
+        return response;
       })
-  }, {maxRetries, interval})
+  }, {maxRetries, interval});
 };
 
 const getValue = (matcher, value) => {
@@ -262,17 +264,14 @@ class Element {
 
     const value = getValue(this.matcher, this.value);
     const nextValue = new Promise((resolve, reject) => {
-      value.then((element) => {
-        pollExist(element.value.ELEMENT, {maxRetries, interval})
-          .then(() => resolve(element))
-          .catch(reject);
+      value.then(() => {
+        pollExist(this.matcher, {maxRetries, interval})
+          .then(({data}) => resolve(data))
+          .catch(() => reject(new Error(`Element not found after ${maxRetries} attempts (interval: ${interval}ms).`)));
       }, (err) => {
         if (err instanceof ElementNotFoundError) {
-          return poll(() => this.matcher.resolve(), {maxRetries, interval})
-            .then(({attempts, data}) => {
-              return pollExist(data.value.ELEMENT, {maxRetries: maxRetries - attempts, interval})
-                .then(() => resolve(data))
-            })
+          return pollExist(this.matcher, {maxRetries, interval})
+            .then(({data}) => resolve(data))
             .catch(() => reject(new Error(`Element not found after ${maxRetries} attempts (interval: ${interval}ms).`)));
         }
 
