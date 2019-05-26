@@ -51,6 +51,20 @@ const mockClearElement = ({status} = {}) => {
   });
 };
 
+const mockElementDisplayed = ({status, elementId, displayed}) => {
+  mockRequests.get({
+    url: `${BASE_URL}/session/sessionId/element/${elementId}/displayed`,
+    response: fixtures.createFixture({status, value: displayed})
+  });
+};
+
+const mockElementSize = ({status, elementId, width, height}) => {
+  mockRequests.get({
+    url: `${BASE_URL}/session/sessionId/element/${elementId}/size`,
+    response: fixtures.createFixture({status, value: {width, height}})
+  })
+};
+
 const mockFindElement = ({status, elementId}) => {
   mockRequests.post({
     url: `${BASE_URL}/session/sessionId/element`,
@@ -82,6 +96,8 @@ module.exports = {
   mockClickElement,
   mockElementSendKeys,
   mockClearElement,
+  mockElementDisplayed,
+  mockElementSize,
   mockElementType,
   mockElementText,
   mockElementValue,
