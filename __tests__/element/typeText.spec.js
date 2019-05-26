@@ -24,7 +24,7 @@ it("returns an instance of Element to enable function chaining", async () => {
   const elementFixture = createElementFixture({elementId: "elementId"});
 
   appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementSendKeys();
+  appiumServer.mockElementSendKeys({elementId: "elementId"});
 
   const $element = await element(by.label("text-input")).typeText("Hello World!");
 
@@ -45,7 +45,7 @@ it("throws if 'text' parameter isn't a string", async () => {
 
 it("returns a new element to avoid unwanted mutation", async () => {
   appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementSendKeys();
+  appiumServer.mockElementSendKeys({elementId: "elementId"});
 
   const $element = await element(by.label("text-input"));
   const $newElement = await $element.typeText("Hello World!");
@@ -55,7 +55,6 @@ it("returns a new element to avoid unwanted mutation", async () => {
 
 it("correctly propagates errors", async () => {
   appiumServer.mockFindElement({status: 7, elementId: "elementId"});
-  appiumServer.mockElementSendKeys();
 
   await expect(element(by.label("text-input")).typeText("Hello World!"))
     .rejects.toThrow(ElementNotFoundError);
@@ -69,7 +68,7 @@ it("correctly propagates errors", async () => {
 
 it("correctly handles send key request errors", async () => {
   appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementSendKeys({status: 3});
+  appiumServer.mockElementSendKeys({status: 3, elementId: "elementId"});
 
   await expect(element(by.label("text-input")).typeText("Hello World!"))
     .rejects.toThrow(new ElementActionError("Failed to type text."));
@@ -79,7 +78,7 @@ it("correctly handles send key request errors", async () => {
 
 it("correctly handles case when hardware keyboard is attached on iOS simulator", async () => {
   appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementSendKeys({status: 13});
+  appiumServer.mockElementSendKeys({status: 13, elementId: "elementId"});
 
   await expect(element(by.label("text-input")).typeText("Hello World!"))
     .rejects.toThrow(new ElementActionError("Failed to type text. Make sure hardware keyboard is disconnected from iOS simulator."));

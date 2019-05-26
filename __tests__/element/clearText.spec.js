@@ -14,7 +14,7 @@ it("returns an instance of Element to enable function chaining", async () => {
   const elementFixture = createElementFixture({elementId: "elementId"});
 
   appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockClearElement();
+  appiumServer.mockClearElement({elementId: "elementId"});
 
   const $element = await element(by.label("text-input")).clearText();
 
@@ -25,7 +25,7 @@ it("returns an instance of Element to enable function chaining", async () => {
 
 it("returns a new element to avoid unwanted mutation", async () => {
   appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockClearElement();
+  appiumServer.mockClearElement({elementId: "elementId"});
 
   const $element = await element(by.label("text-input"));
   const $newElement = await $element.clearText();
@@ -35,7 +35,7 @@ it("returns a new element to avoid unwanted mutation", async () => {
 
 it("correctly propagates errors", async () => {
   appiumServer.mockFindElement({status: 7, elementId: "elementId"});
-  appiumServer.mockClearElement();
+  appiumServer.mockClearElement({elementId: "elementId"});
 
   await expect(element(by.label("text-input")).clearText())
     .rejects.toThrow(ElementNotFoundError);
@@ -49,7 +49,7 @@ it("correctly propagates errors", async () => {
 
 it("correctly handles clear action request errors", async () => {
   appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockClearElement({status: 3});
+  appiumServer.mockClearElement({status: 3, elementId: "elementId"});
 
   await expect(element(by.label("text-input")).clearText())
     .rejects.toThrow(new ElementActionError("Failed to clear text."));

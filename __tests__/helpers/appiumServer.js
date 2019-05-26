@@ -18,7 +18,7 @@ const mockElementType = ({status, elementId, type}) => {
     response: fixtures.createFixture({status, value: type})
   });
   mockRequests.get({
-    url: `${BASE_URL}/session/sessionId/element/elementId/attribute/className`,
+    url: `${BASE_URL}/session/sessionId/element/${elementId}/attribute/className`,
     response: fixtures.createFixture({status, value: type})
   });
 };
@@ -37,16 +37,16 @@ const mockElementValue = ({status, elementId, value}) => {
   });
 };
 
-const mockElementSendKeys = ({status} = {}) => {
+const mockElementSendKeys = ({status, elementId}) => {
   mockRequests.post({
-    url: `${BASE_URL}/session/sessionId/element/elementId/value`,
+    url: `${BASE_URL}/session/sessionId/element/${elementId}/value`,
     response: fixtures.createElementValueFixture({status})
   });
 };
 
-const mockClearElement = ({status} = {}) => {
+const mockClearElement = ({status, elementId}) => {
   mockRequests.post({
-    url: `${BASE_URL}/session/sessionId/element/elementId/clear`,
+    url: `${BASE_URL}/session/sessionId/element/${elementId}/clear`,
     response: fixtures.createElementClearFixture({status})
   });
 };
