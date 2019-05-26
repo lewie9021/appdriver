@@ -40,81 +40,8 @@ const createElementsFixture = ({
   }))
 });
 
-// /session/:sessionId/element/:elementId/text.
-const createElementTextFixture = ({
-  status = defaults.status,
-  sessionId = defaults.sessionId,
-  text
-}) => createFixture({status, sessionId, value: text});
-
-// /session/:sessionId/element/:elementId/click.
-const createElementClickFixture = ({
- status = defaults.status,
- sessionId = defaults.sessionId
-} = {}) => createFixture({status, sessionId, value: ""});
-
-// /session/:sessionId/element/:elementId/value.
-const createElementValueFixture = ({
-  status = defaults.status,
-  sessionId = defaults.sessionId,
-  value
-} = {}) => createFixture({status, sessionId, value});
-
-// /session/:sessionId/element/:elementId/clear.
-const createElementClearFixture = ({
-  status = defaults.status,
-  sessionId = defaults.sessionId
-} = {}) => createFixture({status, sessionId});
-
-// /session/:sessionId/element/:elementId/displayed.
-const createElementDisplayedFixture = ({
-  status = defaults.status,
-  sessionId = defaults.sessionId,
-  displayed
-}) => createFixture({status, sessionId, value: displayed});
-
-// /session/:sessionId/element/:elementId/exists.
-const createElementExistsFixture = ({
-  status = defaults.status,
-  sessionId = defaults.sessionId,
-  exists
-}) => createFixture({status, sessionId, value: exists});
-
-// /session/:sessionId/element/:elementId/size.
-const createElementSizeFixture = ({
-  status = defaults.status,
-  sessionId = defaults.sessionId,
-  width,
-  height
-}) => createFixture({status, sessionId, value: {width, height}});
-
-// /session/:sessionId/window/rect.
-const createSessionWindowRectFixture = ({
-  status = defaults.status,
-  sessionId = defaults.sessionId,
-  width,
-  height
-}) => createFixture({status, sessionId, value: {width, height, x: 0, y: 0}});
-
-// /session/:sessionId/element/:elementId/location.
-const createElementLocationFixture = ({
-  status = defaults.status,
-  sessionId = defaults.sessionId,
-  x,
-  y
-}) => createFixture({status, sessionId, value: {x, y}});
-
 module.exports = {
   createFixture,
   createElementFixture,
-  createElementsFixture,
-  createElementClickFixture,
-  createElementTextFixture,
-  createElementValueFixture,
-  createElementClearFixture,
-  createElementDisplayedFixture,
-  createElementExistsFixture,
-  createElementSizeFixture,
-  createSessionWindowRectFixture,
-  createElementLocationFixture
+  createElementsFixture
 };

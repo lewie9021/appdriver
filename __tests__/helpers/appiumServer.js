@@ -8,7 +8,7 @@ const BASE_URL = "http://localhost:4723/wd/hub";
 const mockClickElement = ({status, elementId}) => {
   mockRequests.post({
     url: `${BASE_URL}/session/sessionId/element/${elementId}/click`,
-    response: fixtures.createElementClickFixture({status})
+    response: fixtures.createFixture({status, value: ""})
   });
 };
 
@@ -40,14 +40,14 @@ const mockElementValue = ({status, elementId, value}) => {
 const mockElementSendKeys = ({status, elementId}) => {
   mockRequests.post({
     url: `${BASE_URL}/session/sessionId/element/${elementId}/value`,
-    response: fixtures.createElementValueFixture({status})
+    response: fixtures.createFixture({status})
   });
 };
 
 const mockClearElement = ({status, elementId}) => {
   mockRequests.post({
     url: `${BASE_URL}/session/sessionId/element/${elementId}/clear`,
-    response: fixtures.createElementClearFixture({status})
+    response: fixtures.createFixture({status})
   });
 };
 
