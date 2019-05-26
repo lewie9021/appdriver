@@ -1,14 +1,8 @@
 const appiumServer = require("../helpers/appiumServer");
 const fetch = require("node-fetch");
 
-// jest.mock("../../src/commands");
-const commands = require("../../src/commands");
-
 const { element, by } = require("../../");
 const { ElementNotFoundError, ElementActionError } = require("../../src/errors");
-const { createElementFixture } = require("../fixtures/fixtures");
-const { createElementLocationFixture } = require("../fixtures/fixtures");
-const mockCommand = require("../helpers/mockCommand");
 
 afterEach(() => {
   appiumServer.resetMocks();
