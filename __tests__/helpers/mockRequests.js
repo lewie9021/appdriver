@@ -19,7 +19,9 @@ const fetchMock = async (url, opts) => {
   let request = matchRequest(url, opts);
 
   if (!request) {
-    throw new Error(`No mock implementation was found for '${url}'.`);
+    const method = (opts && opts.method) || "GET";
+
+    throw new Error(`No mock implementation was found for ${method} '${url}'.`);
   }
 
   request.called = true;
