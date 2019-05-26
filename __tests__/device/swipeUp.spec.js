@@ -1,12 +1,7 @@
 const appiumServer = require("../helpers/appiumServer");
 const fetch = require("node-fetch");
 
-const commands = require("../../src/commands");
-
 const { device } = require("../../");
-const { createSessionWindowRectFixture } = require("../fixtures/fixtures");
-const { createFixture } = require("../fixtures/fixtures");
-const mockCommand = require("../helpers/mockCommand");
 
 afterEach(() => {
   appiumServer.resetMocks();
