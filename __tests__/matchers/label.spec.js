@@ -19,11 +19,10 @@ it("returns an object containing a resolve method to execute the query", () => {
 
 const testPlatform = () => {
   it("supports fetching a single matching element", async () => {
-    const accessibilityLabel = "button";
     appiumServer.mockFindElement({elementId: "elementId"});
+    const accessibilityLabel = "button";
 
     const matcher = by.label(accessibilityLabel);
-
     await matcher.resolve();
 
     expect(fetch).toHaveBeenCalledTimes(1);
