@@ -93,6 +93,13 @@ const mockFindElementsFromElement = ({status, elementId, elements}) => {
   });
 };
 
+const mockWindowRect = ({status, width, height}) => {
+  mockRequests.get({
+    url: `${BASE_URL}/session/sessionId/window/rect`,
+    response: fixtures.createFixture({status, value: {width, height}})
+  });
+};
+
 const mockActions = ({status} = {}) => {
   mockRequests.post({
     url: `${BASE_URL}/session/sessionId/actions`,
@@ -117,6 +124,7 @@ module.exports = {
   mockElementType,
   mockElementText,
   mockElementValue,
+  mockWindowRect,
   mockActions,
   resetMocks
 };

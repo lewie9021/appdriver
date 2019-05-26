@@ -1,4 +1,4 @@
-const device = require("../../src/device");
+const { device } = require("../../");
 
 jest.useFakeTimers();
 
