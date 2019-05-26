@@ -86,6 +86,13 @@ const mockFindElement = ({status, elementId}) => {
   });
 };
 
+const mockFindElements = ({status, elements}) => {
+  mockRequests.post({
+    url: `${BASE_URL}/session/sessionId/elements`,
+    response: fixtures.createElementsFixture({status, elementIds: elements})
+  });
+};
+
 const mockFindElementsFromElement = ({status, elementId, elements}) => {
   mockRequests.post({
     url: `${BASE_URL}/session/sessionId/element/${elementId}/elements`,
@@ -113,6 +120,7 @@ const resetMocks = () => {
 
 module.exports = {
   mockFindElement,
+  mockFindElements,
   mockFindElementsFromElement,
   mockClickElement,
   mockElementSendKeys,

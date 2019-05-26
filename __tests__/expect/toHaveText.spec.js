@@ -1,23 +1,26 @@
-jest.mock("../../src/commands");
-jest.mock("../../src/session");
-const commands = require("../../src/commands");
+const appiumServer = require("../helpers/appiumServer");
 
-const { by, element, expect: assert } = require("../../index");
-const { ElementActionError } = require("../../src/errors");
-const mockCommand = require("../helpers/mockCommand");
+jest.mock("../../src/session");
 const mockSession = require("../helpers/mockSession");
-const { createElementFixture } = require("../fixtures/fixtures");
+
+const { by, element, expect: assert } = require("../../");
+const { ElementActionError } = require("../../src/errors");
 
 beforeEach(() => {
   mockSession({
+    sessionId: "sessionId",
     platformName: "iOS"
   });
 });
 
+afterEach(() => {
+  appiumServer.resetMocks();
+});
+
 it("doesn't throw if expectation is met", async () => {
-  mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-  mockCommand(commands.element.attributes.type, () => "XCUIElementTypeStaticText");
-  mockCommand(commands.element.attributes.text, () => "My Product");
+  appiumServer.mockFindElement({elementId: "elementId"});
+  appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeStaticText"});
+  appiumServer.mockElementText({elementId: "elementId", text: "My Product"});
 
   const $element = await element(by.label("product-title"));
 
@@ -28,9 +31,10 @@ it("doesn't throw if expectation is met", async () => {
 it("throws if expectation is not met", async () => {
   const actualText = "My Other Product";
   const expectedText = "My Product";
-  mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-  mockCommand(commands.element.attributes.type, () => "XCUIElementTypeStaticText");
-  mockCommand(commands.element.attributes.text, () => actualText);
+
+  appiumServer.mockFindElement({elementId: "elementId"});
+  appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeStaticText"});
+  appiumServer.mockElementText({elementId: "elementId", text: actualText});
 
   const $element = await element(by.label("product-title"));
 
@@ -40,9 +44,9 @@ it("throws if expectation is not met", async () => {
 
 // TODO: Could maybe wrap the error?
 it("correctly propagates errors", async () => {
-  mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-  mockCommand(commands.element.attributes.type, () => "XCUIElementTypeStaticText");
-  mockCommand(commands.element.attributes.text, () => Promise.reject(new Error("Error!")));
+  appiumServer.mockFindElement({elementId: "elementId"});
+  appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeStaticText"});
+  appiumServer.mockElementText({status: 3, elementId: "elementId"});
 
   const $element = await element(by.label("product-title"));
 

@@ -1,15 +1,15 @@
-jest.mock("../../src/commands");
-const commands = require("../../src/commands");
+const appiumServer = require("../helpers/appiumServer");
 
-const { by, element, expect: assert } = require("../../index");
+const { by, element, expect: assert } = require("../../");
 const { ElementActionError } = require("../../src/errors");
-const mockCommand = require("../helpers/mockCommand");
-const { createElementFixture } = require("../fixtures/fixtures");
-const { createElementDisplayedFixture } = require("../fixtures/fixtures");
+
+afterEach(() => {
+  appiumServer.resetMocks();
+});
 
 it("doesn't throw if expectation is met", async () => {
-  mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-  mockCommand(commands.element.attributes.displayed, () => createElementDisplayedFixture({displayed: true}));
+  appiumServer.mockFindElement({elementId: "elementId"});
+  appiumServer.mockElementDisplayed({elementId: "elementId", displayed: true});
 
   const $element = await element(by.label("button"));
 
@@ -18,8 +18,8 @@ it("doesn't throw if expectation is met", async () => {
 });
 
 it("throws if expectation is not met", async () => {
-  mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-  mockCommand(commands.element.attributes.displayed, () => createElementDisplayedFixture({displayed: false}));
+  appiumServer.mockFindElement({elementId: "elementId"});
+  appiumServer.mockElementDisplayed({elementId: "elementId", displayed: false});
 
   const $element = await element(by.label("button"));
 
@@ -29,8 +29,8 @@ it("throws if expectation is not met", async () => {
 
 // TODO: Could maybe wrap the error?
 it("correctly propagates errors", async () => {
-  mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
-  mockCommand(commands.element.attributes.displayed, () => createElementDisplayedFixture({status: 3}));
+  appiumServer.mockFindElement({elementId: "elementId"});
+  appiumServer.mockElementDisplayed({status: 3, elementId: "elementId"});
 
   const $element = await element(by.label("button"));
 

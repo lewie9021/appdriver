@@ -1,27 +1,25 @@
-jest.mock("../src/commands");
-jest.mock("../src/session");
-const commands = require("../src/commands");
+const appiumServer = require("./helpers/appiumServer");
 
-const { by } = require("../src/matchers");
-const elements = require("../src/elements");
-const { ElementsNotFoundError } = require("../src/errors");
-const { createElementsFixture } = require("./fixtures/fixtures");
-const mockCommand = require("./helpers/mockCommand");
+jest.mock("../src/session");
 const mockSession = require("./helpers/mockSession");
+
+const { elements, by } = require("../");
+const { ElementsNotFoundError } = require("../src/errors");
 
 beforeEach(() => {
   mockSession({
+    sessionId: "sessionId",
     platformName: "iOS"
   });
 });
 
 afterEach(() => {
-  jest.resetAllMocks();
+  appiumServer.resetMocks();
 });
 
 it("returns an array of elements", async () => {
   const elementIds = ["element-0", "element-1", "element-2"];
-  mockCommand(commands.element.findElements, () => createElementsFixture({elementIds}));
+  appiumServer.mockFindElements({elements: elementIds});
 
   const result = await elements(by.label("list-item-*"));
 
@@ -30,7 +28,7 @@ it("returns an array of elements", async () => {
 });
 
 it("correctly handles find elements request errors", async () => {
-  mockCommand(commands.element.findElements, () => createElementsFixture({status: 3}));
+  appiumServer.mockFindElements({status: 3});
 
   await expect(elements(by.label("list-item-*")))
     .rejects.toThrow(ElementsNotFoundError);
