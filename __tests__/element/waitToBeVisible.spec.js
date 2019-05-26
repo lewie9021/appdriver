@@ -69,7 +69,7 @@ it("forwards new element.value if findElement request is required to check visib
 
 it("correctly propagates errors", async () => {
   appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockClickElement({status: 3});
+  appiumServer.mockClickElement({status: 3, elementId: "elementId"});
   appiumServer.mockElementDisplayed({elementId: "elementId", displayed: true});
 
   await expect(element(by.label("button")).tap().waitToBeVisible())

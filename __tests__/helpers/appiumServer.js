@@ -5,9 +5,9 @@ const mockRequests = require("./mockRequests");
 
 const BASE_URL = "http://localhost:4723/wd/hub";
 
-const mockClickElement = ({status = 0} = {}) => {
+const mockClickElement = ({status, elementId}) => {
   mockRequests.post({
-    url: `${BASE_URL}/session/sessionId/element/elementId/click`,
+    url: `${BASE_URL}/session/sessionId/element/${elementId}/click`,
     response: fixtures.createElementClickFixture({status})
   });
 };
@@ -65,6 +65,20 @@ const mockElementSize = ({status, elementId, width, height}) => {
   })
 };
 
+const mockElementLocation = ({status, elementId, x, y}) => {
+  mockRequests.get({
+    url: `${BASE_URL}/session/sessionId/element/${elementId}/location`,
+    response: fixtures.createFixture({status, value: {x, y}})
+  })
+};
+
+const mockElementLocationInView = ({status, elementId, x, y}) => {
+  mockRequests.get({
+    url: `${BASE_URL}/session/sessionId/element/${elementId}/location_in_view`,
+    response: fixtures.createFixture({status, value: {x, y}})
+  })
+};
+
 const mockFindElement = ({status, elementId}) => {
   mockRequests.post({
     url: `${BASE_URL}/session/sessionId/element`,
@@ -98,6 +112,8 @@ module.exports = {
   mockClearElement,
   mockElementDisplayed,
   mockElementSize,
+  mockElementLocation,
+  mockElementLocationInView,
   mockElementType,
   mockElementText,
   mockElementValue,

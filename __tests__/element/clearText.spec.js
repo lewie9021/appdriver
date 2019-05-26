@@ -1,8 +1,8 @@
 const appiumServer = require("../helpers/appiumServer");
 const fetch = require("node-fetch");
 
-const { by } = require("../../src/matchers");
-const { element, Element } = require("../../src/element");
+const { element, by } = require("../../");
+const { Element } = require("../../src/element");
 const { ElementNotFoundError, ElementActionError } = require("../../src/errors");
 const { createElementFixture } = require("../fixtures/fixtures");
 

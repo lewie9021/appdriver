@@ -55,7 +55,7 @@ it("forwards new element.value if element isn't found initially", async () => {
 it("correctly propagates errors", async () => {
   appiumServer.mockFindElement({elementId: "elementId"});
   appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockClickElement({status: 3});
+  appiumServer.mockClickElement({status: 3, elementId: "elementId"});
 
   await expect(element(by.label("button")).tap().waitToExist())
     .rejects.toThrow(ElementActionError);
