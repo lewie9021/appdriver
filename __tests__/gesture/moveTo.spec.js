@@ -1,11 +1,11 @@
-jest.mock("../../src/commands");
-const commands = require("../../src/commands");
+const appiumServer = require("../helpers/appiumServer");
 
-const { by } = require("../../src/matchers");
-const { element } = require("../../src/element.js");
+const { element, by } = require("../../");
 const Gesture = require("../../src/Gesture");
-const { createElementFixture } = require("../fixtures/fixtures");
-const mockCommand = require("../helpers/mockCommand");
+
+afterEach(() => {
+  appiumServer.resetMocks();
+});
 
 it("adds a move action to the sequence", () => {
   const gesture = new Gesture();
@@ -67,7 +67,7 @@ it("supports defining a duration", () => {
 });
 
 it("supports moving to a coordinate relative to the given element", () => {
-  mockCommand(commands.element.findElement, () => createElementFixture({elementId: "elementId"}));
+  appiumServer.mockFindElement({elementId: "elementId"});
 
   const gesture = new Gesture();
   const $element = element(by.label("button"));
