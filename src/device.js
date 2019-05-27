@@ -138,9 +138,7 @@ const swipeDown = async ({x, y, distance, percentage, duration}) => {
   return performGesture(gesture);
 };
 
-const wait = (options) => {
-  const duration = options.duration;
-
+const wait = (duration) => {
   return delay(duration);
 };
 
