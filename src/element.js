@@ -21,6 +21,14 @@ const poll = (func, {maxRetries = 5, interval = 1000, attempts = 0}) => {
     });
 };
 
+const pollV2 = (func, opts) => {
+  return func()
+    .catch(() => {
+      return delay(opts.interval)
+        .then(() => pollV2(func, opts));
+    });
+};
+
 const pollDisplayed = (elementId, {maxRetries, interval}) => {
   return poll(() => {
     return commands.element.attributes.displayed(elementId)
@@ -229,6 +237,25 @@ class Element {
         return value;
       });
     });
+  }
+
+  waitFor(fn, options = {}) {
+    const maxDuration = options.maxDuration || 5000;
+    const interval = options.interval || 200;
+    const value = getValue(this.matcher, this.value);
+
+    const nextValue = new Promise((resolve, reject) => {
+      value.then((element) => {
+        Promise.race([
+          pollV2(() => fn(this), {interval}),
+          delay(maxDuration).then(Promise.reject)
+        ])
+          .then(() => resolve(element))
+          .catch(() => reject(new Error(`wait condition exceeded ${maxDuration}ms timeout (interval: ${interval}ms).`)));
+      }, reject);
+    });
+
+    return new Element({matcher: this.matcher, value: nextValue});
   }
 
   waitToBeVisible(options = {}) {
