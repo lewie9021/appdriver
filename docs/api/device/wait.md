@@ -12,4 +12,10 @@ Explicitly waits the given duration before continuing the test script.
 
 #### Examples
 
-TODO: Examples here.
+Explicitly wait 200 milliseconds:
+
+```javascript
+(async () => {
+  await device.wait(200);
+})();
+```
