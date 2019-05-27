@@ -1,4 +1,13 @@
-const { getValueType } = require("./utils");
+const { NotImplementedError } = require("./errors");
+const { getValueType, isPromise } = require("./utils");
+
+const displayValue = (value) => {
+  const valueType = getValueType(value);
+
+  return valueType === "string"
+    ? `'${value}'`
+    : value;
+};
 
 class Expect {
   constructor(value) {
@@ -26,6 +35,21 @@ class Expect {
 
     if (elementIsVisible !== true) {
       throw new Error(`Expected element to be visible but instead got '${elementIsVisible}'.`);
+    }
+  }
+
+  async toEqual(value) {
+    const supportedTypes = ["number", "string", "boolean", "null", "undefined", "promise"];
+    const isPromiseValue = isPromise(this.value);
+    const actualValue = await this.value;
+    const valueType = getValueType(actualValue);
+
+    if (!supportedTypes.includes(valueType)) {
+      throw new NotImplementedError();
+    }
+
+    if (actualValue !== value) {
+      throw new Error(`Expected ${isPromiseValue ? "promise" : valueType} to equal ${displayValue(value)} but instead got ${displayValue(actualValue)}.`);
     }
   }
 

@@ -16,8 +16,15 @@ class ElementActionError extends Error {
   }
 }
 
+class NotImplementedError extends Error {
+  constructor(message) {
+    super("Functionality not yet implemented.");
+  }
+}
+
 module.exports = {
   ElementNotFoundError,
   ElementsNotFoundError,
-  ElementActionError
+  ElementActionError,
+  NotImplementedError
 };
