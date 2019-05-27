@@ -106,15 +106,15 @@ TODO: Description here.
 
 ##### Value
 
-[```.toHaveLength(length: Number) => Promise```](./expect/toHaveLength.md)
+[```.toEqual(value: Any) => Promise```](./expect/toEqual.md)
 
-<img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
+<img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
 TODO: Description here.
 
-[```.toEqual(value: Any) => Promise```](./expect/toEqual.md)
+[```.toHaveLength(length: Number) => Promise```](./expect/toHaveLength.md)
 
-<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
 TODO: Description here.
 
