@@ -1,4 +1,5 @@
 const commands = require("./commands");
+const { getSession } = require("./session");
 const gestures = require("./gestures");
 const { delay, isUndefined } = require("./utils");
 
@@ -144,6 +145,15 @@ const wait = (options) => {
 };
 
 module.exports = {
+  get name() {
+    return getSession("deviceName");
+  },
+  get platformName() {
+    return getSession("platformName");
+  },
+  get platformVersion() {
+    return getSession("platformVersion");
+  },
   resetApp,
   restartApp,
   getViewport,
