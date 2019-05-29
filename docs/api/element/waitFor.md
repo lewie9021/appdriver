@@ -15,7 +15,20 @@
 
 #### Examples
 
-TODO: Examples here.
+[`.waitToBeVisible`](./waitToBeVisible.md) re-implementation:
+
+```javascript
+const { element, by, expect } = require("appdriver");
+
+(async() {
+  const $button = element(by.label("button"))
+   .waitFor(($e) => {
+     return expect($e.isVisible()).toBeTruthy();
+   });
+})();
+```
+
+TODO: More examples here.
 
 #### Related methods
 
