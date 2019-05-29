@@ -15,20 +15,38 @@
 
 #### Examples
 
-[`.waitToBeVisible`](./waitToBeVisible.md) re-implementation:
+[`.waitToBeInvisible`](./waitToBeInvisible.md) re-implementation:
 
 ```javascript
 const { element, by, expect } = require("appdriver");
 
 (async() {
   const $button = element(by.label("button"))
-   .waitFor(($e) => {
-     return expect($e.isVisible()).toBeTruthy();
-   });
+   .waitFor(($e) => expect($e.isVisible()).toBeFalsy());
 })();
 ```
 
-TODO: More examples here.
+[`.waitToExist`](./waitToExist.md) re-implementation:
+
+```javascript
+const { element, by, expect } = require("appdriver");
+
+(async() {
+  const $button = element(by.label("button"))
+   .waitFor(($e) => expect($e.exists()).toBeTruthy());
+})();
+```
+
+Countdown timer:
+
+```javascript
+const { element, by, expect } = require("appdriver");
+
+(async() {
+  const $timerText = element(by.label("timer-text"))
+   .waitFor(($e) => expect($e).toHaveText("0"));
+})();
+```
 
 #### Related methods
 
