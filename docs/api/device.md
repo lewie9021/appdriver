@@ -85,6 +85,12 @@ TODO: Description here.
 
 TODO: Description here.
 
+:warning: [```.waitFor(fn: Function<Promise>, options?: Object) => Promise```](./device/waitFor.md)
+
+<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+
+TODO: Description here.
+
 [```.restartApp() => Promise```](./device/restartApp.md)
 
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
