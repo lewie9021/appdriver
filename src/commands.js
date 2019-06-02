@@ -1,5 +1,6 @@
 const { get, post, del } = require("./api");
 const { platform } = require("./utils");
+const { ElementNotFoundError } = require("./errors");
 const { getSession, setSession } = require("./session");
 
 const elementExists = (matcher) => {
@@ -138,6 +139,10 @@ module.exports = {
         return platform.select(spec)
           .then(({status, value}) => {
             if (status) {
+              if (status === 3) {
+                throw new ElementNotFoundError("Failed to get element type.");
+              }
+
               throw new Error("Failed to get element type.");
             }
 
@@ -149,7 +154,14 @@ module.exports = {
       },
       exists: elementExists,
       displayed: (elementId) => {
-        return get(`/session/${getSession("sessionId")}/element/${elementId}/displayed`);
+        return get(`/session/${getSession("sessionId")}/element/${elementId}/displayed`)
+          .then(({status, value}) => {
+            if (status) {
+              throw new Error("Failed to get element visibility status.");
+            }
+
+            return value;
+          });
       },
       location: (elementId) => {
         return get(`/session/${getSession("sessionId")}/element/${elementId}/location`);

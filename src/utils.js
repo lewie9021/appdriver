@@ -40,6 +40,10 @@ const isUndefined = (x) => {
   return typeof x === "undefined";
 };
 
+const isInstanceOf = (x, instance) => {
+  return x instanceof instance;
+};
+
 const getValueType = (value) => {
   if (isArray(value)) {
     return "array";
@@ -79,6 +83,7 @@ module.exports = {
   isArray,
   isNull,
   isUndefined,
+  isInstanceOf,
   getValueType,
   platform
 };

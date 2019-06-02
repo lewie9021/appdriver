@@ -57,7 +57,7 @@ const post = ({url, status, payload, response}) => {
 };
 
 const reset = () => {
-  fetch.mockReset();
+  fetch.mockRestore();
   requests = [];
 };
 

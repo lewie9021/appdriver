@@ -1,8 +1,9 @@
 const commands = require("./commands");
 const gestures = require("./gestures");
 const { getSession } = require("./session");
+const expect = require("./expect");
 const { ElementNotFoundError, ElementActionError } = require("./errors");
-const { delay, platform } = require("./utils");
+const { isInstanceOf, isNull, delay, platform } = require("./utils");
 
 const poll = (func, {maxRetries = 5, interval = 1000, attempts = 0}) => {
   return func(attempts)
@@ -29,6 +30,37 @@ const pollV2 = (func, opts) => {
     });
 };
 
+const waitFor = (matcher, value, fn, opts) => {
+  return new Promise((resolve, reject) => {
+    value.then((element) => {
+      const $element = new Element({matcher, value});
+
+      Promise.race([
+        pollV2(() => fn($element), opts),
+        delay(opts.maxDuration).then(Promise.reject)
+      ])
+        .then(() => resolve(element))
+        // .catch(() => reject(new Error(`wait condition exceeded ${opts.maxDuration}ms timeout (interval: ${opts.interval}ms).`)));
+        .catch(() => reject(new Error(`Element not visible after ${opts.maxDuration}ms (interval: ${opts.interval}ms).`)))
+    }, (err) => {
+      if (err instanceof ElementNotFoundError) {
+        const $element = new Element({matcher, value});
+
+        return Promise.race([
+          pollV2(() => fn($element), opts),
+          delay(opts.maxDuration).then(Promise.reject)
+        ])
+          .then((element) => resolve(element))
+          // .catch(() => reject(new Error(`wait condition exceeded ${opts.maxDuration}ms timeout (interval: ${opts.interval}ms).`)));
+          .catch(() => reject(new Error(`Element not visible after ${opts.maxDuration}ms (interval: ${opts.interval}ms).`)))
+      }
+
+      reject(err);
+    });
+  });
+}
+
+
 const pollDisplayed = (elementId, {maxRetries, interval}) => {
   return poll(() => {
     return commands.element.attributes.displayed(elementId)
@@ -42,6 +74,17 @@ const pollDisplayed = (elementId, {maxRetries, interval}) => {
         }
       })
   }, {maxRetries, interval})
+};
+
+const pollDisplayedV2 = (elementId, opts) => {
+  return pollV2(() => {
+    return commands.element.attributes.displayed(elementId)
+      .then((displayed) => {
+        if (!displayed) {
+          throw new Error("Element not visible");
+        }
+      })
+  }, opts);
 };
 
 const pollExist = (matcher, {maxRetries, interval}) => {
@@ -62,7 +105,7 @@ const pollExist = (matcher, {maxRetries, interval}) => {
 };
 
 const getValue = (matcher, value) => {
-  return value || matcher.resolve();
+  return value.then((element) => isNull(element) ? matcher.resolve() : element);
 };
 
 const parseValue = (rawValue, elementType, options) => {
@@ -87,18 +130,14 @@ const parseValue = (rawValue, elementType, options) => {
 };
 
 class Element {
-  constructor({matcher, value = null, thenable = true}) {
+  constructor({matcher, value = Promise.resolve(null), thenable = true}) {
     this.matcher = matcher;
     this.value = value;
 
     if (thenable) {
       this.then = function (onResolved, onRejected) {
-        const value = getValue(this.matcher, this.value);
-
-        return value.then((value) => {
-          const promise = Promise.resolve(value);
-
-          onResolved(new Element({matcher, value: promise, thenable: false}));
+        return this.value.then((value) => {
+          onResolved(new Element({matcher, value: Promise.resolve(value), thenable: false}));
         }, onRejected);
       };
     }
@@ -245,37 +284,78 @@ class Element {
     const value = getValue(this.matcher, this.value);
 
     const nextValue = new Promise((resolve, reject) => {
-      value.then((element) => {
-        Promise.race([
-          pollV2(() => fn(this), {interval}),
-          delay(maxDuration).then(Promise.reject)
-        ])
-          .then(() => resolve(element))
-          .catch(() => reject(new Error(`wait condition exceeded ${maxDuration}ms timeout (interval: ${interval}ms).`)));
-      }, reject);
+      value.then(
+        (element) => {
+          const $element = new Element({matcher: this.matcher, value});
+
+          Promise.race([
+            pollV2(() => fn($element), {interval}),
+            delay(maxDuration).then(Promise.reject)
+          ])
+            .then(() => resolve(element))
+            .catch(() => reject(new Error(`wait condition exceeded ${maxDuration}ms timeout (interval: ${interval}ms).`)));
+        },
+        (err) => {
+          if (isInstanceOf(err, ElementNotFoundError)) {
+            let $element;
+
+            return Promise.race([
+              pollV2(() => {
+                $element = new Element({matcher: this.matcher});
+
+                return fn($element);
+              }, {interval}),
+              delay(maxDuration).then(() => {
+                return Promise.reject(new ElementActionError(`wait condition exceeded ${maxDuration}ms timeout (interval: ${interval}ms).`))
+              })
+            ])
+              .then(() => $element.value.then(resolve))
+              .catch(reject);
+          }
+
+          reject(err);
+        }
+      );
     });
 
     return new Element({matcher: this.matcher, value: nextValue});
   }
 
   waitToBeVisible(options = {}) {
-    const maxRetries = options.maxRetries || 5;
+    const maxDuration = options.maxDuration || 5000;
     const interval = options.interval || 200;
-
     const value = getValue(this.matcher, this.value);
+
+    return waitFor(this.matcher, value, ($element) => {
+      console.log("$element:", $element);
+
+      return expect($element.isVisible()).toEqual(true);
+    }, {maxDuration, interval});
+
+
+
     const nextValue = new Promise((resolve, reject) => {
       value.then((element) => {
-        pollDisplayed(element.value.ELEMENT, {maxRetries, interval})
+        const elementId = element.value.ELEMENT;
+
+        Promise.race([
+          pollDisplayedV2(elementId, {interval}),
+          delay(maxDuration).then(Promise.reject)
+        ])
           .then(() => resolve(element))
-          .catch(reject);
+          .catch(() => reject(new Error(`Element not visible after ${maxDuration}ms (interval: ${interval}ms).`)));
       }, (err) => {
         if (err instanceof ElementNotFoundError) {
-          return poll(() => this.matcher.resolve(), {maxRetries, interval})
-            .then(({attempts, data}) => {
-              return pollDisplayed(data.value.ELEMENT, {maxRetries: maxRetries - attempts, interval})
-                .then(() => resolve(data))
-            })
-            .catch(() => reject(new Error(`Element not visible after ${maxRetries} attempts (interval: ${interval}ms).`)));
+          return Promise.race([
+            pollV2(() => this.matcher.resolve(), {interval})
+              .then((element) => {
+                return pollDisplayedV2(element.value.ELEMENT, {interval})
+                  .then(() => element);
+              }),
+            delay(maxDuration).then(Promise.reject)
+          ])
+            .then((element) => resolve(element))
+            .catch(() => reject(new Error(`Element not visible after ${maxDuration}ms (interval: ${interval}ms).`)));
         }
 
         reject(err);
@@ -395,19 +475,33 @@ class Element {
     });
   }
 
+  exists() {
+    const currentValue = getValue(this.matcher, this.value);
+
+    return currentValue
+      .then((value) => commands.element.attributes.type(value.value.ELEMENT))
+      .then(() => true)
+      .catch((err) => {
+        if (isInstanceOf(err, ElementNotFoundError)) {
+          return false;
+        }
+
+        throw new ElementActionError("Failed to retrieve existence status of element.");
+      });
+  }
+
   isVisible() {
     const currentValue = getValue(this.matcher, this.value);
 
-    return currentValue.then((value) => {
-      return commands.element.attributes.displayed(value.value.ELEMENT)
-        .then(({status, value}) => {
-          if (status) {
-            throw new ElementActionError("Failed to get visibility status of element.");
-          }
+    return currentValue
+      .then((value) => commands.element.attributes.displayed(value.value.ELEMENT))
+      .catch((err) => {
+        if (isInstanceOf(err, ElementNotFoundError)) {
+          return false;
+        }
 
-          return value;
-        });
-    });
+        throw new ElementActionError("Failed to retrieve visibility status of element.");
+      });
   }
 }
 
