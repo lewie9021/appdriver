@@ -22,7 +22,7 @@ const { element, by, expect } = require("appdriver");
 
 (async() {
   const $button = element(by.label("button"))
-   .waitFor(($e) => expect($e.isVisible()).toBeFalsy());
+   .waitFor(($e) => expect($e).not.toBeVisible());
 })();
 ```
 
@@ -33,7 +33,7 @@ const { element, by, expect } = require("appdriver");
 
 (async() {
   const $button = element(by.label("button"))
-   .waitFor(($e) => expect($e.exists()).toBeTruthy());
+   .waitFor(($e) => expect($e).toExist());
 })();
 ```
 
