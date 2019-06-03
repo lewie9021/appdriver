@@ -19,26 +19,29 @@ Screen Loading:
 ```jsx
 // Application Code (React Native).
 import { useState, useEffect } from "react";
-import { Button } from "react-native";
+import { View, Button } from "react-native";
 import { setTestId } from "appdriver";
 
 const App = () => {
-  const [ loading, setLoading ] = useState(true);
+  const [ showButton, setShowButton ] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setLoading(false), 2000);
+    setTimeout(() => setShowButton(true), 2000);
   }, []);
 
-  if (loading) {
-    return null;
-  }
-
   return (
-    <Button
-      {...setTestId("button")}
-      title="Press me"
-      onPress={() => alert("Hello World!")}
-    />
+    <View>
+      {showButton
+        ? (
+          <Button
+            {...setTestId("button")}
+            title="Press me"
+            onPress={() => alert("Hello World!")}
+          />
+        )
+        : null
+      }
+    </View>
   );
 };
 
