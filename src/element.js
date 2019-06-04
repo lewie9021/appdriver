@@ -2,8 +2,8 @@ const commands = require("./commands");
 const gestures = require("./gestures");
 const { getSession } = require("./session");
 const expect = require("./expect");
-const { ElementNotFoundError, ElementActionError } = require("./errors");
-const { isInstanceOf, isNull, delay, platform } = require("./utils");
+const { ElementNotFoundError, ElementActionError, ElementWaitError } = require("./errors");
+const { isInstanceOf, isNull, pollFor, delay, platform } = require("./utils");
 
 const poll = (func, {maxRetries = 5, interval = 1000, attempts = 0}) => {
   return func(attempts)
@@ -30,63 +30,6 @@ const pollV2 = (func, opts) => {
     });
 };
 
-const waitFor = (matcher, value, fn, opts) => {
-  return new Promise((resolve, reject) => {
-    value.then((element) => {
-      const $element = new Element({matcher, value});
-
-      Promise.race([
-        pollV2(() => fn($element), opts),
-        delay(opts.maxDuration).then(Promise.reject)
-      ])
-        .then(() => resolve(element))
-        // .catch(() => reject(new Error(`wait condition exceeded ${opts.maxDuration}ms timeout (interval: ${opts.interval}ms).`)));
-        .catch(() => reject(new Error(`Element not visible after ${opts.maxDuration}ms (interval: ${opts.interval}ms).`)))
-    }, (err) => {
-      if (err instanceof ElementNotFoundError) {
-        const $element = new Element({matcher, value});
-
-        return Promise.race([
-          pollV2(() => fn($element), opts),
-          delay(opts.maxDuration).then(Promise.reject)
-        ])
-          .then((element) => resolve(element))
-          // .catch(() => reject(new Error(`wait condition exceeded ${opts.maxDuration}ms timeout (interval: ${opts.interval}ms).`)));
-          .catch(() => reject(new Error(`Element not visible after ${opts.maxDuration}ms (interval: ${opts.interval}ms).`)))
-      }
-
-      reject(err);
-    });
-  });
-}
-
-
-const pollDisplayed = (elementId, {maxRetries, interval}) => {
-  return poll(() => {
-    return commands.element.attributes.displayed(elementId)
-      .then(({status, value}) => {
-        if (status) {
-          throw new ElementActionError(`Failed retrieve element's 'displayed' attribute after ${maxRetries} attempts (interval: ${interval}ms).`);
-        }
-
-        if (!value) {
-          throw new ElementActionError(`Element not visible after ${maxRetries} attempts (interval: ${interval}ms).`);
-        }
-      })
-  }, {maxRetries, interval})
-};
-
-const pollDisplayedV2 = (elementId, opts) => {
-  return pollV2(() => {
-    return commands.element.attributes.displayed(elementId)
-      .then((displayed) => {
-        if (!displayed) {
-          throw new Error("Element not visible");
-        }
-      })
-  }, opts);
-};
-
 const pollExist = (matcher, {maxRetries, interval}) => {
   return poll(() => {
     return matcher.resolve()
@@ -105,7 +48,13 @@ const pollExist = (matcher, {maxRetries, interval}) => {
 };
 
 const getValue = (matcher, value) => {
-  return value.then((element) => isNull(element) ? matcher.resolve() : element);
+  return value.then((elementId) => {
+    if (isNull(elementId)) {
+      return matcher.resolve();
+    }
+
+    return elementId;
+  });
 };
 
 const parseValue = (rawValue, elementType, options) => {
@@ -145,9 +94,18 @@ class Element {
 
   _executeAction(action) {
     const value = getValue(this.matcher, this.value);
+
     const nextValue = new Promise((resolve, reject) => {
-      value.then((value) => {
-        action(value, (err) => err ? reject(err) : resolve(value));
+      value.then((elementId) => {
+        const done = (err) => {
+          if (err) {
+            return reject(err);
+          }
+
+          resolve(elementId);
+        };
+
+        action(elementId, done);
       }, reject);
     });
 
@@ -163,19 +121,9 @@ class Element {
   }
 
   tap() {
-    return this._executeAction(({status, value}, done) => {
-      if (status) {
-        return done(new Error("Can't tap element that doesn't exist"));
-      }
-
-      commands.element.actions.click(value.ELEMENT)
-        .then(({status}) => {
-          if (status) {
-            return done(new ElementActionError("Failed to tap element."));
-          }
-
-          done(null);
-        })
+    return this._executeAction((elementId, done) => {
+      commands.element.actions.click(elementId)
+        .then(() => done(null))
         .catch((err) => done(err));
     });
   }
@@ -290,10 +238,12 @@ class Element {
 
           Promise.race([
             pollV2(() => fn($element), {interval}),
-            delay(maxDuration).then(Promise.reject)
+            delay(maxDuration).then(() => {
+              throw new ElementWaitError(`wait condition exceeded ${maxDuration}ms timeout (interval: ${interval}ms).`);
+            })
           ])
             .then(() => resolve(element))
-            .catch(() => reject(new Error(`wait condition exceeded ${maxDuration}ms timeout (interval: ${interval}ms).`)));
+            .catch(reject);
         },
         (err) => {
           if (isInstanceOf(err, ElementNotFoundError)) {
@@ -306,7 +256,7 @@ class Element {
                 return fn($element);
               }, {interval}),
               delay(maxDuration).then(() => {
-                return Promise.reject(new ElementActionError(`wait condition exceeded ${maxDuration}ms timeout (interval: ${interval}ms).`))
+                return Promise.reject(new ElementWaitError(`wait condition exceeded ${maxDuration}ms timeout (interval: ${interval}ms).`))
               })
             ])
               .then(() => $element.value.then(resolve))
@@ -325,41 +275,38 @@ class Element {
     const maxDuration = options.maxDuration || 5000;
     const interval = options.interval || 200;
     const value = getValue(this.matcher, this.value);
-
-    return waitFor(this.matcher, value, ($element) => {
-      console.log("$element:", $element);
-
-      return expect($element.isVisible()).toEqual(true);
-    }, {maxDuration, interval});
-
-
+    const conditionFn = ($e) => expect($e.isVisible()).toEqual(true);
+    let $element;
 
     const nextValue = new Promise((resolve, reject) => {
-      value.then((element) => {
-        const elementId = element.value.ELEMENT;
+      value.then(
+        (elementId) => {
+          pollFor(() => {
+            $element = new Element({matcher: this.matcher, value: Promise.resolve(elementId)});
 
-        Promise.race([
-          pollDisplayedV2(elementId, {interval}),
-          delay(maxDuration).then(Promise.reject)
-        ])
-          .then(() => resolve(element))
-          .catch(() => reject(new Error(`Element not visible after ${maxDuration}ms (interval: ${interval}ms).`)));
-      }, (err) => {
-        if (err instanceof ElementNotFoundError) {
-          return Promise.race([
-            pollV2(() => this.matcher.resolve(), {interval})
-              .then((element) => {
-                return pollDisplayedV2(element.value.ELEMENT, {interval})
-                  .then(() => element);
-              }),
-            delay(maxDuration).then(Promise.reject)
-          ])
-            .then((element) => resolve(element))
-            .catch(() => reject(new Error(`Element not visible after ${maxDuration}ms (interval: ${interval}ms).`)));
+            return conditionFn($element);
+          }, { maxDuration, interval })
+            .then(() => resolve(elementId))
+            .catch((errors) => {
+              reject(new ElementWaitError(`Element not visible after ${maxDuration}ms timeout (interval: ${interval}ms).`));
+            });
+        },
+        (err) => {
+          if (isInstanceOf(err, ElementNotFoundError)) {
+            return pollFor(() => {
+              $element = new Element({matcher: this.matcher});
+
+              return conditionFn($element);
+            }, { maxDuration, interval })
+              .then(() => $element.value.then(resolve))
+              .catch((errors) => {
+                reject(new ElementWaitError(`Element not visible after ${maxDuration}ms timeout (interval: ${interval}ms).`));
+              });
+          }
+
+          reject(err);
         }
-
-        reject(err);
-      });
+      );
     });
 
     return new Element({matcher: this.matcher, value: nextValue});
@@ -494,7 +441,7 @@ class Element {
     const currentValue = getValue(this.matcher, this.value);
 
     return currentValue
-      .then((value) => commands.element.attributes.displayed(value.value.ELEMENT))
+      .then((elementId) => commands.element.attributes.displayed(elementId))
       .catch((err) => {
         if (isInstanceOf(err, ElementNotFoundError)) {
           return false;
