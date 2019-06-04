@@ -16,6 +16,12 @@ class ElementActionError extends Error {
   }
 }
 
+class ElementWaitError extends Error {
+  constructor(message) {
+    super(message);
+  }
+}
+
 class NotImplementedError extends Error {
   constructor(message) {
     super("Functionality not yet implemented.");
@@ -26,5 +32,6 @@ module.exports = {
   ElementNotFoundError,
   ElementsNotFoundError,
   ElementActionError,
+  ElementWaitError,
   NotImplementedError
 };
