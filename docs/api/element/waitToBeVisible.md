@@ -14,7 +14,48 @@ A handy `.waitFor` preset method for cases when elements may not be visible unti
 
 #### Examples
 
-TODO: Examples here.
+Screen Loading:
+
+```jsx
+// Application Code (React Native).
+import { useState, useEffect } from "react";
+import { View, Button } from "react-native";
+import { setTestId } from "appdriver";
+
+const App = () => {
+  const [ showButton, setShowButton ] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => setShowButton(true), 2000);
+  }, []);
+
+  return (
+    <View>
+      {showButton
+        ? (
+          <Button
+            {...setTestId("button")}
+            title="Press me"
+            onPress={() => alert("Hello World!")}
+          />
+        )
+        : null
+      }
+    </View>
+  );
+};
+
+// Test Script (Node.js).
+const { element, by } = require("appdriver");
+
+(async () => {
+  const $button = await element(by.label("button"))
+    .waitToBeVisible()
+    .tap();
+})();
+```
+
+TODO: More examples here.
 
 #### Related methods
 
