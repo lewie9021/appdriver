@@ -6,7 +6,7 @@ const mockRequests = require("./mockRequests");
 const BASE_URL = "http://localhost:4723/wd/hub";
 
 const mockClickElement = ({status, elementId}) => {
-  mockRequests.post({
+  return mockRequests.post({
     url: `${BASE_URL}/session/sessionId/element/${elementId}/click`,
     response: fixtures.createFixture({status, value: ""})
   });
@@ -24,91 +24,92 @@ const mockElementType = ({status, elementId, type}) => {
 };
 
 const mockElementText = ({status, elementId, text}) => {
-  mockRequests.get({
+  return mockRequests.get({
     url: `${BASE_URL}/session/sessionId/element/${elementId}/text`,
     response: fixtures.createFixture({status, value: text})
   });
 };
 
 const mockElementValue = ({status, elementId, value}) => {
-  mockRequests.get({
+  return mockRequests.get({
     url: `${BASE_URL}/session/sessionId/element/${elementId}/attribute/value`,
     response: fixtures.createFixture({status, value})
   });
 };
 
 const mockElementSendKeys = ({status, elementId}) => {
-  mockRequests.post({
+  return mockRequests.post({
     url: `${BASE_URL}/session/sessionId/element/${elementId}/value`,
     response: fixtures.createFixture({status})
   });
 };
 
 const mockClearElement = ({status, elementId}) => {
-  mockRequests.post({
+  return mockRequests.post({
     url: `${BASE_URL}/session/sessionId/element/${elementId}/clear`,
     response: fixtures.createFixture({status})
   });
 };
 
 const mockElementDisplayed = ({status, elementId, displayed}) => {
-  mockRequests.get({
+  return mockRequests.get({
     url: `${BASE_URL}/session/sessionId/element/${elementId}/displayed`,
     response: fixtures.createFixture({status, value: displayed})
   });
 };
 
 const mockElementSize = ({status, elementId, width, height}) => {
-  mockRequests.get({
+  return mockRequests.get({
     url: `${BASE_URL}/session/sessionId/element/${elementId}/size`,
     response: fixtures.createFixture({status, value: {width, height}})
   })
 };
 
 const mockElementLocation = ({status, elementId, x, y}) => {
-  mockRequests.get({
+  return mockRequests.get({
     url: `${BASE_URL}/session/sessionId/element/${elementId}/location`,
     response: fixtures.createFixture({status, value: {x, y}})
   })
 };
 
 const mockElementLocationInView = ({status, elementId, x, y}) => {
-  mockRequests.get({
+  return mockRequests.get({
     url: `${BASE_URL}/session/sessionId/element/${elementId}/location_in_view`,
     response: fixtures.createFixture({status, value: {x, y}})
   })
 };
 
 const mockFindElement = ({status, elementId}) => {
-  mockRequests.post({
+  return mockRequests.post({
+    name: "findElement",
     url: `${BASE_URL}/session/sessionId/element`,
     response: fixtures.createElementFixture({status, elementId})
   });
 };
 
 const mockFindElements = ({status, elements}) => {
-  mockRequests.post({
+  return mockRequests.post({
     url: `${BASE_URL}/session/sessionId/elements`,
     response: fixtures.createElementsFixture({status, elementIds: elements})
   });
 };
 
 const mockFindElementsFromElement = ({status, elementId, elements}) => {
-  mockRequests.post({
+  return mockRequests.post({
     url: `${BASE_URL}/session/sessionId/element/${elementId}/elements`,
     response: fixtures.createElementsFixture({status, elementIds: elements})
   });
 };
 
 const mockWindowRect = ({status, width, height}) => {
-  mockRequests.get({
+  return mockRequests.get({
     url: `${BASE_URL}/session/sessionId/window/rect`,
     response: fixtures.createFixture({status, value: {width, height}})
   });
 };
 
 const mockActions = ({status} = {}) => {
-  mockRequests.post({
+  return mockRequests.post({
     url: `${BASE_URL}/session/sessionId/actions`,
     response: fixtures.createFixture({status, value: {}})
   });
@@ -116,6 +117,10 @@ const mockActions = ({status} = {}) => {
 
 const resetMocks = () => {
   mockRequests.reset();
+};
+
+const getCalls = (requestId) => {
+  return mockRequests.lookupCalls(requestId);
 };
 
 module.exports = {
@@ -134,5 +139,6 @@ module.exports = {
   mockElementValue,
   mockWindowRect,
   mockActions,
-  resetMocks
+  resetMocks,
+  getCalls
 };

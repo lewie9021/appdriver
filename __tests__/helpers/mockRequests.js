@@ -12,7 +12,7 @@ const matchRequest = (url, opts) => {
     return null;
   }
 
-  return matches.find((x) => !x.called) || matches[matches.length - 1];
+  return matches.find((x) => !x.calls.length) || matches[matches.length - 1];
 };
 
 const fetchMock = async (url, opts) => {
@@ -24,36 +24,48 @@ const fetchMock = async (url, opts) => {
     throw new Error(`No mock implementation was found for ${method} '${url}'.`);
   }
 
-  request.called = true;
+  request.calls.push({url, options: opts});
 
   return new Response(JSON.stringify(request.response), {status: request.status});
 };
 
-const get = ({url, status, response}) => {
+const get = ({url, status, response, name}) => {
   if (!requests.length) {
     fetch.mockImplementation(fetchMock);
   }
+
+  const requestId = requests.length;
 
   requests.push({
     method: "GET",
     url,
     status,
-    response
+    response,
+    requestId,
+    calls: []
   });
+
+  return requestId
 };
 
-const post = ({url, status, payload, response}) => {
+const post = ({url, status, payload, response, name}) => {
   if (!requests.length) {
     fetch.mockImplementation(fetchMock);
   }
+
+  const requestId = requests.length;
 
   requests.push({
     method: "POST",
     url,
     payload,
     status,
-    response
+    response,
+    requestId,
+    calls: []
   });
+
+  return requestId;
 };
 
 const reset = () => {
@@ -61,8 +73,15 @@ const reset = () => {
   requests = [];
 };
 
+const lookupCalls = (requestId) => {
+  const request = requests.find((request) => request.requestId === requestId);
+
+  return request ? request.calls : [];
+};
+
 module.exports = {
   get,
   reset,
-  post
+  post,
+  lookupCalls
 };
