@@ -111,18 +111,7 @@ const by = {
         ? commands.element.findElements
         : commands.element.findElement;
 
-      return command(getLabelQuery(accessibilityLabel))
-        .then((response) => {
-          if (response.status) {
-            if (multiple) {
-              throw new ElementsNotFoundError("Failed to find elements.");
-            } else {
-              throw new ElementNotFoundError("Failed to find element.");
-            }
-          }
-
-          return response;
-        });
+      return command(getLabelQuery(accessibilityLabel));
     }
   }),
   text: (text) => ({
@@ -133,18 +122,7 @@ const by = {
         ? commands.element.findElements
         : commands.element.findElement;
 
-      return command(getTextQuery(text))
-        .then((response) => {
-          if (response.status) {
-            if (multiple) {
-              throw new ElementsNotFoundError("Failed to find elements.");
-            } else {
-              throw new ElementNotFoundError("Failed to find element.");
-            }
-          }
-
-          return response;
-        });
+      return command(getTextQuery(text));
     }
   })
 };
