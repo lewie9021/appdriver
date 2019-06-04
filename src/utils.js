@@ -6,6 +6,43 @@ const delay = (ms) => {
   });
 };
 
+const pollFor = (promiseFn, {maxDuration, interval}) => {
+  return new Promise((resolve, reject) => {
+    let timedOut = false;
+    let errors = [];
+
+    const timeout = setTimeout(() => {
+      timedOut = true;
+    }, maxDuration);
+
+    const next = (err) => {
+      if (err) {
+        errors.push(err);
+      }
+
+      if (timedOut) {
+        return reject(errors);
+      }
+
+      if (err) {
+        return delay(interval)
+          .then(() => {
+            promiseFn()
+              .then(() => next())
+              .catch((err) => next(err));
+          })
+      }
+
+      clearTimeout(timeout);
+      resolve();
+    };
+
+    promiseFn()
+      .then(() => next())
+      .catch((err) => next(err));
+  });
+};
+
 const log = (x) => {
   console.log(JSON.stringify(x, null, 2));
 
@@ -75,6 +112,7 @@ const platform = {
 
 module.exports = {
   delay,
+  pollFor,
   log,
   isBoolean,
   isString,
