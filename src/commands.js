@@ -1,6 +1,6 @@
 const { get, post, del } = require("./api");
 const { platform } = require("./utils");
-const { ElementNotFoundError } = require("./errors");
+const { ElementNotFoundError, ElementsNotFoundError, ElementActionError } = require("./errors");
 const { getSession, setSession } = require("./session");
 
 const elementExists = (matcher) => {
@@ -83,7 +83,14 @@ module.exports = {
         value
       };
 
-      return post(`/session/${getSession("sessionId")}/element`, null, payload);
+      return post(`/session/${getSession("sessionId")}/element`, null, payload)
+        .then(({status, value}) => {
+          if (status) {
+            throw new ElementNotFoundError("Failed to find element.");
+          }
+
+          return value.ELEMENT;
+        });
     },
     findElements: ({using, value}) => {
       const payload = {
@@ -91,7 +98,14 @@ module.exports = {
         value
       };
 
-      return post(`/session/${getSession("sessionId")}/elements`, null, payload);
+      return post(`/session/${getSession("sessionId")}/elements`, null, payload)
+        .then(({status, value}) => {
+          if (status) {
+            throw new ElementsNotFoundError("Failed to find elements.");
+          }
+
+          return value.map((element) => element.ELEMENT);
+        });
     },
     findElementsFromElement: (elementId, {using, value}) => {
       const payload = {
@@ -175,7 +189,12 @@ module.exports = {
     },
     actions: {
       click: (elementId) => {
-        return post(`/session/${getSession("sessionId")}/element/${elementId}/click`);
+        return post(`/session/${getSession("sessionId")}/element/${elementId}/click`)
+          .then(({status}) => {
+            if (status) {
+              throw new ElementActionError("Failed to tap element.");
+            }
+          });
       },
       sendKeys: (elementId, value) => {
         const payload = {
