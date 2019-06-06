@@ -337,9 +337,7 @@ class Element {
   getText() {
     const currentValue = getValue(this.matcher, this.value);
 
-    return currentValue.then((value) => {
-      const elementId = value.value.ELEMENT;
-
+    return currentValue.then((elementId) => {
       return platform.select({
         ios: () => {
           return commands.element.attributes.type(elementId)
