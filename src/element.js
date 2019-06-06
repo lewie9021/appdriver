@@ -96,17 +96,34 @@ class Element {
     const value = getValue(this.matcher, this.value);
 
     const nextValue = new Promise((resolve, reject) => {
-      value.then((elementId) => {
-        const done = (err) => {
-          if (err) {
-            return reject(err);
+      value.then(
+        (elementId) => {
+          const done = (err) => {
+            if (err) {
+              return reject(err);
+            }
+
+            resolve(elementId);
+          };
+
+          action(elementId, done);
+        },
+        (err) => {
+          if (isInstanceOf(err, ElementNotFoundError)) {
+            const done = (err, elementId) => {
+              if (err) {
+                return reject(err);
+              }
+
+              resolve(elementId);
+            };
+
+            return action(null, done);
           }
 
-          resolve(elementId);
-        };
-
-        action(elementId, done);
-      }, reject);
+          throw err;
+        }
+      );
     });
 
     return new Element({matcher: this.matcher, value: nextValue});
@@ -122,9 +139,13 @@ class Element {
 
   tap() {
     return this._executeAction((elementId, done) => {
+      if (!elementId) {
+        return done(new ElementActionError("Failed to tap element that doesn't exist"));
+      }
+
       commands.element.actions.click(elementId)
         .then(() => done(null))
-        .catch((err) => done(err));
+        .catch(done);
     });
   }
 
@@ -176,20 +197,14 @@ class Element {
   }
 
   clearText() {
-    return this._executeAction(({status, value}, done) => {
-      if (status) {
-        return done(new Error("Can't clear text on element that doesn't exist"));
+    return this._executeAction((elementId, done) => {
+      if (!elementId) {
+        return done(new ElementActionError("Failed to clear text for element that doesn't exist"));
       }
 
-      commands.element.actions.clear(value.ELEMENT)
-        .then(({status}) => {
-          if (status) {
-            return done(new ElementActionError("Failed to clear text."));
-          }
-
-          done(null);
-        })
-        .catch((err) => done(err));
+      commands.element.actions.clear(elementId)
+        .then(() => done(null))
+        .catch(done);
     });
   }
 

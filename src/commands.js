@@ -204,7 +204,12 @@ module.exports = {
         return post(`/session/${getSession("sessionId")}/element/${elementId}/value`, null, payload);
       },
       clear: (elementId) => {
-        return post(`/session/${getSession("sessionId")}/element/${elementId}/clear`);
+        return post(`/session/${getSession("sessionId")}/element/${elementId}/clear`)
+          .then(({status}) => {
+            if (status) {
+              throw new ElementActionError("Failed to clear element.");
+            }
+          });
       }
     }
   },
