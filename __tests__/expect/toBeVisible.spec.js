@@ -35,5 +35,5 @@ it("correctly propagates errors", async () => {
   const $element = await element(by.label("button"));
 
   await expect(assert($element).toBeVisible())
-    .rejects.toThrow(new ElementActionError("Failed to get visibility status of element."));
+    .rejects.toThrow(new ElementActionError("Failed to retrieve visibility status of element."));
 });

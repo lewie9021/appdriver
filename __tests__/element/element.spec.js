@@ -25,16 +25,6 @@ it("returns an 'Element' that is 'thenable'", async () => {
   expect(typeof selector.then).toBe("function");
 });
 
-it("executes the matcher when awaited", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-
-  const selector = element(by.label("list-item"));
-  const $element = await selector;
-
-  expect($element).toBeInstanceOf(Element);
-  expect(fetch).toHaveBeenCalledTimes(1);
-});
-
 it("allows chaining methods", async () => {
   appiumServer.mockFindElement({elementId: "elementId"});
   appiumServer.mockClickElement({elementId: "elementId"});
@@ -43,13 +33,4 @@ it("allows chaining methods", async () => {
 
   expect($element).toBeInstanceOf(Element);
   expect(fetch).toHaveBeenCalledTimes(2);
-});
-
-it("throws ElementNotFoundError if request fails", async () => {
-  appiumServer.mockFindElement({status: 3, elementId: "elementId"});
-
-  await expect(element(by.label("list-item")))
-    .rejects.toThrow(ElementNotFoundError);
-
-  expect(fetch).toHaveBeenCalledTimes(1);
 });

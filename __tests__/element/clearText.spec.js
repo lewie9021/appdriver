@@ -3,16 +3,13 @@ const fetch = require("node-fetch");
 
 const { element, by } = require("../../");
 const { Element } = require("../../src/element");
-const { ElementNotFoundError, ElementActionError } = require("../../src/errors");
-const { createElementFixture } = require("../fixtures/fixtures");
+const { ElementActionError } = require("../../src/errors");
 
 afterEach(() => {
   appiumServer.resetMocks();
 });
 
 it("returns an instance of Element to enable function chaining", async () => {
-  const elementFixture = createElementFixture({elementId: "elementId"});
-
   appiumServer.mockFindElement({elementId: "elementId"});
   appiumServer.mockClearElement({elementId: "elementId"});
 
@@ -20,7 +17,7 @@ it("returns an instance of Element to enable function chaining", async () => {
 
   expect($element).toBeInstanceOf(Element);
   expect(fetch).toHaveBeenCalledTimes(2);
-  await expect($element.value).resolves.toEqual(elementFixture);
+  await expect($element.value).resolves.toEqual("elementId");
 });
 
 it("returns a new element to avoid unwanted mutation", async () => {
@@ -34,17 +31,27 @@ it("returns a new element to avoid unwanted mutation", async () => {
 });
 
 it("correctly propagates errors", async () => {
+  appiumServer.mockFindElement({elementId: "elementId"});
+  appiumServer.mockClickElement({status: 3, elementId: "elementId"});
+  appiumServer.mockClearElement({elementId: "elementId"});
+
+  const result = element(by.label("text-input"))
+    .tap()
+    .clearText();
+
+  await expect(result)
+    .rejects.toThrow(ElementActionError);
+});
+
+it("throws action error if element doesn't exist", async () => {
   appiumServer.mockFindElement({status: 7, elementId: "elementId"});
   appiumServer.mockClearElement({elementId: "elementId"});
 
-  await expect(element(by.label("text-input")).clearText())
-    .rejects.toThrow(ElementNotFoundError);
+  const result = element(by.label("text-input"))
+    .clearText();
 
-  expect(fetch).toHaveBeenCalledTimes(1);
-  expect(fetch).toHaveBeenLastCalledWith(
-    expect.stringContaining("/session/sessionId/element"),
-    expect.anything()
-  );
+  await expect(result)
+    .rejects.toThrow(ElementActionError);
 });
 
 it("correctly handles clear action request errors", async () => {
@@ -56,3 +63,4 @@ it("correctly handles clear action request errors", async () => {
 
   expect(fetch).toHaveBeenCalledTimes(2);
 });
+

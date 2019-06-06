@@ -237,7 +237,7 @@ module.exports = {
         return post(`/session/${getSession("sessionId")}/element/${elementId}/clear`)
           .then(({status}) => {
             if (status) {
-              throw new ElementActionError("Failed to clear element.");
+              throw new ElementActionError("Failed to clear text.");
             }
           });
       }

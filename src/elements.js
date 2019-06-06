@@ -3,22 +3,16 @@ const { Element } = require("./element");
 const elements = async (matcher) => {
   const response = await matcher.resolve(true);
 
-  return response.value.map((element) => {
-    const value = {
-      status: response.status,
-      value: element,
-      sessionId: response.sessionId
-    };
-
+  return response.map((elementId) => {
     // TODO: Crude implementation to maintain consistency.
     // Could probably use element.exist check before returning value?.
     const elementMatcher = {
       type: "element id",
-      value: element.ELEMENT,
-      resolve: () => Promise.resolve(element)
+      value: elementId,
+      resolve: () => Promise.resolve(elementId)
     };
 
-    return new Element({matcher: elementMatcher, value: Promise.resolve(value)});
+    return new Element({matcher: elementMatcher, value: Promise.resolve(elementId)});
   });
 };
 

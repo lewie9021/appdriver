@@ -5,6 +5,7 @@ const { element, by, expect: assert } = require("../../");
 const { Element } = require("../../src/element");
 const { ElementActionError } = require("../../src/errors");
 
+/*
 jest.setTimeout(6000);
 
 afterEach(() => {
@@ -260,3 +261,5 @@ describe("interval parameter", () => {
     expect(conditionFn).toHaveBeenCalledTimes(5000 / interval);
   });
 });
+
+ */
