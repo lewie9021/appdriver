@@ -171,28 +171,18 @@ class Element {
   }
 
   typeText(text) {
-    return this._executeAction(({status, value}, done) => {
-      if (status) {
-        return done(new Error("Can't type text on element that doesn't exist"));
+    return this._executeAction((elementId, done) => {
+      if (!elementId) {
+        return done(new ElementActionError("Can't type text on element that doesn't exist"));
       }
 
       if (typeof text !== "string") {
-        return done(new Error(`Failed to type text. 'text' must be a string, instead got ${typeof text}.`));
+        return done(new ElementActionError(`Failed to type text. 'text' must be a string, instead got ${typeof text}.`));
       }
 
-      commands.element.actions.sendKeys(value.ELEMENT, text.split(""))
-        .then(({status}) => {
-          if (status === 13 && getSession("platformName") === "iOS") {
-            return done(new Error("Failed to type text. Make sure hardware keyboard is disconnected from iOS simulator."));
-          }
-
-          if (status) {
-            return done(new Error("Failed to type text."));
-          }
-
-          done(null);
-        })
-        .catch((err) => done(err));
+      commands.element.actions.sendKeys(elementId, text.split(""))
+        .then(() => done(null))
+        .catch(done);
     });
   }
 

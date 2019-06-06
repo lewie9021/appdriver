@@ -222,7 +222,16 @@ module.exports = {
           value
         };
 
-        return post(`/session/${getSession("sessionId")}/element/${elementId}/value`, null, payload);
+        return post(`/session/${getSession("sessionId")}/element/${elementId}/value`, null, payload)
+          .then(({status}) => {
+            if (status === 13 && getSession("platformName") === "iOS") {
+              throw new ElementActionError("Failed to type text. Make sure hardware keyboard is disconnected from iOS simulator.");
+            }
+
+            if (status) {
+              throw new ElementActionError("Failed to type text.");
+            }
+          });
       },
       clear: (elementId) => {
         return post(`/session/${getSession("sessionId")}/element/${elementId}/clear`)

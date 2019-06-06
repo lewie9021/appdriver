@@ -29,7 +29,7 @@ it("returns a new element to avoid unwanted mutation", async () => {
 });
 
 it("correctly propagates errors", async () => {
-  appiumServer.mockFindElement({status: 7});
+  appiumServer.mockFindElement({elementId: "elementId"});
   appiumServer.mockClearElement({status: 3, elementId: "elementId"});
   appiumServer.mockClickElement({elementId: "elementId"});
 
@@ -42,7 +42,7 @@ it("correctly propagates errors", async () => {
 });
 
 it("throws action error if element doesn't exist", async () => {
-  appiumServer.mockFindElement({status: 7});
+  appiumServer.mockFindElement({status: 7, elementId: "elementId"});
   appiumServer.mockClickElement({elementId: "elementId"});
 
   const result = element(by.label("list-item"))
