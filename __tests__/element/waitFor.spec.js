@@ -4,7 +4,6 @@ const fetch = require("node-fetch");
 const { element, by, expect: assert } = require("../../");
 const { Element } = require("../../src/element");
 const { ElementActionError } = require("../../src/errors");
-const { createElementFixture } = require("../fixtures/fixtures");
 
 jest.setTimeout(6000);
 
@@ -13,15 +12,13 @@ afterEach(() => {
 });
 
 it("returns an instance of Element to enable function chaining", async () => {
-  const elementFixture = createElementFixture({elementId: "elementId"});
-
   appiumServer.mockFindElement({elementId: "elementId"});
 
   const $element = await element(by.label("button")).waitFor(() => Promise.resolve());
 
   expect($element).toBeInstanceOf(Element);
   expect(fetch).toHaveBeenCalledTimes(1);
-  await expect($element.value).resolves.toEqual(elementFixture);
+  await expect($element.value).resolves.toEqual("elementId");
 });
 
 it("returns a new element to avoid unwanted mutation", async () => {
