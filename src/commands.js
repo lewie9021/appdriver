@@ -124,7 +124,14 @@ module.exports = {
     },
     attributes: {
       size: (elementId) => {
-        return get(`/session/${getSession("sessionId")}/element/${elementId}/size`);
+        return get(`/session/${getSession("sessionId")}/element/${elementId}/size`)
+          .then(({status, value}) => {
+            if (status) {
+              throw new Error("Failed to get element size.");
+            }
+
+            return value;
+          });
       },
       text: (elementId) => {
         return get(`/session/${getSession("sessionId")}/element/${elementId}/text`)
@@ -178,10 +185,24 @@ module.exports = {
           });
       },
       location: (elementId) => {
-        return get(`/session/${getSession("sessionId")}/element/${elementId}/location`);
+        return get(`/session/${getSession("sessionId")}/element/${elementId}/location`)
+          .then(({status, value}) => {
+            if (status) {
+              throw new ElementActionError("Failed to get element location.");
+            }
+
+            return value;
+          });
       },
       locationInView: (elementId) => {
-        return get(`/session/${getSession("sessionId")}/element/${elementId}/location_in_view`);
+        return get(`/session/${getSession("sessionId")}/element/${elementId}/location_in_view`)
+          .then(({status, value}) => {
+            if (status) {
+              throw new ElementActionError("Failed to get element relative location.");
+            }
+
+            return value;
+          });
       },
       replaceValue: (elementId) => {
         return post(`/session/${getSession("sessionId")}/element/${elementId}/replace_value`);

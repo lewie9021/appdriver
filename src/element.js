@@ -140,7 +140,7 @@ class Element {
   tap() {
     return this._executeAction((elementId, done) => {
       if (!elementId) {
-        return done(new ElementActionError("Failed to tap element that doesn't exist"));
+        return done(new ElementActionError("Failed to tap element that doesn't exist."));
       }
 
       commands.element.actions.click(elementId)
@@ -199,7 +199,7 @@ class Element {
   clearText() {
     return this._executeAction((elementId, done) => {
       if (!elementId) {
-        return done(new ElementActionError("Failed to clear text for element that doesn't exist"));
+        return done(new ElementActionError("Failed to clear text for element that doesn't exist."));
       }
 
       commands.element.actions.clear(elementId)
@@ -211,33 +211,26 @@ class Element {
   getSize() {
     const currentValue = getValue(this.matcher, this.value);
 
-    return currentValue.then((value) => {
-      return commands.element.attributes.size(value.value.ELEMENT)
-        .then(({status, value}) => {
-          if (status) {
-            throw new Error("Failed to get element size.");
-          }
+    return currentValue.then((elementId) => {
+      if (!elementId) {
+        throw new ElementActionError("Failed to get size of element that doesn't exist.");
+      }
 
-          return value;
-        });
+      return commands.element.attributes.size(elementId);
     });
   }
 
   getLocation({relative = false} = {}) {
     const currentValue = getValue(this.matcher, this.value);
 
-    return currentValue.then(({value}) => {
-      const command = relative
-        ? commands.element.attributes.locationInView(value.ELEMENT)
-        : commands.element.attributes.location(value.ELEMENT);
+    return currentValue.then((elementId) => {
+      if (!elementId) {
+        throw new ElementActionError("Failed to get location of element that doesn't exist.");
+      }
 
-      return command.then(({status, value}) => {
-        if (status !== 0) {
-          throw new Error(`Failed to get element ${relative ? "relative " : ""}location.`);
-        }
-
-        return value;
-      });
+      return relative
+        ? commands.element.attributes.locationInView(elementId)
+        : commands.element.attributes.location(elementId);
     });
   }
 
