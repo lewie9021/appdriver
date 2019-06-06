@@ -401,9 +401,7 @@ class Element {
   getValue(options) {
     const currentValue = getValue(this.matcher, this.value);
 
-    return currentValue.then((value) => {
-      const elementId = value.value.ELEMENT;
-
+    return currentValue.then((elementId) => {
       return commands.element.attributes.type(elementId)
         .then((elementType) => {
           return commands.element.attributes.value(elementId)
