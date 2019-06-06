@@ -130,11 +130,7 @@ class Element {
   }
 
   _getElementId() {
-    const value = getValue(this.matcher, this.value);
-
-    return value.then((value) => {
-      return value.value.ELEMENT;
-    });
+    return getValue(this.matcher, this.value);
   }
 
   tap() {
@@ -150,8 +146,12 @@ class Element {
   }
 
   longPress({x = 0, y = 0, duration = 750} = {}) {
-    return this._executeAction((value, done) => {
-      const $element = new Element({matcher: this.matcher, value: Promise.resolve(value)});
+    return this._executeAction((elementId, done) => {
+      if (!elementId) {
+        return done(new ElementActionError("Failed to long press element that doesn't exist."));
+      }
+
+      const $element = new Element({matcher: this.matcher, value: Promise.resolve(elementId)});
 
       return gestures.longPress({x, y, duration, element: $element})
         .resolve()
@@ -159,7 +159,7 @@ class Element {
           commands.interactions.actions(actions)
             .then(({status}) => {
               if (status) {
-              return done(new ElementActionError("Failed to long press element."));
+                return done(new ElementActionError("Failed to long press element."));
               }
 
               done(null);

@@ -11,8 +11,6 @@ afterEach(() => {
 });
 
 it("returns an instance of Element to enable function chaining", async () => {
-  const elementFixture = createElementFixture({elementId: "elementId"});
-
   appiumServer.mockFindElement({elementId: "elementId"});
   appiumServer.mockActions();
 
@@ -20,7 +18,7 @@ it("returns an instance of Element to enable function chaining", async () => {
 
   expect($element).toBeInstanceOf(Element);
   expect(fetch).toHaveBeenCalledTimes(2);
-  await expect($element.value).resolves.toEqual(elementFixture);
+  await expect($element.value).resolves.toEqual("elementId");
 });
 
 it("executes a long press gesture", async () => {
@@ -165,17 +163,27 @@ it("returns a new element to avoid unwanted mutation", async () => {
 });
 
 it("correctly propagates errors", async () => {
+  appiumServer.mockFindElement({elementId: "elementId"});
+  appiumServer.mockClickElement({status: 7, elementId: "elementId"});
+  appiumServer.mockActions();
+
+  const result = element(by.label("button"))
+    .tap()
+    .longPress();
+
+  await expect(result)
+    .rejects.toThrow(ElementActionError);
+});
+
+it("throws action error if element doesn't exist", async () => {
   appiumServer.mockFindElement({status: 7, elementId: "elementId"});
   appiumServer.mockActions();
 
-  await expect(element(by.label("button")).longPress())
-    .rejects.toThrow(ElementNotFoundError);
+  const result = element(by.label("button"))
+    .longPress();
 
-  expect(fetch).toHaveBeenCalledTimes(1);
-  expect(fetch).toHaveBeenLastCalledWith(
-    expect.stringContaining("/session/sessionId/element"),
-    expect.anything()
-  );
+  await expect(result)
+    .rejects.toThrow(ElementActionError);
 });
 
 it("correctly handles W3C action request errors", async () => {
