@@ -241,9 +241,9 @@ TODO: Description here.
 
 TODO: Description here.
 
-[```.swipeUp(options: {x?: Number, y?: Number, distance?: Number, percentage?: Number, duration?: Number}) => Promise```](./device/swipeUp.md)
+[```.swipeUp(options: Object) => Promise```](./device/swipeUp.md)
 
-<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-Done-green.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
 TODO: Description here.
 
