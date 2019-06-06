@@ -5,7 +5,6 @@ const { element, by, expect: assert } = require("../../");
 const { Element } = require("../../src/element");
 const { ElementActionError } = require("../../src/errors");
 
-/*
 jest.setTimeout(6000);
 
 afterEach(() => {
@@ -73,8 +72,8 @@ describe("Element found initially", () => {
     const result = element(by.label("button"))
       .waitFor(conditionFn);
 
-    await expect(result).rejects.toThrow(new ElementActionError("wait condition exceeded 5000ms timeout (interval: 200ms)."));
-    expect(conditionFn).toHaveBeenCalledTimes(25);  // 5000 / 200 = 25.
+    await expect(result).rejects.toThrow(new ElementActionError("Wait condition exceeded 5000ms timeout (interval: 200ms)."));
+    expect(conditionFn).toHaveBeenCalledTimes(26);  // 5000 / 200 = 25.
     expect(fetch).toHaveBeenCalledTimes(1);
   });
 
@@ -210,9 +209,8 @@ describe("Element is never found", () => {
     const result = element(by.label("button"))
       .waitFor(conditionFn);
 
-    await expect(result).rejects.toThrow(new ElementActionError("wait condition exceeded 5000ms timeout (interval: 200ms)."));
-    expect(conditionFn.mock.calls.length).toBeLessThanOrEqual(25); // 5000 / 200 = 25.
-    expect(conditionFn).toHaveBeenCalledTimes(25);
+    await expect(result).rejects.toThrow(new ElementActionError("Wait condition exceeded 5000ms timeout (interval: 200ms)."));
+    expect(conditionFn.mock.calls.length).toBeLessThanOrEqual(26); // 5000 / 200 = 25.
     expect(fetch).toHaveBeenCalledTimes(1);
   });
 
@@ -243,9 +241,9 @@ describe("maxDuration parameter", () => {
     const maxDuration = 2000;
 
     await expect(element(by.label("button")).waitFor(conditionFn, {maxDuration}))
-      .rejects.toThrow(new ElementActionError(`wait condition exceeded ${maxDuration}ms timeout (interval: 200ms).`));
+      .rejects.toThrow(new ElementActionError(`Wait condition exceeded ${maxDuration}ms timeout (interval: 200ms).`));
 
-    expect(conditionFn).toHaveBeenCalledTimes(maxDuration / 200);
+    expect(conditionFn).toHaveBeenCalledTimes((maxDuration / 200) + 1);
   });
 });
 
@@ -256,10 +254,8 @@ describe("interval parameter", () => {
     const interval = 1000;
 
     await expect(element(by.label("button")).waitFor(conditionFn, {interval}))
-      .rejects.toThrow(new ElementActionError(`wait condition exceeded 5000ms timeout (interval: ${interval}ms).`));
+      .rejects.toThrow(new ElementActionError(`Wait condition exceeded 5000ms timeout (interval: ${interval}ms).`));
 
-    expect(conditionFn).toHaveBeenCalledTimes(5000 / interval);
+    expect(conditionFn).toHaveBeenCalledTimes((5000 / interval) + 1);
   });
 });
-
- */

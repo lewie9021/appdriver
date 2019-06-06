@@ -6,6 +6,7 @@ const { Element } = require("../../src/element");
 const { ElementActionError } = require("../../src/errors");
 const { createElementFixture } = require("../fixtures/fixtures");
 
+/*
 afterEach(() => {
   appiumServer.resetMocks();
 });
@@ -95,3 +96,4 @@ describe("interval parameter", () => {
       .rejects.toThrow(new ElementActionError(`Element not found after 5 attempts (interval: ${interval}ms).`));
   });
 });
+ */

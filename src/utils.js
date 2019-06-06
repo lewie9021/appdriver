@@ -29,7 +29,7 @@ const pollFor = (promiseFn, {maxDuration, interval}) => {
           .then(() => {
             promiseFn()
               .then(() => next())
-              .catch((err) => next(err));
+              .catch((err) => next(err || new Error("'conditionFn' threw with an undefined error.")));
           })
       }
 
@@ -39,7 +39,7 @@ const pollFor = (promiseFn, {maxDuration, interval}) => {
 
     promiseFn()
       .then(() => next())
-      .catch((err) => next(err));
+      .catch((err) => next(err || new Error("'conditionFn' threw with an undefined error.")));
   });
 };
 
