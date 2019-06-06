@@ -121,7 +121,7 @@ class Element {
             return action(null, done);
           }
 
-          throw err;
+          reject(err);
         }
       );
     });
