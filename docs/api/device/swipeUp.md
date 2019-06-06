@@ -8,7 +8,7 @@ Performs a swipe up gesture in the context of the device viewport.
   - `options.x` (Number?): X coordinate to begin the gesture from. Defaults to 0.
   - `options.y` (Number?): Y coordinate to begin the gesture from. Defaults to 0.
   - `options.distance` (Number?): Distance of swipe in density independent pixels (DIP). Required if `percentage` isn't provided.
-  - `options.percentage` (Number?): Percentage distance (0-1) of swipe relative to the height of the viewport. Required if `distance` isn't provided. 
+  - `options.percentage` (Number?): Percentage distance (0-1) of swipe relative to the height of the device viewport. Required if `distance` isn't provided. 
   - `options.duration` (Number?): Time in milliseconds to perform the swipe gesture.
 
 #### Returns
@@ -17,7 +17,7 @@ Performs a swipe up gesture in the context of the device viewport.
 
 #### Examples
 
-Swipe up 50% of the screen. Note: This will swipe up with an implicit X coordinate of 0.
+Swipe up 50% of the screen. This will swipe up from the coordinate (0, viewport.height / 2) to (0, 0), relative to the device viewport.
 
 ```javascript
 (async () => {
@@ -25,7 +25,13 @@ Swipe up 50% of the screen. Note: This will swipe up with an implicit X coordina
 })();
 ```
 
-TODO: More examples here.
+Swipe up 200 pixels. This will swipe up from the coordinate (150, 200) to (150, 0), relative to the device viewport.
+
+```javascript
+(async () => {
+  await device.swipeUp({x: 150, distance: 200});
+})();
+```
 
 #### Related methods
 
