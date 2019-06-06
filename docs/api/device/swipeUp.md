@@ -18,3 +18,10 @@ Performs a swipe up gesture in the context of the device viewport.
 #### Examples
 
 TODO: Examples here.
+
+
+#### Related methods
+
+- [`.swipeDown(options: Object) => Promise`](./swipeDown.md)
+- [`.swipeLeft(options: Object) => Promise`](./swipeLeft.md)
+- [`.swipeRight(options: Object) => Promise`](./swipeRight.md)
