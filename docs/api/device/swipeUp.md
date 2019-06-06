@@ -17,8 +17,15 @@ Performs a swipe up gesture in the context of the device viewport.
 
 #### Examples
 
-TODO: Examples here.
+Swipe up 50% of the screen. Note: This will swipe up with an implicit X coordinate of 0.
 
+```javascript
+(async () => {
+  await device.swipeUp({percentage: 0.5});
+})();
+```
+
+TODO: More examples here.
 
 #### Related methods
 
