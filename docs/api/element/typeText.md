@@ -12,7 +12,14 @@ Using the virtual keyboard, types the given text into a text element.
 
 #### Examples
 
-TODO: Examples here.
+Basic text input.
+
+```javascript
+(async () => {
+  await element(by.label("text-input"))
+    .typeText("Hello World!");
+})();
+```
 
 #### Related methods
 
