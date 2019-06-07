@@ -8,7 +8,14 @@ Wipes the contents of a text element.
 
 #### Examples
 
-TODO: Examples here.
+Clear text input:
+
+```javascript
+(async () => {
+  await element(by.label("text-input"))
+    .clearText();
+})();
+```
 
 #### Related methods
 
