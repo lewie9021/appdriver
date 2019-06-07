@@ -34,7 +34,7 @@ Customised long press. This will first get the size of the button to calculate t
   await $button.longPress({
     x: width / 2,
     y: height / 2,
-    duration: 
+    duration: 1000
   });
 })();
 ```
