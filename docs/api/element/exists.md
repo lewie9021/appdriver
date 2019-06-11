@@ -1,14 +1,21 @@
 # `.exists() => Promise<Boolean>`
 
-Retrieves existence status of element.
+Retrieve existence status of element.
 
 #### Returns
 
-`Promise` (Boolean): Element existence status.
+`Promise` (`Boolean`): Element existence status.
 
 #### Examples
 
-TODO: Examples here.
+Existence status of button:
+
+```javascript
+(async () => {
+  const exists = await element(by.label("button"))
+    .exists();
+})();
+```
 
 #### Related methods
 
