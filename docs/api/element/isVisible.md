@@ -4,11 +4,18 @@ Retrieves visibility status of element.
 
 #### Returns
 
-`Promise` (Boolean): Element visibility status.
+`Promise` (`Boolean`): Element visibility status.
 
 #### Examples
 
-TODO: Examples here.
+Visibility status of button:
+
+```javascript
+(async () => {
+  const visible = await element(by.label("button"))
+    .isVisible();
+})();
+```
 
 #### Related methods
 
