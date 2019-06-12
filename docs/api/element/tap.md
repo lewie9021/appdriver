@@ -4,9 +4,9 @@ Performs tap gesture on element.
 
 #### Parameters
 
-1. `options` (Object?):
-  - `options.x` (Number?): x offset from left of element. Defaults to 0.
-  - `options.y` (Number?): y offset from top of element. Defaults to 0.
+1. `options` (`Object?`):
+  - `options.x` (`Number?`): x offset from left of element. Defaults to 0.
+  - `options.y` (`Number?`): y offset from top of element. Defaults to 0.
 
 #### Returns
 
@@ -14,7 +14,25 @@ Performs tap gesture on element.
 
 #### Examples
 
-TODO: Examples here.
+Perfom simple tap gesture at coordinate (0, 0), relative to the element location:
+
+```javascript
+(async () => {
+  await element(by.label("button"))
+    .tap();
+})();
+```
+
+Perfom tap gesture at the center point (button_width / 2, button_height / 2), relative to the element location:
+
+```javascript
+(async () => {
+  const $button = await element(by.label("button"));
+  const { width, height } = await $button.getSize();
+
+  await $button.tap({x: width / 2, y: height / 2});
+})();
+```
 
 #### Related methods
 
