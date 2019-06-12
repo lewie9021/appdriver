@@ -89,7 +89,11 @@ it("correctly propagates errors", async () => {
   appiumServer.mockClickElement({status: 3, elementId: "elementId"});
   appiumServer.mockElementDisplayed({elementId: "elementId", displayed: true});
 
-  await expect(element(by.label("button")).tap().waitToBeVisible())
+  const result = element(by.label("button"))
+    .tap()
+    .waitToBeVisible();
+
+  await expect(result)
     .rejects.toThrow(ElementActionError);
 });
 
