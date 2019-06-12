@@ -29,7 +29,8 @@ it("returns false if an ElementNotFoundError exception is thrown", async () => {
 });
 
 it("correctly propagates errors", async () => {
-  appiumServer.mockFindElement({status: 7, elementId: "elementId"});
+  appiumServer.mockFindElement({elementId: "elementId"});
+  appiumServer.mockClickElement({status: 3, elementId: "elementId"});
   appiumServer.mockElementDisplayed({elementId: "elementId", displayed: true});
 
   const result = element(by.label("button"))
@@ -39,7 +40,7 @@ it("correctly propagates errors", async () => {
   await expect(result)
     .rejects.toThrow(ElementActionError);
 
-  expect(fetch).toHaveBeenCalledTimes(1);
+  expect(fetch).toHaveBeenCalledTimes(2);
 });
 
 it("correctly handles displayed attribute request errors", async () => {

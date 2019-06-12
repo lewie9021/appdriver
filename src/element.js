@@ -379,15 +379,18 @@ class Element {
           return false;
         }
 
-        return commands.element.attributes.type(elementId);
+        return commands.element.attributes.type(elementId)
+          .then(() => true)
+          .catch(() => false);
       })
-      .then(() => true)
       .catch((err) => {
         if (isInstanceOf(err, ElementNotFoundError)) {
-          return false;
+          return this.matcher.resolve()
+            .then(() => true)
+            .catch(() => false);
         }
 
-        throw new ElementActionError("Failed to retrieve existence status of element.");
+        throw err;
       });
   }
 
