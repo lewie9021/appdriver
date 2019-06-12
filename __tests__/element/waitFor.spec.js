@@ -221,7 +221,7 @@ describe("Element is never found", () => {
       .waitFor(($e) => assert($e.exists()).toEqual(false));
 
     await expect(result).resolves.toBeInstanceOf(Element);
-    expect(fetch).toHaveBeenCalledTimes(2);
+    expect(fetch).toHaveBeenCalledTimes(3);
   });
 
   it("supports re-implementing .waitToBeInvisible", async () => {
