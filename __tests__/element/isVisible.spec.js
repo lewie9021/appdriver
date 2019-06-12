@@ -18,6 +18,16 @@ it("returns the element's displayed value", async () => {
   expect(result).toEqual(true);
 });
 
+it("returns false if an ElementNotFoundError exception is thrown", async () => {
+  appiumServer.mockFindElement({status: 7, elementId: "elementId"});
+
+  const result = await element(by.label("button")).isVisible();
+
+  expect(result).toEqual(false);
+
+  expect(fetch).toHaveBeenCalledTimes(1);
+});
+
 it("correctly propagates errors", async () => {
   appiumServer.mockFindElement({status: 7, elementId: "elementId"});
   appiumServer.mockElementDisplayed({elementId: "elementId", displayed: true});
