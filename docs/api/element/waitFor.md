@@ -1,10 +1,12 @@
 # `.waitFor(fn: Function<Promise>, options?: Object) => Element`
 
-Provides support for custom wait functionality. This is useful if you want your test script to wait until a particular condition is met. It's common to make use of `expect` as part of defining the `conditionFn`.
+Polls `conditionFn` every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
+
+This is useful when your tests need to wait until a particular condition is met. It's common to make use of `expect` as part of defining the `conditionFn` function.
 
 #### Parameters
 
-1. `fn` (`Function`):
+1. `conditionFn` (`Function`):
   - `element` (`Element`): Reference to current element to apply assertions against.
   - `[ReturnType]` (`Promise`): Returning a Promise that rejects will trigger a retry until successfully resolving or exceeding `options.maxDuration`.
 2. `options` (`Object?`):
