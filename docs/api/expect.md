@@ -48,37 +48,37 @@ Asserts the element has a value strictly equal to `value`.
 
 <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
-Asserts the element exactly contains the given `text`.
+Asserts the element exactly contains `text`.
 
 [```.toHaveValueGreaterThanOrEqual(value: Number) => Promise```](./expect/toHaveValueGreaterThanOrEqual.md)
 
 <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
-Assets the element has a value greater or equal to `value`.
+Assets the element has a value greater than or equal to `value`.
 
 [```.toHaveValueGreaterThan(value: Number) => Promise```](./expect/toHaveValueGreaterThan.md)
 
 <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
-TODO: Description here.
+Assets the element has a value greater than `value`.
 
 [```.toHaveValueLessThanOrEqual(value: Number) => Promise```](./expect/toHaveValueGreaterThanOrEqual.md)
 
 <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
-TODO: Description here.
+Assets the element has a value less than or equal to `value`.
 
 [```.toHaveValueLessThan(value: Number) => Promise```](./expect/toHaveValueLessThan.md)
 
 <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
-TODO: Description here.
+Assets the element has a value less than `value`.
 
 [```.toHaveTextContain(text: String) => Promise```](./expect/toHaveTextContain.md)
 
 <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
-TODO: Description here.
+Assets the element has text containing `text`.
 
 [```.toHaveTextMatch(pattern: Regex) => Promise```](./expect/toHaveTextMatch.md)
 
