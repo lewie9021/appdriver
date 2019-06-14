@@ -110,25 +110,25 @@ Asserts the element is visible.
 
 <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
-TODO: Description here.
+Asserts the value is strictly equal to `value`.
 
 [```.toHaveLength(length: Number) => Promise```](./expect/toHaveLength.md)
 
 <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
-TODO: Description here.
+Asserts the value has a length property equal to `length`.
 
 [```.toBeTruthy() => Promise```](./expect/toBeTruthy.md)
 
 <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
-TODO: Description here.
+Asserts the value is truthy.
 
 [```.toBeFalsy() => Promise```](./expect/toBeFalsy.md)
 
 <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
-TODO: Description here.
+Asserts the value is falsy.
 
 [```.toContain(value: Any) => Promise```](./expect/toContain.md)
 
