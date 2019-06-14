@@ -30,13 +30,13 @@ The `expect` utility is the out-of-the-box solution for asserting within tests. 
 
 ### Expect API
 
-##### Element
-
 [```.not => Expect```](./expect/not.md)
 
 <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 Inverts the chained assertion to test the opposite.
+
+##### Element
 
 [```.toHaveValue(value: Any, options?: Object) => Promise```](./expect/toHaveValue.md)
 
@@ -84,25 +84,25 @@ Assets the element has text containing `text`.
 
 <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
-TODO: Description here.
+Asserts the element contains text that matches `pattern`.
 
 [```.toHaveAttribute(attribute: String, value: Any) => Promise```](./expect/toHaveAttribute.md)
 
 <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
-TODO: Description here.
+Asserts the element has `attribute` strictly equal to `value`.
 
 [```.toExist() => Promise```](./expect/toExist.md)
 
 <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
-TODO: Description here.
+Asserts the element exists.
 
 [```.toBeVisible() => Promise```](./expect/toBeVisible.md)
 
 <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
-TODO: Description here.
+Asserts the element is visible.
 
 ##### Value
 
