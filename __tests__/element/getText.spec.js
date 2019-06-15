@@ -14,7 +14,7 @@ const testPlatform = (platformName) => {
 
   it("returns the element's text value", async () => {
     appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({elementId: "elementId", type: textElementType});
+    appiumServer.mockElementType({platformName, elementId: "elementId", type: textElementType});
     appiumServer.mockElementText({elementId: "elementId", text: "Title Text"});
 
     const result = await element(by.label("product-title")).getText();
@@ -25,7 +25,7 @@ const testPlatform = (platformName) => {
 
   it("correctly propagates errors", async () => {
     appiumServer.mockFindElement({status: 7, elementId: "elementId"});
-    appiumServer.mockElementType({elementId: "elementId", type: textElementType});
+    appiumServer.mockElementType({platformName, elementId: "elementId", type: textElementType});
     appiumServer.mockElementText({elementId: "elementId", text: "Title Text"});
 
     await expect(element(by.label("product-title")).getText())
@@ -36,7 +36,7 @@ const testPlatform = (platformName) => {
 
   it("correctly handles text attribute request errors", async () => {
     appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({elementId: "elementId", type: textElementType});
+    appiumServer.mockElementType({platformName, elementId: "elementId", type: textElementType});
     appiumServer.mockElementText({elementId: "elementId", status: 3});
 
     await expect(element(by.label("product-title")).getText())
@@ -87,7 +87,7 @@ describe("Android", () => {
 
   it("returns inner text if element isn't directly text", async () => {
     appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({elementId: "elementId", type: "android.view.ViewGroup"});
+    appiumServer.mockElementType({platformName: "Android", elementId: "elementId", type: "android.view.ViewGroup"});
     appiumServer.mockFindElementsFromElement({elementId: "elementId", elements: ["elementId2", "elementId3"]});
     appiumServer.mockElementText({elementId: "elementId2", text: "Hello"});
     appiumServer.mockElementText({elementId: "elementId3", text: "World!"});

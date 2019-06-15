@@ -14,7 +14,7 @@ const testPlatform = (platformName) => {
 
   it("returns the element's value", async () => {
     appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({elementId: "elementId", type: inputElementType});
+    appiumServer.mockElementType({platformName, elementId: "elementId", type: inputElementType});
     appiumServer.mockElementValue({elementId: "elementId", value: "Hello World!"});
     appiumServer.mockElementText({elementId: "elementId", text: "Hello World!"});
 
@@ -35,7 +35,7 @@ const testPlatform = (platformName) => {
 
   it("correctly handles value attribute request errors", async () => {
     appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({elementId: "elementId", type: inputElementType});
+    appiumServer.mockElementType({platformName, elementId: "elementId", type: inputElementType});
     appiumServer.mockElementValue({elementId: "elementId", status: 3});
     appiumServer.mockElementText({elementId: "elementId", status: 3});
 
@@ -117,7 +117,7 @@ describe("Android", () => {
 
   it("correctly handles native switch element value (ON)", async () => {
     appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({elementId: "elementId", type: "android.widget.Switch"});
+    appiumServer.mockElementType({platformName: "Android", elementId: "elementId", type: "android.widget.Switch"});
     appiumServer.mockElementText({elementId: "elementId", text: "ON"});
 
     const result = await element(by.label("switch")).getValue();
@@ -128,7 +128,7 @@ describe("Android", () => {
 
   it("correctly handles native switch element value (OFF)", async () => {
     appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({elementId: "elementId", type: "android.widget.Switch"});
+    appiumServer.mockElementType({platformName: "Android", elementId: "elementId", type: "android.widget.Switch"});
     appiumServer.mockElementText({elementId: "elementId", text: "OFF"});
 
     const result = await element(by.label("switch")).getValue();
@@ -139,7 +139,7 @@ describe("Android", () => {
 
   it("correctly handles native slider element value", async () => {
     appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({elementId: "elementId", type: "android.widget.SeekBar"});
+    appiumServer.mockElementType({platformName: "Android", elementId: "elementId", type: "android.widget.SeekBar"});
     appiumServer.mockElementText({elementId: "elementId", text: "2.5"});
 
     const result = await element(by.label("slider")).getValue({sliderRange: [0, 5]});
