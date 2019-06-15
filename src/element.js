@@ -279,6 +279,15 @@ class Element {
     return this._executeWait(conditionFn, maxDuration, interval, timeoutError);
   }
 
+  waitToBeInvisible(options = {}) {
+    const maxDuration = options.maxDuration || 5000;
+    const interval = options.interval || 200;
+    const conditionFn = ($e) => expect($e.isVisible()).toEqual(false);
+    const timeoutError = `Element still visible after ${maxDuration}ms timeout (interval: ${interval}ms).`;
+
+    return this._executeWait(conditionFn, maxDuration, interval, timeoutError);
+  }
+
   waitToExist(options = {}) {
     const maxDuration = options.maxDuration || 5000;
     const interval = options.interval || 200;

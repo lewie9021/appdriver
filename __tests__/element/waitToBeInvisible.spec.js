@@ -24,9 +24,9 @@ jest.setTimeout(100000);
 
 it("returns an instance of Element to enable function chaining", async () => {
   appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementDisplayed({elementId: "elementId", displayed: true});
+  appiumServer.mockElementDisplayed({elementId: "elementId", displayed: false});
 
-  const $element = await element(by.label("button")).waitToBeVisible();
+  const $element = await element(by.label("button")).waitToBeInvisible();
 
   expect($element).toBeInstanceOf(Element);
   expect(fetch).toHaveBeenCalledTimes(2);
@@ -35,60 +35,48 @@ it("returns an instance of Element to enable function chaining", async () => {
 
 it("returns a new element to avoid unwanted mutation", async () => {
   appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementDisplayed({elementId: "elementId", displayed: true});
+  appiumServer.mockElementDisplayed({elementId: "elementId", displayed: false});
 
   const $element = await element(by.label("button"));
-  const $newElement = await $element.waitToBeVisible();
+  const $newElement = await $element.waitToBeInvisible();
 
   expect($newElement).not.toBe($element);
 });
 
 it("polls for visibility up to 5 seconds before throwing", async () => {
   const elementFoundMock = appiumServer.mockFindElement({elementId: "elementId"});
-  const elementDisplayedMock = appiumServer.mockElementDisplayed({elementId: "elementId", displayed: false});
+  const elementDisplayedMock = appiumServer.mockElementDisplayed({elementId: "elementId", displayed: true});
 
-  await expect(element(by.label("button")).waitToBeVisible())
-    .rejects.toThrow(new Error("Element not visible after 5000ms timeout (interval: 200ms)."));
+  await expect(element(by.label("button")).waitToBeInvisible())
+    .rejects.toThrow(new Error("Element still visible after 5000ms timeout (interval: 200ms)."));
 
   expect(appiumServer.getCalls(elementFoundMock)).toHaveLength(1);
-  expect(appiumServer.getCalls(elementDisplayedMock).length).toBeGreaterThanOrEqual(25);
-  expect(appiumServer.getCalls(elementDisplayedMock).length).toBeLessThanOrEqual(26);
+  expect(appiumServer.getCalls(elementDisplayedMock)).toHaveLength(26);
 });
 
 it("attempts to find the element before checking visibility if receives an ElementNotFound error", async () => {
   const elementNotFoundMock = appiumServer.mockFindElement({status: 7, elementId: "elementId"});
   const elementFoundMock = appiumServer.mockFindElement({elementId: "elementId"});
-  const elementNotDisplayed = appiumServer.mockElementDisplayed({elementId: "elementId", displayed: false});
+  const elementNotDisplayed = appiumServer.mockElementDisplayed({elementId: "elementId", displayed: true});
 
   expect(fetch).toHaveBeenCalledTimes(0);
 
-  await expect(element(by.label("button")).waitToBeVisible())
-    .rejects.toThrow(new Error("Element not visible after 5000ms timeout (interval: 200ms)."));
+  await expect(element(by.label("button")).waitToBeInvisible())
+    .rejects.toThrow(new Error("Element still visible after 5000ms timeout (interval: 200ms)."));
 
   expect(appiumServer.getCalls(elementNotFoundMock)).toHaveLength(1);
   expect(appiumServer.getCalls(elementFoundMock)).toHaveLength(26);
   expect(appiumServer.getCalls(elementNotDisplayed)).toHaveLength(26);
 });
 
-// TODO!
-xit("forwards new element.value if findElement request is required to check visibility", async () => {
-  appiumServer.mockFindElement({status: 7, elementId: "elementId"});
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementDisplayed({elementId: "elementId", displayed: true});
-
-  const $element = await element(by.label("button")).waitToBeVisible();
-
-  await expect($element.value).resolves.toEqual("elementId");
-});
-
 it("correctly propagates errors", async () => {
   appiumServer.mockFindElement({elementId: "elementId"});
   appiumServer.mockClickElement({status: 3, elementId: "elementId"});
-  appiumServer.mockElementDisplayed({elementId: "elementId", displayed: true});
+  appiumServer.mockElementDisplayed({elementId: "elementId", displayed: false});
 
   const result = element(by.label("button"))
     .tap()
-    .waitToBeVisible();
+    .waitToBeInvisible();
 
   await expect(result)
     .rejects.toThrow(ElementActionError);
@@ -97,11 +85,11 @@ it("correctly propagates errors", async () => {
 describe("maxDuration parameter", () => {
   it("customises how long to poll before throwing", async () => {
     const elementFoundMock = appiumServer.mockFindElement({elementId: "elementId"});
-    const elementDisplayedMock = appiumServer.mockElementDisplayed({elementId: "elementId", displayed: false});
+    const elementDisplayedMock = appiumServer.mockElementDisplayed({elementId: "elementId", displayed: true});
     const maxDuration = 2000;
 
-    await expect(element(by.label("button")).waitToBeVisible({maxDuration}))
-      .rejects.toThrow(new ElementActionError(`Element not visible after ${maxDuration}ms timeout (interval: 200ms).`));
+    await expect(element(by.label("button")).waitToBeInvisible({maxDuration}))
+      .rejects.toThrow(new ElementActionError(`Element still visible after ${maxDuration}ms timeout (interval: 200ms).`));
 
     expect(appiumServer.getCalls(elementFoundMock)).toHaveLength(1);
     expect(appiumServer.getCalls(elementDisplayedMock)).toHaveLength(11);
@@ -110,11 +98,11 @@ describe("maxDuration parameter", () => {
   it("is factored into cases where the element doesn't initially exist", async () => {
     const elementNotFoundMock = appiumServer.mockFindElement({status: 7, elementId: "elementId"});
     const elementFoundMock = appiumServer.mockFindElement({elementId: "elementId"});
-    const elementDisplayedMock = appiumServer.mockElementDisplayed({elementId: "elementId", displayed: false});
+    const elementDisplayedMock = appiumServer.mockElementDisplayed({elementId: "elementId", displayed: true});
     const maxDuration = 2000;
 
-    await expect(element(by.label("button")).waitToBeVisible({maxDuration}))
-      .rejects.toThrow(new ElementActionError(`Element not visible after ${maxDuration}ms timeout (interval: 200ms).`));
+    await expect(element(by.label("button")).waitToBeInvisible({maxDuration}))
+      .rejects.toThrow(new ElementActionError(`Element still visible after ${maxDuration}ms timeout (interval: 200ms).`));
 
     expect(appiumServer.getCalls(elementNotFoundMock)).toHaveLength(1);
     expect(appiumServer.getCalls(elementFoundMock)).toHaveLength(11);
@@ -126,11 +114,11 @@ describe("maxDuration parameter", () => {
 describe("interval parameter", () => {
   it("customises the time between requests when polling", async () => {
     const elementFoundMock = appiumServer.mockFindElement({elementId: "elementId"});
-    const elementDisplayedMock = appiumServer.mockElementDisplayed({elementId: "elementId", displayed: false});
+    const elementDisplayedMock = appiumServer.mockElementDisplayed({elementId: "elementId", displayed: true});
     const interval = 1000;
 
-    await expect(element(by.label("button")).waitToBeVisible({interval}))
-      .rejects.toThrow(new ElementActionError(`Element not visible after 5000ms timeout (interval: ${interval}ms).`));
+    await expect(element(by.label("button")).waitToBeInvisible({interval}))
+      .rejects.toThrow(new ElementActionError(`Element still visible after 5000ms timeout (interval: ${interval}ms).`));
 
     expect(appiumServer.getCalls(elementFoundMock)).toHaveLength(1);
     expect(appiumServer.getCalls(elementDisplayedMock)).toHaveLength(6);
@@ -139,11 +127,11 @@ describe("interval parameter", () => {
   it("is factored into the request polling if the element doesn't initially exist", async () => {
     const elementNotFoundMock = appiumServer.mockFindElement({status: 7, elementId: "elementId"});
     const elementFoundMock = appiumServer.mockFindElement({elementId: "elementId"});
-    const elementDisplayedMock = appiumServer.mockElementDisplayed({elementId: "elementId", displayed: false});
+    const elementDisplayedMock = appiumServer.mockElementDisplayed({elementId: "elementId", displayed: true});
     const interval = 1000;
 
-    await expect(element(by.label("button")).waitToBeVisible({interval}))
-      .rejects.toThrow(new ElementActionError(`Element not visible after 5000ms timeout (interval: ${interval}ms).`));
+    await expect(element(by.label("button")).waitToBeInvisible({interval}))
+      .rejects.toThrow(new ElementActionError(`Element still visible after 5000ms timeout (interval: ${interval}ms).`));
 
     expect(appiumServer.getCalls(elementNotFoundMock)).toHaveLength(1);
     expect(appiumServer.getCalls(elementFoundMock)).toHaveLength(6);
