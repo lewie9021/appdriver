@@ -288,6 +288,15 @@ class Element {
     return this._executeWait(conditionFn, maxDuration, interval, timeoutError);
   }
 
+  waitToNotExist(options = {}) {
+    const maxDuration = options.maxDuration || 5000;
+    const interval = options.interval || 200;
+    const conditionFn = ($e) => expect($e.exists()).toEqual(false);
+    const timeoutError = `Element still found after ${maxDuration}ms timeout (interval: ${interval}ms).`;
+
+    return this._executeWait(conditionFn, maxDuration, interval, timeoutError);
+  }
+
   getText() {
     const currentValue = getValue(this.matcher, this.value);
 
