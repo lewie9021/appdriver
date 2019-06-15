@@ -59,19 +59,19 @@ The `device` object provides a way of performing interactions within the applica
 
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
-TODO: Description here.
+Returns the platform name of the current session.
 
 [```.platformVersion: String```](./device/platformVersion.md)
 
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
-TODO: Description here.
+Returns the platform verison of the current session.
 
 [```.name: String```](./device/name.md)
 
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
-TODO: Description here.
+Returns the device name of the current session.
 
 :warning: [```.isReal: Boolean```](./device/isReal.md)
 
@@ -83,7 +83,7 @@ TODO: Description here.
 
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-Done-green.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
-TODO: Description here.
+Explicitly wait `duration` milliseconds.
 
 :warning: [```.waitFor(fn: Function<Promise>, options?: Object) => Promise```](./device/waitFor.md)
 
@@ -113,19 +113,19 @@ TODO: Description here.
 
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
-TODO: Description here.
+Change the orientation of the device to either `LANDSCAPE` or `PORTRAIT`.
 
 [```.getOrientation() => Promise<"LANDSCAPE" | "PORTRAIT">```](./device/getOrientation.md)
 
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
-TODO: Description here.
+Retrieves the current orientation of the device.
 
 [```.getViewport() => Promise<Object>```](./device/getViewport.md)
 
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
-TODO: Description here.
+Retrieves the width and height of the device viewport.
 
 :warning: [```.takeScreenshot(options?: {filePath?: String}) => Promise```](./device/takeScreenshot.md)
 
