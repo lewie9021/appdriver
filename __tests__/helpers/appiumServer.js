@@ -12,12 +12,15 @@ const mockClickElement = ({status, elementId}) => {
   });
 };
 
-const mockElementType = ({status, elementId, type}) => {
-  mockRequests.get({
-    url: `${BASE_URL}/session/sessionId/element/${elementId}/name`,
-    response: fixtures.createFixture({status, value: type})
-  });
-  mockRequests.get({
+const mockElementType = ({status, elementId, type, platformName = "iOS"}) => {
+  if (platformName === "iOS") {
+    return mockRequests.get({
+      url: `${BASE_URL}/session/sessionId/element/${elementId}/name`,
+      response: fixtures.createFixture({status, value: type})
+    });
+  }
+
+  return mockRequests.get({
     url: `${BASE_URL}/session/sessionId/element/${elementId}/attribute/className`,
     response: fixtures.createFixture({status, value: type})
   });
