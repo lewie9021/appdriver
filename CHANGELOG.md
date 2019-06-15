@@ -1,5 +1,20 @@
 # Change Log
 
+## [v1.0.0-alpha.4] - 2019-06-15
+
+### Added
+
+- Support for `.toEqual` expectation.
+- Support for device `.name`, `.platformName`, and `.platformVersion` properties.
+- Support for Element `.exists` method.
+- Support for Element `.waitFor`, `.waitToNotExist` and `.waitToBeInvisible`.
+
+### Changed
+
+- Device `.wait` method to accept a `duration` parameter instead of `options` object.
+- Element `.isVisible` to return `false` in cases where the element doesn't exist.
+- Element `.waitToExist` and `.waitToBeVisible` to accept `options.maxDuration` instead of `options.maxRetries`.
+
 ## [v1.0.0-alpha.3] - 2019-05-24
 
 ### Added
@@ -11,7 +26,7 @@
 
 - Began refactoring tests to instead mock at the fetch level.
 - Confirmed function signature of `.waitFor` method.
-- Confirmed `.platform`, `.platformVersion`, and `.name` properties.
+- Confirmed `.platformName`, `.platformVersion`, and `.name` properties.
 - `.startScreenRecording` method to accept `filePath`, simplifying `.stopScreenRecording`.
 - `.setClipboard` method to accept `value` as its first parameter.
 - `.readFile` and `.writeFile` methods to no longer nests parameters within an object.
