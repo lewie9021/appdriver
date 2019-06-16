@@ -142,6 +142,10 @@ const wait = (duration) => {
   return delay(duration);
 };
 
+const hideKeyboard = () => {
+  return commands.device.hideKeyboard();
+};
+
 module.exports = {
   get name() {
     return getSession("deviceName");
@@ -162,5 +166,6 @@ module.exports = {
   swipeRight,
   swipeUp,
   swipeDown,
-  wait
+  wait,
+  hideKeyboard
 };

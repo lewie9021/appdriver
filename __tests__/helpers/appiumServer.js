@@ -118,6 +118,13 @@ const mockActions = ({status} = {}) => {
   });
 };
 
+const mockHideKeyboard = ({status} = {}) => {
+  return mockRequests.post({
+    url: `${BASE_URL}/session/sessionId/appium/device/hide_keyboard`,
+    response: fixtures.createFixture({status})
+  });
+};
+
 const resetMocks = () => {
   mockRequests.reset();
 };
@@ -142,6 +149,7 @@ module.exports = {
   mockElementValue,
   mockWindowRect,
   mockActions,
+  mockHideKeyboard,
   resetMocks,
   getCalls
 };

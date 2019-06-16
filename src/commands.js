@@ -64,6 +64,16 @@ module.exports = {
     }
   },
   device: {
+    hideKeyboard: () => {
+      return post(`/session/${getSession("sessionId")}/appium/device/hide_keyboard`)
+        .then(({status, value}) => {
+          if (status) {
+            throw new Error("Failed to hide keyboard.");
+          }
+
+          return value;
+        });
+    },
     app: {
       closeApp: () => {
         return post(`/session/${getSession("sessionId")}/appium/app/close`);
