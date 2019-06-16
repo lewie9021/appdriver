@@ -1,50 +1,15 @@
 const commands = require("./commands");
 const gestures = require("./gestures");
-const { getSession } = require("./session");
 const expect = require("./expect");
 const { ElementNotFoundError, ElementActionError, ElementWaitError } = require("./errors");
 const { isInstanceOf, isNull, pollFor, delay, platform } = require("./utils");
 
-const poll = (func, {maxRetries = 5, interval = 1000, attempts = 0}) => {
-  return func(attempts)
-    .then((data) => ({attempts: attempts + 1, data}))
-    .catch((err) => {
-      if (maxRetries <= 1) {
-        throw err
-      }
-
-      return delay(interval)
-        .then(() => poll(func, {
-          maxRetries: maxRetries - 1,
-          interval,
-          attempts: attempts + 1
-        }));
-    });
-};
-
-const pollV2 = (func, opts) => {
+const poll = (func, opts) => {
   return func()
     .catch(() => {
       return delay(opts.interval)
-        .then(() => pollV2(func, opts));
+        .then(() => poll(func, opts));
     });
-};
-
-const pollExist = (matcher, {maxRetries, interval}) => {
-  return poll(() => {
-    return matcher.resolve()
-      .then((response) => {
-        if (response.status) {
-          throw new ElementActionError(`Failed retrieve element's 'existence' status after ${maxRetries} attempts (interval: ${interval}ms).`);
-        }
-
-        if (!response.value) {
-          throw new ElementActionError(`Element not found after ${maxRetries} attempts (interval: ${interval}ms).`);
-        }
-
-        return response;
-      })
-  }, {maxRetries, interval});
 };
 
 const getValue = (matcher, value) => {
