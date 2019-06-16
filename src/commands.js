@@ -66,9 +66,17 @@ module.exports = {
   device: {
     hideKeyboard: () => {
       return post(`/session/${getSession("sessionId")}/appium/device/hide_keyboard`)
-        .then(({status, value}) => {
+        .then(({status}) => {
           if (status) {
             throw new Error("Failed to hide keyboard.");
+          }
+        });
+    },
+    isKeyboardShown: () => {
+      return get(`/session/${getSession("sessionId")}/appium/device/is_keyboard_shown`)
+        .then(({status, value}) => {
+          if (status) {
+            throw new Error("Failed to get keyboard visibility status.");
           }
 
           return value;

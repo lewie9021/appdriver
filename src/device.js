@@ -142,8 +142,14 @@ const wait = (duration) => {
   return delay(duration);
 };
 
+// TODO: Needs to use .waitFor + .isKeyboardVisible before returning back instead of delay. Seems to fire and forget...
 const hideKeyboard = () => {
-  return commands.device.hideKeyboard();
+  return commands.device.hideKeyboard()
+    .then(() => delay(500));
+};
+
+const isKeyboardVisible = () => {
+  return commands.device.isKeyboardShown();
 };
 
 module.exports = {
@@ -167,5 +173,6 @@ module.exports = {
   swipeUp,
   swipeDown,
   wait,
-  hideKeyboard
+  hideKeyboard,
+  isKeyboardVisible
 };
