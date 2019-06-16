@@ -4,7 +4,7 @@ Explicitly waits the given duration before continuing the test script.
 
 #### Parameters
 
-1. `duration` (Number): Time in milliseconds to wait.
+1. `duration` (`Number`): Time in milliseconds to wait.
 
 #### Returns
 

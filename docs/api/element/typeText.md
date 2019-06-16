@@ -4,7 +4,7 @@ Using the virtual keyboard, types the given text into a text element.
 
 #### Parameters
 
-1. `text` (String): Text to type.
+1. `text` (`String`): Text to type.
 
 #### Returns
 

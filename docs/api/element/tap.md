@@ -14,7 +14,7 @@ Performs tap gesture on element.
 
 #### Examples
 
-Perfom simple tap gesture at coordinate (0, 0), relative to the element location:
+Perform simple tap gesture at coordinate (0, 0), relative to the element location:
 
 ```javascript
 (async () => {
@@ -23,7 +23,7 @@ Perfom simple tap gesture at coordinate (0, 0), relative to the element location
 })();
 ```
 
-Perfom tap gesture at the center point (button_width / 2, button_height / 2), relative to the element location:
+Perform tap gesture at the center point (button_width / 2, button_height / 2), relative to the element location:
 
 ```javascript
 (async () => {

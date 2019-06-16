@@ -8,7 +8,7 @@ The `element` instance provides a way to interact with elements on the screen. Y
 
 #### Parameters
 
-1. `matcher` ([Matcher](./matchers.md)): Matcher object defining the element search query.
+1. `matcher` ([`Matcher`](./matchers.md)): Matcher object defining the element search query.
 
 #### Examples
 

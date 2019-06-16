@@ -4,9 +4,9 @@ TODO: Description here.
 
 #### Returns
 
-`Promise` (Object):
-  - `width` (Number): Width of device viewpoint.
-  - `height` (Number): Height of device viewpoint.
+`Promise` (`Object`):
+  - `width` (`Number`): Width of device viewpoint.
+  - `height` (`Number`): Height of device viewpoint.
 
 #### Examples
 

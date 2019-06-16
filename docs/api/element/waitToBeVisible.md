@@ -4,9 +4,9 @@ A handy `.waitFor` preset method for cases when elements may not be visible unti
 
 #### Parameters
 
-1. `options` (Object?):
-  - `options.interval` (Number?): Duration in milliseconds to wait between polling. Defaults to 200.
-  - `options.maxDuration` (Number?): Max duration in milliseconds to poll for before throwing. Defaults to 10000.
+1. `options` (`Object?`):
+  - `options.interval` (`Number?`): Duration in milliseconds to wait between polling. Defaults to 200.
+  - `options.maxDuration` (`Number?`): Max duration in milliseconds to poll for before throwing. Defaults to 10000.
 
 #### Returns
 
