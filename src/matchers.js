@@ -1,6 +1,5 @@
 const commands = require("./commands");
 const { platform } = require("./utils");
-const { ElementNotFoundError, ElementsNotFoundError } = require("./errors");
 
 const isContainsQuery = (query) => {
   return query.startsWith("*") && query.endsWith("*");
@@ -106,7 +105,15 @@ const by = {
   label: (accessibilityLabel) => ({
     type: "accessibility id",
     value: accessibilityLabel,
-    resolve: (multiple) => {
+    resolve: (multiple, elementId) => {
+      if (elementId) {
+        const command = multiple
+          ? commands.element.findElementsFromElement
+          : commands.element.findElementFromElement;
+
+        return command(elementId, getLabelQuery(accessibilityLabel));
+      }
+
       const command = multiple
         ? commands.element.findElements
         : commands.element.findElement;
@@ -117,7 +124,15 @@ const by = {
   text: (text) => ({
     type: "text",
     value: text,
-    resolve: (multiple) => {
+    resolve: (multiple, elementId) => {
+      if (elementId) {
+        const command = multiple
+          ? commands.element.findElementsFromElement
+          : commands.element.findElementFromElement;
+
+        return command(elementId, getTextQuery(text));
+      }
+
       const command = multiple
         ? commands.element.findElements
         : commands.element.findElement;

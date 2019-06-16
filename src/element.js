@@ -1,7 +1,7 @@
 const commands = require("./commands");
 const gestures = require("./gestures");
 const expect = require("./expect");
-const { ElementNotFoundError, ElementActionError, ElementWaitError } = require("./errors");
+const { ElementNotFoundError, ElementActionError, ElementWaitError, NotImplementedError } = require("./errors");
 const { isInstanceOf, isNull, pollFor, delay, platform } = require("./utils");
 
 const poll = (func, opts) => {
@@ -134,6 +134,25 @@ class Element {
 
   _getElementId() {
     return getValue(this.matcher, this.value);
+  }
+
+  findElement(matcher) {
+    const currentValue = getValue(this.matcher, this.value);
+
+    return currentValue.then((elementId) => {
+      if (!elementId) {
+        throw new ElementActionError("Failed to element from element that doesn't exist.");
+      }
+
+      return matcher.resolve(false, elementId)
+        .then((elementId) => {
+          const elementMatcher = () => {
+            throw new NotImplementedError();
+          };
+
+          return new Element({matcher: elementMatcher, value: Promise.resolve(elementId)});
+        });
+    });
   }
 
   tap() {

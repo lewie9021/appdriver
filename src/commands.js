@@ -12,6 +12,9 @@ const elementExists = (matcher) => {
     }))
 };
 
+// Official Appium routes:
+// https://github.com/appium/appium-base-driver/blob/master/lib/protocol/routes.js
+
 module.exports = {
   // http://appium.io/docs/en/commands/status/
   status: () => {
@@ -110,6 +113,21 @@ module.exports = {
           return value.ELEMENT;
         });
     },
+    findElementFromElement: (elementId, {using, value}) => {
+      const payload = {
+        using,
+        value
+      };
+
+      return post(`/session/${getSession("sessionId")}/element/${elementId}/element`, null, payload)
+        .then(({status, value}) => {
+          if (status) {
+            throw new Error("Failed to find element from element.");
+          }
+
+          return value.ELEMENT;
+        })
+    },
     findElements: ({using, value}) => {
       const payload = {
         using,
@@ -134,10 +152,10 @@ module.exports = {
       return post(`/session/${getSession("sessionId")}/element/${elementId}/elements`, null, payload)
         .then(({status, value}) => {
           if (status) {
-            throw new Error("Failed to get elements from element.");
+            throw new Error("Failed to find elements from element.");
           }
 
-          return value;
+          return value.map((element) => element.ELEMENT);
         })
     },
     attributes: {
