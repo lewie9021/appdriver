@@ -90,6 +90,13 @@ const mockFindElement = ({status, elementId}) => {
   });
 };
 
+const mockFindElementFromElement = ({status, elementId, element}) => {
+  return mockRequests.post({
+    url: `${BASE_URL}/session/sessionId/element/${elementId}/element`,
+    response: fixtures.createElementFixture({status, elementId: element})
+  });
+};
+
 const mockFindElements = ({status, elements}) => {
   return mockRequests.post({
     url: `${BASE_URL}/session/sessionId/elements`,
@@ -142,6 +149,7 @@ const getCalls = (requestId) => {
 
 module.exports = {
   mockFindElement,
+  mockFindElementFromElement,
   mockFindElements,
   mockFindElementsFromElement,
   mockClickElement,
