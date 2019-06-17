@@ -239,9 +239,6 @@ module.exports = {
 
             return value;
           });
-      },
-      replaceValue: (elementId) => {
-        return post(`/session/${getSession("sessionId")}/element/${elementId}/replace_value`);
       }
     },
     actions: {
