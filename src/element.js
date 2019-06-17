@@ -315,7 +315,7 @@ class Element {
 
                   return commands.element.findElementsFromElement(elementId, query)
                     .then((textElements) => {
-                      const tasks = textElements.map((x) => commands.element.attributes.text(x.ELEMENT));
+                      const tasks = textElements.map((elementId) => commands.element.attributes.text(elementId));
 
                       return Promise.all(tasks)
                         .then((textFragments) => textFragments.join(" "));
@@ -340,7 +340,7 @@ class Element {
 
               return commands.element.findElementsFromElement(elementId, query)
                 .then((textElements) => {
-                  const tasks = textElements.map((x) => commands.element.attributes.text(x.ELEMENT));
+                  const tasks = textElements.map((elementId) => commands.element.attributes.text(elementId));
 
                   return Promise.all(tasks)
                     .then((textFragments) => textFragments.join(" "));
