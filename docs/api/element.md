@@ -47,12 +47,6 @@ Performs long press gesture on element.
 
 Using the virtual keyboard, types the given text into a text element.
 
-:warning: [```.replaceText(text: String) => Element```](./element/replaceText.md)
-
-<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-TODO: Description here.
-
 [```.clearText() => Element```](./element/clearText.md)
 
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
@@ -115,37 +109,37 @@ TODO: Description here.
 
 [```.waitFor(fn: Function<Promise>, options?: Object) => Element```](./element/waitFor.md)
 
-<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 Polls `conditionFn` every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
 
 [```.waitToBeVisible(options?: Object) => Element```](./element/waitToBeVisible.md)
 
-<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 Polls for element to be visible every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
 
 [```.waitToBeInvisible(options?: {interval?: Number, maxDuration?: Number}) => Element```](./element/waitNotToBeVisible.md)
 
-<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 Polls for element to be invisible every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
 
 [```.waitToExist(options?: Object) => Element```](./element/waitToExist.md)
 
-<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 Polls for element to exist every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
 
 [```.waitToNotExist(options?: {interval?: Number, maxDuration?: Number}) => Element```](./element/waitToExist.md)
 
-<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 Polls for element to not exist every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
 
 [```.findElement(matcher: Matcher) => Element```](./element/findElement.md)
 
-<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 TODO: Description here.
 
