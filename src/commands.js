@@ -122,7 +122,7 @@ module.exports = {
       return post(`/session/${getSession("sessionId")}/element/${elementId}/element`, null, payload)
         .then(({status, value}) => {
           if (status) {
-            throw new Error("Failed to find element from element.");
+            throw new ElementNotFoundError("Failed to find element from element.");
           }
 
           return value.ELEMENT;
@@ -152,7 +152,7 @@ module.exports = {
       return post(`/session/${getSession("sessionId")}/element/${elementId}/elements`, null, payload)
         .then(({status, value}) => {
           if (status) {
-            throw new Error("Failed to find elements from element.");
+            throw new ElementsNotFoundError("Failed to find elements from element.");
           }
 
           return value.map((element) => element.ELEMENT);

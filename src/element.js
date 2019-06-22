@@ -139,20 +139,57 @@ class Element {
   findElement(matcher) {
     const currentValue = getValue(this.matcher, this.value);
 
-    return currentValue.then((elementId) => {
-      if (!elementId) {
-        throw new ElementActionError("Failed to find element from element that doesn't exist.");
-      }
+    return currentValue
+      .catch((err) => {
+        if (isInstanceOf(err, ElementNotFoundError)) {
+          return null;
+        }
 
-      return matcher.resolve(false, elementId)
-        .then((elementId) => {
-          const elementMatcher = () => {
-            throw new NotImplementedError();
-          };
+        throw err;
+      })
+      .then((elementId) => {
+        if (!elementId) {
+          throw new ElementActionError("Failed to find element from element that doesn't exist.");
+        }
 
-          return new Element({matcher: elementMatcher, value: Promise.resolve(elementId)});
-        });
-    });
+        return matcher.resolve(false, elementId)
+          .then((elementId) => {
+            const elementMatcher = () => {
+              throw new NotImplementedError();
+            };
+
+            return new Element({matcher: elementMatcher, value: Promise.resolve(elementId)});
+          });
+      });
+  }
+
+  findElements(matcher) {
+    const currentValue = getValue(this.matcher, this.value);
+
+    return currentValue
+      .catch((err) => {
+        if (isInstanceOf(err, ElementNotFoundError)) {
+          return null;
+        }
+
+        throw err;
+      })
+      .then((elementId) => {
+        if (!elementId) {
+          throw new ElementActionError("Failed to find elements from element that doesn't exist.");
+        }
+
+        return matcher.resolve(true, elementId)
+          .then((elementIds) => {
+            const elementMatcher = () => {
+              throw new NotImplementedError();
+            };
+
+            return elementIds.map((elementId) => {
+              return new Element({matcher: elementMatcher, value: Promise.resolve(elementId)});
+            });
+          });
+      });
   }
 
   tap() {

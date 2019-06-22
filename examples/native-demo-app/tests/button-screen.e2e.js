@@ -1,19 +1,17 @@
 const { by, element, expect } = require("../../../index");
 
 describe("Button Screen", () => {
+  let $screen;
+
   before(async () => {
     await element(by.label("menu-screen")).waitToBeVisible();
     await element(by.label("list-item-button-screen")).tap();
-    await element(by.label("button-screen")).waitToBeVisible();
+    $screen = await element(by.label("button-screen")).waitToBeVisible();
   });
 
   it("works", async () => {
-    const $screen = await element(by.label("button-screen"));
-    const $button = await element(by.label("button"));
-    const $text = await element(by.label("text"));
+    const $button = await $screen.findElement(by.label("button"));
 
-    await expect($screen).toHaveText("Press Me! Hello World");
-    await expect($button).toHaveText("Press Me!");
-    await expect($text).toHaveText("Hello World");
+    await expect($button.getText()).toEqual("Press Me!");
   });
 });
