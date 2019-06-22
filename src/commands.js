@@ -159,6 +159,16 @@ module.exports = {
         })
     },
     attributes: {
+      attribute: (elementId, key) => {
+        return get(`/session/${getSession("sessionId")}/element/${elementId}/attribute/${key}`)
+          .then(({status, value}) => {
+            if (status) {
+              throw new Error("Failed to get element attribute.");
+            }
+
+            return value;
+          });
+      },
       size: (elementId) => {
         return get(`/session/${getSession("sessionId")}/element/${elementId}/size`)
           .then(({status, value}) => {

@@ -49,6 +49,28 @@ const log = (x) => {
   return x;
 };
 
+const toBoolean = (x) => {
+  if (isString(x)) {
+    switch (x) {
+      case "0":
+      case "false":
+        return false;
+      default:
+        return true;
+    }
+  }
+
+  return Boolean(x);
+};
+
+const toNumber = (x) => {
+  if (isString(x)) {
+    return parseFloat(x);
+  }
+
+  return x;
+};
+
 const isBoolean = (x) => {
   return typeof x === "boolean";
 };
@@ -123,5 +145,7 @@ module.exports = {
   isUndefined,
   isInstanceOf,
   getValueType,
+  toBoolean,
+  toNumber,
   platform
 };

@@ -2,7 +2,8 @@ const commands = require("./commands");
 const gestures = require("./gestures");
 const expect = require("./expect");
 const { ElementNotFoundError, ElementActionError, ElementWaitError, NotImplementedError } = require("./errors");
-const { isInstanceOf, isNull, pollFor, delay, platform } = require("./utils");
+const { isInstanceOf, isNull, pollFor, delay, toBoolean, toNumber, platform } = require("./utils");
+const { transformBounds } = require("./attributeTransforms");
 
 const poll = (func, opts) => {
   return func()
@@ -258,6 +259,62 @@ class Element {
       }
 
       return commands.element.attributes.size(elementId);
+    });
+  }
+
+  getAttribute(name) {
+    const currentValue = getValue(this.matcher, this.value);
+    const validAttributes = platform.select({
+      ios: () => [
+        { name: "UID", transform: toBoolean }, { name: "wdUID", transform: toBoolean },
+        { name: "accessibilityContainer" }, { name: "wdAccessibilityContainer" },
+        { name: "accessible", transform: toBoolean }, { name: "wdAccessible", transform: toBoolean },
+        { name: "enabled", transform: toBoolean }, { name: "wdEnabled", transform: toBoolean },
+        { name: "frame" }, { name: "wdFrame" },
+        { name: "label" }, { name: "wdLabel" },
+        { name: "name" }, { name: "wdName" },
+        { name: "rect" }, { name: "wdRect" },
+        { name: "type" }, { name: "wdType" },
+        { name: "value" }, { name: "wdValue" },
+        { name: "visible", transform: toBoolean }, { name: "wdVisible", transform: toBoolean }
+      ],
+      android: () => [
+        { name: "checkable", transform: toBoolean },
+        { name: "checked", transform: toBoolean },
+        { name: "class", transform: toBoolean }, { name: "className", transform: toBoolean },
+        { name: "clickable", transform: toBoolean },
+        { name: "content-desc" }, { name: "contentDescription" },
+        { name: "enabled", transform: toBoolean },
+        { name: "focusable", transform: toBoolean },
+        { name: "focused", transform: toBoolean },
+        { name: "long-clickable", transform: toBoolean }, { name: "longClickable", transform: toBoolean },
+        { name: "package" },
+        { name: "password" },
+        { name: "resource-id" }, { name: "resourceId" },
+        { name: "scrollable", transform: toBoolean },
+        { name: "selection-start", transform: toNumber },
+        { name: "selection-end", transform: toNumber },
+        { name: "selected", transform: toBoolean },
+        { name: "text" }, { name: "name" },
+        { name: "bounds", transform: transformBounds },
+        { name: "displayed", transform: toBoolean },
+        { name: "contentSize", transform: JSON.parse }
+      ]
+    });
+
+    return currentValue.then((elementId) => {
+      if (!elementId) {
+        throw new ElementActionError("Failed to get attribute of element that doesn't exist.");
+      }
+
+      const attribute = validAttributes.find((x) => x.name === name);
+
+      if (!attribute) {
+        throw new ElementActionError(`Invalid attribute.\n\nValid attributes are:\n\n${validAttributes.map((x) => `- ${x.name}`).join("\n")}`);
+      }
+
+      return commands.element.attributes.attribute(elementId, name)
+        .then(attribute.transform);
     });
   }
 
