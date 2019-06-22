@@ -38,6 +38,14 @@ class Expect {
     }
   }
 
+  async toExist() {
+    const elementExists = await this.value.exists();
+
+    if (elementExists !== true) {
+      throw new Error(`Expected element to exist.`);
+    }
+  }
+
   async toEqual(value) {
     const supportedTypes = ["number", "string", "boolean", "null", "undefined", "promise"];
     const isPromiseValue = isPromise(this.value);
