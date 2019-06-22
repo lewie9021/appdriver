@@ -145,7 +145,7 @@ TODO: Description here.
 
 [```.findElements(matcher: Matcher) => Array<Element>```](./element/findElements.md)
 
-<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 TODO: Description here.
 
