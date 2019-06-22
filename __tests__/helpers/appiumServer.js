@@ -68,6 +68,13 @@ const mockElementSize = ({status, elementId, width, height}) => {
   })
 };
 
+const mockElementAttribute = ({status, elementId, name, value}) => {
+  return mockRequests.get({
+    url: `${BASE_URL}/session/sessionId/element/${elementId}/attribute/${name}`,
+    response: fixtures.createFixture({status, value})
+  })
+};
+
 const mockElementLocation = ({status, elementId, x, y}) => {
   return mockRequests.get({
     url: `${BASE_URL}/session/sessionId/element/${elementId}/location`,
@@ -157,6 +164,7 @@ module.exports = {
   mockClearElement,
   mockElementDisplayed,
   mockElementSize,
+  mockElementAttribute,
   mockElementLocation,
   mockElementLocationInView,
   mockElementType,

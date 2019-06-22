@@ -266,7 +266,7 @@ class Element {
     const currentValue = getValue(this.matcher, this.value);
     const validAttributes = platform.select({
       ios: () => [
-        { name: "UID", transform: toBoolean }, { name: "wdUID", transform: toBoolean },
+        { name: "UID" }, { name: "wdUID" },
         { name: "accessibilityContainer" }, { name: "wdAccessibilityContainer" },
         { name: "accessible", transform: toBoolean }, { name: "wdAccessible", transform: toBoolean },
         { name: "enabled", transform: toBoolean }, { name: "wdEnabled", transform: toBoolean },

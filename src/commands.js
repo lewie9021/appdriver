@@ -163,7 +163,7 @@ module.exports = {
         return get(`/session/${getSession("sessionId")}/element/${elementId}/attribute/${key}`)
           .then(({status, value}) => {
             if (status) {
-              throw new Error("Failed to get element attribute.");
+              throw new Error(`Failed to get element '${key}' attribute.`);
             }
 
             return value;
