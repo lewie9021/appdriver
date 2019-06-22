@@ -1,6 +1,6 @@
 const appiumServer = require("../helpers/appiumServer");
 
-const { ElementsNotFoundError, ElementActionError } = require("../../src/errors");
+const { ElementActionError } = require("../../src/errors");
 
 const { element, by } = require("../../");
 
@@ -21,14 +21,14 @@ it("returns a list of elements if a match is found", async () => {
   expect(appiumServer.getCalls(findElementsFromElementMock)).toHaveLength(1);
 });
 
-it("throws an ElementsNotFoundError exception if a match isn't found", async () => {
+it("throws an ElementActionError exception if a match isn't found", async () => {
   const findElementMock = appiumServer.mockFindElement({elementId: "elementId"});
   const findElementsFromElementMock = appiumServer.mockFindElementsFromElement({status: 7, elementId: "elementId"});
 
   const result = element(by.label("form"))
     .findElements(by.label("text-input"));
 
-  await expect(result).rejects.toThrowError(ElementsNotFoundError);
+  await expect(result).rejects.toThrowError(ElementActionError);
 
   expect(appiumServer.getCalls(findElementMock)).toHaveLength(1);
   expect(appiumServer.getCalls(findElementsFromElementMock)).toHaveLength(1);

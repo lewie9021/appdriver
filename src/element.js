@@ -140,13 +140,6 @@ class Element {
     const currentValue = getValue(this.matcher, this.value);
 
     return currentValue
-      .catch((err) => {
-        if (isInstanceOf(err, ElementNotFoundError)) {
-          return null;
-        }
-
-        throw err;
-      })
       .then((elementId) => {
         if (!elementId) {
           throw new ElementActionError("Failed to find element from element that doesn't exist.");
@@ -160,6 +153,9 @@ class Element {
 
             return new Element({matcher: elementMatcher, value: Promise.resolve(elementId)});
           });
+      })
+      .catch((err) => {
+        throw new ElementActionError(err.message);
       });
   }
 
@@ -167,13 +163,6 @@ class Element {
     const currentValue = getValue(this.matcher, this.value);
 
     return currentValue
-      .catch((err) => {
-        if (isInstanceOf(err, ElementNotFoundError)) {
-          return null;
-        }
-
-        throw err;
-      })
       .then((elementId) => {
         if (!elementId) {
           throw new ElementActionError("Failed to find elements from element that doesn't exist.");
@@ -189,6 +178,9 @@ class Element {
               return new Element({matcher: elementMatcher, value: Promise.resolve(elementId)});
             });
           });
+      })
+      .catch((err) => {
+        throw new ElementActionError(err.message);
       });
   }
 
