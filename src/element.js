@@ -141,7 +141,7 @@ class Element {
 
     return currentValue.then((elementId) => {
       if (!elementId) {
-        throw new ElementActionError("Failed to element from element that doesn't exist.");
+        throw new ElementActionError("Failed to find element from element that doesn't exist.");
       }
 
       return matcher.resolve(false, elementId)
