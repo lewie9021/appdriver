@@ -1,3 +1,6 @@
+jest.mock("../../src/session");
+const mockSession = require("../helpers/mockSession");
+
 const appiumServer = require("../helpers/appiumServer");
 
 const { element, by } = require("../../");
@@ -37,7 +40,7 @@ it.todo("handles case when element doesn't exists");
 
 const testAttribute = (suiteTitle, { attribute, response, expected }) => {
   describe(suiteTitle, () => {
-    it("returns the 'UID' attribute as a string", async () => {
+    it(`returns the '${attribute}' attribute as a ${typeof expected}`, async () => {
       const findElementMock = appiumServer.mockFindElement({elementId: "elementId"});
       const elementAttributeMock = appiumServer.mockElementAttribute({elementId: "elementId", name: response.name, value: response.value});
 
@@ -62,6 +65,13 @@ const testAttribute = (suiteTitle, { attribute, response, expected }) => {
 };
 
 describe("iOS", () => {
+  beforeEach(() => {
+    mockSession({
+      sessionId: "sessionId",
+      platformName: "iOS"
+    });
+  });
+
   testAttribute("uid", {
     attribute: "uid",
     response: {
@@ -167,3 +177,131 @@ describe("iOS", () => {
   });
 });
 
+describe("Android", () => {
+  beforeEach(() => {
+    mockSession({
+      sessionId: "sessionId",
+      platformName: "Android"
+    });
+  });
+
+  // TODO: checkable.
+  // TODO: checked.
+
+  testAttribute("className", {
+    attribute: "className",
+    response: {
+      name: "className",
+      value: "android.widget.EditText"
+    },
+    expected: "android.widget.EditText"
+  });
+
+  testAttribute("clickable", {
+    attribute: "clickable",
+    response: {
+      name: "clickable",
+      value: "false"
+    },
+    expected: false
+  });
+
+  testAttribute("contentDescription", {
+    attribute: "contentDescription",
+    response: {
+      name: "contentDescription",
+      value: "button"
+    },
+    expected: "button"
+  });
+
+  testAttribute("enabled", {
+    attribute: "clickable",
+    response: {
+      name: "clickable",
+      value: "true"
+    },
+    expected: true
+  });
+
+  testAttribute("focusable", {
+    attribute: "focusable",
+    response: {
+      name: "focusable",
+      value: "false"
+    },
+    expected: false
+  });
+
+  testAttribute("focused", {
+    attribute: "focused",
+    response: {
+      name: "focused",
+      value: "true"
+    },
+    expected: true
+  });
+
+  testAttribute("longClickable", {
+    attribute: "longClickable",
+    response: {
+      name: "longClickable",
+      value: "false"
+    },
+    expected: false
+  });
+
+  testAttribute("resourceId", {
+    attribute: "resourceId",
+    response: {
+      name: "resourceId",
+      value: "element-resource-id"
+    },
+    expected: "element-resource-id"
+  });
+
+  testAttribute("scrollable", {
+    attribute: "scrollable",
+    response: {
+      name: "scrollable",
+      value: "true"
+    },
+    expected: true
+  });
+
+  testAttribute("selectionStart", {
+    attribute: "selectionStart",
+    response: {
+      name: "selection-start",
+      value: "6"
+    },
+    expected: 6
+  });
+
+  testAttribute("selectionEnd", {
+    attribute: "selectionEnd",
+    response: {
+      name: "selection-end",
+      value: "10"
+    },
+    expected: 10
+  });
+
+  testAttribute("selected", {
+    attribute: "selected",
+    response: {
+      name: "selected",
+      value: "false"
+    },
+    expected: false
+  });
+
+  testAttribute("text", {
+    attribute: "text",
+    response: {
+      name: "text",
+      value: "Text Input Value"
+    },
+    expected: "Text Input Value"
+  });
+});
