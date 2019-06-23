@@ -272,11 +272,11 @@ class Element {
         { name: "enabled", transform: toBoolean },
         // { name: "frame" }, // 500 error on ScrollView element.
         { name: "label" },
-        { name: "name" }, { name: "wdName" },
-        { name: "rect" }, { name: "wdRect" },
-        { name: "type" }, { name: "wdType" },
-        { name: "value" }, { name: "wdValue" },
-        { name: "visible", transform: toBoolean }, { name: "wdVisible", transform: toBoolean }
+        { name: "name" },
+        { name: "rect", transform: JSON.parse },
+        { name: "type" },
+        { name: "value" },
+        { name: "visible", transform: toBoolean }
       ],
       android: () => [
         { name: "checkable", transform: toBoolean },

@@ -115,4 +115,55 @@ describe("iOS", () => {
     },
     expected: "Label"
   });
+
+  testAttribute("name", {
+    attribute: "name",
+    response: {
+      name: "name",
+      value: "button"
+    },
+    expected: "button"
+  });
+
+  testAttribute("rect", {
+    attribute: "rect",
+    response: {
+      name: "rect",
+      value: `{"y":230,"x":16,"width":343,"height":49}`
+    },
+    expected: {
+      y: 230,
+      x: 16,
+      width: 343,
+      height: 49
+    }
+  });
+
+  testAttribute("type", {
+    attribute: "type",
+    response: {
+      name: "type",
+      value: "XCUIElementTypeTextField"
+    },
+    expected: "XCUIElementTypeTextField"
+  });
+
+  testAttribute("value", {
+    attribute: "value",
+    response: {
+      name: "value",
+      value: "Text Input Value"
+    },
+    expected: "Text Input Value"
+  });
+
+  testAttribute("visible", {
+    attribute: "visible",
+    response: {
+      name: "visible",
+      value: "true"
+    },
+    expected: true
+  });
 });
+
