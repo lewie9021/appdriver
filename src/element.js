@@ -266,12 +266,12 @@ class Element {
     const currentValue = getValue(this.matcher, this.value);
     const validAttributes = platform.select({
       ios: () => [
-        { name: "UID" }, { name: "wdUID" },
-        { name: "accessibilityContainer" }, { name: "wdAccessibilityContainer" },
-        { name: "accessible", transform: toBoolean }, { name: "wdAccessible", transform: toBoolean },
-        { name: "enabled", transform: toBoolean }, { name: "wdEnabled", transform: toBoolean },
-        { name: "frame" }, { name: "wdFrame" },
-        { name: "label" }, { name: "wdLabel" },
+        { name: "uid", internalName: "UID" },
+        { name: "accessibilityContainer", transform: toBoolean },
+        { name: "accessible", transform: toBoolean },
+        { name: "enabled", transform: toBoolean },
+        // { name: "frame" }, // 500 error on ScrollView element.
+        { name: "label" },
         { name: "name" }, { name: "wdName" },
         { name: "rect" }, { name: "wdRect" },
         { name: "type" }, { name: "wdType" },
@@ -313,7 +313,7 @@ class Element {
         throw new ElementActionError(`Invalid attribute.\n\nValid attributes are:\n\n${validAttributes.map((x) => `- ${x.name}`).join("\n")}`);
       }
 
-      return commands.element.attributes.attribute(elementId, name)
+      return commands.element.attributes.attribute(elementId, attribute.internalName || attribute.name, attribute.name)
         .then(attribute.transform);
     });
   }

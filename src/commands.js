@@ -159,11 +159,11 @@ module.exports = {
         })
     },
     attributes: {
-      attribute: (elementId, key) => {
-        return get(`/session/${getSession("sessionId")}/element/${elementId}/attribute/${key}`)
+      attribute: (elementId, name, displayName) => {
+        return get(`/session/${getSession("sessionId")}/element/${elementId}/attribute/${name}`)
           .then(({status, value}) => {
             if (status) {
-              throw new Error(`Failed to get element '${key}' attribute.`);
+              throw new Error(`Failed to get '${displayName || name}' attribute of element.`);
             }
 
             return value;
