@@ -1,5 +1,14 @@
 # Change Log
 
+## [v1.0.0-alpha.5] - 2019-06-24
+
+### Added
+
+- Support for `.toExist` expectation.
+- Initial support for Element `.getAttribute` method. It maintains the warning status due to difficulty understanding the need for it and potential changes in the future to reduce platform checking code (e.g. `displayed` on Android vs `visible` on iOS).
+- Support for Element `.findElement` and `.findElements`.
+- Support for Element `.hideKeyboard` and `.isKeyboardVisible`.
+
 ## [v1.0.0-alpha.4] - 2019-06-15
 
 ### Added
