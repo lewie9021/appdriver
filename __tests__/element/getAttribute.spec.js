@@ -304,4 +304,43 @@ describe("Android", () => {
     },
     expected: "Text Input Value"
   });
+
+  testAttribute("bounds", {
+    attribute: "bounds",
+    response: {
+      name: "bounds",
+      value: "[42,252][1038,372]"
+    },
+    expected: {
+      x1: 42,
+      y1: 252,
+      x2: 1038,
+      y2: 372
+    }
+  });
+
+  testAttribute("displayed", {
+    attribute: "displayed",
+    response: {
+      name: "displayed",
+      value: "true"
+    },
+    expected: true
+  });
+
+  testAttribute("contentSize", {
+    attribute: "contentSize",
+    response: {
+      name: "contentSize",
+      value: "{\"width\":1080,\"height\":1584,\"top\":210,\"left\":0,\"scrollableOffset\":2545,\"touchPadding\":21}"
+    },
+    expected: {
+      width: 1080,
+      height: 1584,
+      top: 210,
+      left: 0,
+      scrollableOffset: 2545,
+      touchPadding: 21
+    }
+  });
 });
