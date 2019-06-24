@@ -1,13 +1,14 @@
 const { by, element, elements } = require("../../../index");
 
 describe("List Screen", () => {
-  const screenTestId = "list-screen";
+  before(async () => {
+    await element(by.label("menu-screen")).waitToBeVisible();
+    await element(by.label("list-item-list-screen")).tap();
+    await element(by.label("list-screen")).waitToBeVisible();
+  });
 
   it("works", async () => {
-    console.log("[1] Waiting for screen to load...");
-    await element(by.label(screenTestId)).waitToBeVisible();
-
-    const listItems = await elements(by.label("list-item-*"));
+    const listItems = await elements(by.label("item-*"));
     console.log("Found elements", listItems.length);
 
     for (let i = 0; i < 10; i += 1) {
