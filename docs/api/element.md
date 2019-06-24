@@ -101,9 +101,9 @@ Retrieves x and y coordinates of element.
 
 Retrieves width and height dimensions of element.
 
-[```.getAttribute(attribute: String) => Promise<Any>```](./element/getAttribute.md)
+:warning: [```.getAttribute(attribute: String) => Promise<Any>```](./element/getAttribute.md)
 
-<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
 TODO: Description here.
 
