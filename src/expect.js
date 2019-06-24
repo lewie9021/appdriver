@@ -4,6 +4,15 @@ const { getValueType, isPromise } = require("./utils");
 const displayValue = (value) => {
   const valueType = getValueType(value);
 
+  switch (valueType) {
+    case "string":
+      return `'${value}'`;
+    // case "object":
+    //   return JSON.stringify(value);
+    default:
+      return value;
+  }
+
   return valueType === "string"
     ? `'${value}'`
     : value;
