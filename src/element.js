@@ -289,7 +289,7 @@ class Element {
         { name: "focused", transform: toBoolean },
         { name: "longClickable", transform: toBoolean },
         { name: "package" },
-        { name: "password" }, // Doesn't seem to work.
+        // { name: "password" }, // Doesn't seem to work.
         { name: "resourceId" },
         { name: "scrollable", transform: toBoolean },
         { name: "selectionStart", internalName: "selection-start", transform: toNumber },
@@ -298,7 +298,7 @@ class Element {
         { name: "text" },
         { name: "bounds", transform: transformBounds },
         { name: "displayed", transform: toBoolean },
-        { name: "contentSize", transform: JSON.parse }
+        { name: "contentSize", transform: JSON.parse } // Only works on ScrollViews
       ]
     });
 
