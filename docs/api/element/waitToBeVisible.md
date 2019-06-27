@@ -26,7 +26,9 @@ const App = () => {
   const [ showButton, setShowButton ] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setShowButton(true), 2000);
+    const timeout = setTimeout(() => setShowButton(true), 2000);
+
+    return () => clearTimeout(timeout);
   }, []);
 
   return (
