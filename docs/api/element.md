@@ -119,7 +119,7 @@ Polls `conditionFn` every `options.interval` until it resolves or `options.maxDu
 
 Polls for element to be visible every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
 
-[```.waitToBeInvisible(options?: {interval?: Number, maxDuration?: Number}) => Element```](./element/waitNotToBeVisible.md)
+[```.waitToBeInvisible(options?: Object) => Element```](./element/waitToBeInvisible.md)
 
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
