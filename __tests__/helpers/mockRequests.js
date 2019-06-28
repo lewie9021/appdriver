@@ -16,15 +16,24 @@ const matchRequest = (url, opts) => {
 };
 
 const fetchMock = async (url, opts) => {
+  const method = (opts && opts.method) || "GET";
   let request = matchRequest(url, opts);
 
   if (!request) {
-    const method = (opts && opts.method) || "GET";
-
     throw new Error(`No mock implementation was found for ${method} '${url}'.`);
   }
 
-  request.calls.push({url, options: opts});
+  const payload = (opts && opts.body)
+    ? JSON.parse(opts.body)
+    : null;
+
+  // TODO: Add a query property.
+  request.calls.push({
+    method,
+    url,
+    payload,
+    options: opts
+  });
 
   return new Response(JSON.stringify(request.response), {status: request.status});
 };
