@@ -38,34 +38,32 @@ it("correctly executes gesture with distance value", async () => {
 });
 
 it("correctly executes gesture with percentage value", async () => {
-  appiumServer.mockWindowRect({width: 1000, height: 1600});
-  appiumServer.mockActions();
+  const windowRectMock = appiumServer.mockWindowRect({ width: 1000, height: 1600 });
+  const actionsMock = appiumServer.mockActions();
 
   await device.swipeUp({x: 500, y: 1500, percentage: 0.75});
 
-  expect(fetch).toHaveBeenCalledTimes(2);
-  expect(fetch).toHaveBeenLastCalledWith(
-    expect.any(String),
-    expect.objectContaining({
-      method: "POST",
-      body: JSON.stringify({
-        actions: [{
-          id: "finger1",
-          type: "pointer",
-          parameters: {
-            pointerType: "touch"
-          },
-          actions: [
-            {type: "pointerMove", duration: 0, origin: "viewport", x: 500, y: 1500},
-            {type: "pointerDown", button: 0},
-            {type: "pause", duration: 250},
-            {type: "pointerMove", duration: 50, origin: "pointer", x: 0, y: -1200},
-            {type: "pointerUp", button: 0}
-          ]
-        }]
-      })
-    })
-  );
+  const actionMockCalls = appiumServer.getCalls(actionsMock);
+
+  expect(appiumServer.getCalls(windowRectMock)).toHaveLength(1);
+  expect(actionMockCalls).toHaveLength(1);
+
+  expect(actionMockCalls[0].payload).toEqual({
+    actions: [{
+      id: "finger1",
+      type: "pointer",
+      parameters: {
+        pointerType: "touch"
+      },
+      actions: [
+        {type: "pointerMove", duration: 0, origin: "viewport", x: 500, y: 1500},
+        {type: "pointerDown", button: 0},
+        {type: "pause", duration: 250},
+        {type: "pointerMove", duration: 50, origin: "pointer", x: 0, y: -1200},
+        {type: "pointerUp", button: 0}
+      ]
+    }]
+  });
 });
 
 it("correctly executes gesture with duration parameter", async () => {
