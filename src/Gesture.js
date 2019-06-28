@@ -43,10 +43,10 @@ class Gesture {
             return result.concat([{
               type: "pointerMove",
               duration: action.duration,
-              origin: action.element
-                ? {element: action.element}
-                : action.relative
-                  ? "pointer"
+              origin: action.relative
+                ? "pointer"
+                : action.element
+                  ? { element: action.element }
                   : "viewport",
               x: action.x,
               y: action.y
@@ -64,6 +64,7 @@ class Gesture {
   }
 
   press(options = {}) {
+    // TODO: What if only x or y is passed. The user wouldn't know that their coordinate is ignored.
     if (isNumber(options.x) && isNumber(options.y)) {
       this.moveTo({
         x: options.x,
