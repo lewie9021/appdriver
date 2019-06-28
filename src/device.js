@@ -1,3 +1,4 @@
+const fs = require("fs");
 const commands = require("./commands");
 const { getSession } = require("./session");
 const gestures = require("./gestures");
@@ -192,6 +193,21 @@ class Device {
 
   isKeyboardVisible() {
     return commands.device.isKeyboardShown();
+  }
+
+  takeScreenshot({ filePath } = {}) {
+    return commands.device.takeScreenshot()
+      .then((value) => {
+        return new Promise((resolve, reject) => {
+          fs.writeFile(filePath, Buffer.from(value, "base64"), (err) => {
+            if (err) {
+              return reject(err);
+            }
+
+            resolve();
+          });
+        });
+      });
   }
 }
 

@@ -67,6 +67,16 @@ module.exports = {
     }
   },
   device: {
+    takeScreenshot: () => {
+      return get(`/session/${getSession("sessionId")}/screenshot`)
+        .then(({status, value}) => {
+          if (status) {
+            throw new Error("Failed to take screenshot.");
+          }
+
+          return value;
+        });
+    },
     hideKeyboard: () => {
       return post(`/session/${getSession("sessionId")}/appium/device/hide_keyboard`)
         .then(({status}) => {
