@@ -65,7 +65,7 @@ Returns the platform name of the current session.
 
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
-Returns the platform verison of the current session.
+Returns the platform version of the current session.
 
 [```.name: String```](./device/name.md)
 
