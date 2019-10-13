@@ -4,7 +4,7 @@ A mobile focused, intuitive Appium client.
 
 [![NPM Version](https://img.shields.io/npm/v/appdriver.svg?style=flat)](https://www.npmjs.com/package/appdriver)
 
-<!-- <img src="https://raw.githubusercontent.com/lewie9021/appdriver/master/docs/assets/demo.gif"> -->
+<img src="https://raw.githubusercontent.com/lewie9021/appdriver/master/docs/assets/demo.gif">
 
 ### Notices
 
