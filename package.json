@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "@types/jest": "24.0.11",
-    "appium": "1.12.1",
+    "appium": "1.15.1",
     "jest": "24.7.1"
   },
   "repository": {

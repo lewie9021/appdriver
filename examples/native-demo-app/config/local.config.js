@@ -1,12 +1,12 @@
 const getAppPath = require("./getAppPath");
 
-const development = false;
+const development = true;
 
 const simulators = {
   iPhoneX: {
     app: getAppPath("iOS", development),
     platformName: "iOS",
-    platformVersion: "12.1",
+    platformVersion: "12.4",
     deviceName: "iPhone X",
     automationName: "XCUITest",
     wdaLocalPort: 8100,
