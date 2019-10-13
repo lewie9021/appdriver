@@ -4,9 +4,11 @@ A mobile focused, intuitive Appium client.
 
 [![NPM Version](https://img.shields.io/npm/v/appdriver.svg?style=flat)](https://www.npmjs.com/package/appdriver)
 
-<img src="https://raw.githubusercontent.com/lewie9021/appdriver/master/docs/assets/demo.gif">
+<!-- <img src="https://raw.githubusercontent.com/lewie9021/appdriver/master/docs/assets/demo.gif"> -->
 
-### Notice
+### Notices
+
+Due to [an issue introduced in Xcode 11](https://github.com/appium/appium/issues/13288), XCUITest does not return the correct values of text fields. This is unfortunately something that must be fixed by Apple. To continue running E2E tests, I recommend installing Xcode 10.3 (don't forget the command line tools).
 
 **This project is currently in the Alpha stages of development**, meaning the API is subject to change and may be missing functionality detailed in the documentation. If you're interested in the project's roadmap, feel free to check out the [Projects tab](https://github.com/lewie9021/appdriver/projects).
 
