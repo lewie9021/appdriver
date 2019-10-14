@@ -146,6 +146,13 @@ const mockIsKeyboardShown = ({status, shown}) => {
   });
 };
 
+const mockScreenshot = ({status, data}) => {
+  return mockRequests.get({
+    url: `${BASE_URL}/session/sessionId/screenshot`,
+    response: fixtures.createFixture({status, value: data})
+  });
+};
+
 const resetMocks = () => {
   mockRequests.reset();
 };
@@ -174,6 +181,7 @@ module.exports = {
   mockActions,
   mockHideKeyboard,
   mockIsKeyboardShown,
+  mockScreenshot,
   resetMocks,
   getCalls
 };

@@ -3,6 +3,7 @@ const commands = require("./commands");
 const { getSession } = require("./session");
 const gestures = require("./gestures");
 const { delay, isUndefined } = require("./utils");
+const { NotImplementedError } = require("./errors");
 
 class Device {
   get name() {
@@ -196,10 +197,14 @@ class Device {
   }
 
   takeScreenshot({ filePath } = {}) {
+    if (!filePath) {
+      throw new Error(NotImplementedError);
+    }
+
     return commands.device.takeScreenshot()
       .then((value) => {
         return new Promise((resolve, reject) => {
-          fs.writeFile(filePath, Buffer.from(value, "base64"), (err) => {
+          fs.writeFile(filePath, Buffer.from(value, "base64").toString(), (err) => {
             if (err) {
               return reject(err);
             }
