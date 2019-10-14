@@ -1,5 +1,15 @@
 # Change Log
 
+## [v1.0.0-alpha.6] - 2019-10-14
+
+### Changed
+
+- README to include notice around issue with XCUITest in Xcode 11.
+
+### Added
+
+- Support for Device `.takeScreenshot`.
+
 ## [v1.0.0-alpha.5] - 2019-06-24
 
 ### Added
