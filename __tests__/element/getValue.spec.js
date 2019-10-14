@@ -60,7 +60,7 @@ describe("iOS", () => {
 
   testPlatform("iOS");
 
-  it("correctly handles native switch element value (ON)", async () => {
+  it("returns true for native switch elements with a value of '1'", async () => {
     appiumServer.mockFindElement({elementId: "elementId"});
     appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeSwitch"});
     appiumServer.mockElementValue({elementId: "elementId", value: "1"});
@@ -71,12 +71,34 @@ describe("iOS", () => {
     expect(result).toEqual(true);
   });
 
-  it("correctly handles native switch element value (OFF)", async () => {
+  it("returns false for native switch elements with a value of '0'", async () => {
     appiumServer.mockFindElement({elementId: "elementId"});
     appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeSwitch"});
     appiumServer.mockElementValue({elementId: "elementId", value: "0"});
 
     const result = await element(by.label("switch")).getValue();
+
+    expect(fetch).toHaveBeenCalledTimes(3);
+    expect(result).toEqual(false);
+  });
+
+  it("returns true for native buttons with a value of '1'", async () => {
+    appiumServer.mockFindElement({elementId: "elementId"});
+    appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeButton"});
+    appiumServer.mockElementValue({elementId: "elementId", value: "1"});
+
+    const result = await element(by.label("slider")).getValue();
+
+    expect(fetch).toHaveBeenCalledTimes(3);
+    expect(result).toEqual(true);
+  });
+
+  it("returns false for native buttons with a value of '0'", async () => {
+    appiumServer.mockFindElement({elementId: "elementId"});
+    appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeButton"});
+    appiumServer.mockElementValue({elementId: "elementId", value: "0"});
+
+    const result = await element(by.label("slider")).getValue();
 
     expect(fetch).toHaveBeenCalledTimes(3);
     expect(result).toEqual(false);
