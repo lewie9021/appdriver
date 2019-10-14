@@ -198,7 +198,7 @@ class Device {
 
   takeScreenshot({ filePath } = {}) {
     if (!filePath) {
-      throw new Error(NotImplementedError);
+      return Promise.reject(new NotImplementedError());
     }
 
     return commands.device.takeScreenshot()

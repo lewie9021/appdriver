@@ -1,6 +1,7 @@
 const fs = require("fs");
 const appiumServer = require("../helpers/appiumServer");
 const { device } = require("../../");
+const { NotImplementedError } = require("../../src/errors");
 
 afterEach(() => {
   appiumServer.resetMocks();
@@ -28,4 +29,12 @@ it("correctly handles screenshot request errors", async () => {
     .rejects.toThrow(new Error("Failed to take screenshot."));
 
   expect(appiumServer.getCalls(screenshotMock)).toHaveLength(1);
+});
+
+// TODO: Until we figure out what makes the most sense.
+// - Should we infer a directory?
+// - Should we return the base64 string?
+it("throws if no filePath is given", () => {
+  return expect(device.takeScreenshot())
+    .rejects.toThrow(NotImplementedError);
 });
