@@ -214,6 +214,16 @@ class Device {
         });
       });
   }
+
+  startScreenRecording(options = {}) {
+    const { filePath } = options;
+
+    return commands.device.startScreenRecording();
+  }
+
+  stopScreenRecording() {
+
+  }
 }
 
 module.exports = new Device();

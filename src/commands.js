@@ -77,6 +77,11 @@ module.exports = {
           return value;
         });
     },
+    startScreenRecording: () => {
+      const payload = {};
+
+      return post(`/session/${getSession("sessionId")}/appium/start_recording_screen`, null, payload);
+    },
     hideKeyboard: () => {
       return post(`/session/${getSession("sessionId")}/appium/device/hide_keyboard`)
         .then(({status}) => {
