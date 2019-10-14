@@ -5,6 +5,7 @@
 ### Changed
 
 - README to include notice around issue with XCUITest in Xcode 11.
+- Improved `.getValue` to return a boolean for buttons with values of '1' or '0'. 
 
 ### Added
 
