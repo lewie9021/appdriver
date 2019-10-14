@@ -127,11 +127,11 @@ Retrieves the current orientation of the device.
 
 Retrieves the width and height of the device viewport.
 
-:warning: [```.takeScreenshot(options?: {filePath?: String}) => Promise```](./device/takeScreenshot.md)
+:warning: [```.takeScreenshot(options?: Object) => Promise```](./device/takeScreenshot.md)
 
-<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
-TODO: Description here.
+Takes a screenshot (PNG) of the entire screen and saves the result on disk at the given `filePath` location.
 
 :warning: [```.startScreenRecording(options?: {filePath?: String, remote? {username?: String, password?: String, method?: String}, format?: String, quality?: String, fps?: Number, bitRate?: Number, size?: {width: Number, height: Number}, maxDuration?: Number, forceRestart?: Boolean}) => Promise```](./device/startScreenRecording.md)
 
