@@ -29,6 +29,13 @@ const parseValue = (rawValue, elementType, options) => {
       return rawValue || "";
     case "XCUIElementTypeSwitch":
       return rawValue === "1";
+    case "XCUIElementTypeButton":
+      // Possibly a switch?
+      if (rawValue === "1" || rawValue === "0") {
+        return Boolean(parseInt(rawValue));
+      }
+
+      return rawValue;
     case "android.widget.Switch":
       return rawValue === "ON";
     case "XCUIElementTypeSlider":
