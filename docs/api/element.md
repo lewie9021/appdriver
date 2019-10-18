@@ -77,11 +77,11 @@ Retrieves existence status of element.
 
 Retrieves visibility status of element.
 
-:warning: [```.isEnabled() => Promise<Boolean>```](./element/isEnabled.md)
+[```.isDisabled() => Promise<Boolean>```](./element/isDisabled.md)
 
-<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-Done-green.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
-TODO: Description here.
+Retrieves disabled status of element.
 
 :warning: [```.isSelected() => Promise<Boolean>```](./element/isSelected.md)
 

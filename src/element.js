@@ -502,6 +502,18 @@ class Element {
         throw new ElementActionError("Failed to retrieve visibility status of element.");
       });
   }
+
+  isDisabled() {
+    const currentValue = getValue(this.matcher, this.value);
+
+    return currentValue.then((elementId) => {
+      if (!elementId) {
+        throw new ElementActionError("Failed to retrieve disabled status of element that doesn't exist.");
+      }
+
+      return commands.element.attributes.disabled(elementId);
+    });
+  }
 }
 
 const element = (matcher) => {

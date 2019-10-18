@@ -200,14 +200,14 @@ module.exports = {
             return value;
           });
       },
-      enabled: (elementId) => {
+      disabled: (elementId) => {
         return get(`/session/${getSession("sessionId")}/element/${elementId}/enabled`)
           .then(({status, value}) => {
             if (status) {
-              throw new Error("Failed to get element enabled status.");
+              throw new Error("Failed to retrieve disabled status of element.");
             }
 
-            return value;
+            return !value;
           });
       },
       text: (elementId) => {

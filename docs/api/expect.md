@@ -56,12 +56,6 @@ Asserts the element has text exactly matching `text`.
 
 Asserts the element is disabled.
 
-[```.toBeEnabled() => Promise```](./expect/toBeEnabled.md)
-
-<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-Draft-red.svg" /> <img src="https://img.shields.io/badge/Tests-Draft-red.svg" />
-
-Asserts the element is enabled.
-
 [```.toHaveValueGreaterThanOrEqual(value: Number) => Promise```](./expect/toHaveValueGreaterThanOrEqual.md)
 
 <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
