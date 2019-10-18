@@ -17,6 +17,10 @@ Disabled status of text input:
 })();
 ```
 
-#### Related methods
+#### Related Methods
 
 - [`.isSelected() => Promise<Boolean>`](./isSelected.md)
+
+### Related Appium Docs
+
+- [Element Enabled](http://appium.io/docs/en/commands/element/attributes/enabled/)
