@@ -189,6 +189,27 @@ module.exports = {
             return value;
           });
       },
+      // Note: doesn't work on iOS yet. See https://github.com/appium/appium/issues/13441.
+      selected: (elementId) => {
+        return get(`/session/${getSession("sessionId")}/element/${elementId}/selected`)
+          .then(({status, value}) => {
+            if (status) {
+              throw new Error("Failed to get element selected status.");
+            }
+
+            return value;
+          });
+      },
+      enabled: (elementId) => {
+        return get(`/session/${getSession("sessionId")}/element/${elementId}/enabled`)
+          .then(({status, value}) => {
+            if (status) {
+              throw new Error("Failed to get element enabled status.");
+            }
+
+            return value;
+          });
+      },
       text: (elementId) => {
         return get(`/session/${getSession("sessionId")}/element/${elementId}/text`)
           .then(({status, value}) => {
