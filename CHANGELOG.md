@@ -1,5 +1,11 @@
 # Change Log
 
+## [Unreleased]
+
+### Added
+
+- Support for Element `.isDisabled`.
+
 ## [v1.0.0-alpha.6] - 2019-10-14
 
 ### Changed
