@@ -1,11 +1,16 @@
 # Change Log
 
+## [Unreleased]
+
+### Added
+
+- Support for Device `.swipe`.
+
 ## [v1.0.0-alpha.7] - 2019-10-19
 
 ### Added
 
-- Support for Expect `.toMatch`.
-- Support for Expect `.toBeDisabled`.
+- Support for Expect `.toBeDisabled` and `.toMatch`.
 - Support for Element `.isDisabled`.
 
 ## [v1.0.0-alpha.6] - 2019-10-14
