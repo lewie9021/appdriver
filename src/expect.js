@@ -47,6 +47,14 @@ class Expect {
     }
   }
 
+  async toBeDisabled() {
+    const elementIsDisabled = await this.value.isDisabled();
+
+    if (elementIsDisabled !== true) {
+      throw new Error(`Expected element to be disabled but instead it was enabled.`);
+    }
+  }
+
   async toExist() {
     const elementExists = await this.value.exists();
 
