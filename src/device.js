@@ -89,6 +89,12 @@ class Device {
       });
   }
 
+  async swipe({ x, y, distance, direction, duration }) {
+    const gesture = gestures.swipe({ x, y, distance, direction, duration });
+
+    return this.performGesture(gesture);
+  }
+
   async swipeLeft({ x, y, distance, percentage, duration }) {
     let swipeDistance = distance;
 

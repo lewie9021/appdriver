@@ -44,13 +44,13 @@ describe("Common Gestures", () => {
   });
 
   it("correctly defines a swipe left gesture", () => {
-    const longPress = new Gesture()
+    const swipeLeft = new Gesture()
       .press({x: 150, y: 200})
       .wait({duration: 250})
       .moveTo({x: -100, y: 0, relative: true, duration: 50})
       .release();
 
-    return expect(longPress.resolve()).resolves.toEqual([{
+    return expect(swipeLeft.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -67,13 +67,13 @@ describe("Common Gestures", () => {
   });
 
   it("correctly defines a swipe right gesture", () => {
-    const longPress = new Gesture()
+    const swipeRight = new Gesture()
       .press({x: 150, y: 200})
       .wait({duration: 250})
       .moveTo({x: 100, y: 0, relative: true, duration: 50})
       .release();
 
-    return expect(longPress.resolve()).resolves.toEqual([{
+    return expect(swipeRight.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -90,13 +90,13 @@ describe("Common Gestures", () => {
   });
 
   it("correctly defines a swipe up gesture", () => {
-    const longPress = new Gesture()
+    const swipeUp = new Gesture()
       .press({x: 150, y: 300})
       .wait({duration: 250})
       .moveTo({x: 0, y: -100, relative: true, duration: 50})
       .release();
 
-    return expect(longPress.resolve()).resolves.toEqual([{
+    return expect(swipeUp.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {
@@ -113,13 +113,13 @@ describe("Common Gestures", () => {
   });
 
   it("correctly defines a swipe down gesture", () => {
-    const longPress = new Gesture()
+    const swipeDown = new Gesture()
       .press({x: 150, y: 200})
       .wait({duration: 250})
       .moveTo({x: 0, y: 100, relative: true, duration: 50})
       .release();
 
-    return expect(longPress.resolve()).resolves.toEqual([{
+    return expect(swipeDown.resolve()).resolves.toEqual([{
       id: "finger1",
       type: "pointer",
       parameters: {

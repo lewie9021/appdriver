@@ -1,5 +1,14 @@
 const Gesture = require("./Gesture");
 
+const getRelativePoint = ({ direction, distance }) => {
+  const radians = direction * (Math.PI / 180);
+
+  return {
+    x: Math.round(Math.sin(radians) * distance),
+    y: Math.round(Math.cos(radians) * distance) * -1
+  };
+};
+
 const create = () => {
   return new Gesture();
 };
@@ -12,40 +21,35 @@ const longPress = ({x, y, duration = 750, element}) => {
 };
 
 // Note: Having type: "pointerMove", origin: "pointer", and duration: <= 10 doesn't work on Android.
-const swipeLeft = ({x, y, distance, duration = 50}) => {
+const swipe = ({x, y, direction, distance, duration = 50}) => {
+  const relativePoint = getRelativePoint({ direction, distance });
+
   return create()
     .press({x, y})
     .wait({duration: 250})
-    .moveTo({x: distance * -1, y: 0, relative: true, duration})
+    .moveTo({x: relativePoint.x, y: relativePoint.y, relative: true, duration})
     .release();
+};
+
+const swipeLeft = ({x, y, distance, duration = 50}) => {
+  return swipe({ x,y, distance, duration, direction: 270 });
 };
 
 const swipeRight = ({x, y, distance, duration = 50}) => {
-  return create()
-    .press({x, y})
-    .wait({duration: 250})
-    .moveTo({x: distance, y: 0, relative: true, duration})
-    .release();
+  return swipe({ x,y, distance, duration, direction: 90 });
 };
 
 const swipeUp = ({x, y, distance, duration = 50}) => {
-  return create()
-    .press({x, y})
-    .wait({duration: 250})
-    .moveTo({x: 0, y: distance * -1, relative: true, duration})
-    .release();
+  return swipe({ x,y, distance, duration, direction: 0 });
 };
 
 const swipeDown = ({x, y, distance, duration = 50}) => {
-  return create()
-    .press({x, y})
-    .wait({duration: 250})
-    .moveTo({x: 0, y: distance, relative: true, duration})
-    .release();
+  return swipe({ x,y, distance, duration, direction: 180 });
 };
 
 module.exports = {
   create,
+  swipe,
   swipeUp,
   swipeDown,
   longPress,
