@@ -37,6 +37,36 @@ it("correctly executes swipe up gesture", async () => {
   );
 });
 
+it("defaults x and y to 0", async () => {
+  appiumServer.mockActions();
+
+  await device.swipe({distance: 100, direction: 135});
+
+  expect(fetch).toHaveBeenCalledTimes(1);
+  expect(fetch).toHaveBeenLastCalledWith(
+    expect.any(String),
+    expect.objectContaining({
+      method: "POST",
+      body: JSON.stringify({
+        actions: [{
+          id: "finger1",
+          type: "pointer",
+          parameters: {
+            pointerType: "touch"
+          },
+          actions: [
+            {type: "pointerMove", duration: 0, origin: "viewport", x: 0, y: 0},
+            {type: "pointerDown", button: 0},
+            {type: "pause", duration: 250},
+            {type: "pointerMove", duration: 50, origin: "pointer", x: 71, y: 71},
+            {type: "pointerUp", button: 0}
+          ]
+        }]
+      })
+    })
+  );
+});
+
 it("correctly executes swipe right gesture", async () => {
   appiumServer.mockActions();
 

@@ -89,7 +89,7 @@ class Device {
       });
   }
 
-  async swipe({ x, y, distance, direction, duration }) {
+  async swipe({ x = 0, y = 0, distance, direction, duration }) {
     const gesture = gestures.swipe({ x, y, distance, direction, duration });
 
     return this.performGesture(gesture);

@@ -241,11 +241,17 @@ TODO: Description here.
 
 TODO: Description here.
 
+[```.swipe(options: Object) => Promise```](./device/swipe.md)
+
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-Done-green.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
+
+Performs a swipe gesture in the context of the device viewport.
+
 [```.swipeUp(options: Object) => Promise```](./device/swipeUp.md)
 
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-Done-green.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
-TODO: Description here.
+Performs a swipe up gesture in the context of the device viewport.
 
 [```.swipeDown(options: {x?: Number, y?: Number, distance?: Number, percentage?: Number, duration?: Number}) => Promise```](./device/swipeDown.md)
 
@@ -262,12 +268,6 @@ TODO: Description here.
 [```.swipeRight(options: {x?: Number, y?: Number, distance?: Number, percentage?: Number, duration?: Number}) => Promise```](./device/swipeRight.md)
 
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
-
-TODO: Description here.
-
-[```.swipe(options: {x?: Number, y?: Number, direction: Number, distance: Number, duration?: Number}) => Promise```](./device/swipe.md)
-
-<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
