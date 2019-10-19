@@ -89,6 +89,19 @@ class Expect {
       throw new Error(`Expected ${valueType} to have length '${length}' but instead got '${valueLength}'.`);
     }
   }
+
+  async toMatch(pattern) {
+    const supportedTypes = ["string"];
+    const valueType = getValueType(this.value);
+
+    if (!supportedTypes.includes(valueType)) {
+      throw new NotImplementedError();
+    }
+
+    if (pattern.test(this.value) !== true) {
+      throw new Error(`Expected ${displayValue(this.value)} to match pattern '${pattern}'.`);
+    }
+  }
 }
 
 const expect = (value) => {
