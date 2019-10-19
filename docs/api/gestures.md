@@ -59,6 +59,10 @@ TODO: Description here.
 
 TODO: Description here.
 
+:hammer: [```.swipe(options: {x?: Number, y?: Number, distance: Number, direction: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/swipe.md)
+
+TODO: Description here.
+
 :hammer: [```.swipeUp(options: {x?: Number, y?: Number, distance: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/swipeUp.md)
 
 TODO: Description here.
