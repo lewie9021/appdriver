@@ -4,6 +4,7 @@
 
 ### Added
 
+- Support for Expect `.toMatch`.
 - Support for Expect `.toBeDisabled`.
 - Support for Element `.isDisabled`.
 
