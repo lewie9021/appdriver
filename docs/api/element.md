@@ -173,11 +173,11 @@ TODO: Description here.
 
 Performs a swipe left gesture on the element.
 
-[```.swipeRight(options: {x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./element/swipeRight.md)
+[```.swipeRight(options: Object) => Element```](./element/swipeRight.md)
 
-<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-Done-green.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
-TODO: Description here.
+Performs a swipe right gesture on the element.
 
 :warning: [```.swipeIntoView(options: {element: Element, swipeGesture?: Gesture, safeArea?: {top?: Number, right?: Number, bottom?: Number, left?: Number}}) => Element```](./element/swipeIntoView.md)
 

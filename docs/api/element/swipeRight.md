@@ -1,6 +1,6 @@
-# `.swipeLeft(options: Object) => Element`
+# `.swipeRight(options: Object) => Element`
 
-Performs a swipe left gesture on the element.
+Performs a swipe right gesture on the element.
 
 #### Parameters
 
@@ -16,12 +16,12 @@ Performs a swipe left gesture on the element.
 
 #### Examples
 
-Swipe left 100 pixels. This will swipe left from the coordinate (100, 24) to (0, 24), relative to the element.
+Swipe right 100 pixels. This will swipe left from the coordinate (0, 24) to (100, 24), relative to the element.
 
 ```javascript
 (async () => {
   await element(by.label("list-item"))
-    .swipeLeft({ x: 100, y: 24, distance: 100 });
+    .swipeLeft({ y: 24, distance: 100 });
 })();
 ```
 
@@ -29,5 +29,5 @@ Swipe left 100 pixels. This will swipe left from the coordinate (100, 24) to (0,
 
 - [`.swipe(options: Object) => Promise`](./swipe.md)
 - [`.swipeDown(options: Object) => Promise`](./swipeDown.md)
+- [`.swipeLeft(options: Object) => Promise`](./swipeLeft.md)
 - [`.swipeUp(options: Object) => Promise`](./swipeUp.md)
-- [`.swipeRight(options: Object) => Promise`](./swipeRight.md)
