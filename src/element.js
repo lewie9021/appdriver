@@ -539,6 +539,31 @@ class Element {
         .catch((err) => done(err));
     });
   }
+
+  swipeLeft({ x = 0, y = 0, distance, duration }) {
+    return this._executeAction((elementId, done) => {
+      if (!elementId) {
+        return done(new ElementActionError("Can't swipe left on element that doesn't exist"));
+      }
+
+      const $element = new Element({matcher: this.matcher, value: Promise.resolve(elementId)});
+
+      return gestures.swipeLeft({ x, y, distance, duration, element: $element })
+        .resolve()
+        .then((actions) => {
+          commands.interactions.actions(actions)
+            .then(({status}) => {
+              if (status) {
+                return done(new ElementActionError("Failed to swipe left on element."));
+              }
+
+              done(null);
+            })
+            .catch((err) => done(err));
+        })
+        .catch((err) => done(err));
+    });
+  }
 }
 
 const element = (matcher) => {
