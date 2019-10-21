@@ -1,9 +1,10 @@
 # Change Log
 
-## [Unreleased]
+## [v1.0.0-alpha.8] - 2019-10-21
 
 ### Added
 
+- Support for Element `.swipe`, `.swipeUp`, `.swipeDown`, `.swipeLeft` and `.swipeRight`.
 - Support for Device `.swipe`.
 
 ## [v1.0.0-alpha.7] - 2019-10-19
