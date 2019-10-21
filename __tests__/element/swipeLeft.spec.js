@@ -120,7 +120,7 @@ it("correctly propagates errors", async () => {
 
   const result = element(by.label("list-item"))
     .tap()
-    .swipeLeft({ x: 100, y: 48, distance: 48 });
+    .swipeLeft({ x: 100, y: 24, distance: 100 });
 
   await expect(result)
     .rejects.toThrow(ElementActionError);
@@ -139,7 +139,7 @@ it("throws action error if element doesn't exist", async () => {
   const actionsMock = appiumServer.mockActions();
 
   const result = element(by.label("list-item"))
-    .swipeLeft({ x: 100, y: 48, distance: 48 });
+    .swipeLeft({ x: 100, y: 24, distance: 100 });
 
   await expect(result)
     .rejects.toThrow(ElementActionError);
@@ -155,7 +155,7 @@ it("correctly handles W3C action request errors", async () => {
   const findElementMock = appiumServer.mockFindElement({elementId: "elementId"});
   const actionsMock = appiumServer.mockActions({status: 3});
 
-  await expect(element(by.label("list-item")).swipeLeft({ x: 100, y: 48, distance: 48 }))
+  await expect(element(by.label("list-item")).swipeLeft({ x: 100, y: 24, distance: 100 }))
     .rejects.toThrow(new ElementActionError("Failed to swipe left on element."));
 
   const findElementMockCalls = appiumServer.getCalls(findElementMock);
