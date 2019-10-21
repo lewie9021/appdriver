@@ -540,6 +540,31 @@ class Element {
     });
   }
 
+  swipeUp({ x = 0, y = 0, distance, duration }) {
+    return this._executeAction((elementId, done) => {
+      if (!elementId) {
+        return done(new ElementActionError("Can't swipe up on element that doesn't exist"));
+      }
+
+      const $element = new Element({matcher: this.matcher, value: Promise.resolve(elementId)});
+
+      return gestures.swipeUp({ x, y, distance, duration, element: $element })
+        .resolve()
+        .then((actions) => {
+          commands.interactions.actions(actions)
+            .then(({status}) => {
+              if (status) {
+                return done(new ElementActionError("Failed to swipe up on element."));
+              }
+
+              done(null);
+            })
+            .catch((err) => done(err));
+        })
+        .catch((err) => done(err));
+    });
+  }
+
   swipeLeft({ x = 0, y = 0, distance, duration }) {
     return this._executeAction((elementId, done) => {
       if (!elementId) {
