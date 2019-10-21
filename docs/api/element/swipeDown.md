@@ -1,6 +1,6 @@
-# `.swipeUp(options: Object) => Element`
+# `.swipeDown(options: Object) => Element`
 
-Performs a swipe up gesture on the element.
+Performs a swipe down gesture on the element.
 
 #### Parameters
 
@@ -16,18 +16,18 @@ Performs a swipe up gesture on the element.
 
 #### Examples
 
-Swipe up 48 pixels. This will swipe up from the coordinate (100, 48) to (100, 0), relative to the element.
+Swipe down 48 pixels. This will swipe down from the coordinate (100, 0) to (100, 48), relative to the element.
 
 ```javascript
 (async () => {
   await element(by.label("list-item"))
-    .swipeUp({ x: 100, y: 48, distance: 48 });
+    .swipeDown({ x: 100, distance: 48 });
 })();
 ```
 
 #### Related methods
 
 - [`.swipe(options: Object) => Promise`](./swipe.md)
-- [`.swipeDown(options: Object) => Promise`](./swipeDown.md)
+- [`.swipeUp(options: Object) => Promise`](./swipeUp.md)
 - [`.swipeLeft(options: Object) => Promise`](./swipeLeft.md)
 - [`.swipeRight(options: Object) => Promise`](./swipeRight.md)

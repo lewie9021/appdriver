@@ -161,11 +161,11 @@ Performs a swipe gesture on the element.
 
 Performs a swipe up gesture on the element.
 
-[```.swipeDown(options: {x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./element/swipeDown.md)
+[```.swipeDown(options: Object) => Element```](./element/swipeDown.md)
 
-<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-Done-green.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
-TODO: Description here.
+Performs a swipe down gesture on the element.
 
 [```.swipeLeft(options: Object) => Element```](./element/swipeLeft.md)
 

@@ -44,11 +44,11 @@ const swipeRight = ({ x, y, distance, element, duration = 50 }) => {
 };
 
 const swipeUp = ({ x, y, distance, element, duration = 50 }) => {
-  return swipe({ x, y, distance, element, duration, direction: 0 });
+  return swipe({ x, y, distance, duration, element, direction: 0 });
 };
 
-const swipeDown = ({x, y, distance, duration = 50}) => {
-  return swipe({ x, y, distance, duration, direction: 180 });
+const swipeDown = ({x, y, distance, element, duration = 50}) => {
+  return swipe({ x, y, distance, duration, element, direction: 180 });
 };
 
 module.exports = {
