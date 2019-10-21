@@ -1,4 +1,4 @@
-# `.swipe(options?: Object) => Element`
+# `.swipe(options: Object) => Element`
 
 Performs a swipe gesture on the element.
 

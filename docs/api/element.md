@@ -149,37 +149,37 @@ TODO: Description here.
 
 TODO: Description here.
 
-[```.swipeUp(options: {x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./device/swipeUp.md)
+[```.swipe(options: Object) => Element```](./element/swipe.md)
+
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-Done-green.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
+
+Performs a swipe gesture on the element.
+
+[```.swipeUp(options: {x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./element/swipeUp.md)
 
 <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-[```.swipeDown(options: {x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./device/swipeDown.md)
+[```.swipeDown(options: {x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./element/swipeDown.md)
 
 <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-[```.swipeLeft(options: {x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./device/swipeLeft.md)
+[```.swipeLeft(options: {x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./element/swipeLeft.md)
 
 <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-[```.swipeRight(options: {x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./device/swipeRight.md)
+[```.swipeRight(options: {x: Number, y: Number, distance: Number, duration?: Number}) => Element```](./element/swipeRight.md)
 
 <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-[```.swipe(options: {x: Number, y: Number, direction: Number, distance: Number, duration?: Number}) => Element```](./device/swipe.md)
-
-<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-TODO: Description here.
-
-:warning: [```.swipeIntoView(options: {element: Element, swipeGesture?: Gesture, safeArea?: {top?: Number, right?: Number, bottom?: Number, left?: Number}}) => Element```](./device/swipeIntoView.md)
+:warning: [```.swipeIntoView(options: {element: Element, swipeGesture?: Gesture, safeArea?: {top?: Number, right?: Number, bottom?: Number, left?: Number}}) => Element```](./element/swipeIntoView.md)
 
 <img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
