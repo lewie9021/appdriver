@@ -34,6 +34,7 @@ module.exports = {
     // "../tests/button-screen.e2e.js"
     // "../tests/carousel-screen.e2e.js"
     "../tests/form-screen.e2e.js"
+    // "../tests/swipeable-screen.e2e.js"
   ],
   capabilities: [
     simulators.iPhoneX,
