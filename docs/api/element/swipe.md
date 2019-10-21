@@ -1,10 +1,10 @@
-# `.swipe(options: Object) => Promise`
+# `.swipe(options?: Object) => Element`
 
-Performs a swipe gesture in the context of the device viewport.
+Performs a swipe gesture on the element.
 
 #### Parameters
 
-1. `options` (`Object`):
+1. `options` (`Object?`):
   - `options.x` (`Number?`): X coordinate to begin the gesture from. Defaults to 0.
   - `options.y` (`Number?`): Y coordinate to begin the gesture from. Defaults to 0.
   - `options.distance` (`Number`): Distance of swipe in density independent pixels (DIP).
@@ -13,15 +13,16 @@ Performs a swipe gesture in the context of the device viewport.
 
 #### Returns
 
-`Promise`: A promise that resolves after the gesture is complete.
+`Element`: A new element to avoid mutation and allow function chaining.
 
 #### Examples
 
-Swipe left 100 pixels. This will swipe left from the coordinate (200, 200) to (100, 200), relative to the device viewport.
+Swipe left 100 pixels. This will swipe left from the coordinate (100, 24) to (0, 24), relative to the element.
 
 ```javascript
 (async () => {
-  await device.swipe({x: 200, y: 200, distance: 100, direction: 270});
+  await element(by.label("list-item"))
+    .swipe({x: 100, y: 24, distance: 100, direction: 270});
 })();
 ```
 

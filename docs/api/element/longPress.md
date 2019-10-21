@@ -1,6 +1,6 @@
 # `.longPress(options?: Object) => Element`
 
-Performs long press gesture on element.
+Performs a long press gesture on the element.
 
 #### Parameters
 
