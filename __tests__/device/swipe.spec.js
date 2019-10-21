@@ -127,7 +127,7 @@ it("correctly executes swipe down gesture", async () => {
   );
 });
 
-it("correctly executes swipe right gesture", async () => {
+it("correctly executes swipe left gesture", async () => {
   appiumServer.mockActions();
 
   await device.swipe({x: 250, y: 200, distance: 100, direction: 270});
