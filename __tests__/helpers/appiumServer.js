@@ -160,6 +160,13 @@ const mockScreenshot = ({status, data}) => {
   });
 };
 
+const mockBack = ({status} = {}) => {
+  return mockRequests.post({
+    url: `${BASE_URL}/session/sessionId/back`,
+    response: fixtures.createFixture({status, value: null})
+  });
+};
+
 const resetMocks = () => {
   mockRequests.reset();
 };
@@ -190,6 +197,7 @@ module.exports = {
   mockHideKeyboard,
   mockIsKeyboardShown,
   mockScreenshot,
+  mockBack,
   resetMocks,
   getCalls
 };

@@ -220,6 +220,10 @@ class Device {
         });
       });
   }
+
+  goBack() {
+    return commands.device.back();
+  }
 }
 
 module.exports = new Device();

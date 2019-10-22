@@ -1,6 +1,6 @@
 const { get, post, del } = require("./api");
 const { platform } = require("./utils");
-const { ElementNotFoundError, ElementsNotFoundError, ElementActionError } = require("./errors");
+const { ElementNotFoundError, ElementsNotFoundError, ElementActionError, NotImplementedError } = require("./errors");
 const { getSession, setSession } = require("./session");
 
 const elementExists = (matcher) => {
@@ -93,6 +93,18 @@ module.exports = {
           }
 
           return value;
+        });
+    },
+    back: () => {
+      if (getSession("platformName") === "iOS") {
+        return Promise.reject(new NotImplementedError());
+      }
+
+      return post(`/session/${getSession("sessionId")}/back`)
+        .then(({status}) => {
+          if (status) {
+            throw new Error("Failed to go back.");
+          }
         });
     },
     app: {
