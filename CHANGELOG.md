@@ -5,6 +5,7 @@
 ### Added
 
 - Support for Device `.goBack`.
+- 'Platforms' badge to each Device and Element command.
 
 ## [v1.0.0-alpha.8] - 2019-10-21
 
