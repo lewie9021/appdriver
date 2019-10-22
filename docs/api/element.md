@@ -83,12 +83,6 @@ Retrieves visibility status of element.
 
 Retrieves disabled status of element.
 
-:warning: [```.isSelected() => Promise<Boolean>```](./element/isSelected.md)
-
-<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-TODO: Description here.
-
 [```.getLocation(options?: Object) => Promise<Object>```](./element/getLocation.md)
 
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
@@ -100,12 +94,6 @@ Retrieves x and y coordinates of element.
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 Retrieves width and height dimensions of element.
-
-:warning: [```.getAttribute(attribute: String) => Promise<Any>```](./element/getAttribute.md)
-
-<img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
-
-TODO: Description here.
 
 [```.waitFor(fn: Function<Promise>, options?: Object) => Element```](./element/waitFor.md)
 
@@ -178,10 +166,3 @@ Performs a swipe left gesture on the element.
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-Done-green.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 Performs a swipe right gesture on the element.
-
-:warning: [```.swipeIntoView(options: {element: Element, swipeGesture?: Gesture, safeArea?: {top?: Number, right?: Number, bottom?: Number, left?: Number}}) => Element```](./element/swipeIntoView.md)
-
-<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-To be used on scrollable elements, ensuring `element` is fully visible so that interactions are successful. Defaults `swipeGesture` to `gestures.swipeUp`.
-

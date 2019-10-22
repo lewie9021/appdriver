@@ -73,12 +73,6 @@ Returns the platform version of the current session.
 
 Returns the device name of the current session.
 
-:warning: [```.isReal: Boolean```](./device/isReal.md)
-
-<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-TODO: Description here.
-
 [```.wait(duration: Number) => Promise```](./device/wait.md)
 
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-Done-green.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
@@ -103,7 +97,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.goBack() => Promise```](./device/goBack.md)
+[```.goBack() => Promise```](./device/goBack.md)
 
 <img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
@@ -127,23 +121,11 @@ Retrieves the current orientation of the device.
 
 Retrieves the width and height of the device viewport.
 
-:warning: [```.takeScreenshot(options?: Object) => Promise```](./device/takeScreenshot.md)
+[```.takeScreenshot(options?: Object) => Promise```](./device/takeScreenshot.md)
 
 <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
 Takes a screenshot (PNG) of the entire screen and saves the result on disk at the given `filePath` location.
-
-:warning: [```.startScreenRecording(options?: {filePath?: String, remote? {username?: String, password?: String, method?: String}, format?: String, quality?: String, fps?: Number, bitRate?: Number, size?: {width: Number, height: Number}, maxDuration?: Number, forceRestart?: Boolean}) => Promise```](./device/startScreenRecording.md)
-
-<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-TODO: Description here.
-
-:warning: [```.stopScreenRecording() => Promise```](./device/stopScreenRecording.md)
-
-<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-TODO: Description here.
 
 [```.isKeyboardVisible() => Promise<Boolean>```](./device/isKeyboardVisible.md)
 
@@ -154,90 +136,6 @@ TODO: Description here.
 [```.hideKeyboard() => Promise```](./device/hideKeyboard.md)
 
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
-
-TODO: Description here.
-
-:warning: [```.getGeoLocation() => Promise```](./device/getGeoLocation.md)
-
-<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-TODO: Description here.
-
-:warning: [```.setGeoLocation(options: {latitude: Number, longitude: Number, altitude?: Number}) => Promise```](./device/setGeoLocation.md)
-
-<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-TODO: Description here.
-
-:warning: [```.getClipboard(options? {contentType?: String}) => Promise<String>```](./device/getClipboard.md)
-
-<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-TODO: Description here.
-
-:warning: [```.setClipboard(value: String, options?: {contentType?: String, label?: String}) => Promise```](./device/setClipboard.md)
-
-<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-TODO: Description here.
-
-:warning: [```.toggleAirplaneMode() => Promise```](./device/toggleAirplaneMode.md)
-
-<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-TODO: Description here.
-
-:warning: [```.toggleWifi() => Promise```](./device/toggleWifi.md)
-
-<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-TODO: Description here.
-
-:warning: [```.toggleLocation() => Promise```](./device/toggleLocation.md)
-
-<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-TODO: Description here.
-
-:warning: [```.performTouchId(options: {successful: Boolean}) => Promise```](./device/performTouchId.md)
-
-<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-TODO: Description here.
-
-:warning: [```.performFingerPrint(options: {id?: Number}) => Promise```](./device/performFingerPrint.md)
-
-<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-TODO: Description here.
-
-:warning: [```.sendSms({phoneNumber: String, message: String}) => Promise```](./device/sendSms.md)
-
-<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-TODO: Description here.
-
-:warning: [```.getSettings() => Promise<Object>```](./device/getSettings.md)
-
-<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-TODO: Description here.
-
-:warning: [```.setSettings(settings: Object) => Promise```](./device/setSettings.md)
-
-<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-TODO: Description here.
-
-:warning: [```.readFile(filePath: String) => Promise<String>```](./device/readFile.md)
-
-<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-TODO: Description here.
-
-:warning: [```.writeFile(filePath: String, data: String) => Promise```](./device/writeFile.md)
-
-<img src="https://img.shields.io/badge/Dev-Draft-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
