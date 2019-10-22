@@ -6,6 +6,8 @@ This document contains API features that may eventually be implemented in the fu
  
 :warning: [```.isReal: Boolean```](./device/isReal.md)
 
+<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />
+
 TODO: Description here.
  
 :warning: [```.startScreenRecording(options?: {filePath?: String, remote? {username?: String, password?: String, method?: String}, format?: String, quality?: String, fps?: Number, bitRate?: Number, size?: {width: Number, height: Number}, maxDuration?: Number, forceRestart?: Boolean}) => Promise```](./device/startScreenRecording.md)
