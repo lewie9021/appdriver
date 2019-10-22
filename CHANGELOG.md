@@ -1,5 +1,11 @@
 # Change Log
 
+## [Unreleased]
+
+### Added
+
+- Support for Device `.goBack`.
+
 ## [v1.0.0-alpha.8] - 2019-10-21
 
 ### Added
