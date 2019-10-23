@@ -114,23 +114,23 @@ it("correctly executes gesture with duration parameter", async () => {
 });
 
 it("correctly propagates errors", async () => {
-  const findElementMock = appiumServer.mockFindElement({elementId: "elementId"});
-  const clickElementMock = appiumServer.mockClickElement({status: 7, elementId: "elementId"});
+  const findElementMock = appiumServer.mockFindElement({ elementId: "elementId" });
+  const clearElementMock = appiumServer.mockClearElement({ status: 7, elementId: "elementId" });
   const actionsMock = appiumServer.mockActions();
 
   const result = element(by.label("list-item"))
-    .tap()
+    .clearText()
     .swipeUp({ x: 100, y: 48, distance: 48 });
 
   await expect(result)
     .rejects.toThrow(ElementActionError);
 
   const findElementMockCalls = appiumServer.getCalls(findElementMock);
-  const clickElementMockCalls = appiumServer.getCalls(clickElementMock);
+  const clearElementMockCalls = appiumServer.getCalls(clearElementMock);
   const actionMockCalls = appiumServer.getCalls(actionsMock);
 
   expect(findElementMockCalls).toHaveLength(1);
-  expect(clickElementMockCalls).toHaveLength(1);
+  expect(clearElementMockCalls).toHaveLength(1);
   expect(actionMockCalls).toHaveLength(0);
 });
 

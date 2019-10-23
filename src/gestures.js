@@ -17,7 +17,14 @@ const create = () => {
   return new Gesture();
 };
 
-const longPress = ({x, y, duration = 750, element}) => {
+const tap = ({ x, y, element }) => {
+  return create()
+    .press({x, y, element})
+    .wait({ duration: 100 })
+    .release();
+};
+
+const longPress = ({ x, y, duration = 750, element }) => {
   return create()
     .press({x, y, element})
     .wait({duration})
@@ -53,10 +60,11 @@ const swipeDown = ({x, y, distance, element, duration = 50}) => {
 
 module.exports = {
   create,
+  tap,
+  longPress,
   swipe,
   swipeUp,
   swipeDown,
-  longPress,
   swipeLeft,
   swipeRight
 };

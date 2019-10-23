@@ -77,7 +77,7 @@ it.todo("forwards new element.value if element doesn't exist");
 
 it("correctly propagates errors", async () => {
   appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockClickElement({status: 3, elementId: "elementId"});
+  appiumServer.mockActions({ status: 3 });
 
   const result = element(by.label("button"))
     .tap()

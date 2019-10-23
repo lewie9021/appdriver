@@ -51,9 +51,9 @@ it("returns a new element to avoid unwanted mutation", async () => {
 });
 
 it("correctly propagates errors", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementSendKeys({status: 3, elementId: "elementId"});
-  appiumServer.mockClickElement({elementId: "elementId"});
+  appiumServer.mockFindElement({ elementId: "elementId" });
+  appiumServer.mockActions({ elementId: "elementId" });
+  appiumServer.mockElementSendKeys({ status: 3, elementId: "elementId" });
 
   const result = element(by.label("text-input"))
     .tap()

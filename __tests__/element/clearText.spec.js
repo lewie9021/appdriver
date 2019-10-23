@@ -32,7 +32,7 @@ it("returns a new element to avoid unwanted mutation", async () => {
 
 it("correctly propagates errors", async () => {
   appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockClickElement({status: 3, elementId: "elementId"});
+  appiumServer.mockActions({ status: 3 });
   appiumServer.mockClearElement({elementId: "elementId"});
 
   const result = element(by.label("text-input"))

@@ -192,25 +192,38 @@ class Element {
       });
   }
 
-  tap() {
+  tap({ x = 0, y = 0 } = {}) {
     return this._executeAction((elementId, done) => {
       if (!elementId) {
         return done(new ElementActionError("Failed to tap element that doesn't exist."));
       }
 
-      commands.element.actions.click(elementId)
-        .then(() => done(null))
-        .catch(done);
+      const $element = new Element({ matcher: this.matcher, value: Promise.resolve(elementId) });
+
+      return gestures.tap({ x, y, element: $element })
+        .resolve()
+        .then((actions) => {
+          commands.interactions.actions(actions)
+            .then(({status}) => {
+              if (status) {
+                return done(new ElementActionError("Failed to tap element."));
+              }
+
+              done(null);
+            })
+            .catch((err) => done(err));
+        })
+        .catch((err) => done(err));
     });
   }
 
-  longPress({x = 0, y = 0, duration = 750} = {}) {
+  longPress({ x = 0, y = 0, duration = 750 } = {}) {
     return this._executeAction((elementId, done) => {
       if (!elementId) {
         return done(new ElementActionError("Failed to long press element that doesn't exist."));
       }
 
-      const $element = new Element({matcher: this.matcher, value: Promise.resolve(elementId)});
+      const $element = new Element({ matcher: this.matcher, value: Promise.resolve(elementId) });
 
       return gestures.longPress({x, y, duration, element: $element})
         .resolve()

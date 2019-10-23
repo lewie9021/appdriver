@@ -5,13 +5,6 @@ const mockRequests = require("./mockRequests");
 
 const BASE_URL = "http://localhost:4723/wd/hub";
 
-const mockClickElement = ({status, elementId}) => {
-  return mockRequests.post({
-    url: `${BASE_URL}/session/sessionId/element/${elementId}/click`,
-    response: fixtures.createFixture({status, value: ""})
-  });
-};
-
 const mockElementType = ({status, elementId, type, platformName = "iOS"}) => {
   if (platformName === "iOS") {
     return mockRequests.get({
@@ -194,7 +187,6 @@ module.exports = {
   mockFindElementFromElement,
   mockFindElements,
   mockFindElementsFromElement,
-  mockClickElement,
   mockElementSendKeys,
   mockClearElement,
   mockElementDisplayed,

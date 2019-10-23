@@ -31,8 +31,8 @@ it("returns a new element to avoid unwanted mutation", async () => {
 });
 
 it("correctly propagates errors", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockClickElement({status: 3, elementId: "elementId"});
+  appiumServer.mockFindElement({ elementId: "elementId" });
+  appiumServer.mockActions({ status: 3 });
 
   const result = element(by.label("button"))
     .tap()

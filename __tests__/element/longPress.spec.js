@@ -3,8 +3,7 @@ const fetch = require("node-fetch");
 
 const { element, by } = require("../../");
 const { Element } = require("../../src/element");
-const { ElementNotFoundError, ElementActionError } = require("../../src/errors");
-const { createElementFixture } = require("../fixtures/fixtures");
+const { ElementActionError } = require("../../src/errors");
 
 afterEach(() => {
   appiumServer.resetMocks();
@@ -17,7 +16,6 @@ it("returns an instance of Element to enable function chaining", async () => {
   const $element = await element(by.label("button")).longPress();
 
   expect($element).toBeInstanceOf(Element);
-  expect(fetch).toHaveBeenCalledTimes(2);
   await expect($element.value).resolves.toEqual("elementId");
 });
 
@@ -163,12 +161,12 @@ it("returns a new element to avoid unwanted mutation", async () => {
 });
 
 it("correctly propagates errors", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockClickElement({status: 7, elementId: "elementId"});
+  appiumServer.mockFindElement({ elementId: "elementId" });
+  appiumServer.mockClearElement({ status: 7, elementId: "elementId" });
   appiumServer.mockActions();
 
   const result = element(by.label("button"))
-    .tap()
+    .clearText()
     .longPress();
 
   await expect(result)
