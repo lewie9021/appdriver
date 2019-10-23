@@ -7,7 +7,8 @@ Performs a swipe down gesture on the element.
 1. `options` (`Object?`):
   - `options.x` (`Number?`): X coordinate to begin the gesture from. Defaults to 0.
   - `options.y` (`Number?`): Y coordinate to begin the gesture from. Defaults to 0.
-  - `options.distance` (`Number`): Distance of swipe in density independent pixels (DIP).
+  - `options.distance` (`Number`): Distance of swipe in density independent pixels (DIP). Required if `percentage` isn't provided.
+  - `options.percentage` (`Number?`): Percentage distance (0-1) of swipe relative to the height of the element. Required if `distance` isn't provided. 
   - `options.duration` (`Number?`): Time in milliseconds to perform the swipe gesture.
 
 #### Returns
@@ -22,6 +23,15 @@ Swipe down 48 pixels. This will swipe down from the coordinate (100, 0) to (100,
 (async () => {
   await element(by.label("list-item"))
     .swipeDown({ x: 100, distance: 48 });
+})();
+```
+
+Swipe down 25% of the element height. Given the element has a height of 40, this will swipe down from the coordinate (0, 100) to (0, 90), relative to the element.
+
+```javascript
+(async () => {
+  await element(by.label("list-item"))
+    .swipeDown({ y: 100, percentage: 0.5 });
 })();
 ```
 
