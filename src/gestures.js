@@ -19,7 +19,7 @@ const create = () => {
 
 const tap = ({ x, y, element }) => {
   return create()
-    .press({x, y, element})
+    .press({ x, y, element })
     .wait({ duration: 100 })
     .release();
 };
