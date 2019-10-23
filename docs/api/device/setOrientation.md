@@ -1,6 +1,6 @@
 # `.setOrientation(orientation: String) => Promise`
 
-Change the orientation of the device to either `"LANDSCAPE"` or `"PORTRAIT"`.
+Modify the orientation of the device.
 
 #### Parameters
 
