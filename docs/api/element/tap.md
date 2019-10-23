@@ -23,14 +23,14 @@ Perform simple tap gesture at coordinate (0, 0), relative to the element locatio
 })();
 ```
 
-Perform tap gesture at the center point (button_width / 2, button_height / 2), relative to the element location:
+Perform tap gesture at the center point (width / 2, height / 2), relative to the element location:
 
 ```javascript
 (async () => {
   const $button = await element(by.label("button"));
   const { width, height } = await $button.getSize();
 
-  await $button.tap({x: width / 2, y: height / 2});
+  await $button.tap({ x: width / 2, y: height / 2 });
 })();
 ```
 
