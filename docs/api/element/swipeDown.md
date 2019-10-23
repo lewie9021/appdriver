@@ -26,12 +26,12 @@ Swipe down 48 pixels. This will swipe down from the coordinate (100, 0) to (100,
 })();
 ```
 
-Swipe down 25% of the element height. Given the element has a height of 40, this will swipe down from the coordinate (0, 100) to (0, 90), relative to the element.
+Swipe down 25% of the element height. Given the element has a height of 40, this will swipe down from the coordinate (0, 0) to (0, 10), relative to the element.
 
 ```javascript
 (async () => {
   await element(by.label("list-item"))
-    .swipeDown({ y: 100, percentage: 0.5 });
+    .swipeDown({ percentage: 0.5 });
 })();
 ```
 
