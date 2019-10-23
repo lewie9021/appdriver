@@ -70,7 +70,12 @@ module.exports = {
         orientation
       };
 
-      return post(`/session/${getSession("sessionId")}/orientation`, null, payload);
+      return post(`/session/${getSession("sessionId")}/orientation`, null, payload)
+        .then(({status}) => {
+          if (status) {
+            throw new Error("Failed to set device orientation.");
+          }
+        });
     }
   },
   device: {

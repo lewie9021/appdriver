@@ -32,7 +32,7 @@ it("returns the device orientation (landscape)", async () => {
   expect(getOrientationMockCalls).toHaveLength(1);
 });
 
-it("correctly handles session window rect request errors", async () => {
+it("correctly handles get orientation request errors", async () => {
   const getOrientationMock = appiumServer.mockGetOrientation({ status: 3 });
 
   await expect(device.getOrientation())

@@ -74,12 +74,7 @@ class Device {
   }
 
   setOrientation(orientation) {
-    return commands.session.setOrientation(orientation)
-      .then(({status}) => {
-        if (status !== 0) {
-          throw new Error("Failed to set orientation.");
-        }
-      });
+    return commands.session.setOrientation(orientation);
   }
 
   async swipe({ x = 0, y = 0, distance, direction, duration }) {
