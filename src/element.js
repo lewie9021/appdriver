@@ -553,16 +553,27 @@ class Element {
     });
   }
 
-  swipeUp({ x = 0, y = 0, distance, duration }) {
+  swipeUp({ x = 0, y = 0, distance, percentage, duration }) {
     return this._executeAction((elementId, done) => {
       if (!elementId) {
         return done(new ElementActionError("Can't swipe up on element that doesn't exist"));
       }
 
       const $element = new Element({matcher: this.matcher, value: Promise.resolve(elementId)});
+      const resolveSwipeDistance = () => {
+        if (!percentage) {
+          return Promise.resolve(distance);
+        }
 
-      return gestures.swipeUp({ x, y, distance, duration, element: $element })
-        .resolve()
+        return this.getSize()
+          .then((size) => size.height * percentage);
+      };
+
+      return resolveSwipeDistance()
+        .then((swipeDistance) => {
+          return gestures.swipeUp({ x, y, distance: swipeDistance, duration, element: $element })
+            .resolve();
+        })
         .then((actions) => {
           commands.interactions.actions(actions)
             .then(({status}) => {
@@ -578,16 +589,27 @@ class Element {
     });
   }
 
-  swipeDown({ x = 0, y = 0, distance, duration }) {
+  swipeDown({ x = 0, y = 0, distance, percentage, duration }) {
     return this._executeAction((elementId, done) => {
       if (!elementId) {
         return done(new ElementActionError("Can't swipe down on element that doesn't exist"));
       }
 
       const $element = new Element({matcher: this.matcher, value: Promise.resolve(elementId)});
+      const resolveSwipeDistance = () => {
+        if (!percentage) {
+          return Promise.resolve(distance);
+        }
 
-      return gestures.swipeDown({ x, y, distance, duration, element: $element })
-        .resolve()
+        return this.getSize()
+          .then((size) => size.height * percentage);
+      };
+
+      return resolveSwipeDistance()
+        .then((swipeDistance) => {
+          return gestures.swipeDown({ x, y, distance: swipeDistance, duration, element: $element })
+            .resolve();
+        })
         .then((actions) => {
           commands.interactions.actions(actions)
             .then(({status}) => {
@@ -603,16 +625,27 @@ class Element {
     });
   }
 
-  swipeLeft({ x = 0, y = 0, distance, duration }) {
+  swipeLeft({ x = 0, y = 0, distance, percentage, duration }) {
     return this._executeAction((elementId, done) => {
       if (!elementId) {
         return done(new ElementActionError("Can't swipe left on element that doesn't exist"));
       }
 
       const $element = new Element({matcher: this.matcher, value: Promise.resolve(elementId)});
+      const resolveSwipeDistance = () => {
+        if (!percentage) {
+          return Promise.resolve(distance);
+        }
 
-      return gestures.swipeLeft({ x, y, distance, duration, element: $element })
-        .resolve()
+        return this.getSize()
+          .then((size) => size.width * percentage);
+      };
+
+      return resolveSwipeDistance()
+        .then((swipeDistance) => {
+          return gestures.swipeLeft({ x, y, distance: swipeDistance, duration, element: $element })
+            .resolve();
+        })
         .then((actions) => {
           commands.interactions.actions(actions)
             .then(({status}) => {
@@ -628,16 +661,27 @@ class Element {
     });
   }
 
-  swipeRight({ x = 0, y = 0, distance, duration }) {
+  swipeRight({ x = 0, y = 0, distance, percentage, duration }) {
     return this._executeAction((elementId, done) => {
       if (!elementId) {
         return done(new ElementActionError("Can't swipe right on element that doesn't exist"));
       }
 
       const $element = new Element({matcher: this.matcher, value: Promise.resolve(elementId)});
+      const resolveSwipeDistance = () => {
+        if (!percentage) {
+          return Promise.resolve(distance);
+        }
 
-      return gestures.swipeRight({ x, y, distance, duration, element: $element })
-        .resolve()
+        return this.getSize()
+          .then((size) => size.width * percentage);
+      };
+
+      return resolveSwipeDistance()
+        .then((swipeDistance) => {
+          return gestures.swipeRight({ x, y, distance: swipeDistance, duration, element: $element })
+            .resolve();
+        })
         .then((actions) => {
           commands.interactions.actions(actions)
             .then(({status}) => {

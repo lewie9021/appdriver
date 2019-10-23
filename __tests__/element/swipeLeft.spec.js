@@ -52,6 +52,39 @@ it("correctly executes swipe left gesture", async () => {
   });
 });
 
+it("correctly executes gesture with percentage value", async () => {
+  const findElementMock = appiumServer.mockFindElement({ elementId: "elementId" });
+  const elementSizeMock = appiumServer.mockElementSize({ elementId: "elementId", width: 200, height: 48 });
+  const actionsMock = appiumServer.mockActions();
+
+  await element(by.label("list-item")).swipeLeft({ percentage: 0.25 });
+
+  const findElementMockCalls = appiumServer.getCalls(findElementMock);
+  const elementSizeMockCalls = appiumServer.getCalls(elementSizeMock);
+  const actionMockCalls = appiumServer.getCalls(actionsMock);
+
+  expect(findElementMockCalls).toHaveLength(2);
+  expect(elementSizeMockCalls).toHaveLength(1);
+  expect(actionMockCalls).toHaveLength(1);
+
+  expect(actionMockCalls[0].payload).toEqual({
+    actions: [{
+      id: "finger1",
+      type: "pointer",
+      parameters: {
+        pointerType: "touch"
+      },
+      actions: [
+        {type: "pointerMove", duration: 0, origin: { element: "elementId" }, x: 0, y: 0},
+        {type: "pointerDown", button: 0},
+        {type: "pause", duration: 250},
+        {type: "pointerMove", duration: 50, origin: "pointer", x: -50, y: 0},
+        {type: "pointerUp", button: 0}
+      ]
+    }]
+  });
+});
+
 it("defaults x and y to 0", async () => {
   const findElementMock = appiumServer.mockFindElement({ elementId: "elementId" });
   const actionsMock = appiumServer.mockActions();
