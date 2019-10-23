@@ -42,6 +42,10 @@ describe("Form Screen", () => {
   it("supports switches", async () => {
     const $switch = await element(by.label("switch"));
 
+    await expect($switch).toHaveValue(false);
+
+    await $switch.tap();
+
     await expect($switch).toHaveValue(true);
   });
 
