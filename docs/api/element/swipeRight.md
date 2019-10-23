@@ -22,7 +22,7 @@ Swipe right 100 pixels. This will swipe left from the coordinate (0, 24) to (100
 ```javascript
 (async () => {
   await element(by.label("list-item"))
-    .swipeLeft({ y: 24, distance: 100 });
+    .swipeRight({ y: 24, distance: 100 });
 })();
 ```
 
@@ -31,7 +31,7 @@ Swipe right 75% of the element width. Given the element has a width of 120, this
 ```javascript
 (async () => {
   await element(by.label("list-item"))
-    .swipeLeft({ percentage: 1 });
+    .swipeRight({ percentage: 1 });
 })();
 ```
 
