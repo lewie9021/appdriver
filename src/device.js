@@ -70,14 +70,7 @@ class Device {
   }
 
   getOrientation() {
-    return commands.session.getOrientation()
-      .then(({status, value}) => {
-        if (status !== 0) {
-          throw new Error("Failed to get orientation.");
-        }
-
-        return value;
-      });
+    return commands.session.getOrientation();
   }
 
   setOrientation(orientation) {

@@ -56,7 +56,14 @@ module.exports = {
       return get(`/session/${getSession("sessionId")}/window/rect`);
     },
     getOrientation: () => {
-      return get(`/session/${getSession("sessionId")}/orientation`);
+      return get(`/session/${getSession("sessionId")}/orientation`)
+        .then(({status, value}) => {
+          if (status) {
+            throw new Error("Failed to get device orientation.");
+          }
+
+          return value;
+        });
     },
     setOrientation: (orientation) => {
       const payload = {

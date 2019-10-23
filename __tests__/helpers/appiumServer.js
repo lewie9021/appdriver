@@ -132,6 +132,13 @@ const mockWindowRect = ({status, width, height}) => {
   });
 };
 
+const mockGetOrientation = ({status, orientation}) => {
+  return mockRequests.get({
+    url: `${BASE_URL}/session/sessionId/orientation`,
+    response: fixtures.createFixture({ status, value: orientation })
+  });
+};
+
 const mockActions = ({status} = {}) => {
   return mockRequests.post({
     url: `${BASE_URL}/session/sessionId/actions`,
@@ -193,6 +200,7 @@ module.exports = {
   mockElementText,
   mockElementValue,
   mockWindowRect,
+  mockGetOrientation,
   mockActions,
   mockHideKeyboard,
   mockIsKeyboardShown,
