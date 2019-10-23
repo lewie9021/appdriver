@@ -17,7 +17,7 @@ Performs a swipe right gesture on the element.
 
 #### Examples
 
-Swipe right 100 pixels. This will swipe left from the coordinate (0, 24) to (100, 24), relative to the element.
+Swipe right 100 pixels. This will swipe right from the coordinate (0, 24) to (100, 24), relative to the element.
 
 ```javascript
 (async () => {
