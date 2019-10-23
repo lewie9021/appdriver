@@ -4,7 +4,8 @@
 
 ### Added
 
-- Support for passing options to `.tap` on Element.
+- Support for passing a `percentage` option to `.swipeUp`, `.swipeDown`, `.swipeLeft` and `.swipeRight` on Element.
+- Support for passing `x` and `y` options to `.tap` on Element.
 - Support for Device `.goBack`.
 - 'Platforms' badge to each Device and Element command.
 
