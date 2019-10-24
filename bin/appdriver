@@ -9,34 +9,58 @@ const relativeConfigPath = argv.config;
 const configPath = path.join(process.cwd(), relativeConfigPath);
 const config = require(configPath);
 
-if (config.capabilities.length > 1) {
-  throw new Error("Multiple capabilities are not supported");
+function runMochaTests() {
+  return new Promise((resolve) => {
+    // Instantiate a Mocha instance.
+    const mocha = new Mocha({
+      timeout: 30 * 1000
+    });
+
+    // Hack to allow running the spec files again.
+    mocha.suite.on("require", (_, file) => {
+      delete require.cache[file];
+    });
+
+    config.specs.forEach((relativeSpecPath) => {
+      const specPath = path.join(path.dirname(configPath), relativeSpecPath);
+
+      mocha.addFile(specPath);
+    });
+
+    // Run the tests.
+    mocha.run(resolve);
+  });
 }
 
-config.capabilities.forEach((capability) => {
-  commands.session.create(capability)
-    .then(({sessionId}) => {
-      // Instantiate a Mocha instance.
-      const mocha = new Mocha({
-        timeout: 30 * 1000
-      });
+const getCapabilityName = (capability) => {
+  return `${capability.deviceName} (${capability.platformName} ${capability.platformVersion})`;
+};
 
-      config.specs.forEach((relativeSpecPath) => {
-        const specPath = path.join(path.dirname(configPath), relativeSpecPath);
+async function main() {
+  let totalFailures = 0;
 
-        mocha.addFile(specPath);
-      });
+  for (let i = 0; i < config.capabilities.length; i += 1) {
+    const capability = config.capabilities[i];
+    const name = getCapabilityName(capability);
+    console.log("Starting", name);
+    const { sessionId } = await commands.session.create(capability);
 
-      // Run the tests.
-      const runner = mocha.run((failures) => {
-        commands.session.end(sessionId)
-          .then(() => {
-            process.exitCode = failures ? 1 : 0;  // exit with non-zero status if there were failures
-          })
-          .catch(() => console.log("Failed to close session."));
-      });
-    });
-});
+    const failures = await runMochaTests();
+
+    totalFailures += failures;
+
+    await commands.session.end(sessionId);
+    console.log("Finished", name);
+  }
+
+  return totalFailures;
+}
+
+main()
+  .then((totalFailures) => {
+    // Exit with non-zero status if there were failures
+    process.exitCode = (totalFailures > 0) ? 1 : 0;
+  });
 
 // mocha.reporter(function(x, y) {
 //   // console.log(x);
