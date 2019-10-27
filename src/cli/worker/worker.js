@@ -18,8 +18,9 @@ const params = yargs
   .argv;
 
 (async () => {
-  const session = await commands.session.create(params.capability);
-  const failures = await mocha.runTestSpecs(params.specFiles, { timeout: 30 * 1000 });
+  const { capability, specFiles } = params;
+  const session = await commands.session.create(capability);
+  const failures = await mocha.runTestSpecs(capability, specFiles, { timeout: 30 * 1000 });
   await commands.session.end(session.sessionId);
 
   process.exitCode = (failures > 0) ? 1 : 0;

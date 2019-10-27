@@ -1,15 +1,22 @@
 const path = require("path");
 const cp = require("child_process");
-const { transformArgs, getCapabilityName } = require("./utils");
+const { transformArgs } = require("./utils");
+const reporter = require("./reporters/simpleReporter");
 
 function init({ config }) {
   if (config.capabilities.length > 4) {
     throw new Error("More than 4 works not supported, yet");
   }
 
+  let workers = [];
+
   config.capabilities.forEach((capability) => {
-    spawnWorker(capability, config.specs);
+    const worker = spawnWorker(capability, config.specs);
+
+    workers.push({ capability, worker });
   });
+
+  reporter(workers);
 }
 
 function spawnWorker(capability, specFiles) {
@@ -17,23 +24,16 @@ function spawnWorker(capability, specFiles) {
     capability: JSON.stringify(capability),
     specFiles: JSON.stringify(specFiles)
   });
-  const name = getCapabilityName(capability);
   const worker = cp.fork(path.join(__dirname, "worker", "worker.js"), processArgs, { silent: true });
 
-  console.log("Started", name);
-
-  worker.on("message", (message) => {
-    console.log("Received message:", message);
-  });
-
   worker.on("close", (code) => {
-    console.log("Worker closed with exit code:", code);
-
     // TODO: Should take into account all counts from all workers.
     if (code !== 0) {
       process.exitCode = code;
     }
   });
+
+  return worker;
 }
 
 module.exports = {
