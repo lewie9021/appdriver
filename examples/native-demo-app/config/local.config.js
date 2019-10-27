@@ -3,13 +3,23 @@ const getAppPath = require("./getAppPath");
 const development = true;
 
 const simulators = {
+  iPhone8: {
+    app: getAppPath("iOS", development),
+    platformName: "iOS",
+    platformVersion: "12.4",
+    deviceName: "iPhone 8",
+    automationName: "XCUITest",
+    wdaLocalPort: 8100,
+    waitForQuiescence: false,
+    noReset: true
+  },
   iPhoneX: {
     app: getAppPath("iOS", development),
     platformName: "iOS",
     platformVersion: "12.4",
     deviceName: "iPhone X",
     automationName: "XCUITest",
-    wdaLocalPort: 8100,
+    wdaLocalPort: 8101,
     waitForQuiescence: false,
     noReset: true
   }
@@ -37,6 +47,7 @@ module.exports = {
     // "../tests/swipeable-screen.e2e.js"
   ],
   capabilities: [
+    // simulators.iPhone8,
     simulators.iPhoneX,
     // emulators.pixel2
   ]
