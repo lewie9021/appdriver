@@ -6,19 +6,31 @@ function runTestSpecs(capability, specFiles, opts) {
     const mocha = new Mocha({
       ...opts,
       reporter: function(runner, options) {
-        runner.on("start", (test) => {
-          process.send({ type: "MOCHA_START", payload: { total: runner.total } });
+        runner.on("start", () => {
+          process.send({
+            type: "MOCHA_START",
+            payload: {
+              total: runner.total
+            }
+          });
         });
 
         runner.on("test", (test) => {
-          process.send({ type: "MOCHA_TEST", payload: { name: test.fullTitle() } });
+          process.send({
+            type: "MOCHA_TEST",
+            payload: {
+              name: test.fullTitle(),
+              duration: test.duration
+            }
+          });
         });
 
         runner.on("pass", (test) => {
           process.send({
             type: "MOCHA_TEST_PASS",
             payload: {
-              name: test.fullTitle()
+              name: test.fullTitle(),
+              duration: test.duration
             }
           });
         });
