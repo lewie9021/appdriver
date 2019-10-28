@@ -10,7 +10,7 @@ const simulators = {
     deviceName: "iPhone 8",
     automationName: "XCUITest",
     wdaLocalPort: 8100,
-    waitForQuiescence: false,
+    waitForQuiescence: true,
     noReset: true
   },
   iPhoneX: {
@@ -20,7 +20,7 @@ const simulators = {
     deviceName: "iPhone X",
     automationName: "XCUITest",
     wdaLocalPort: 8101,
-    waitForQuiescence: false,
+    waitForQuiescence: true,
     noReset: true
   }
 };
@@ -40,15 +40,16 @@ const emulators = {
 };
 
 module.exports = {
+  maxInstances: 2,
   specs: [
-    // "../tests/button-screen.e2e.js"
+    // "../tests/button-screen.e2e.js",
     // "../tests/carousel-screen.e2e.js"
     "../tests/form-screen.e2e.js"
     // "../tests/swipeable-screen.e2e.js"
   ],
   capabilities: [
-    // simulators.iPhone8,
+    simulators.iPhone8,
     simulators.iPhoneX,
-    // emulators.pixel2
+    emulators.pixel2,
   ]
 };

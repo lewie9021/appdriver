@@ -2,7 +2,7 @@
 
 const path = require("path");
 const yargs = require("yargs");
-const runner = require("../src/cli/runner");
+const Runner = require("../src/cli/Runner");
 
 const params = yargs
   .option("config", {
@@ -15,6 +15,7 @@ const params = yargs
 
       return {
         ...config,
+        maxInstances: config.maxInstances || 1,
         specs: config.specs.map((relativeSpecPath) => {
           return path.join(path.dirname(configPath), relativeSpecPath);
         })
@@ -23,4 +24,4 @@ const params = yargs
   })
   .argv;
 
-runner.init(params);
+new Runner(params);

@@ -8,7 +8,7 @@ function runTestSpecs(capability, specFiles, opts) {
       reporter: function(runner, options) {
         runner.on("start", () => {
           process.send({
-            type: "MOCHA_START",
+            type: "TEST_SETUP",
             payload: {
               total: runner.total
             }
@@ -17,17 +17,16 @@ function runTestSpecs(capability, specFiles, opts) {
 
         runner.on("test", (test) => {
           process.send({
-            type: "MOCHA_TEST",
+            type: "TEST_START",
             payload: {
               name: test.fullTitle(),
-              duration: test.duration
             }
           });
         });
 
         runner.on("pass", (test) => {
           process.send({
-            type: "MOCHA_TEST_PASS",
+            type: "TEST_PASSED",
             payload: {
               name: test.fullTitle(),
               duration: test.duration
@@ -37,9 +36,10 @@ function runTestSpecs(capability, specFiles, opts) {
 
         runner.on("fail", (test, err) => {
           process.send({
-            type: "MOCHA_TEST_FAIL",
+            type: "TEST_FAILED",
             payload: {
               name: test.fullTitle(),
+              duration: test.duration,
               message: err.message,
               stack: err.stack
             }
