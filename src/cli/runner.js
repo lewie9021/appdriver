@@ -27,8 +27,8 @@ function init({ config }) {
 
     worker.on("message", ({ type, payload }) => {
       switch (type) {
-        case "TEST_SETUP":
-          events.emit("test:setup", { capability });
+        case "FRAMEWORK_START":
+          events.emit("framework:start", { capability, total: payload.total });
           break;
         case "TEST_START":
           events.emit("test:start", { capability, name: payload.name });

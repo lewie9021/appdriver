@@ -8,7 +8,7 @@ function runTestSpecs(capability, specFiles, opts) {
       reporter: function(runner, options) {
         runner.on("start", () => {
           process.send({
-            type: "TEST_SETUP",
+            type: "FRAMEWORK_START",
             payload: {
               total: runner.total
             }
