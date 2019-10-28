@@ -2,7 +2,7 @@
 
 const path = require("path");
 const yargs = require("yargs");
-const Runner = require("../src/cli/Runner");
+const runner = require("../src/cli/runner");
 
 const params = yargs
   .option("config", {
@@ -24,4 +24,4 @@ const params = yargs
   })
   .argv;
 
-new Runner(params);
+runner.init(params);
