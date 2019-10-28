@@ -49,13 +49,18 @@ class Runner {
         }
       });
 
-      worker.on("close", () => {
+      worker.on("close", (code) => {
         currentlySpawned -= 1;
 
-        events.emit("worker:finish", { capability });
+        events.emit("worker:finish", { capability, success: code === 0 });
 
         if (totalSpawned < capabilities.length && currentlySpawned < maxInstances) {
           runTestInstance(capabilities[totalSpawned], specs);
+        }
+
+        // If any workers fail to close gracefully, consider the run a failure.
+        if (code !== 0) {
+          process.exitCode = 1;
         }
       });
     };
