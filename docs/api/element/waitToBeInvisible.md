@@ -22,3 +22,7 @@ TODO: Examples here.
 - [`.waitToExist(options?: Object) => Element`](./waitToExist.md)
 - [`.waitToBeVisible(options?: Object) => Element`](./waitToBeVisible.md)
 - [`.waitToNotExist(options?: Object) => Element`](./waitToNotExist.md)
+
+### Related Appium Docs
+
+- [Is Element Displayed](http://appium.io/docs/en/commands/element/attributes/displayed/)

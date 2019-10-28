@@ -28,3 +28,7 @@ const path = require("path");
 
 - [`.startScreenRecording(options: Object) => Promise`](./startScreenRecording.md)
 - [`.stopScreenRecording() => Promise`](./stopScreenRecording.md)
+
+### Related Appium Docs
+
+- [Take Screenshot](http://appium.io/docs/en/commands/session/screenshot/)

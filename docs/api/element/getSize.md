@@ -22,3 +22,7 @@ Get width and height of button:
 #### Related methods
 
 - [`.getLocation(options?: Object) => Promise<Object>`](./getLocation.md)
+
+### Related Appium Docs
+
+- [Get Element Size](http://appium.io/docs/en/commands/element/attributes/size/)

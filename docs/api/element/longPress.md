@@ -42,3 +42,7 @@ Customised long press. This will first get the size of the button to calculate t
 #### Related methods
 
 - [`.tap(options?: Object) => Element`](./tap.md)
+
+### Related Appium Docs
+
+- [W3C Actions](http://appium.io/docs/en/commands/interactions/actions/)

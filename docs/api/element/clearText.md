@@ -20,3 +20,7 @@ Clear text input:
 #### Related methods
 
 - [`.typeText(text: String) => Element`](./typeText.md)
+
+### Related Appium Docs
+
+- [Clear Element](http://appium.io/docs/en/commands/element/actions/clear/)

@@ -37,3 +37,7 @@ Perform tap gesture at the center point (width / 2, height / 2), relative to the
 #### Related methods
 
 - [`.longPress(options?: Object) => Element`](./longPress.md)
+
+### Related Appium Docs
+
+- [W3C Actions](http://appium.io/docs/en/commands/interactions/actions/)

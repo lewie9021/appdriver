@@ -15,3 +15,5 @@ Go to previous screen or exit app.
   await device.goBack();
 })();
 ```
+
+- [Go Back](http://appium.io/docs/en/commands/session/back/)

@@ -77,3 +77,7 @@ const App = () => (
 #### Related methods
 
 - [`.getValue(options?: Object) => Promise<Any>`](./getValue.md)
+
+### Related Appium Docs
+
+- [Get Element Text](http://appium.io/docs/en/commands/element/attributes/text/)

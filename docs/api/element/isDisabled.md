@@ -23,4 +23,4 @@ Disabled status of text input:
 
 ### Related Appium Docs
 
-- [Element Enabled](http://appium.io/docs/en/commands/element/attributes/enabled/)
+- [Is Element Enabled](http://appium.io/docs/en/commands/element/attributes/enabled/)
