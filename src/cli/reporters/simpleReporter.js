@@ -16,9 +16,15 @@ function simpleReporter(events) {
   const getCapabilityText = (capability) => `${weights.bold}${getCapabilityName(capability)}${weights.end}`;
   const getDurationText = (duration) =>  `${colors.cyan}(${duration}ms)${colors.end}`;
 
-  events.on("worker:start", ({ worker }) => {
+  events.on("worker:started", ({ capability, worker }) => {
+    console.log(`${getCapabilityText(capability)}: Started`);
+
     worker.stdout.pipe(process.stdout);
     worker.stderr.pipe(process.stdout);
+  });
+
+  events.on("worker:finished", ({ capability }) => {
+    console.log(`${getCapabilityText(capability)}: Finished`);
   });
 
   events.on("test:passed", ({ capability, name, duration }) => {

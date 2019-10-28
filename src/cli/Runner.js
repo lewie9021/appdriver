@@ -30,7 +30,7 @@ class Runner {
       currentlySpawned += 1;
       totalSpawned += 1;
 
-      events.emit("worker:start", { capability, worker });
+      events.emit("worker:started", { capability, worker });
 
       worker.on("message", ({ type, payload }) => {
         switch (type) {
@@ -52,7 +52,7 @@ class Runner {
       worker.on("close", (code) => {
         currentlySpawned -= 1;
 
-        events.emit("worker:finish", { capability, success: code === 0 });
+        events.emit("worker:finished", { capability, success: code === 0 });
 
         if (totalSpawned < capabilities.length && currentlySpawned < maxInstances) {
           runTestInstance(capabilities[totalSpawned], specs);
