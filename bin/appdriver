@@ -1,98 +1,27 @@
 #!/usr/bin/env node
 
-const argv = require('yargs').argv;
-const Mocha = require("mocha");
 const path = require("path");
-const commands = require("../src/commands");
+const yargs = require("yargs");
+const runner = require("../src/cli/runner");
 
-const relativeConfigPath = argv.config;
-const configPath = path.join(process.cwd(), relativeConfigPath);
-const config = require(configPath);
+const params = yargs
+  .option("config", {
+    describe:  "Path to config file.",
+    demandOption: true,
+    type: "string",
+    coerce: (arg) => {
+      const configPath = path.join(process.cwd(), arg);
+      const config = require(configPath);
 
-function runMochaTests() {
-  return new Promise((resolve) => {
-    // Instantiate a Mocha instance.
-    const mocha = new Mocha({
-      timeout: 30 * 1000
-    });
+      return {
+        ...config,
+        maxInstances: config.maxInstances || 1,
+        specs: config.specs.map((relativeSpecPath) => {
+          return path.join(path.dirname(configPath), relativeSpecPath);
+        })
+      };
+    }
+  })
+  .argv;
 
-    // Hack to allow running the spec files again.
-    mocha.suite.on("require", (_, file) => {
-      delete require.cache[file];
-    });
-
-    config.specs.forEach((relativeSpecPath) => {
-      const specPath = path.join(path.dirname(configPath), relativeSpecPath);
-
-      mocha.addFile(specPath);
-    });
-
-    // Run the tests.
-    mocha.run(resolve);
-  });
-}
-
-const getCapabilityName = (capability) => {
-  return `${capability.deviceName} (${capability.platformName} ${capability.platformVersion})`;
-};
-
-async function main() {
-  let totalFailures = 0;
-
-  for (let i = 0; i < config.capabilities.length; i += 1) {
-    const capability = config.capabilities[i];
-    const name = getCapabilityName(capability);
-    console.log("Starting", name);
-    const { sessionId } = await commands.session.create(capability);
-
-    const failures = await runMochaTests();
-
-    totalFailures += failures;
-
-    await commands.session.end(sessionId);
-    console.log("Finished", name);
-  }
-
-  return totalFailures;
-}
-
-main()
-  .then((totalFailures) => {
-    // Exit with non-zero status if there were failures
-    process.exitCode = (totalFailures > 0) ? 1 : 0;
-  });
-
-// mocha.reporter(function(x, y) {
-//   // console.log(x);
-//   console.log(y);
-// });
-
-
-
-// runner.on("start", (x) => {
-//   console.log("START:", x);
-// });
-//
-// runner.on("ready", (x) => {
-//   console.log("READY:", x);
-// });
-//
-// runner.on("suite", (suite) => {
-//   console.log("SUITE", suite.fullTitle());
-// });
-//
-// runner.on("test", (test) => {
-//   console.log("TEST", test.fullTitle());
-// });
-//
-// runner.on("pass", (test) => {
-//   console.log("PASSED", test.fullTitle());
-// });
-//
-// runner.on("fail", (test) => {
-//   console.log("FAILED", test.fullTitle());
-// });
-//
-// runner.on("end", (x) => {
-//   console.log("END", x);
-// });
+runner.init(params);
