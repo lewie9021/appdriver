@@ -47,6 +47,14 @@ class Expect {
     }
   }
 
+  async toBeDisabled() {
+    const elementIsDisabled = await this.value.isDisabled();
+
+    if (elementIsDisabled !== true) {
+      throw new Error(`Expected element to be disabled but instead it was enabled.`);
+    }
+  }
+
   async toExist() {
     const elementExists = await this.value.exists();
 
@@ -79,6 +87,19 @@ class Expect {
 
     if (valueLength !== length) {
       throw new Error(`Expected ${valueType} to have length '${length}' but instead got '${valueLength}'.`);
+    }
+  }
+
+  async toMatch(pattern) {
+    const supportedTypes = ["string"];
+    const valueType = getValueType(this.value);
+
+    if (!supportedTypes.includes(valueType)) {
+      throw new NotImplementedError();
+    }
+
+    if (pattern.test(this.value) !== true) {
+      throw new Error(`Expected ${displayValue(this.value)} to match pattern '${pattern}'.`);
     }
   }
 }

@@ -4,7 +4,7 @@ A mobile focused, intuitive Appium client.
 
 [![NPM Version](https://img.shields.io/npm/v/appdriver.svg?style=flat)](https://www.npmjs.com/package/appdriver)
 
-<img src="https://raw.githubusercontent.com/lewie9021/appdriver/master/docs/assets/demo.gif">
+<img width="100%" src="https://raw.githubusercontent.com/lewie9021/appdriver/master/docs/assets/demo.gif">
 
 ### Notices
 
@@ -104,4 +104,5 @@ Unlike Appium based clients, [Detox](https://github.com/wix/Detox) is yet to sup
   - [Gestures](./docs/api/gestures.md)
   - [Expect](./docs/api/expect.md)
   - [Utilities](./docs/api/utilities.md)
+  - [Proposals](./docs/api/proposals.md) :warning:
 - [Change Log](./CHANGELOG.md)

@@ -23,7 +23,6 @@ Before we can run our test script, we must first define our AppDriver configurat
 
 > Note: Configuration of AppDriver is currently very basic.
 > - 'specs' only supports paths directly to files (no fuzzy matching).
-> - 'capabilities' only accepts a single capability. 
 
 **config/local.config.js**
 ```javascript

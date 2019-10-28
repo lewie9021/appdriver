@@ -1,6 +1,6 @@
 const { get, post, del } = require("./api");
 const { platform } = require("./utils");
-const { ElementNotFoundError, ElementsNotFoundError, ElementActionError } = require("./errors");
+const { ElementNotFoundError, ElementsNotFoundError, ElementActionError, NotImplementedError } = require("./errors");
 const { getSession, setSession } = require("./session");
 
 const elementExists = (matcher) => {
@@ -56,14 +56,26 @@ module.exports = {
       return get(`/session/${getSession("sessionId")}/window/rect`);
     },
     getOrientation: () => {
-      return get(`/session/${getSession("sessionId")}/orientation`);
+      return get(`/session/${getSession("sessionId")}/orientation`)
+        .then(({status, value}) => {
+          if (status) {
+            throw new Error("Failed to get device orientation.");
+          }
+
+          return value;
+        });
     },
     setOrientation: (orientation) => {
       const payload = {
         orientation
       };
 
-      return post(`/session/${getSession("sessionId")}/orientation`, null, payload);
+      return post(`/session/${getSession("sessionId")}/orientation`, null, payload)
+        .then(({status}) => {
+          if (status) {
+            throw new Error("Failed to set device orientation.");
+          }
+        });
     }
   },
   device: {
@@ -98,6 +110,18 @@ module.exports = {
           }
 
           return value;
+        });
+    },
+    back: () => {
+      if (getSession("platformName") === "iOS") {
+        return Promise.reject(new NotImplementedError());
+      }
+
+      return post(`/session/${getSession("sessionId")}/back`)
+        .then(({status}) => {
+          if (status) {
+            throw new Error("Failed to go back.");
+          }
         });
     },
     app: {
@@ -194,6 +218,27 @@ module.exports = {
             return value;
           });
       },
+      // Note: doesn't work on iOS yet. See https://github.com/appium/appium/issues/13441.
+      selected: (elementId) => {
+        return get(`/session/${getSession("sessionId")}/element/${elementId}/selected`)
+          .then(({status, value}) => {
+            if (status) {
+              throw new Error("Failed to get element selected status.");
+            }
+
+            return value;
+          });
+      },
+      disabled: (elementId) => {
+        return get(`/session/${getSession("sessionId")}/element/${elementId}/enabled`)
+          .then(({status, value}) => {
+            if (status) {
+              throw new Error("Failed to retrieve disabled status of element.");
+            }
+
+            return !value;
+          });
+      },
       text: (elementId) => {
         return get(`/session/${getSession("sessionId")}/element/${elementId}/text`)
           .then(({status, value}) => {
@@ -267,14 +312,6 @@ module.exports = {
       }
     },
     actions: {
-      click: (elementId) => {
-        return post(`/session/${getSession("sessionId")}/element/${elementId}/click`)
-          .then(({status}) => {
-            if (status) {
-              throw new ElementActionError("Failed to tap element.");
-            }
-          });
-      },
       sendKeys: (elementId, value) => {
         const payload = {
           value

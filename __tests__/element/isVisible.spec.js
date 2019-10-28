@@ -30,7 +30,7 @@ it("returns false if an ElementNotFoundError exception is thrown", async () => {
 
 it("correctly propagates errors", async () => {
   appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockClickElement({status: 3, elementId: "elementId"});
+  appiumServer.mockActions({ status: 3 });
   appiumServer.mockElementDisplayed({elementId: "elementId", displayed: true});
 
   const result = element(by.label("button"))

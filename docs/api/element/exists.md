@@ -20,3 +20,7 @@ Existence status of button:
 #### Related methods
 
 - [`.isVisible() => Promise<Boolean>`](./isVisible.md)
+
+### Related Appium Docs
+
+- [Find Element](http://appium.io/docs/en/commands/element/find-element/)

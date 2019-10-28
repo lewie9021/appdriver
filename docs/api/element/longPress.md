@@ -1,6 +1,6 @@
 # `.longPress(options?: Object) => Element`
 
-Performs long press gesture on element.
+Performs a long press gesture on the element.
 
 #### Parameters
 
@@ -42,3 +42,7 @@ Customised long press. This will first get the size of the button to calculate t
 #### Related methods
 
 - [`.tap(options?: Object) => Element`](./tap.md)
+
+### Related Appium Docs
+
+- [W3C Actions](http://appium.io/docs/en/commands/interactions/actions/)

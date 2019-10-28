@@ -22,3 +22,7 @@ TODO: Examples here.
 - [`.waitToBeVisible(options?: Object) => Element`](./waitToBeVisible.md)
 - [`.waitToBeInvisible(options?: Object) => Element`](./waitToBeInvisible.md)
 - [`.waitToNotExist(options?: Object) => Element`](./waitToNotExist.md)
+
+### Related Appium Docs
+
+- [Find Element](http://appium.io/docs/en/commands/element/find-element/)

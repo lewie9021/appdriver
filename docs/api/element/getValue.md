@@ -18,3 +18,8 @@ TODO: Examples here.
 #### Related methods
 
 - [`.getText() => Promise<String>`](./getText.md)
+
+### Related Appium Docs
+
+- [Get Element Text (Android)](http://appium.io/docs/en/commands/element/attributes/text/)
+- [Get Element Value (iOS)](http://appium.io/docs/en/commands/element/attributes/value/)

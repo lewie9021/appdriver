@@ -5,13 +5,6 @@ const mockRequests = require("./mockRequests");
 
 const BASE_URL = "http://localhost:4723/wd/hub";
 
-const mockClickElement = ({status, elementId}) => {
-  return mockRequests.post({
-    url: `${BASE_URL}/session/sessionId/element/${elementId}/click`,
-    response: fixtures.createFixture({status, value: ""})
-  });
-};
-
 const mockElementType = ({status, elementId, type, platformName = "iOS"}) => {
   if (platformName === "iOS") {
     return mockRequests.get({
@@ -66,6 +59,13 @@ const mockElementSize = ({status, elementId, width, height}) => {
     url: `${BASE_URL}/session/sessionId/element/${elementId}/size`,
     response: fixtures.createFixture({status, value: {width, height}})
   })
+};
+
+const mockElementEnabled = ({status, elementId, enabled}) => {
+  return mockRequests.get({
+    url: `${BASE_URL}/session/sessionId/element/${elementId}/enabled`,
+    response: fixtures.createFixture({status, value: enabled})
+  });
 };
 
 const mockElementAttribute = ({status, elementId, name, value}) => {
@@ -125,6 +125,20 @@ const mockWindowRect = ({status, width, height}) => {
   });
 };
 
+const mockGetOrientation = ({status, orientation}) => {
+  return mockRequests.get({
+    url: `${BASE_URL}/session/sessionId/orientation`,
+    response: fixtures.createFixture({ status, value: orientation })
+  });
+};
+
+const mockSetOrientation = ({status} = {}) => {
+  return mockRequests.post({
+    url: `${BASE_URL}/session/sessionId/orientation`,
+    response: fixtures.createFixture({ status })
+  });
+};
+
 const mockActions = ({status} = {}) => {
   return mockRequests.post({
     url: `${BASE_URL}/session/sessionId/actions`,
@@ -153,6 +167,13 @@ const mockScreenshot = ({status, data}) => {
   });
 };
 
+const mockBack = ({status} = {}) => {
+  return mockRequests.post({
+    url: `${BASE_URL}/session/sessionId/back`,
+    response: fixtures.createFixture({status, value: null})
+  });
+};
+
 const resetMocks = () => {
   mockRequests.reset();
 };
@@ -166,11 +187,11 @@ module.exports = {
   mockFindElementFromElement,
   mockFindElements,
   mockFindElementsFromElement,
-  mockClickElement,
   mockElementSendKeys,
   mockClearElement,
   mockElementDisplayed,
   mockElementSize,
+  mockElementEnabled,
   mockElementAttribute,
   mockElementLocation,
   mockElementLocationInView,
@@ -178,10 +199,13 @@ module.exports = {
   mockElementText,
   mockElementValue,
   mockWindowRect,
+  mockGetOrientation,
+  mockSetOrientation,
   mockActions,
   mockHideKeyboard,
   mockIsKeyboardShown,
   mockScreenshot,
+  mockBack,
   resetMocks,
   getCalls
 };

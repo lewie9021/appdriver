@@ -70,23 +70,17 @@ class Device {
   }
 
   getOrientation() {
-    return commands.session.getOrientation()
-      .then(({status, value}) => {
-        if (status !== 0) {
-          throw new Error("Failed to get orientation.");
-        }
-
-        return value;
-      });
+    return commands.session.getOrientation();
   }
 
   setOrientation(orientation) {
-    return commands.session.setOrientation(orientation)
-      .then(({status}) => {
-        if (status !== 0) {
-          throw new Error("Failed to set orientation.");
-        }
-      });
+    return commands.session.setOrientation(orientation);
+  }
+
+  async swipe({ x = 0, y = 0, distance, direction, duration }) {
+    const gesture = gestures.swipe({ x, y, distance, direction, duration });
+
+    return this.performGesture(gesture);
   }
 
   async swipeLeft({ x, y, distance, percentage, duration }) {
@@ -213,6 +207,10 @@ class Device {
           });
         });
       });
+  }
+
+  goBack() {
+    return commands.device.back();
   }
 
   startScreenRecording(options = {}) {

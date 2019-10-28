@@ -24,3 +24,7 @@ Basic text input.
 #### Related methods
 
 - [`.clearText() => Element`](./clearText.md)
+
+### Related Appium Docs
+
+- [Send Keys](http://appium.io/docs/en/commands/element/actions/send-keys/)

@@ -85,7 +85,22 @@ const reset = () => {
 const lookupCalls = (requestId) => {
   const request = requests.find((request) => request.requestId === requestId);
 
-  return request ? request.calls : [];
+  return request
+    ? request.calls
+      .map((call) => {
+        if (!call.options || !call.options.body) {
+          return call;
+        }
+
+        return {
+          ...call,
+          options: {
+            ...call.options,
+            body: JSON.parse(call.options.body)
+          }
+        };
+      })
+    : [];
 };
 
 module.exports = {

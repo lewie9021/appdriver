@@ -1,5 +1,36 @@
 # Change Log
 
+## [Unreleased]
+
+### Added
+
+- Support for multiple `capabilities` in the config.
+- Support for parallel testing via `maxInstances` option (defaults to 1) in the config to limit the maximum number of concurrent instances. New instances will spawn as soon as capabilities have finished if the number of capabilities is larger than `maxInstances`.
+- Added related Appium links to each element and device method docs.
+
+## [v1.0.0-alpha.9] - 2019-10-23
+
+### Added
+
+- Support for passing a `percentage` option to `.swipeUp`, `.swipeDown`, `.swipeLeft` and `.swipeRight` on Element.
+- Support for passing `x` and `y` options to `.tap` on Element.
+- Support for Device `.goBack`.
+- 'Platforms' badge to each Device and Element command.
+
+## [v1.0.0-alpha.8] - 2019-10-21
+
+### Added
+
+- Support for Element `.swipe`, `.swipeUp`, `.swipeDown`, `.swipeLeft` and `.swipeRight`.
+- Support for Device `.swipe`.
+
+## [v1.0.0-alpha.7] - 2019-10-19
+
+### Added
+
+- Support for Expect `.toBeDisabled` and `.toMatch`.
+- Support for Element `.isDisabled`.
+
 ## [v1.0.0-alpha.6] - 2019-10-14
 
 ### Changed

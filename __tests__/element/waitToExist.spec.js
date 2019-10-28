@@ -81,9 +81,9 @@ xit("forwards new element.value if element doesn't exist initially", async () =>
 });
 
 it("correctly propagates errors", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockClickElement({status: 3, elementId: "elementId"});
-  appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeOther"});
+  appiumServer.mockFindElement({ elementId: "elementId" });
+  appiumServer.mockActions({ status: 3 });
+  appiumServer.mockElementType({ elementId: "elementId", type: "XCUIElementTypeOther" });
 
   const result = element(by.label("button"))
     .tap()

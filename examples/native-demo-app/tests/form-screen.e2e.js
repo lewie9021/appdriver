@@ -42,16 +42,19 @@ describe("Form Screen", () => {
   it("supports switches", async () => {
     const $switch = await element(by.label("switch"));
 
+    await expect($switch).toHaveValue(false);
+
+    await $switch.tap();
+
     await expect($switch).toHaveValue(true);
   });
 
   it("supports the tap gesture", async () => {
     await element(by.label("button")).tap();
 
-    await device.wait({duration: 200});
-
-    // TODO: Doesn't work on Android.
-    await element(by.label("OK")).tap();
+    await element(by.text("OK"))
+      .waitToBeVisible()
+      .tap();
   });
 
   it("supports the long press gesture", async () => {
@@ -59,9 +62,8 @@ describe("Form Screen", () => {
       .waitToBeVisible()
       .longPress();
 
-    await device.wait({duration: 200});
+    await device.wait({ duration: 200 });
 
-    // TODO: Doesn't work on Android.
-    await element(by.label("OK")).tap();
+    await element(by.text("OK")).tap();
   });
 });

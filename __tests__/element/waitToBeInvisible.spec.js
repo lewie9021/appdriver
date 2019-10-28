@@ -71,8 +71,8 @@ it("attempts to find the element before checking visibility if receives an Eleme
 
 it("correctly propagates errors", async () => {
   appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockClickElement({status: 3, elementId: "elementId"});
-  appiumServer.mockElementDisplayed({elementId: "elementId", displayed: false});
+  appiumServer.mockActions({ status: 3 });
+  appiumServer.mockElementDisplayed({ elementId: "elementId", displayed: false });
 
   const result = element(by.label("button"))
     .tap()

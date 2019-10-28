@@ -3,8 +3,7 @@ const fetch = require("node-fetch");
 
 const { element, by } = require("../../");
 const { Element } = require("../../src/element");
-const { ElementNotFoundError, ElementActionError } = require("../../src/errors");
-const { createElementFixture } = require("../fixtures/fixtures");
+const { ElementActionError } = require("../../src/errors");
 
 afterEach(() => {
   appiumServer.resetMocks();
@@ -17,7 +16,6 @@ it("returns an instance of Element to enable function chaining", async () => {
   const $element = await element(by.label("button")).longPress();
 
   expect($element).toBeInstanceOf(Element);
-  expect(fetch).toHaveBeenCalledTimes(2);
   await expect($element.value).resolves.toEqual("elementId");
 });
 
@@ -53,70 +51,36 @@ it("executes a long press gesture", async () => {
   );
 });
 
-it("accepts an x parameter to offset from the left of the element", async () => {
+it("accepts x and y parameters to offset from the top left of the element", async () => {
   const elementId = "elementId";
-  const x = 100;
+  const x = 32;
+  const y = 64;
 
-  appiumServer.mockFindElement({elementId});
-  appiumServer.mockActions();
+  const findElementMock = appiumServer.mockFindElement({elementId});
+  const longPressElementMock = appiumServer.mockActions();
 
-  await element(by.label("button")).longPress({x});
+  await element(by.label("button")).longPress({ x, y });
 
-  expect(fetch).toHaveBeenCalledTimes(2);
-  expect(fetch).toHaveBeenLastCalledWith(
-    expect.any(String),
-    expect.objectContaining({
-      method: "POST",
-      body: JSON.stringify({
-        actions: [{
-          id: "finger1",
-          type: "pointer",
-          parameters: {
-            pointerType: "touch"
-          },
-          actions: [
-            {type: "pointerMove", duration: 0, origin: {element: elementId}, x, y: 0},
-            {type: "pointerDown", button: 0},
-            {type: "pause", duration: 750},
-            {type: "pointerUp", button: 0}
-          ]
-        }]
-      })
-    })
-  );
-});
+  const findElementMockCalls = appiumServer.getCalls(findElementMock);
+  const longPressElementMockCalls = appiumServer.getCalls(longPressElementMock);
 
-it("accepts an y parameter to offset from the top of the element", async () => {
-  const elementId = "elementId";
-  const y = 32;
-
-  appiumServer.mockFindElement({elementId});
-  appiumServer.mockActions();
-
-  await element(by.label("button")).longPress({y});
-
-  expect(fetch).toHaveBeenCalledTimes(2);
-  expect(fetch).toHaveBeenLastCalledWith(
-    expect.any(String),
-    expect.objectContaining({
-      method: "POST",
-      body: JSON.stringify({
-        actions: [{
-          id: "finger1",
-          type: "pointer",
-          parameters: {
-            pointerType: "touch"
-          },
-          actions: [
-            {type: "pointerMove", duration: 0, origin: {element: elementId}, x: 0, y},
-            {type: "pointerDown", button: 0},
-            {type: "pause", duration: 750},
-            {type: "pointerUp", button: 0}
-          ]
-        }]
-      })
-    })
-  );
+  expect(findElementMockCalls).toHaveLength(1);
+  expect(longPressElementMockCalls).toHaveLength(1);
+  expect(longPressElementMockCalls[0].options.body).toEqual({
+    actions: [{
+      id: "finger1",
+      type: "pointer",
+      parameters: {
+        pointerType: "touch"
+      },
+      actions: [
+        {type: "pointerMove", duration: 0, origin: {element: elementId}, x, y},
+        {type: "pointerDown", button: 0},
+        {type: "pause", duration: 750},
+        {type: "pointerUp", button: 0}
+      ]
+    }]
+  });
 });
 
 it("accepts a duration parameter to redefine how long to perform the press action", async () => {
@@ -163,12 +127,12 @@ it("returns a new element to avoid unwanted mutation", async () => {
 });
 
 it("correctly propagates errors", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockClickElement({status: 7, elementId: "elementId"});
+  appiumServer.mockFindElement({ elementId: "elementId" });
+  appiumServer.mockClearElement({ status: 7, elementId: "elementId" });
   appiumServer.mockActions();
 
   const result = element(by.label("button"))
-    .tap()
+    .clearText()
     .longPress();
 
   await expect(result)

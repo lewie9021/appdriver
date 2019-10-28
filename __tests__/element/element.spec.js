@@ -3,7 +3,6 @@ const fetch = require("node-fetch");
 
 const { element, by } = require("../../");
 const { Element } = require("../../src/element");
-const { ElementNotFoundError } = require("../../src/errors");
 
 afterEach(() => {
   appiumServer.resetMocks();
@@ -27,7 +26,7 @@ it("returns an 'Element' that is 'thenable'", async () => {
 
 it("allows chaining methods", async () => {
   appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockClickElement({elementId: "elementId"});
+  appiumServer.mockActions();
 
   const $element = await element(by.label("list-item")).tap();
 

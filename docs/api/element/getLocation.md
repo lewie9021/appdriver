@@ -36,3 +36,8 @@ Relative x and y coordinates of element:
 #### Related methods
 
 - [`.getSize() => Promise<Object>`](./getSize.md)
+
+### Related Appium Docs
+
+- [Get Element Location](http://appium.io/docs/en/commands/element/attributes/location/)
+- [Get Element Location In View](http://appium.io/docs/en/commands/element/attributes/location-in-view/)

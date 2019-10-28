@@ -192,25 +192,38 @@ class Element {
       });
   }
 
-  tap() {
+  tap({ x = 0, y = 0 } = {}) {
     return this._executeAction((elementId, done) => {
       if (!elementId) {
         return done(new ElementActionError("Failed to tap element that doesn't exist."));
       }
 
-      commands.element.actions.click(elementId)
-        .then(() => done(null))
-        .catch(done);
+      const $element = new Element({ matcher: this.matcher, value: Promise.resolve(elementId) });
+
+      return gestures.tap({ x, y, element: $element })
+        .resolve()
+        .then((actions) => {
+          commands.interactions.actions(actions)
+            .then(({status}) => {
+              if (status) {
+                return done(new ElementActionError("Failed to tap element."));
+              }
+
+              done(null);
+            })
+            .catch((err) => done(err));
+        })
+        .catch((err) => done(err));
     });
   }
 
-  longPress({x = 0, y = 0, duration = 750} = {}) {
+  longPress({ x = 0, y = 0, duration = 750 } = {}) {
     return this._executeAction((elementId, done) => {
       if (!elementId) {
         return done(new ElementActionError("Failed to long press element that doesn't exist."));
       }
 
-      const $element = new Element({matcher: this.matcher, value: Promise.resolve(elementId)});
+      const $element = new Element({ matcher: this.matcher, value: Promise.resolve(elementId) });
 
       return gestures.longPress({x, y, duration, element: $element})
         .resolve()
@@ -501,6 +514,187 @@ class Element {
 
         throw new ElementActionError("Failed to retrieve visibility status of element.");
       });
+  }
+
+  isDisabled() {
+    const currentValue = getValue(this.matcher, this.value);
+
+    return currentValue.then((elementId) => {
+      if (!elementId) {
+        throw new ElementActionError("Failed to retrieve disabled status of element that doesn't exist.");
+      }
+
+      return commands.element.attributes.disabled(elementId);
+    });
+  }
+
+  swipe({ x = 0, y = 0, distance, direction, duration }) {
+    return this._executeAction((elementId, done) => {
+      if (!elementId) {
+        return done(new ElementActionError("Can't swipe on element that doesn't exist"));
+      }
+
+      const $element = new Element({matcher: this.matcher, value: Promise.resolve(elementId)});
+
+      return gestures.swipe({x, y, distance, direction, duration, element: $element})
+        .resolve()
+        .then((actions) => {
+          commands.interactions.actions(actions)
+            .then(({status}) => {
+              if (status) {
+                return done(new ElementActionError("Failed to swipe on element."));
+              }
+
+              done(null);
+            })
+            .catch((err) => done(err));
+        })
+        .catch((err) => done(err));
+    });
+  }
+
+  swipeUp({ x = 0, y = 0, distance, percentage, duration }) {
+    return this._executeAction((elementId, done) => {
+      if (!elementId) {
+        return done(new ElementActionError("Can't swipe up on element that doesn't exist"));
+      }
+
+      const $element = new Element({matcher: this.matcher, value: Promise.resolve(elementId)});
+      const resolveSwipeDistance = () => {
+        if (!percentage) {
+          return Promise.resolve(distance);
+        }
+
+        return this.getSize()
+          .then((size) => size.height * percentage);
+      };
+
+      return resolveSwipeDistance()
+        .then((swipeDistance) => {
+          return gestures.swipeUp({ x, y, distance: swipeDistance, duration, element: $element })
+            .resolve();
+        })
+        .then((actions) => {
+          commands.interactions.actions(actions)
+            .then(({status}) => {
+              if (status) {
+                return done(new ElementActionError("Failed to swipe up on element."));
+              }
+
+              done(null);
+            })
+            .catch((err) => done(err));
+        })
+        .catch((err) => done(err));
+    });
+  }
+
+  swipeDown({ x = 0, y = 0, distance, percentage, duration }) {
+    return this._executeAction((elementId, done) => {
+      if (!elementId) {
+        return done(new ElementActionError("Can't swipe down on element that doesn't exist"));
+      }
+
+      const $element = new Element({matcher: this.matcher, value: Promise.resolve(elementId)});
+      const resolveSwipeDistance = () => {
+        if (!percentage) {
+          return Promise.resolve(distance);
+        }
+
+        return this.getSize()
+          .then((size) => size.height * percentage);
+      };
+
+      return resolveSwipeDistance()
+        .then((swipeDistance) => {
+          return gestures.swipeDown({ x, y, distance: swipeDistance, duration, element: $element })
+            .resolve();
+        })
+        .then((actions) => {
+          commands.interactions.actions(actions)
+            .then(({status}) => {
+              if (status) {
+                return done(new ElementActionError("Failed to swipe down on element."));
+              }
+
+              done(null);
+            })
+            .catch((err) => done(err));
+        })
+        .catch((err) => done(err));
+    });
+  }
+
+  swipeLeft({ x = 0, y = 0, distance, percentage, duration }) {
+    return this._executeAction((elementId, done) => {
+      if (!elementId) {
+        return done(new ElementActionError("Can't swipe left on element that doesn't exist"));
+      }
+
+      const $element = new Element({matcher: this.matcher, value: Promise.resolve(elementId)});
+      const resolveSwipeDistance = () => {
+        if (!percentage) {
+          return Promise.resolve(distance);
+        }
+
+        return this.getSize()
+          .then((size) => size.width * percentage);
+      };
+
+      return resolveSwipeDistance()
+        .then((swipeDistance) => {
+          return gestures.swipeLeft({ x, y, distance: swipeDistance, duration, element: $element })
+            .resolve();
+        })
+        .then((actions) => {
+          commands.interactions.actions(actions)
+            .then(({status}) => {
+              if (status) {
+                return done(new ElementActionError("Failed to swipe left on element."));
+              }
+
+              done(null);
+            })
+            .catch((err) => done(err));
+        })
+        .catch((err) => done(err));
+    });
+  }
+
+  swipeRight({ x = 0, y = 0, distance, percentage, duration }) {
+    return this._executeAction((elementId, done) => {
+      if (!elementId) {
+        return done(new ElementActionError("Can't swipe right on element that doesn't exist"));
+      }
+
+      const $element = new Element({matcher: this.matcher, value: Promise.resolve(elementId)});
+      const resolveSwipeDistance = () => {
+        if (!percentage) {
+          return Promise.resolve(distance);
+        }
+
+        return this.getSize()
+          .then((size) => size.width * percentage);
+      };
+
+      return resolveSwipeDistance()
+        .then((swipeDistance) => {
+          return gestures.swipeRight({ x, y, distance: swipeDistance, duration, element: $element })
+            .resolve();
+        })
+        .then((actions) => {
+          commands.interactions.actions(actions)
+            .then(({status}) => {
+              if (status) {
+                return done(new ElementActionError("Failed to swipe right on element."));
+              }
+
+              done(null);
+            })
+            .catch((err) => done(err));
+        })
+        .catch((err) => done(err));
+    });
   }
 }
 
