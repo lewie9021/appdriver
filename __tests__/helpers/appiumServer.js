@@ -174,10 +174,10 @@ const mockStartRecordingScreen = ({status} = {}) => {
   });
 };
 
-const mockStopRecordingScreen = ({status}) => {
+const mockStopRecordingScreen = ({status, value}) => {
   return mockRequests.post({
     url: `${BASE_URL}/session/sessionId/appium/stop_recording_screen`,
-    response: fixtures.createFixture({status})
+    response: fixtures.createFixture({status, value})
   });
 };
 
