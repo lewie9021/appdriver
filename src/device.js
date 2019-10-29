@@ -218,7 +218,11 @@ class Device {
     return commands.device.back();
   }
 
-  startScreenRecording({ filePath, format = "mpeg4", maxDuration = 180 } = {}) {
+  startScreenRecording({ filePath, format = "mpeg4", maxDuration = 180 }) {
+    if (!filePath) {
+      return Promise.reject(new Error("You must pass a 'filePath' parameter."));
+    }
+
     if (this._screenRecording) {
       return Promise.reject(new Error("Screen recording already in progress."));
     }
