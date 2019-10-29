@@ -6,6 +6,11 @@ const { delay, isUndefined } = require("./utils");
 const { NotImplementedError } = require("./errors");
 
 class Device {
+
+  constructor() {
+    this._screenRecording = null;
+  }
+
   get name() {
     return getSession("deviceName");
   }
@@ -213,14 +218,44 @@ class Device {
     return commands.device.back();
   }
 
-  startScreenRecording(options = {}) {
-    const { filePath } = options;
+  startScreenRecording({ filePath, format = "mpeg4", maxDuration = 180 } = {}) {
+    if (this._screenRecording) {
+      return Promise.reject(new Error("Screen recording already in progress."));
+    }
 
-    return commands.device.startScreenRecording();
+    this._screenRecording = { filePath };
+
+    return commands.device.startScreenRecording({
+      options: {
+        videoType: this.platformName === "iOS"
+          ? format
+          : null,
+        timeLimit: maxDuration
+      }
+    });
   }
 
   stopScreenRecording() {
+    if (!this._screenRecording) {
+      return Promise.reject(new Error("No screen recording in progress to stop."));
+    }
 
+    const filePath = this._screenRecording.filePath;
+
+    return commands.device.stopScreenRecording()
+      .then((value) => {
+        this._screenRecording = null;
+
+        return new Promise((resolve, reject) => {
+          fs.writeFile(filePath, Buffer.from(value, "base64"), (err) => {
+            if (err) {
+              return reject(err);
+            }
+
+            resolve();
+          });
+        });
+      });
   }
 }
 
