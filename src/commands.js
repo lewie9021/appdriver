@@ -89,10 +89,25 @@ module.exports = {
           return value;
         });
     },
-    startScreenRecording: () => {
-      const payload = {};
+    startScreenRecording: (payload) => {
+      return post(`/session/${getSession("sessionId")}/appium/start_recording_screen`, null, payload)
+        .then(({status, value}) => {
+          if (status) {
+            throw new Error("Failed to start screen recording.");
+          }
 
-      return post(`/session/${getSession("sessionId")}/appium/start_recording_screen`, null, payload);
+          return value;
+        });
+    },
+    stopScreenRecording: () => {
+      return post(`/session/${getSession("sessionId")}/appium/stop_recording_screen`)
+        .then(({status, value}) => {
+          if (status) {
+            throw new Error("Failed to stop screen recording.");
+          }
+
+          return value;
+        });
     },
     hideKeyboard: () => {
       return post(`/session/${getSession("sessionId")}/appium/device/hide_keyboard`)
