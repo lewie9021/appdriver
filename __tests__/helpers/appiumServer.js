@@ -167,6 +167,20 @@ const mockScreenshot = ({status, data}) => {
   });
 };
 
+const mockStartRecordingScreen = ({status} = {}) => {
+  return mockRequests.post({
+    url: `${BASE_URL}/session/sessionId/appium/start_recording_screen`,
+    response: fixtures.createFixture({status})
+  });
+};
+
+const mockStopRecordingScreen = ({status, value}) => {
+  return mockRequests.post({
+    url: `${BASE_URL}/session/sessionId/appium/stop_recording_screen`,
+    response: fixtures.createFixture({status, value})
+  });
+};
+
 const mockBack = ({status} = {}) => {
   return mockRequests.post({
     url: `${BASE_URL}/session/sessionId/back`,
@@ -205,6 +219,8 @@ module.exports = {
   mockHideKeyboard,
   mockIsKeyboardShown,
   mockScreenshot,
+  mockStartRecordingScreen,
+  mockStopRecordingScreen,
   mockBack,
   resetMocks,
   getCalls

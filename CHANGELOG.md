@@ -4,9 +4,10 @@
 
 ### Added
 
+- Support for `.startScreenRecording` and `.stopScreenRecording` on Device.
 - Support for multiple `capabilities` in the config.
 - Support for parallel testing via `maxInstances` option (defaults to 1) in the config to limit the maximum number of concurrent instances. New instances will spawn as soon as capabilities have finished if the number of capabilities is larger than `maxInstances`.
-- Added related Appium links to each element and device method docs.
+- Related Appium links to each element and device method docs.
 
 ## [v1.0.0-alpha.9] - 2019-10-23
 

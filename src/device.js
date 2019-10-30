@@ -2,10 +2,15 @@ const fs = require("fs");
 const commands = require("./commands");
 const { getSession } = require("./session");
 const gestures = require("./gestures");
-const { delay, isUndefined } = require("./utils");
+const { delay, isUndefined, platform } = require("./utils");
 const { NotImplementedError } = require("./errors");
 
 class Device {
+
+  constructor() {
+    this._screenRecording = null;
+  }
+
   get name() {
     return getSession("deviceName");
   }
@@ -211,6 +216,79 @@ class Device {
 
   goBack() {
     return commands.device.back();
+  }
+
+  startScreenRecording(options = {}) {
+    const { filePath = null, maxDuration = 180, forceRestart = false } = options;
+    const { format = "mpeg4", quality = "medium", fps = 10, size = null } = options;
+
+    if (size) {
+      if (!size.width && !size.height) {
+        return Promise.reject(new Error("You must provide a 'size.width' and 'size.height' when passing a 'size'."))
+      }
+
+      if (size.width && !size.height) {
+        return Promise.reject(new Error("You must provide a 'size.height' when passing a 'size.width'."))
+      }
+
+      if (size.height && !size.width) {
+        return Promise.reject(new Error("You must provide a 'size.width' when passing a 'size.height'."))
+      }
+    }
+
+    if (this._screenRecording) {
+      return Promise.reject(new Error("Screen recording already in progress."));
+    }
+
+    this._screenRecording = { filePath };
+
+    return commands.device.startScreenRecording({
+      options: platform.select({
+        ios: () => ({
+          timeLimit: maxDuration,
+          forceRestart,
+          videoType: format,
+          videoQuality: quality,
+          videoFps: fps
+        }),
+        android: () => ({
+          timeLimit: maxDuration,
+          forceRestart,
+          videoSize: size
+            ? `${size.width}x${size.height}`
+            : null
+        })
+      })
+    });
+  }
+
+  stopScreenRecording() {
+    if (!this._screenRecording) {
+      return Promise.reject(new Error("No screen recording in progress to stop."));
+    }
+
+    const filePath = this._screenRecording.filePath;
+
+    return commands.device.stopScreenRecording()
+      .then((value) => {
+        const buffer = Buffer.from(value, "base64");
+
+        this._screenRecording = null;
+
+        if (!filePath) {
+          return Promise.resolve(buffer);
+        }
+
+        return new Promise((resolve, reject) => {
+          fs.writeFile(filePath, buffer, (err) => {
+            if (err) {
+              return reject(err);
+            }
+
+            resolve(buffer);
+          });
+        });
+      });
   }
 }
 
