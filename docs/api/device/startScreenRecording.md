@@ -52,6 +52,9 @@ const path = require("path");
 })();
 ```
 
+#### Known Issues
+
+- In some cases the video that is returned isn't playable with particular versions of Appium and and combinations of parameters such as format. For instance, I found that using Appium `1.12.x` with a format of `mpeg4` would save a file that wasn't playable.
 
 #### Related methods
 
