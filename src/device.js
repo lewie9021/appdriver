@@ -2,7 +2,7 @@ const fs = require("fs");
 const commands = require("./commands");
 const { getSession } = require("./session");
 const gestures = require("./gestures");
-const { delay, isUndefined } = require("./utils");
+const { delay, isUndefined, platform } = require("./utils");
 const { NotImplementedError } = require("./errors");
 
 class Device {
@@ -218,9 +218,16 @@ class Device {
     return commands.device.back();
   }
 
-  startScreenRecording({ filePath, format = "mpeg4", maxDuration = 180 }) {
-    if (!filePath) {
-      return Promise.reject(new Error("You must pass a 'filePath' parameter."));
+  startScreenRecording(options = {}) {
+    const { filePath = null, maxDuration = 180, forceRestart = false } = options;
+    const { format = "mpeg4", quality = "medium", fps = 10, width = null, height = null } = options;
+
+    if (width && !height) {
+      return Promise.reject(new Error("You must provide a 'height' when passing a 'width'."))
+    }
+
+    if (height && !width) {
+      return Promise.reject(new Error("You must provide a 'width' when passing a 'height'."))
     }
 
     if (this._screenRecording) {
@@ -230,12 +237,22 @@ class Device {
     this._screenRecording = { filePath };
 
     return commands.device.startScreenRecording({
-      options: {
-        videoType: this.platformName === "iOS"
-          ? format
-          : null,
-        timeLimit: maxDuration
-      }
+      options: platform.select({
+        ios: () => ({
+          timeLimit: maxDuration,
+          forceRestart,
+          videoType: format,
+          videoQuality: quality,
+          videoFps: fps
+        }),
+        android: () => ({
+          timeLimit: maxDuration,
+          forceRestart,
+          videoSize: width && height
+            ? `${width}x${height}`
+            : null
+        })
+      })
     });
   }
 
@@ -248,15 +265,21 @@ class Device {
 
     return commands.device.stopScreenRecording()
       .then((value) => {
+        const buffer = Buffer.from(value, "base64");
+
         this._screenRecording = null;
 
+        if (!filePath) {
+          return Promise.resolve(buffer);
+        }
+
         return new Promise((resolve, reject) => {
-          fs.writeFile(filePath, Buffer.from(value, "base64"), (err) => {
+          fs.writeFile(filePath, buffer, (err) => {
             if (err) {
               return reject(err);
             }
 
-            resolve();
+            resolve(buffer);
           });
         });
       });
