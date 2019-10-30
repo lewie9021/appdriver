@@ -133,7 +133,7 @@ Takes a screenshot (PNG) of the entire screen and saves the result on disk at th
 
 Starts recording the entire screen.
 
-:warning: [```.stopScreenRecording() => Promise```](./device/stopScreenRecording.md)
+[```.stopScreenRecording() => Promise```](./device/stopScreenRecording.md)
 
 <img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
