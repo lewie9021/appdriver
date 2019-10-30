@@ -220,14 +220,20 @@ class Device {
 
   startScreenRecording(options = {}) {
     const { filePath = null, maxDuration = 180, forceRestart = false } = options;
-    const { format = "mpeg4", quality = "medium", fps = 10, width = null, height = null } = options;
+    const { format = "mpeg4", quality = "medium", fps = 10, size = null } = options;
 
-    if (width && !height) {
-      return Promise.reject(new Error("You must provide a 'height' when passing a 'width'."))
-    }
+    if (size) {
+      if (!size.width && !size.height) {
+        return Promise.reject(new Error("You must provide a 'size.width' and 'size.height' when passing a 'size'."))
+      }
 
-    if (height && !width) {
-      return Promise.reject(new Error("You must provide a 'width' when passing a 'height'."))
+      if (size.width && !size.height) {
+        return Promise.reject(new Error("You must provide a 'size.height' when passing a 'size.width'."))
+      }
+
+      if (size.height && !size.width) {
+        return Promise.reject(new Error("You must provide a 'size.width' when passing a 'size.height'."))
+      }
     }
 
     if (this._screenRecording) {
@@ -248,8 +254,8 @@ class Device {
         android: () => ({
           timeLimit: maxDuration,
           forceRestart,
-          videoSize: width && height
-            ? `${width}x${height}`
+          videoSize: size
+            ? `${size.width}x${size.height}`
             : null
         })
       })

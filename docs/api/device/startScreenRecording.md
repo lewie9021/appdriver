@@ -11,8 +11,9 @@ Starts recording the entire screen. See [`.stopScreenRecording`](./stopScreenRec
   - `options.format` (`String?`): iOS only. Format of the video. Can be either `"h264"`, `"mpeg4"`, `"mp4"` or `"fmp4"`. Defaults to "mpeg4".
   - `options.quality` (`String?`): iOS only. Quality of the video. Can be either `"low"`, `"medium"`, or `"high"`. Defaults to "medium".
   - `options.fps` (`Number?`): iOS only. Frames per second of the video. Defaults to 10.
-  - `options.width` (`Number`): Android only. Width of the video.
-  - `options.height` (`Number`): Android only. Height of the video.
+  - `options.size` (`Object?`):
+    - `options.size.width` (`Number`): Android only. Width of the video.
+    - `options.size.height` (`Number`): Android only. Height of the video.
 
 #### Returns
 

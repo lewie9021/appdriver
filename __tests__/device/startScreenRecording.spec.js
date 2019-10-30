@@ -150,30 +150,32 @@ describe("Android", () => {
     });
   });
 
-  it("supports passing 'width' and 'height' parameters", async () => {
+  it("supports passing a 'size' parameter", async () => {
     const startRecordingScreenMock = appiumServer.mockStartRecordingScreen();
-    const width = 640;
-    const height = 480;
+    const size = { width: 640, height: 480 };
 
-    await device.startScreenRecording({ width, height });
+    await device.startScreenRecording({ size });
 
     const startRecordingScreenMockCalls = appiumServer.getCalls(startRecordingScreenMock);
 
     expect(startRecordingScreenMockCalls[0].options.body).toEqual({
       options: expect.objectContaining({
-        videoSize: `${width}x${height}`
+        videoSize: `${size.width}x${size.height}`
       })
     });
   });
 
-  it("throws if 'width' and 'height' aren't passed together", async () => {
+  it("throws if 'size.width' and 'size.height' aren't passed together", async () => {
     const startRecordingScreenMock = appiumServer.mockStartRecordingScreen();
 
-    await expect(device.startScreenRecording({ width: 640 }))
-      .rejects.toThrow(new Error("You must provide a 'height' when passing a 'width'."));
+    await expect(device.startScreenRecording({ size: { } }))
+      .rejects.toThrow(new Error("You must provide a 'size.width' and 'size.height' when passing a 'size'."));
 
-    await expect(device.startScreenRecording({ height: 480 }))
-      .rejects.toThrow(new Error("You must provide a 'width' when passing a 'height'."));
+    await expect(device.startScreenRecording({ size: { width: 640 } }))
+      .rejects.toThrow(new Error("You must provide a 'size.height' when passing a 'size.width'."));
+
+    await expect(device.startScreenRecording({ size: { height: 480 } }))
+      .rejects.toThrow(new Error("You must provide a 'size.width' when passing a 'size.height'."));
 
     expect(appiumServer.getCalls(startRecordingScreenMock)).toHaveLength(0);
   });
