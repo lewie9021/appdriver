@@ -10,18 +10,6 @@ This document contains API features that may eventually be implemented in the fu
 
 TODO: Description here.
  
-:warning: [```.startScreenRecording(options?: {filePath?: String, remote? {username?: String, password?: String, method?: String}, format?: String, quality?: String, fps?: Number, bitRate?: Number, size?: {width: Number, height: Number}, maxDuration?: Number, forceRestart?: Boolean}) => Promise```](./device/startScreenRecording.md)
-
-<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />
-
-TODO: Description here.
-
-:warning: [```.stopScreenRecording() => Promise```](./device/stopScreenRecording.md)
-
-<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />
-
-TODO: Description here.
- 
 :warning: [```.getGeoLocation() => Promise```](./device/getGeoLocation.md)
 
 <img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />

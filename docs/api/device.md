@@ -127,6 +127,18 @@ Retrieves the width and height of the device viewport.
 
 Takes a screenshot (PNG) of the entire screen and saves the result on disk at the given `filePath` location.
 
+[```.startScreenRecording(options?: Object) => Promise```](./device/startScreenRecording.md)
+
+<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
+
+Starts recording the entire screen.
+
+:warning: [```.stopScreenRecording() => Promise```](./device/stopScreenRecording.md)
+
+<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
+
+Stops recording the entire screen.
+
 [```.isKeyboardVisible() => Promise<Boolean>```](./device/isKeyboardVisible.md)
 
 <img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
