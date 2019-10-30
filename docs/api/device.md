@@ -129,13 +129,13 @@ Takes a screenshot (PNG) of the entire screen and saves the result on disk at th
 
 [```.startScreenRecording(options?: Object) => Promise```](./device/startScreenRecording.md)
 
-<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
+<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-Done-green.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 Starts recording the entire screen.
 
-[```.stopScreenRecording() => Promise```](./device/stopScreenRecording.md)
+[```.stopScreenRecording() => Promise<Buffer>```](./device/stopScreenRecording.md)
 
-<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
+<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-Done-green.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 Stops a screen recording currently in progress.
 
