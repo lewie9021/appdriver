@@ -27,7 +27,7 @@ const path = require("path");
 
 (async () => {
   const filePath = path.join(__dirname, "videos", "example.mp4");
-  await device.startScreenRecording();
+  await device.startScreenRecording({ filePath });
 })();
 ```
 
