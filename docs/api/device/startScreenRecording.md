@@ -8,8 +8,8 @@ Starts recording the entire screen. See [`.stopScreenRecording`](./stopScreenRec
   - `options.filePath` (`String?`): Absolute path on disk to store the recording once stopped.
   - `options.maxDuration` (`Number?`): Maximum recording time in seconds. Defaults to 180.
   - `options.forceRestart` (`Boolean?`): Immediately stop any recording that might be in progress.
-  - `options.format` (`String?`): iOS only. Format of the video. Can be either `"h264"`, `"mpeg4"`, `"mp4"` or `"fmp4"`. Defaults to `"mpeg4""`.
-  - `options.quality` (`String?`): iOS only. Quality of the video. Can be either `"low"`, `"medium"`, `"high"`.
+  - `options.format` (`String?`): iOS only. Format of the video. Can be either `"h264"`, `"mpeg4"`, `"mp4"` or `"fmp4"`. Defaults to "mpeg4".
+  - `options.quality` (`String?`): iOS only. Quality of the video. Can be either `"low"`, `"medium"`, or `"high"`. Defaults to "medium".
   - `options.fps` (`Number?`): iOS only. Frames per second of the video. Defaults to 10.
   - `options.width` (`Number`): Android only. Width of the video.
   - `options.height` (`Number`): Android only. Height of the video.
