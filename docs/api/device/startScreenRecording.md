@@ -27,10 +27,31 @@ Start a screen recording.
 const path = require("path");
 
 (async () => {
-  const filePath = path.join(__dirname, "videos", "example.mp4");
-  await device.startScreenRecording({ filePath });
+  await device.startScreenRecording({ 
+    filePath: path.join(__dirname, "videos", "example.mp4")
+  });
 })();
 ```
+
+Optimised screen recording that automatically stops after 30 seconds.
+
+```javascript
+const path = require("path");
+
+(async () => {
+  await device.startScreenRecording({ 
+    filePath: path.join(__dirname, "videos", "example.mp4"),
+    maxDuration: 30,
+    quality: "low",
+    fps: 5,
+    size: {
+      width: 720,
+      height: 480
+    }
+  });
+})();
+```
+
 
 #### Related methods
 
