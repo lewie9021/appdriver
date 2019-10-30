@@ -2,17 +2,17 @@ const appiumServer = require("../helpers/appiumServer");
 const { device } = require("../../");
 const mockSession = require("../helpers/mockSession");
 
-afterEach(() => {
-  appiumServer.resetMocks();
-  device._screenRecording = null;
-});
-
 const defaultParameters = [
   {name: "maxDuration", key: "timeLimit", value: 180},
   {name: "format", key: "videoType", value: "mpeg4"},
   {name: "quality", key: "videoQuality", value: "medium"},
   {name: "fps", key: "videoFps", value: 10}
 ];
+
+afterEach(() => {
+  appiumServer.resetMocks();
+  device._screenRecording = null;
+});
 
 it("starts recording the screen", async () => {
   const startRecordingScreenMock = appiumServer.mockStartRecordingScreen();
