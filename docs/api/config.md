@@ -17,13 +17,13 @@ Description: TODO.
   - `specs` (`Array<String>?`): List of spec file paths for the given device. This will override the top-level `specs`.
   - `reporters` (`Array<string | Function>?`): List of reporters to provide insight throughout your test run. This will override the top-level `reporters`.
   - `services` (`Array<string | Function>?`): List of services to provide functionality. This will override the top-level `services`.
-  - `maxWaitForTimeout` (`Number?`): Maximum duration in milliseconds to wait when using waits within tests. This will override the top-level `maxWaitForTimeout`.
-  - `maxTestTimeout` (`Number?`): Maximum duration in milliseconds to wait for a test to complete. This will override the top-level `maxTestTimeout`.
-  - `maxRetries` (`Number?`): Maximum number of retries for failing tests. This will override the top-level `maxRetries`.
+  - `waitForTimeout` (`Number?`): Maximum duration in milliseconds to wait when using waits within tests. This will override the top-level `waitForTimeout`.
+  - `testTimeout` (`Number?`): Maximum duration in milliseconds to wait for a test to complete. This will override the top-level `maxTestTimeout`.
+  - `maxRetries` (`Number?`): Maximum number of retries for failing tests. This will override the top-level `testTimeout`.
   - `capabilities` (`Object`): Capabilities to send to the Appium server. Note: capabilities outside of `desired` are considered required.
-    - `desired` (`Object?`): Desired capabilities for the Appium server to try and meet, but isn't required.
-- `maxWaitForTimeout` (`Number?`): Maximum duration in milliseconds to wait when using waits within tests. Defaults to 10000.
-- `maxTestTimeout` (`Number?`): Maximum duration in milliseconds to wait for a test to complete. Defaults to 60000.
+    - `desired` (`Object?`): Desired capabilities for the Appium server to try and meet, but aren't required.
+- `waitForTimeout` (`Number?`): Maximum duration in milliseconds to wait when using waits within tests. Defaults to 10000.
+- `testTimeout` (`Number?`): Maximum duration in milliseconds to wait for a test to complete. Defaults to 60000.
 - `maxRetries` (`Number?`): Maximum number of retries for failing tests. Defaults to 3.
 
 ### Examples
