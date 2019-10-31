@@ -28,7 +28,45 @@ Description: TODO.
 
 ### Examples
  
-TODO.
+Automate an iPhone X 12.4 simulator for a single spec file.
+
+```javascript
+module.exports = {
+  specs: [
+    "./tests/hello-world.e2e.js"
+  ],
+  devices: [{
+    capabilities: {
+      automationName: "XCUITest",
+      platformName: "iOS",
+      app: "<path to app>",
+      deviceName: "iPhone X",
+      platformVersion: "12.4"
+    } 
+  }]
+}
+```
+
+Ideally automate an iPhone X 12.4 simulator, but let the Appium server pick another iOS 12.4 device if an iPhone X isn't available.
+
+```javascript
+module.exports = {
+  specs: [
+    "./tests/hello-world.e2e.js"
+  ],
+  devices: [{
+    capabilities: {
+      desired: {
+        deviceName: "iPhone X"
+      },
+      automationName: "XCUITest",
+      platformName: "iOS",
+      app: "<path to app>",
+      platformVersion: "12.4"
+    } 
+  }]
+}
+```
 
 ### Reporters
 
