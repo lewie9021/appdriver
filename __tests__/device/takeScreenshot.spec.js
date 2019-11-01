@@ -1,7 +1,6 @@
 const fs = require("fs");
 const appiumServer = require("../helpers/appiumServer");
 const { device } = require("../../");
-const { NotImplementedError } = require("../../src/errors");
 
 afterEach(() => {
   appiumServer.resetMocks();
@@ -9,21 +8,35 @@ afterEach(() => {
 });
 
 it("takes a screenshot and stores on disk at the given 'filePath' location", async () => {
-  const encodedScreenshot = "c2NyZWVuc2hvdA==";
-  const decodedScreenshot = Buffer.from(encodedScreenshot, "base64").toString();
-  const filePath = "filePath";
-  const writeFileSpy = jest.spyOn(fs, "writeFile").mockImplementation((path, data, cb) => cb());
+  const screenshotMock = appiumServer.mockScreenshot({ data: "dGVzdA==" });
 
-  const screenshotMock = appiumServer.mockScreenshot({ data: encodedScreenshot });
-
-  await device.takeScreenshot({ filePath });
+  await device.takeScreenshot();
 
   expect(appiumServer.getCalls(screenshotMock)).toHaveLength(1);
-  expect(writeFileSpy).toHaveBeenCalledWith(filePath, decodedScreenshot, expect.any(Function));
+});
+
+it("returns a buffer containing the base64 encoding of the video", async () => {
+  appiumServer.mockScreenshot({ data: "dGVzdA==" });
+
+  const buffer = await device.takeScreenshot();
+
+  expect(buffer).toBeInstanceOf(Buffer);
+});
+
+it("stores on disk if a 'filePath' is configured", async () => {
+  const filePath = "some/path";
+
+  appiumServer.mockScreenshot({ data: "dGVzdA==" });
+  const writeFileSpy = jest.spyOn(fs, "writeFile")
+    .mockImplementation((path, data, cb) => cb());
+
+  const buffer = await device.takeScreenshot({ filePath });
+
+  expect(writeFileSpy).toHaveBeenCalledWith(filePath, buffer, expect.any(Function));
 });
 
 it("correctly handles screenshot request errors", async () => {
-  const screenshotMock = appiumServer.mockScreenshot({status: 3});
+  const screenshotMock = appiumServer.mockScreenshot({ status: 3 });
   const filePath = "filePath";
 
   await expect(device.takeScreenshot({ filePath }))
@@ -42,12 +55,4 @@ it("correct handles file system errors", async () => {
 
   expect(appiumServer.getCalls(screenshotMock)).toHaveLength(1);
   expect(writeFileSpy).toHaveBeenCalled();
-});
-
-// TODO: Until we figure out what makes the most sense.
-// - Should we infer a directory?
-// - Should we return the base64 string?
-it("throws if no filePath is given", () => {
-  return expect(device.takeScreenshot())
-    .rejects.toThrow(NotImplementedError);
 });
