@@ -5,7 +5,7 @@ Description: TODO.
 ### Options
 
 - `appium` (`Object?`):
-  - `baseUrl` (`String?`): Base URL of appium server. Defaults to "http://localhost:444/wd/hub".
+  - `baseUrl` (`String?`): Base URL of Appium server. Defaults to "http://localhost:444/wd/hub".
   - `username` (`String?`): Username for server authentication - useful when connecting to SauceLabs and BrowserStack.
   - `password` (`String?`): Password for server authentication - useful when connecting to SauceLabs and BrowserStack.
 - `ui` (`String?`): Interface to use when writing tests (e.g. `describe` and `it`). Defaults to "bdd". 
@@ -73,5 +73,13 @@ module.exports = {
 Description: TODO.
 
 #### Basic
+
+Description: TODO.
+
+### Services
+
+Description: TODO.
+
+#### Appium Local
 
 Description: TODO.
