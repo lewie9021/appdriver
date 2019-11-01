@@ -9,6 +9,24 @@ This document contains API features that may eventually be implemented in the fu
 <img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />
 
 TODO: Description here.
+
+:warning: [```.getSource() => Promise<String>```](./device/getSource.md)
+
+<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />
+
+TODO: Description here.
+
+:warning: [```.setPortrait() => Promise```](./device/setPortrait.md)
+
+<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />
+
+TODO: Description here.
+
+:warning: [```.setLandscape() => Promise```](./device/setLandscape.md)
+
+<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />
+
+TODO: Description here.
  
 :warning: [```.getGeoLocation() => Promise```](./device/getGeoLocation.md)
 
