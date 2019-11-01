@@ -20,6 +20,7 @@ Description: TODO.
   - `waitForTimeout` (`Number?`): Maximum duration in milliseconds to wait when using waits within tests. This will override the top-level `waitForTimeout`.
   - `testTimeout` (`Number?`): Maximum duration in milliseconds to wait for a test to complete. This will override the top-level `maxTestTimeout`.
   - `maxRetries` (`Number?`): Maximum number of retries for failing tests. This will override the top-level `testTimeout`.
+  - `build` (`String?`): Build command to execute before running. Useful in local development and have access to the app source code.
   - `capabilities` (`Object`): Capabilities to send to the Appium server. Note: capabilities outside of `desired` are considered required.
     - `desired` (`Object?`): Desired capabilities for the Appium server to try and meet, but aren't required.
 - `waitForTimeout` (`Number?`): Maximum duration in milliseconds to wait when using waits within tests. Defaults to 10000.
