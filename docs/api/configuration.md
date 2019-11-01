@@ -1,4 +1,4 @@
-# Config
+# Configuration
 
 Description: TODO.
 
