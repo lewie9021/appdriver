@@ -33,10 +33,11 @@ function simpleReporter(events) {
     console.log(`${getCapabilityText(capability)}: ${nameText} ${getDurationText(duration)}`);
   });
 
-  events.on("test:failed", ({ capability, name, duration }) => {
+  events.on("test:failed", ({ capability, name, duration, message, stack }) => {
     const nameText = `${colors.red}${name}${colors.end}`;
 
     console.log(`${getCapabilityText(capability)}: ${nameText} ${getDurationText(duration)}`);
+    console.error(message, stack);
   });
 }
 

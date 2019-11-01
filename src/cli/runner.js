@@ -28,16 +28,16 @@ function init({ config }) {
     worker.on("message", ({ type, payload }) => {
       switch (type) {
         case "FRAMEWORK_START":
-          events.emit("framework:start", { capability, total: payload.total });
+          events.emit("framework:start", { ...payload, capability });
           break;
         case "TEST_START":
-          events.emit("test:start", { capability, name: payload.name });
+          events.emit("test:start", { ...payload, capability });
           break;
         case "TEST_PASSED":
-          events.emit("test:passed", { capability, name: payload.name, duration: payload.duration });
+          events.emit("test:passed", { ...payload, capability });
           break;
         case "TEST_FAILED":
-          events.emit("test:failed", { capability, name: payload.name, duration: payload.duration });
+          events.emit("test:failed", { ...payload, capability });
           break;
       }
     });
