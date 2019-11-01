@@ -9,6 +9,27 @@ const isEndsWithQuery = (query) => {
   return query.endsWith("*");
 };
 
+const findElement = (multiple, elementId, stratagy) => {
+  if (elementId) {
+    const command = multiple
+      ? commands.element.findElementsFromElement
+      : commands.element.findElementFromElement;
+
+    return command(elementId, stratagy);
+  }
+
+  const command = multiple
+    ? commands.element.findElements
+    : commands.element.findElement;
+
+  return command(stratagy);
+};
+
+const getIdQuery = (id) => ({
+  using: "id",
+  value: id
+});
+
 // Very crude implementation that supports simple fuzzy matching, e.g. "list-item-*" and "*item*"
 // TODO: Needs to escape value to avoid unexpected behaviour.
 const getLabelQuery = (accessibilityLabel) => {
@@ -91,53 +112,39 @@ const getTextQuery = (text) => {
   });
 };
 
+// Note: only works in a Web context.
+const getCssQuery = (css) => ({
+  using: "css selector",
+  value: css
+});
+
 const by = {
   id: (id) => ({
     type: "id",
     value: id,
-    resolve: () => {
-      return commands.element.findElement({
-        using: "id",
-        value: id
-      })
+    resolve: (multiple, elementId) => {
+      return findElement(multiple, elementId, getIdQuery(id));
+    }
+  }),
+  css: (css) => ({
+    type: "css",
+    value: css,
+    resolve: (multiple, elementId) => {
+      return findElement(multiple, elementId, getCssQuery(css));
     }
   }),
   label: (accessibilityLabel) => ({
     type: "accessibility id",
     value: accessibilityLabel,
     resolve: (multiple, elementId) => {
-      if (elementId) {
-        const command = multiple
-          ? commands.element.findElementsFromElement
-          : commands.element.findElementFromElement;
-
-        return command(elementId, getLabelQuery(accessibilityLabel));
-      }
-
-      const command = multiple
-        ? commands.element.findElements
-        : commands.element.findElement;
-
-      return command(getLabelQuery(accessibilityLabel));
+      return findElement(multiple, elementId, getLabelQuery(accessibilityLabel));
     }
   }),
   text: (text) => ({
     type: "text",
     value: text,
     resolve: (multiple, elementId) => {
-      if (elementId) {
-        const command = multiple
-          ? commands.element.findElementsFromElement
-          : commands.element.findElementFromElement;
-
-        return command(elementId, getTextQuery(text));
-      }
-
-      const command = multiple
-        ? commands.element.findElements
-        : commands.element.findElement;
-
-      return command(getTextQuery(text));
+      return findElement(multiple, elementId, getTextQuery(text));
     }
   })
 };
