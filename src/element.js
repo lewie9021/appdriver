@@ -192,27 +192,34 @@ class Element {
       });
   }
 
-  tap({ x = 0, y = 0 } = {}) {
+  tap(options) {
     return this._executeAction((elementId, done) => {
       if (!elementId) {
         return done(new ElementActionError("Failed to tap element that doesn't exist."));
       }
 
-      const $element = new Element({ matcher: this.matcher, value: Promise.resolve(elementId) });
+      if (options) {
+        const { x = 0, y = 0 } = options;
+        const $element = new Element({ matcher: this.matcher, value: Promise.resolve(elementId) });
 
-      return gestures.tap({ x, y, element: $element })
-        .resolve()
-        .then((actions) => {
-          commands.interactions.actions(actions)
-            .then(({status}) => {
-              if (status) {
-                return done(new ElementActionError("Failed to tap element."));
-              }
+        return gestures.tap({ x, y, element: $element })
+          .resolve()
+          .then((actions) => {
+            commands.interactions.actions(actions)
+              .then(({status}) => {
+                if (status) {
+                  return done(new ElementActionError("Failed to tap element."));
+                }
 
-              done(null);
-            })
-            .catch((err) => done(err));
-        })
+                done(null);
+              })
+              .catch((err) => done(err));
+          })
+          .catch((err) => done(err));
+      }
+
+      return commands.element.actions.click(elementId)
+        .then(() => done(null))
         .catch((err) => done(err));
     });
   }

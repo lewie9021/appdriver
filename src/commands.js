@@ -359,6 +359,14 @@ module.exports = {
       }
     },
     actions: {
+      click: (elementId) => {
+        return post(`/session/${getSession("sessionId")}/element/${elementId}/click`)
+          .then(({status}) => {
+            if (status) {
+              throw new ElementActionError("Failed to click element.");
+            }
+          });
+      },
       sendKeys: (elementId, value) => {
         const payload = {
           value
