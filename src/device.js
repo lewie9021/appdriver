@@ -290,6 +290,37 @@ class Device {
         });
       });
   }
+
+  getContext() {
+    return commands.context.getContext();
+  }
+
+  getContexts() {
+    return commands.context.getContexts();
+  }
+
+  switchContext(context) {
+    return commands.context.setContext(context);
+  }
+
+  async switchToWebContext() {
+    const contexts = await commands.context.getContexts();
+    const [ webContext, ...moreWebContexts ] = contexts.filter((context) => context.includes("WEBVIEW"));
+
+    if (!webContext) {
+      throw new Error("No Web context found.");
+    }
+
+    if (moreWebContexts.length) {
+      throw new Error("Multiple Web contexts found. Consider using .switchContext");
+    }
+
+    await commands.context.setContext(webContext);
+  }
+
+  switchToNativeContext() {
+    return commands.context.setContext("NATIVE_APP");
+  }
 }
 
 module.exports = new Device();
