@@ -20,6 +20,38 @@ module.exports = {
   status: () => {
     return get("/status");
   },
+  context: {
+    getContext: () => {
+      return get(`/session/${getSession("sessionId")}/context`)
+        .then(({status, value}) => {
+          if (status) {
+            throw new Error("Failed to retrieve current context.");
+          }
+
+          return value;
+        });
+    },
+    getContexts: () => {
+      return get(`/session/${getSession("sessionId")}/contexts`)
+        .then(({status, value}) => {
+          if (status) {
+            throw new Error("Failed to retrieve available contexts.");
+          }
+
+          return value;
+        });
+    },
+    setContext: (context) => {
+      return post(`/session/${getSession("sessionId")}/context`, null, { name: context })
+        .then(({status, value}) => {
+          if (status) {
+            throw new Error("Failed to set context.");
+          }
+
+          return value;
+        });
+    },
+  },
   session: {
     create: (capabilities) => {
       const payload = {
