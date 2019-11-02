@@ -113,18 +113,26 @@ Pinch Gesture:
 
 ### Gesture API
 
-:white_check_mark: [```.press(options?: {x?: Number, y?: Number, relative?: Boolean, element?: Element}) => Gesture```](./gesture/press.md)
+[```.press(options?: {x?: Number, y?: Number, relative?: Boolean, element?: Element}) => Gesture```](./gesture/press.md)
+
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 TODO: Description here.
 
-:white_check_mark: [```.wait(options: {duration: Number}) => Gesture```](./gesture/wait.md)
+[```.wait(options: {duration: Number}) => Gesture```](./gesture/wait.md)
+
+<img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 TODO: Description here.
 
-:white_check_mark: [```.moveTo(options: {x: Number, y: Number, relative?: Boolean, duration?: Number, element?: Element}) => Gesture```](./gesture/moveTo.md)
+[```.moveTo(options: {x: Number, y: Number, relative?: Boolean, duration?: Number, element?: Element}) => Gesture```](./gesture/moveTo.md)
+
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 TODO: Description here.
 
-:white_check_mark: [```.release() => Gesture```](./gesture/release.md)
+[```.release() => Gesture```](./gesture/release.md)
+
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 TODO: Description here.
