@@ -1,6 +1,6 @@
 # Proposals
 
-This document contains API features that may eventually be implemented in the future.
+This document contains API proposals that may eventually be implemented in the future.
 
 ### Device
  
