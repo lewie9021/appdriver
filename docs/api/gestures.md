@@ -35,15 +35,21 @@ Rotate Gesture:
 
 ### Gestures API
 
-:white_check_mark: [```.create() => Gesture```](./gestures/create.md)
+[```.create() => Gesture```](./gestures/create.md)
+
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 TODO: Description here.
 
-:hammer: [```.parallel(Array<Gesture>) => Gesture```](./gestures/parallel.md)
+[```.parallel(Array<Gesture>) => Gesture```](./gestures/parallel.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.series(Array<Gesture>) => Gesture```](./gestures/series.md)
+[```.series(Array<Gesture>) => Gesture```](./gestures/series.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
@@ -53,7 +59,9 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.doubleTap(options?: {x?: Number, y?: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/doubleTap.md)
+[```.doubleTap(options?: {x?: Number, y?: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/doubleTap.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
@@ -93,14 +101,20 @@ TODO: Description here.
 
 TODO: Description here.
 
-:hammer: [```.pinch(options: {x?: Number, y?: Number, distance: Number, angle?: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/pinch.md)
+[```.pinch(options: {x?: Number, y?: Number, distance: Number, angle?: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/pinch.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.spread(options: {x?: Number, y?: Number, distance: Number, angle?: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/spread.md)
+[```.spread(options: {x?: Number, y?: Number, distance: Number, angle?: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/spread.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
-:hammer: [```.rotate(options: {x?: Number, y?: Number, radius: Number: degrees: [start: Number, end: Number], duration?: Number, step?: Number, element?: Element}) => Gesture```](./gestures/rotate.md)
+[```.rotate(options: {x?: Number, y?: Number, radius: Number: degrees: [start: Number, end: Number], duration?: Number, step?: Number, element?: Element}) => Gesture```](./gestures/rotate.md)
+
+<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here
