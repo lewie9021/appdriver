@@ -47,21 +47,9 @@ TODO: Description here.
 
 TODO: Description here.
 
-[```.series(Array<Gesture>) => Gesture```](./gestures/series.md)
-
-<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-TODO: Description here.
-
 [```.tap(options?: {x?: Number, y?: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/tap.md)
 
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
-
-TODO: Description here.
-
-[```.doubleTap(options?: {x?: Number, y?: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/doubleTap.md)
-
-<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 

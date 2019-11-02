@@ -151,3 +151,13 @@ TODO: Description here.
 <img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />
 
 To be used on scrollable elements, ensuring `element` is fully visible so that interactions are successful. Defaults `swipeGesture` to `gestures.swipeUp`.
+
+### Gestures
+
+:warning: [```.series(Array<Gesture>) => Gesture```](./gestures/series.md)
+
+TODO: Description here.
+
+:warning: [```.doubleTap(options?: {x?: Number, y?: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/doubleTap.md)
+
+TODO: Description here.
