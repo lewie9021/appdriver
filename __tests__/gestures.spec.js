@@ -9,6 +9,32 @@ describe("create", () => {
   });
 });
 
+describe("tap", () => {
+  it("returns a 'Gesture'", () => {
+    const result = gestures.tap({ x: 150, y: 250 });
+
+    expect(result).toBeInstanceOf(Gesture);
+  });
+
+  it("correctly defines a tap gesture", () => {
+    const result = gestures.tap({ x: 150, y: 250 });
+
+    return expect(result.resolve()).resolves.toEqual([{
+      id: "finger1",
+      type: "pointer",
+      parameters: {
+        pointerType: "touch"
+      },
+      actions: [
+        {type: "pointerMove", duration: 0, origin: "viewport", x: 150, y: 250},
+        {type: "pointerDown", button: 0},
+        {type: "pause", duration: 100},
+        {type: "pointerUp", button: 0}
+      ]
+    }]);
+  });
+});
+
 describe("longPress", () => {
   it("returns a 'Gesture'", () => {
     const result = gestures.longPress({x: 150, y: 250});
