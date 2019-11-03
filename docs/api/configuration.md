@@ -15,14 +15,16 @@ Description: TODO.
 - `maxDevices` (`Number?`): Maximum number of `devices` to run in parallel. Defaults to 1 (series).
 - `devices` (`Array<Object>`):
   - `specs` (`Array<String>?`): List of spec file paths. This will be in addition to the top-level `specs`.
-  - `waitForTimeout` (`Number?`): Maximum duration in milliseconds to wait when using waits within tests. This will override the top-level `waitForTimeout`.
+  - `waitForInterval` (`Number?`): Interval duration in milliseconds to poll the expectation when using waits within tests. This will override the top-level `waitForInterval`.
+  - `waitForTimeout` (`Number?`): Maximum duration in milliseconds before timing out when using waits within tests. This will override the top-level `waitForTimeout`.
   - `testTimeout` (`Number?`): Maximum duration in milliseconds to wait for a test to complete. This will override the top-level `maxTestTimeout`.
   - `maxRetries` (`Number?`): Maximum number of retries for failing tests. This will override the top-level `testTimeout`.
   - `build` (`String?`): Build command to execute before running. Useful in local development and have access to the app source code.
   - `capabilities` (`Object`): Capabilities to send to the Appium server. Note: capabilities outside of `desired` are considered required.
     - `desired` (`Object?`): Desired capabilities for the Appium server to try and meet, but aren't required.
-- `waitForTimeout` (`Number?`): Maximum duration in milliseconds to wait when using waits within tests. Defaults to 10000.
-- `testTimeout` (`Number?`): Maximum duration in milliseconds to wait for a test to complete. Defaults to 60000.
+- `waitForInterval` (`Number?`): Interval duration in milliseconds to poll the expectation when using waits within tests. Defaults to 200.
+- `waitForTimeout` (`Number?`): Maximum duration in milliseconds before timing out when using waits within tests. Defaults to 10000.
+- `testTimeout` (`Number?`): Maximum duration in milliseconds before timing out for a test to complete. Defaults to 60000.
 - `maxRetries` (`Number?`): Maximum number of retries for failing tests. Defaults to 3.
 
 ### Examples
