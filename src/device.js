@@ -196,19 +196,21 @@ class Device {
   }
 
   takeScreenshot({ filePath } = {}) {
-    if (!filePath) {
-      return Promise.reject(new NotImplementedError());
-    }
-
     return commands.device.takeScreenshot()
       .then((value) => {
+        const buffer = Buffer.from(value, "base64");
+
+        if (!filePath) {
+          return Promise.resolve(buffer);
+        }
+
         return new Promise((resolve, reject) => {
-          fs.writeFile(filePath, Buffer.from(value, "base64").toString(), (err) => {
+          fs.writeFile(filePath, Buffer.from(value, "base64"), (err) => {
             if (err) {
               return reject(err);
             }
 
-            resolve();
+            resolve(buffer);
           });
         });
       });

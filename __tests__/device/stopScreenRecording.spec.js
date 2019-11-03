@@ -21,7 +21,7 @@ it("stops recording the screen", async () => {
   expect(device._screenRecording).toBeNull();
 });
 
-it("returns a buffer of the base64 encoding of the video", async () => {
+it("returns a buffer containing the base64 encoding of the video", async () => {
   appiumServer.mockStopRecordingScreen({ value: "dGVzdA==" });
 
   const buffer = await device.stopScreenRecording();
@@ -29,7 +29,7 @@ it("returns a buffer of the base64 encoding of the video", async () => {
   expect(buffer).toBeInstanceOf(Buffer);
 });
 
-it("stores on disk if a 'filePath' was configured", async () => {
+it("stores on disk if a 'filePath' is configured", async () => {
   const filePath = "some/path";
 
   appiumServer.mockStopRecordingScreen({ value: "dGVzdA==" });
