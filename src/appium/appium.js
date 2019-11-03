@@ -2,6 +2,30 @@ const api = require("./api");
 const { getSession } = require("../session");
 const { platform } = require("../utils");
 
+// ({ desiredCapabilities: AppiumCapability }) => Promise<AppiumCapability>.
+const createSession = ({ desiredCapabilities }) => {
+  return api.post("/session", null, { desiredCapabilities })
+    .then(({ status, value }) => {
+      if (!status) {
+        throw new Error("GENERAL_ERROR");
+      }
+
+      return value;
+    });
+};
+
+// ({ sessionId: String }) => Promise.
+const endSession = ({ sessionId }) => {
+  return api.del(`/session/${sessionId}`)
+    .then(({ status, value }) => {
+      if (!status) {
+        throw new Error("GENERAL_ERROR");
+      }
+
+      return value;
+    });
+};
+
 // ({ matcher: AppiumMatcher, element: AppiumElement }) => Promise<AppiumElement>.
 const findElement = ({ matcher, element }) => {
   const sessionId = getSession("sessionId");
