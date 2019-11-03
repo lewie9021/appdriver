@@ -14,9 +14,7 @@ Description: TODO.
 - `services` (`Array<string | Function>?`): List of services to provide functionality.
 - `maxDevices` (`Number?`): Maximum number of `devices` to run in parallel. Defaults to 1 (series).
 - `devices` (`Array<Object>`):
-  - `specs` (`Array<String>?`): List of spec file paths for the given device. This will override the top-level `specs`.
-  - `reporters` (`Array<string | Function>?`): List of reporters to provide insight throughout your test run. This will override the top-level `reporters`.
-  - `services` (`Array<string | Function>?`): List of services to provide functionality. This will override the top-level `services`.
+  - `specs` (`Array<String>?`): List of spec file paths. This will be in addition to the top-level `specs`.
   - `waitForTimeout` (`Number?`): Maximum duration in milliseconds to wait when using waits within tests. This will override the top-level `waitForTimeout`.
   - `testTimeout` (`Number?`): Maximum duration in milliseconds to wait for a test to complete. This will override the top-level `maxTestTimeout`.
   - `maxRetries` (`Number?`): Maximum number of retries for failing tests. This will override the top-level `testTimeout`.
