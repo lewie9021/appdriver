@@ -20,8 +20,7 @@ Description: TODO.
   - `testTimeout` (`Number?`): Maximum duration in milliseconds to wait for a test to complete. This will override the top-level `maxTestTimeout`.
   - `maxRetries` (`Number?`): Maximum number of retries for failing tests. This will override the top-level `testTimeout`.
   - `build` (`String?`): Build command to execute before running. Useful in local development and have access to the app source code.
-  - `capabilities` (`Object`): Capabilities to send to the Appium server. Note: capabilities outside of `desired` are considered required.
-    - `desired` (`Object?`): Desired capabilities for the Appium server to try and meet, but aren't required.
+  - `capabilities` (`Object`): Capabilities to send to the Appium server.
 - `waitForInterval` (`Number?`): Interval duration in milliseconds to poll the expectation when using waits within tests. Defaults to 200.
 - `waitForTimeout` (`Number?`): Maximum duration in milliseconds before timing out when using waits within tests. Defaults to 10000.
 - `testTimeout` (`Number?`): Maximum duration in milliseconds before timing out for a test to complete. Defaults to 60000.
@@ -42,27 +41,6 @@ module.exports = {
       platformName: "iOS",
       platformVersion: "12.4",
       deviceName: "iPhone X",
-      app: "<path to app>"
-    } 
-  }]
-}
-```
-
-Ideally automate an iPhone X 12.4 simulator, but let the Appium server pick another iOS 12.4 device if an iPhone X isn't available.
-
-```javascript
-module.exports = {
-  specs: [
-    "./tests/hello-world.e2e.js"
-  ],
-  devices: [{
-    capabilities: {
-      desired: {
-        deviceName: "iPhone X"
-      },
-      automationName: "XCUITest",
-      platformName: "iOS",
-      platformVersion: "12.4",
       app: "<path to app>"
     } 
   }]
