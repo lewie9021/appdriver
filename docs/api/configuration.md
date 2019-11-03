@@ -38,9 +38,9 @@ module.exports = {
     capabilities: {
       automationName: "XCUITest",
       platformName: "iOS",
-      app: "<path to app>",
+      platformVersion: "12.4",
       deviceName: "iPhone X",
-      platformVersion: "12.4"
+      app: "<path to app>"
     } 
   }]
 }
@@ -60,8 +60,8 @@ module.exports = {
       },
       automationName: "XCUITest",
       platformName: "iOS",
-      app: "<path to app>",
-      platformVersion: "12.4"
+      platformVersion: "12.4",
+      app: "<path to app>"
     } 
   }]
 }
