@@ -49,9 +49,6 @@ module.exports = {
           setSession(null);
         });
     },
-    takeScreenshot: () => {
-      return get(`/session/${getSession("sessionId")}/screenshot`);
-    },
     getWindowRect: () => {
       return get(`/session/${getSession("sessionId")}/window/rect`);
     },

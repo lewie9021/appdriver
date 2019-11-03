@@ -26,6 +26,42 @@ const endSession = ({ sessionId }) => {
     });
 };
 
+// () => Promise<{ width: Number, height: Number }>.
+const getViewport = () => {
+  return api.get(`/session/${getSession("sessionId")}/window/rect`)
+    .then(({ status, value }) => {
+      if (!status) {
+        throw new Error("GENERAL_ERROR");
+      }
+
+      return value;
+    });
+};
+
+// () => Promise<String>.
+const getOrientation = () => {
+  return api.get(`/session/${getSession("sessionId")}/orientation`)
+    .then(({ status, value }) => {
+      if (!status) {
+        throw new Error("GENERAL_ERROR");
+      }
+
+      return value;
+    });
+};
+
+// () => Promise<String>.
+const takeScreenshot = () => {
+  return api.get(`/session/${getSession("sessionId")}/screenshot`)
+    .then(({ status, value }) => {
+      if (!status) {
+        throw new Error("GENERAL_ERROR");
+      }
+
+      return value;
+    });
+};
+
 // ({ matcher: AppiumMatcher, element: AppiumElement }) => Promise<AppiumElement>.
 const findElement = ({ matcher, element }) => {
   const sessionId = getSession("sessionId");
