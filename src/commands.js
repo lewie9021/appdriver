@@ -1,4 +1,4 @@
-const { get, post, del } = require("./api");
+const { get, post, del } = require("./appium/api");
 const { platform } = require("./utils");
 const { ElementNotFoundError, ElementsNotFoundError, ElementActionError, NotImplementedError } = require("./errors");
 const { getSession, setSession } = require("./session");
