@@ -10,8 +10,8 @@ Description: TODO.
   - `password` (`String?`): Password for server authentication - useful when connecting to SauceLabs and BrowserStack.
 - `ui` (`String?`): Interface to use when writing tests (e.g. `describe` and `it`). Defaults to "bdd". 
 - `specs` (`Array<String>`): List of spec file paths.
-- `reporters` (`Array<string | Function>?`): List of reporters to provide insight throughout your test run. Defaults to ["basic"]. 
-- `services` (`Array<string | Function>?`): List of services to provide functionality.
+- `reporters` (`Array<Function>?`): List of reporters to provide insight throughout your test run. Defaults to ["basic"]. 
+- `services` (`Array<Function>?`): List of services to provide functionality.
 - `maxDevices` (`Number?`): Maximum number of `devices` to run in parallel. Defaults to 1 (series).
 - `devices` (`Array<Object>`):
   - `specs` (`Array<String>?`): List of spec file paths. This will be in addition to the top-level `specs`.
