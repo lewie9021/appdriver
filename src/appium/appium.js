@@ -12,7 +12,11 @@ const getStatus = () => {
 const createSession = ({ desiredCapabilities }) => {
   return api.post({
     path: "/session",
-    payload: { desiredCapabilities }
+    payload: { desiredCapabilities },
+    transform: (data) => ({
+      sessionId: data.sessionId,
+      capabilities: data.value
+    })
   });
 };
 

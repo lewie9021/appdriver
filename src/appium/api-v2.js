@@ -1,4 +1,4 @@
-const { fetch } = require("node-fetch");
+const fetch = require("node-fetch").default;
 const { AppiumError } = require("../errors");
 
 const BASE_URL = "http://localhost:4723/wd/hub";
@@ -26,21 +26,23 @@ const qs = (params) => {
   return "?" + pairs.join("&");
 };
 
-const get = ({ path, query }) => {
+const get = ({ path, query, transform }) => {
   const queryString = qs(query);
 
   return fetch(`${BASE_URL}${path}${queryString}`)
     .then((res) => res.json())
-    .then(({ status, value }) => {
-      if (status) {
-        throw new AppiumError(value.message, status);
+    .then((data) => {
+      if (data.status) {
+        throw new AppiumError(data.value.message, data.status);
       }
 
-      return value;
+      return transform
+        ? transform(data)
+        : data.value;
     });
 };
 
-const post = ({ path, query, payload }) => {
+const post = ({ path, query, payload, transform }) => {
   const queryString = qs(query);
   const opts = {
     method: "POST",
@@ -52,16 +54,18 @@ const post = ({ path, query, payload }) => {
 
   return fetch(`${BASE_URL}${path}${queryString}`, opts)
     .then((res) => res.json())
-    .then(({ status, value }) => {
-      if (status) {
-        throw new AppiumError(value.message, status);
+    .then((data) => {
+      if (data.status) {
+        throw new AppiumError(data.value.message, data.status);
       }
 
-      return value;
+      return transform
+        ? transform(data)
+        : data.value;
     });
 };
 
-const del = ({ path }) => {
+const del = ({ path, transform }) => {
   const opts = {
     method: "DELETE",
     headers: {
@@ -71,12 +75,14 @@ const del = ({ path }) => {
 
   return fetch(`${BASE_URL}${path}`, opts)
     .then((res) => res.json())
-    .then(({ status, value }) => {
-      if (status) {
-        throw new AppiumError(value.message, status);
+    .then((data) => {
+      if (data.status) {
+        throw new AppiumError(data.value.message, data.status);
       }
 
-      return value;
+      return transform
+        ? transform(data)
+        : data.value;
     });
 };
 
