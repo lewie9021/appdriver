@@ -72,14 +72,14 @@ const stopScreenRecording = () => {
   return api.post({ path: `/session/${getSession("sessionId")}/appium/stop_recording_screen` });
 };
 
-// () => Promise.
-const hideKeyboard = () => {
-  return api.post({ path: `/session/${getSession("sessionId")}/appium/device/hide_keyboard` });
-};
-
 // () => Promise<Boolean>.
 const getKeyboardVisible = () => {
   return api.get({ path: `/session/${getSession("sessionId")}/appium/device/is_keyboard_shown` });
+};
+
+// () => Promise.
+const hideKeyboard = () => {
+  return api.post({ path: `/session/${getSession("sessionId")}/appium/device/hide_keyboard` });
 };
 
 // () => Promise.
@@ -89,6 +89,14 @@ const goBack = () => {
   }
 
   return api.post({ path: `/session/${getSession("sessionId")}/back` });
+};
+
+// ({ actions: W3CActions }) => Promise.
+const performActions = ({ actions }) => {
+  return api.post({
+    path: `/session/${getSession("sessionId")}/actions`,
+    payload: { actions }
+  });
 };
 
 // ({ matcher: AppiumMatcher, element: AppiumElement }) => Promise<AppiumElement>.
@@ -209,10 +217,41 @@ const clearElementText = ({ element }) => {
   return api.post({ path: `/session/${getSession("sessionId")}/element/${element.ELEMENT}/clear` });
 };
 
-// ({ actions: W3CActions }) => Promise.
-const performActions = ({ actions }) => {
-  return api.post({
-    path: `/session/${getSession("sessionId")}/actions`,
-    payload: { actions }
-  });
+module.exports = {
+  getStatus,
+
+  createSession,
+  endSession,
+
+  launchApp,
+  closeApp,
+  resetApp,
+
+  getViewport,
+  getOrientation,
+  setOrientation,
+  takeScreenshot,
+  startScreenRecording,
+  stopScreenRecording,
+  getKeyboardVisible,
+  hideKeyboard,
+  goBack,
+  performActions,
+
+  findElement,
+  findElements,
+
+  getElementAttribute,
+  getElementSelected,
+  getElementDisabled,
+  getElementVisible,
+  getElementSize,
+  getElementName,
+  getElementType,
+  getElementExists,
+  getElementText,
+  getElementValue,
+  getElementLocation,
+  sendElementText,
+  clearElementText
 };
