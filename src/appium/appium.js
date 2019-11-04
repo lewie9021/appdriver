@@ -1,6 +1,5 @@
 const api = require("./api-v2");
 const { NotImplementedError } = require("../errors");
-const { getSession } = require("../session");
 const { platform } = require("../utils");
 
 // () => Promise<Object>.
@@ -25,88 +24,85 @@ const endSession = ({ sessionId }) => {
   return api.del({ path: `/session/${sessionId}` })
 };
 
-// () => Promise.
-const launchApp = () => {
-  return api.post({ path: "/appium/app/launch" });
+// ({ sessionId: String }) => Promise.
+const launchApp = ({ sessionId }) => {
+  return api.post({ path: `/session/${sessionId}/appium/app/launch` });
 };
 
-// () => Promise.
-const closeApp = () => {
-  return api.post({ path: "/appium/app/close" });
+// ({ sessionId: String }) => Promise.
+const closeApp = ({ sessionId }) => {
+  return api.post({ path: `/session/${sessionId}/appium/app/close` });
 };
 
-// () => Promise.
-const resetApp = () => {
-  return api.post({ path: "/appium/app/reset" });
+// ({ sessionId: String }) => Promise.
+const resetApp = ({ sessionId }) => {
+  return api.post({ path: `/session/${sessionId}/appium/app/reset` });
 };
 
-// () => Promise<{ width: Number, height: Number }>.
-const getViewport = () => {
-  return api.get({ path: `/session/${getSession("sessionId")}/window/rect` });
+// ({ sessionId: String }) => Promise<{ width: Number, height: Number }>.
+const getViewport = ({ sessionId }) => {
+  return api.get({ path: `/session/${sessionId}/window/rect` });
 };
 
-// () => Promise<String>.
-const getOrientation = () => {
-  return api.get({ path: `/session/${getSession("sessionId")}/orientation` });
+// ({ sessionId: String }) => Promise<String>.
+const getOrientation = ({ sessionId }) => {
+  return api.get({ path: `/session/${sessionId}/orientation` });
 };
 
-// ({ orientation: String }) => Promise.
-const setOrientation = ({ orientation }) => {
+// ({ sessionId: String, orientation: String }) => Promise.
+const setOrientation = ({ sessionId, orientation }) => {
   return api.post({
-    path: `/session/${getSession("sessionId")}/orientation`,
+    path: `/session/${sessionId}/orientation`,
     payload: { orientation }
   });
 };
 
-// () => Promise<String>.
-const takeScreenshot = () => {
-  return api.get(`/session/${getSession("sessionId")}/screenshot`);
+// ({ sessionId: String }) => Promise<String>.
+const takeScreenshot = ({ sessionId }) => {
+  return api.get(`/session/${sessionId}/screenshot`);
 };
 
-// (options: Object) => Promise.
-const startScreenRecording = (options) => {
+// ({ sessionId: String, ...options: Object }) => Promise.
+const startScreenRecording = ({ sessionId, ...options}) => {
   return api.post({
-    path: `/session/${getSession("sessionId")}/appium/start_recording_screen`,
+    path: `/session/${sessionId}/appium/start_recording_screen`,
     payload: options
   });
 };
 
-// () => Promise<String>.
-const stopScreenRecording = () => {
-  return api.post({ path: `/session/${getSession("sessionId")}/appium/stop_recording_screen` });
+// ({ sessionId: String }) => Promise<String>.
+const stopScreenRecording = ({ sessionId }) => {
+  return api.post({ path: `/session/${sessionId}/appium/stop_recording_screen` });
 };
 
-// () => Promise<Boolean>.
-const getKeyboardVisible = () => {
-  return api.get({ path: `/session/${getSession("sessionId")}/appium/device/is_keyboard_shown` });
+// ({ sessionId: String }) => Promise<Boolean>.
+const getKeyboardVisible = ({ sessionId }) => {
+  return api.get({ path: `/session/${sessionId}/appium/device/is_keyboard_shown` });
 };
 
-// () => Promise.
-const hideKeyboard = () => {
-  return api.post({ path: `/session/${getSession("sessionId")}/appium/device/hide_keyboard` });
+// ({ sessionId: String }) => Promise.
+const hideKeyboard = ({ sessionId }) => {
+  return api.post({ path: `/session/${sessionId}/appium/device/hide_keyboard` });
 };
 
-// () => Promise.
-const goBack = () => {
-  if (getSession("platformName") === "iOS") {
-    return Promise.reject(new NotImplementedError());
-  }
-
-  return api.post({ path: `/session/${getSession("sessionId")}/back` });
+// ({ sessionId: String }) => Promise.
+const goBack = ({ sessionId }) => {
+  return platform.select({
+    ios: () => Promise.reject(new NotImplementedError()),
+    android: () => api.post({ path: `/session/${sessionId}/back` })
+  });
 };
 
-// ({ actions: W3CActions }) => Promise.
-const performActions = ({ actions }) => {
+// ({ sessionId: String, actions: W3CActions }) => Promise.
+const performActions = ({ sessionId, actions }) => {
   return api.post({
-    path: `/session/${getSession("sessionId")}/actions`,
+    path: `/session/${sessionId}/actions`,
     payload: { actions }
   });
 };
 
-// ({ matcher: AppiumMatcher, element: AppiumElement }) => Promise<AppiumElement>.
-const findElement = ({ matcher, element }) => {
-  const sessionId = getSession("sessionId");
-
+// ({ sessionId: String, atcher: AppiumMatcher, element: AppiumElement }) => Promise<AppiumElement>.
+const findElement = ({ sessionId, matcher, element }) => {
   if (element) {
     return api.post({
       path: `/session/${sessionId}/element/${element.ELEMENT}/element`,
@@ -120,10 +116,8 @@ const findElement = ({ matcher, element }) => {
   });
 };
 
-// ({ matcher: AppiumMatcher, element: AppiumElement }) => Promise<Array<AppiumElement>>.
-const findElements = ({ matcher, element }) => {
-  const sessionId = getSession("sessionId");
-
+// ({ sessionId: String, matcher: AppiumMatcher, element: AppiumElement }) => Promise<Array<AppiumElement>>.
+const findElements = ({ sessionId, matcher, element }) => {
   if (element) {
     return api.post({
       path: `/session/${sessionId}/element/${element.ELEMENT}/elements`,
@@ -137,69 +131,67 @@ const findElements = ({ matcher, element }) => {
   });
 };
 
-// ({ element: AppiumElement, attribute: String }) => Promise<String>.
-const getElementAttribute = ({ element, attribute }) => {
-  return api.get({ path: `/session/${getSession("sessionId")}/element/${element.ELEMENT}/attribute/${attribute}` });
+// ({ sessionId: String, element: AppiumElement, attribute: String }) => Promise<String>.
+const getElementAttribute = ({ sessionId, element, attribute }) => {
+  return api.get({ path: `/session/${sessionId}/element/${element.ELEMENT}/attribute/${attribute}` });
 };
 
-// ({ element: AppiumElement }) => Promise<Boolean>.
+// ({ sessionId: String, element: AppiumElement }) => Promise<Boolean>.
 // Note: doesn't work on iOS yet. See https://github.com/appium/appium/issues/13441.
-const getElementSelected = ({ element }) => {
-  return api.get({ path: `/session/${getSession("sessionId")}/element/${element.ELEMENT}/selected` });
+const getElementSelected = ({ sessionId, element }) => {
+  return api.get({ path: `/session/${sessionId}/element/${element.ELEMENT}/selected` });
 };
 
-// ({ element: AppiumElement }) => Promise<Boolean>.
-const getElementDisabled = ({ element }) => {
-  return api.get({ path: `/session/${getSession("sessionId")}/element/${element.ELEMENT}/enabled` });
+// ({ sessionId: String, element: AppiumElement }) => Promise<Boolean>.
+const getElementDisabled = ({ sessionId, element }) => {
+  return api.get({ path: `/session/${sessionId}/element/${element.ELEMENT}/enabled` });
 };
 
-// ({ element: AppiumElement }) => Promise<Boolean>.
-const getElementVisible = ({ element }) => {
-  return api.get({ path: `/session/${getSession("sessionId")}/element/${element.ELEMENT}/displayed` });
+// ({ sessionId: String, element: AppiumElement }) => Promise<Boolean>.
+const getElementVisible = ({ sessionId, element }) => {
+  return api.get({ path: `/session/${sessionId}/element/${element.ELEMENT}/displayed` });
 };
 
-// ({ element: AppiumElement }) => Promise<{ width: Number, height: Number }>.
-const getElementSize = ({ element }) => {
-  return api.get({ path: `/session/${getSession("sessionId")}/element/${element.ELEMENT}/size` });
+// ({ sessionId: String, element: AppiumElement }) => Promise<{ width: Number, height: Number }>.
+const getElementSize = ({ sessionId, element }) => {
+  return api.get({ path: `/session/${sessionId}/element/${element.ELEMENT}/size` });
 };
 
-// ({ element: AppiumElement }) => Promise<String>.
-const getElementName = ({ element }) => {
-  return api.get({ path: `/session/${getSession("sessionId")}/element/${element.ELEMENT}/name` });
+// ({ sessionId: String, element: AppiumElement }) => Promise<String>.
+const getElementName = ({ sessionId, element }) => {
+  return api.get({ path: `/session/${sessionId}/element/${element.ELEMENT}/name` });
 };
 
-// ({ element: AppiumElement }) => Promise<String>.
-const getElementType = ({ element }) => {
+// ({ sessionId: String, element: AppiumElement }) => Promise<String>.
+const getElementType = ({ sessionId, element }) => {
   return platform.select({
     ios: () => getElementName({ element }),
     android: () => getElementAttribute({ element, attribute: "className"})
   });
 };
 
-// ({ matcher: AppiumMatcher })
-const getElementExists = ({ matcher }) => {
-  return findElement({ matcher })
+// ({ sessionId: String, matcher: AppiumMatcher })
+const getElementExists = ({ sessionId, matcher }) => {
+  return findElement({ sessionId, matcher })
     .then(() => true)
     .catch(() => false);
 };
 
-// ({ element: AppiumElement }) => Promise<String>.
-const getElementText = ({ element }) => {
-  return api.get({ path: `/session/${getSession("sessionId")}/element/${element.ELEMENT}/text` });
+// ({ sessionId: String, element: AppiumElement }) => Promise<String>.
+const getElementText = ({ sessionId, element }) => {
+  return api.get({ path: `/session/${sessionId}/element/${element.ELEMENT}/text` });
 };
 
-// ({ element: AppiumElement }) => Promise<String>.
-const getElementValue = ({ element }) => {
+// ({ sessionId: String, element: AppiumElement }) => Promise<String>.
+const getElementValue = ({ sessionId, element }) => {
   return platform.select({
-    ios: () => getElementAttribute({ element, attribute: "value" }),
-    android: () => getElementText({ element })
+    ios: () => getElementAttribute({ sessionId, element, attribute: "value" }),
+    android: () => getElementText({ sessionId, element })
   });
 };
 
-// ({ element: AppiumElement, relative: Boolean }) => Promise<{ x: Number, y: Number }>.
-const getElementLocation = ({ element, relative }) => {
-  const sessionId = getSession("sessionId");
-
+// ({ sessionId: String, element: AppiumElement, relative: Boolean }) => Promise<{ x: Number, y: Number }>.
+const getElementLocation = ({ sessionId, element, relative }) => {
   if (relative) {
     return api.get({ path: `/session/${sessionId}/element/${element.ELEMENT}/location_in_view` });
   }
@@ -207,18 +199,18 @@ const getElementLocation = ({ element, relative }) => {
   return api.get({ path: `/session/${sessionId}/element/${element.ELEMENT}/location` });
 };
 
-// ({ element: AppiumElement, text: String }) => Promise.
+// ({ sessionId: String, element: AppiumElement, text: String }) => Promise.
 // Note: status of 13 means hardware keyboard needs to be disconnected.
-const sendElementText = ({ element, text }) => {
+const sendElementText = ({ sessionId, element, text }) => {
   return api.post({
-    path: `/session/${getSession("sessionId")}/element/${element.ELEMENT}/value`,
+    path: `/session/${sessionId}/element/${element.ELEMENT}/value`,
     payload: { value: text }
   });
 };
 
-// ({ element: AppiumElement }) => Promise.
-const clearElementText = ({ element }) => {
-  return api.post({ path: `/session/${getSession("sessionId")}/element/${element.ELEMENT}/clear` });
+// ({ sessionId: String, element: AppiumElement }) => Promise.
+const clearElementText = ({ sessionId, element }) => {
+  return api.post({ path: `/session/${sessionId}/element/${element.ELEMENT}/clear` });
 };
 
 module.exports = {
