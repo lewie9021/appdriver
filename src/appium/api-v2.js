@@ -33,7 +33,7 @@ const get = ({ path, query }) => {
     .then((res) => res.json())
     .then(({ status, value }) => {
       if (status) {
-        throw new AppiumError(status);
+        throw new AppiumError(value.message, status);
       }
 
       return value;
@@ -54,7 +54,7 @@ const post = ({ path, query, payload }) => {
     .then((res) => res.json())
     .then(({ status, value }) => {
       if (status) {
-        throw new AppiumError(status);
+        throw new AppiumError(value.message, status);
       }
 
       return value;
@@ -73,7 +73,7 @@ const del = ({ path }) => {
     .then((res) => res.json())
     .then(({ status, value }) => {
       if (status) {
-        throw new AppiumError(status);
+        throw new AppiumError(value.message, status);
       }
 
       return value;

@@ -3,6 +3,7 @@ class ElementNotFoundError extends Error {
     super(message);
 
     Error.captureStackTrace(this, ElementNotFoundError);
+    this.name = this.constructor.name;
   }
 }
 
@@ -11,6 +12,7 @@ class ElementsNotFoundError extends Error {
     super(message);
 
     Error.captureStackTrace(this, ElementsNotFoundError);
+    this.name = this.constructor.name;
   }
 }
 
@@ -19,6 +21,7 @@ class ElementActionError extends Error {
     super(message);
 
     Error.captureStackTrace(this, ElementActionError);
+    this.name = this.constructor.name;
   }
 }
 
@@ -27,6 +30,7 @@ class ElementWaitError extends Error {
     super(message);
 
     Error.captureStackTrace(this, ElementWaitError);
+    this.name = this.constructor.name;
   }
 }
 
@@ -35,14 +39,17 @@ class NotImplementedError extends Error {
     super("Functionality not implemented.");
 
     Error.captureStackTrace(this, NotImplementedError);
+    this.name = this.constructor.name;
   }
 }
 
 class AppiumError extends Error {
-  constructor(status) {
-    super(status);
+  constructor(message, status) {
+    super(message);
 
     Error.captureStackTrace(this, AppiumError);
+    this.name = this.constructor.name;
+    this.status = status;
   }
 }
 
