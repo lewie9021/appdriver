@@ -29,7 +29,7 @@ const get = (path, params) => {
   const query = qs(params);
 
   return fetch(`${BASE_URL}${path}${query}`)
-    .then((res) => res.json())
+    .then((res) => res.json());
 };
 
 const post = (path, params, payload) => {
@@ -43,7 +43,7 @@ const post = (path, params, payload) => {
   };
 
   return fetch(`${BASE_URL}${path}${query}`, opts)
-    .then((res) => res.json())
+    .then((res) => res.json());
 };
 
 const del = (path) => {
@@ -55,7 +55,7 @@ const del = (path) => {
   };
 
   return fetch(`${BASE_URL}${path}`, opts)
-    .then((res) => res.json())
+    .then((res) => res.json());
 };
 
 module.exports = {

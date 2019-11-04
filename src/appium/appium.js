@@ -1,13 +1,26 @@
 const api = require("./api");
+const { NotImplementedError, AppiumError } = require("../errors");
 const { getSession } = require("../session");
 const { platform } = require("../utils");
+
+// () => Promise<Object>.
+const getStatus = () => {
+  return api.get("/status")
+    .then(({ status, value }) => {
+      if (!status) {
+        throw new AppiumError(status);
+      }
+
+      return value;
+    });
+};
 
 // ({ desiredCapabilities: AppiumCapability }) => Promise<AppiumCapability>.
 const createSession = ({ desiredCapabilities }) => {
   return api.post("/session", null, { desiredCapabilities })
     .then(({ status, value }) => {
       if (!status) {
-        throw new Error("GENERAL_ERROR");
+        throw new AppiumError(status);
       }
 
       return value;
@@ -19,10 +32,40 @@ const endSession = ({ sessionId }) => {
   return api.del(`/session/${sessionId}`)
     .then(({ status, value }) => {
       if (!status) {
-        throw new Error("GENERAL_ERROR");
+        throw new AppiumError(status);
       }
 
       return value;
+    });
+};
+
+// () => Promise.
+const launchApp = () => {
+  return api.post("/appium/app/launch")
+    .then(({ status }) => {
+      if (!status) {
+        throw new AppiumError(status);
+      }
+    });
+};
+
+// () => Promise.
+const closeApp = () => {
+  return api.post("/appium/app/close")
+    .then(({ status }) => {
+      if (!status) {
+        throw new AppiumError(status);
+      }
+    });
+};
+
+// () => Promise.
+const resetApp = () => {
+  return api.post("/appium/app/reset")
+    .then(({ status }) => {
+      if (!status) {
+        throw new AppiumError(status);
+      }
     });
 };
 
@@ -31,7 +74,7 @@ const getViewport = () => {
   return api.get(`/session/${getSession("sessionId")}/window/rect`)
     .then(({ status, value }) => {
       if (!status) {
-        throw new Error("GENERAL_ERROR");
+        throw new AppiumError(status);
       }
 
       return value;
@@ -43,7 +86,19 @@ const getOrientation = () => {
   return api.get(`/session/${getSession("sessionId")}/orientation`)
     .then(({ status, value }) => {
       if (!status) {
-        throw new Error("GENERAL_ERROR");
+        throw new AppiumError(status);
+      }
+
+      return value;
+    });
+};
+
+// ({ orientation: String }) => Promise.
+const setOrientation = ({ orientation }) => {
+  return api.post(`/session/${getSession("sessionId")}/orientation`, null, { orientation })
+    .then(({ status, value }) => {
+      if (!status) {
+        throw new AppiumError(status);
       }
 
       return value;
@@ -55,10 +110,68 @@ const takeScreenshot = () => {
   return api.get(`/session/${getSession("sessionId")}/screenshot`)
     .then(({ status, value }) => {
       if (!status) {
-        throw new Error("GENERAL_ERROR");
+        throw new AppiumError(status);
       }
 
       return value;
+    });
+};
+
+// (options: Object) => Promise.
+const startScreenRecording = (options) => {
+  return api.post(`/session/${getSession("sessionId")}/appium/start_recording_screen`, null, options)
+    .then(({ status }) => {
+      if (status) {
+        throw new AppiumError(status);
+      }
+    });
+};
+
+// () => Promise<String>.
+const stopScreenRecording = () => {
+  return api.post(`/session/${getSession("sessionId")}/appium/stop_recording_screen`)
+    .then(({ status, value }) => {
+      if (status) {
+        throw new AppiumError(status);
+      }
+
+      return value;
+    });
+};
+
+// () => Promise.
+const hideKeyboard = () => {
+  return api.post(`/session/${getSession("sessionId")}/appium/device/hide_keyboard`)
+    .then(({ status }) => {
+      if (status) {
+        throw new AppiumError(status);
+      }
+    });
+};
+
+// () => Promise<Boolean>.
+const getKeyboardVisible = () => {
+  return api.get(`/session/${getSession("sessionId")}/appium/device/is_keyboard_shown`)
+    .then(({ status, value }) => {
+      if (status) {
+        throw new AppiumError(status);
+      }
+
+      return value;
+    });
+};
+
+// () => Promise.
+const goBack = () => {
+  if (getSession("platformName") === "iOS") {
+    return Promise.reject(new NotImplementedError());
+  }
+
+  return api.post(`/session/${getSession("sessionId")}/back`)
+    .then(({ status }) => {
+      if (status) {
+        throw new AppiumError(status);
+      }
     });
 };
 
@@ -70,7 +183,7 @@ const findElement = ({ matcher, element }) => {
     return api.post(`/session/${sessionId}/element/${element.ELEMENT}/element`, null, matcher)
       .then(({ status, value }) => {
         if (status) {
-          throw new Error("GENERAL_ERROR");
+          throw new AppiumError(status);
         }
 
         return value;
@@ -80,7 +193,7 @@ const findElement = ({ matcher, element }) => {
   return api.post(`/session/${sessionId}/element`, null, matcher)
     .then(({ status, value }) => {
       if (status) {
-        throw new Error("GENERAL_ERROR");
+        throw new AppiumError(status);
       }
 
       return value;
@@ -95,7 +208,7 @@ const findElements = ({ matcher, element }) => {
     return api.post(`/session/${sessionId}/element/${element.ELEMENT}/elements`, null, matcher)
       .then(({ status, value }) => {
         if (status) {
-          throw new Error("GENERAL_ERROR");
+          throw new AppiumError(status);
         }
 
         return value;
@@ -105,7 +218,7 @@ const findElements = ({ matcher, element }) => {
   return api.post(`/session/${sessionId}/elements`, null, matcher)
     .then(({ status, value }) => {
       if (status) {
-        throw new Error("GENERAL_ERROR");
+        throw new AppiumError(status);
       }
 
       return value;
@@ -117,7 +230,7 @@ const getElementAttribute = ({ element, attribute }) => {
   return api.get(`/session/${getSession("sessionId")}/element/${element.ELEMENT}/attribute/${attribute}`)
     .then(({ status, value }) => {
       if (status) {
-        throw new Error("GENERAL_ERROR");
+        throw new AppiumError(status);
       }
 
       return value;
@@ -130,7 +243,7 @@ const getElementSelected = ({ element }) => {
   return api.get(`/session/${getSession("sessionId")}/element/${element.ELEMENT}/selected`)
     .then(({ status, value }) => {
       if (status) {
-        throw new Error("GENERAL_ERROR");
+        throw new AppiumError(status);
       }
 
       return value;
@@ -142,7 +255,7 @@ const getElementDisabled = ({ element }) => {
   return api.get(`/session/${getSession("sessionId")}/element/${element.ELEMENT}/enabled`)
     .then(({ status, value }) => {
       if (status) {
-        throw new Error("GENERAL_ERROR");
+        throw new AppiumError(status);
       }
 
       return !value;
@@ -154,7 +267,7 @@ const getElementVisible = ({ element }) => {
   return api.get(`/session/${getSession("sessionId")}/element/${element.ELEMENT}/displayed`)
     .then(({ status, value }) => {
       if (status) {
-        throw new Error("GENERAL_ERROR");
+        throw new AppiumError(status);
       }
 
       return value;
@@ -166,7 +279,7 @@ const getElementSize = ({ element }) => {
   return api.get(`/session/${getSession("sessionId")}/element/${element.ELEMENT}/size`)
     .then(({ status, value }) => {
       if (status) {
-        throw new Error("GENERAL_ERROR");
+        throw new AppiumError(status);
       }
 
       return value;
@@ -178,7 +291,7 @@ const getElementName = ({ element }) => {
   return api.get(`/session/${getSession("sessionId")}/element/${element.ELEMENT}/name`)
     .then(({ status, value }) => {
       if (status) {
-        throw new Error("GENERAL_ERROR");
+        throw new AppiumError(status);
       }
 
       return value;
@@ -195,7 +308,7 @@ const getElementType = ({ element }) => {
   return platform.select(spec)
     .catch((err) => {
       console.log(err);
-      throw new Error("GENERAL_ERROR");
+      throw new AppiumError(status);
     });
 };
 
@@ -211,7 +324,7 @@ const getElementText = ({ element }) => {
   return api.get(`/session/${getSession("sessionId")}/element/${element.ELEMENT}/text`)
     .then(({ status, value }) => {
       if (status) {
-        throw new Error("GENERAL_ERROR");
+        throw new AppiumError(status);
       }
 
       return value;
@@ -228,7 +341,7 @@ const getElementValue = ({ element }) => {
   return platform.select(spec)
     .catch((err) => {
       console.log(err);
-      throw new Error("GENERAL_ERROR");
+      throw new AppiumError(status);
     });
 };
 
@@ -240,7 +353,7 @@ const getElementLocation = ({ element, relative }) => {
     return api.get(`/session/${sessionId}/element/${element.ELEMENT}/location_in_view`)
       .then(({ status, value }) => {
         if (status) {
-          throw new Error("GENERAL_ERROR");
+          throw new AppiumError(status);
         }
 
         return value;
@@ -250,7 +363,7 @@ const getElementLocation = ({ element, relative }) => {
   return api.get(`/session/${sessionId}/element/${element.ELEMENT}/location`)
     .then(({ status, value }) => {
       if (status) {
-        throw new Error("GENERAL_ERROR");
+        throw new AppiumError(status);
       }
 
       return value;
@@ -258,15 +371,12 @@ const getElementLocation = ({ element, relative }) => {
 };
 
 // ({ element: AppiumElement, text: String }) => Promise.
+// Note: status of 13 means hardware keyboard needs to be disconnected.
 const sendElementText = ({ element, text }) => {
   return api.post(`/session/${getSession("sessionId")}/element/${element.ELEMENT}/value`, null, { value: text })
     .then(({ status }) => {
       if (status) {
-        if (status === 13 && getSession("platformName") === "iOS") {
-          throw new Error("HARDWARE_KEYBOARD_CONNECTED");
-        }
-
-        throw new Error("GENERAL_ERROR");
+        throw new AppiumError(status);
       }
     });
 };
@@ -276,7 +386,7 @@ const clearElementText = ({ element }) => {
   return api.post(`/session/${getSession("sessionId")}/element/${element.ELEMENT}/clear`)
     .then(({ status }) => {
       if (status) {
-        throw new Error("GENERAL_ERROR");
+        throw new AppiumError(status);
       }
     });
 };
@@ -286,7 +396,7 @@ const performActions = ({ actions }) => {
   return api.post(`/session/${getSession("sessionId")}/actions`, null, { actions })
     .then(({ status }) => {
       if (status) {
-        throw new Error("GENERAL_ERROR");
+        throw new AppiumError(status);
       }
     });
 };
