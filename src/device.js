@@ -294,4 +294,7 @@ class Device {
   }
 }
 
-module.exports = new Device();
+module.exports = {
+  device: new Device(),
+  Device
+};
