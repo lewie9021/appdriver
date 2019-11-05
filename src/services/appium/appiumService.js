@@ -1,10 +1,10 @@
 const fetch = require("node-fetch").default;
-const configServices = require("../config/configService");
+const { configService } = require("../config/configService");
 const { AppiumError } = require("../../errors");
 const { NotImplementedError } = require("../../errors");
 const { platform } = require("../../utils");
 
-const BASE_URL = configServices.getBaseUrl();
+const BASE_URL = configService.getBaseUrl();
 
 const qs = (params) => {
   if (!params) {
