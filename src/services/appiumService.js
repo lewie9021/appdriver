@@ -1,8 +1,8 @@
 const fetch = require("node-fetch").default;
-const { configService } = require("../config/configService");
-const { AppiumError } = require("../../errors");
-const { NotImplementedError } = require("../../errors");
-const { platform } = require("../../utils");
+const { configService } = require("./configService");
+const { AppiumError } = require("../errors");
+const { NotImplementedError } = require("../errors");
+const { platform } = require("../utils");
 
 const BASE_URL = configService.getBaseUrl();
 
