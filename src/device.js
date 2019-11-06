@@ -1,26 +1,24 @@
 const fs = require("fs");
+const { sessionStore } = require("./stores/sessionStore");
+const { createAppiumService } = require("./services/appiumService");
 const commands = require("./commands");
-const { getSession } = require("./session");
 const gestures = require("./gestures");
 const { delay, isUndefined, platform } = require("./utils");
-const { NotImplementedError } = require("./errors");
+
+const appiumService = createAppiumService(sessionStore);
 
 class Device {
 
-  constructor() {
-    this._screenRecording = null;
-  }
-
   get name() {
-    return getSession("deviceName");
+    return sessionStore.getCapabilities("deviceName");
   }
 
   get platformName() {
-    return getSession("platformName");
+    return sessionStore.getCapabilities("platformName");
   }
 
   get platformVersion() {
-    return getSession("platformVersion");
+    return sessionStore.getCapabilities("platformVersion");
   }
 
   restartApp(capabilities) {
