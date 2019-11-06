@@ -1,4 +1,4 @@
-const { by } = require("./src/matchers");
+const matchers = require("./src/matchers-v2");
 const { Device } = require("./src/device");
 const expect = require("./src/expect");
 const gestures = require("./src/gestures");
@@ -6,7 +6,7 @@ const { Element } = require("./src/element");
 const elements = require("./src/elements");
 
 module.exports = {
-  by,
+  by: matchers,
   device: new Device(),
   element: (matcher) => new Element({ matcher }),
   elements,
