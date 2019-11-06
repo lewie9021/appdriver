@@ -1,9 +1,9 @@
 const fs = require("fs");
 const { sessionStore } = require("./stores/sessionStore");
 const { createAppiumService } = require("./services/appiumService");
-const commands = require("./commands");
 const gestures = require("./gestures");
 const { delay, isUndefined, platform } = require("./utils");
+const { ActionError } = require("./errors");
 
 const appiumService = createAppiumService(sessionStore);
 
@@ -23,61 +23,48 @@ class Device {
 
   restartApp(capabilities) {
     if (!capabilities.noReset) {
-      return Promise.reject(new Error("'noReset' must be 'true' in session capabilities to use this command."));
+      return Promise.reject(new ActionError("'noReset' must be 'true' in session capabilities to use this command."));
     }
 
-    return commands.device.app.resetApp()
-      .then(({status}) => {
-        if (status !== 0) {
-          throw new Error("Failed to restart the application.");
-        }
-      });
+    return appiumService.resetApp()
+      .catch(() => {
+        throw new ActionError("Failed to restart the application.");
+      })
   }
 
   resetApp(capabilities) {
     if (capabilities.noReset) {
-      return Promise.reject(new Error("'noReset' must not be 'true' in session capabilities to use this command."));
+      return Promise.reject(new ActionError("'noReset' must not be 'true' in session capabilities to use this command."));
     }
 
-    return commands.device.app.resetApp()
-      .then(({status}) => {
-        if (status !== 0) {
-          throw new Error("Failed to reset the application.");
-        }
+    return appiumService.resetApp()
+      .catch(() => {
+        throw new ActionError("Failed to reset the application.");
       });
   }
 
   getViewport() {
-    return commands.session.getWindowRect()
-      .then(({status, value}) => {
-        if (status !== 0) {
-          throw new Error("Failed to get device viewport.");
-        }
-
-        return {
-          width: value.width,
-          height: value.height
-        }
+    return appiumService.getViewport()
+      .catch(() => {
+        throw new ActionError("Failed to get device viewport.");
       });
   }
 
   async performGesture(gesture) {
     const actions = await gesture.resolve();
 
-    return commands.interactions.actions(actions)
-      .then(({status}) => {
-        if (status) {
-          throw new Error("Failed to perform gesture.");
-        }
+    return appiumService.performActions({ actions })
+      .catch(() => {
+        throw new ActionError("Failed to perform gesture.");
       });
   }
 
   getOrientation() {
-    return commands.session.getOrientation();
+    return appiumService.getOrientation();
   }
 
   setOrientation(orientation) {
-    return commands.session.setOrientation(orientation);
+    return appiumService.setOrientation({ orientation });
   }
 
   async swipe({ x = 0, y = 0, distance, direction, duration }) {
@@ -185,16 +172,16 @@ class Device {
   // TODO: Needs to use .waitFor + .isKeyboardVisible before returning back instead of delay.
   // Seems to fire and forget...
   hideKeyboard() {
-    return commands.device.hideKeyboard()
+    return appiumService.hideKeyboard()
       .then(() => delay(500));
   }
 
   isKeyboardVisible() {
-    return commands.device.isKeyboardShown();
+    return appiumService.getKeyboardVisible();
   }
 
   takeScreenshot({ filePath } = {}) {
-    return commands.device.takeScreenshot()
+    return appiumService.takeScreenshot()
       .then((value) => {
         const buffer = Buffer.from(value, "base64");
 
@@ -215,7 +202,7 @@ class Device {
   }
 
   goBack() {
-    return commands.device.back();
+    return appiumService.goBack();
   }
 
   startScreenRecording(options = {}) {
@@ -224,25 +211,27 @@ class Device {
 
     if (size) {
       if (!size.width && !size.height) {
-        return Promise.reject(new Error("You must provide a 'size.width' and 'size.height' when passing a 'size'."))
+        return Promise.reject(new ActionError("You must provide a 'size.width' and 'size.height' when passing a 'size'."))
       }
 
       if (size.width && !size.height) {
-        return Promise.reject(new Error("You must provide a 'size.height' when passing a 'size.width'."))
+        return Promise.reject(new ActionError("You must provide a 'size.height' when passing a 'size.width'."))
       }
 
       if (size.height && !size.width) {
-        return Promise.reject(new Error("You must provide a 'size.width' when passing a 'size.height'."))
+        return Promise.reject(new ActionError("You must provide a 'size.width' when passing a 'size.height'."))
       }
     }
 
-    if (this._screenRecording) {
-      return Promise.reject(new Error("Screen recording already in progress."));
+    if (sessionStore.getScreenRecording()) {
+      return Promise.reject(new ActionError("Screen recording already in progress."));
     }
 
-    this._screenRecording = { filePath };
+    sessionStore.setState({
+      screenRecording: { filePath }
+    });
 
-    return commands.device.startScreenRecording({
+    return appiumService.startScreenRecording({
       options: platform.select({
         ios: () => ({
           timeLimit: maxDuration,
@@ -263,13 +252,13 @@ class Device {
   }
 
   stopScreenRecording() {
-    if (!this._screenRecording) {
-      return Promise.reject(new Error("No screen recording in progress to stop."));
+    if (!sessionStore.getScreenRecording()) {
+      return Promise.reject(new ActionError("No screen recording in progress to stop."));
     }
 
-    const filePath = this._screenRecording.filePath;
+    const filePath = sessionStore.getScreenRecording("filePath");
 
-    return commands.device.stopScreenRecording()
+    return appiumService.stopScreenRecording()
       .then((value) => {
         const buffer = Buffer.from(value, "base64");
 

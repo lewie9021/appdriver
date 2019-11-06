@@ -20,8 +20,20 @@ function createSessionStore() {
       };
     },
     getSessionId: () => state.sessionId,
-    getCapabilities: () => state.capabilities,
-    getScreenRecording: () => state.screenRecording
+    getCapabilities: (key) => {
+      if (key) {
+        return state.capabilities[key];
+      }
+
+      return state.capabilities;
+    },
+    getScreenRecording: (key) => {
+      if (key) {
+        return state.screenRecording[key];
+      }
+
+      return state.screenRecording;
+    }
   };
 }
 

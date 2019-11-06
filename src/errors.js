@@ -25,6 +25,15 @@ class ElementActionError extends Error {
   }
 }
 
+class ActionError extends Error {
+  constructor(message) {
+    super(message);
+
+    Error.captureStackTrace(this, ActionError);
+    this.name = this.constructor.name;
+  }
+}
+
 class ElementWaitError extends Error {
   constructor(message) {
     super(message);
@@ -58,6 +67,7 @@ module.exports = {
   ElementsNotFoundError,
   ElementActionError,
   ElementWaitError,
+  ActionError,
   NotImplementedError,
   AppiumError
 };
