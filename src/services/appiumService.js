@@ -338,6 +338,14 @@ function createAppiumService(sessionStore) {
     });
   };
 
+  // ({ sessionId: String?, element: AppiumElement }) => Promise.
+  const tapElement = ({ sessionId = sessionStore.getSessionId(), element }) => {
+    return request({
+      method: "POST",
+      path: `/session/${sessionId}/element/${element.ELEMENT}/click`
+    });
+  };
+
   // ({ sessionId: String?, element: AppiumElement, text: String }) => Promise.
   // Note: status of 13 means hardware keyboard needs to be disconnected.
   const sendElementText = ({ sessionId = sessionStore.getSessionId(), element, text }) => {
@@ -386,6 +394,7 @@ function createAppiumService(sessionStore) {
     getElementText,
     getElementValue,
     getElementLocation,
+    tapElement,
     sendElementText,
     clearElementText
   };
