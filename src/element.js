@@ -1,9 +1,13 @@
 const commands = require("./commands");
+const { sessionStore } = require("./stores/sessionStore");
+const { createAppiumService } = require("./services/appiumService");
 const gestures = require("./gestures");
 const expect = require("./expect");
 const { ElementNotFoundError, ElementActionError, ElementWaitError, NotImplementedError } = require("./errors");
 const { isInstanceOf, isNull, pollFor, delay, toBoolean, toNumber, platform } = require("./utils");
 const { transformBounds } = require("./attributeTransforms");
+
+const appiumService = createAppiumService(sessionStore);
 
 const poll = (func, opts) => {
   return func()
@@ -14,12 +18,12 @@ const poll = (func, opts) => {
 };
 
 const getValue = (matcher, value) => {
-  return value.then((elementId) => {
-    if (isNull(elementId)) {
-      return matcher.resolve();
+  return value.then((el) => {
+    if (isNull(el)) {
+      return appiumService.findElement({ matcher });
     }
 
-    return elementId;
+    return el;
   });
 };
 
@@ -52,14 +56,14 @@ const parseValue = (rawValue, elementType, options) => {
 };
 
 class Element {
-  constructor({matcher, value = Promise.resolve(null), thenable = true}) {
+  constructor({ matcher, value = Promise.resolve(null), thenable = true }) {
     this.matcher = matcher;
     this.value = value;
 
     if (thenable) {
-      this.then = function (onResolved, onRejected) {
+      this.then = function(onResolved, onRejected) {
         return this.value.then((value) => {
-          onResolved(new Element({matcher, value: Promise.resolve(value), thenable: false}));
+          onResolved(new Element({ matcher, value: Promise.resolve(value), thenable: false }));
         }, onRejected);
       };
     }
@@ -70,16 +74,16 @@ class Element {
 
     const nextValue = new Promise((resolve, reject) => {
       value.then(
-        (elementId) => {
+        (el) => {
           const done = (err) => {
             if (err) {
               return reject(err);
             }
 
-            resolve(elementId);
+            resolve(el);
           };
 
-          action(elementId, done);
+          action(el, done);
         },
         (err) => {
           if (isInstanceOf(err, ElementNotFoundError)) {
@@ -99,7 +103,7 @@ class Element {
       );
     });
 
-    return new Element({matcher: this.matcher, value: nextValue});
+    return new Element({ matcher: this.matcher, value: nextValue });
   }
 
   _executeWait(conditionFn, maxDuration, interval, timeoutError) {
@@ -108,13 +112,13 @@ class Element {
 
     const nextValue = new Promise((resolve, reject) => {
       value.then(
-        (elementId) => {
+        (el) => {
           pollFor(() => {
-            $element = new Element({matcher: this.matcher, value: Promise.resolve(elementId)});
+            $element = new Element({ matcher: this.matcher, value: Promise.resolve(el) });
 
             return conditionFn($element);
           }, { maxDuration, interval })
-            .then(() => resolve(elementId))
+            .then(() => resolve(el))
             .catch((errors) => {
               reject(new ElementWaitError(timeoutError));
             });
@@ -122,7 +126,7 @@ class Element {
         (err) => {
           if (isInstanceOf(err, ElementNotFoundError)) {
             return pollFor(() => {
-              $element = new Element({matcher: this.matcher});
+              $element = new Element({ matcher: this.matcher });
 
               return conditionFn($element);
             }, { maxDuration, interval })
@@ -144,76 +148,73 @@ class Element {
     return getValue(this.matcher, this.value);
   }
 
+  // TODO: matcher needs to become part of value!
   findElement(matcher) {
     const currentValue = getValue(this.matcher, this.value);
 
-    return currentValue
-      .then((elementId) => {
-        if (!elementId) {
-          throw new ElementActionError("Failed to find element from element that doesn't exist.");
-        }
+    const nextValue = new Promise((resolve, reject) => {
+      currentValue.then(
+        (el) => {
+          if (!el) {
+            throw new ElementActionError("Failed to find element from element that doesn't exist.");
+          }
 
-        return matcher.resolve(false, elementId)
-          .then((elementId) => {
-            const elementMatcher = () => {
-              throw new NotImplementedError();
-            };
+          return appiumService.findElement({ matcher, element: el })
+            .then(resolve);
+        },
+        (err) => reject(err)
+      );
+    });
 
-            return new Element({matcher: elementMatcher, value: Promise.resolve(elementId)});
-          });
-      })
-      .catch((err) => {
-        throw new ElementActionError(err.message);
-      });
+    return new Element({ matcher: this.matcher, value: nextValue });
   }
 
-  findElements(matcher) {
-    const currentValue = getValue(this.matcher, this.value);
-
-    return currentValue
-      .then((elementId) => {
-        if (!elementId) {
-          throw new ElementActionError("Failed to find elements from element that doesn't exist.");
-        }
-
-        return matcher.resolve(true, elementId)
-          .then((elementIds) => {
-            const elementMatcher = () => {
-              throw new NotImplementedError();
-            };
-
-            return elementIds.map((elementId) => {
-              return new Element({matcher: elementMatcher, value: Promise.resolve(elementId)});
-            });
-          });
-      })
-      .catch((err) => {
-        throw new ElementActionError(err.message);
-      });
-  }
+  // findElements(matcher) {
+  //   const currentValue = getValue(this.matcher, this.value);
+  //
+  //   return currentValue
+  //     .then((elementId) => {
+  //       if (!elementId) {
+  //         throw new ElementActionError("Failed to find elements from element that doesn't exist.");
+  //       }
+  //
+  //       return matcher.resolve(true, elementId)
+  //         .then((elementIds) => {
+  //           const elementMatcher = () => {
+  //             throw new NotImplementedError();
+  //           };
+  //
+  //           return elementIds.map((elementId) => {
+  //             return new Element({matcher: elementMatcher, value: Promise.resolve(elementId)});
+  //           });
+  //         });
+  //     })
+  //     .catch((err) => {
+  //       throw new ElementActionError(err.message);
+  //     });
+  // }
 
   tap({ x = 0, y = 0 } = {}) {
-    return this._executeAction((elementId, done) => {
-      if (!elementId) {
+    return this._executeAction((el, done) => {
+      if (!el) {
         return done(new ElementActionError("Failed to tap element that doesn't exist."));
       }
 
-      const $element = new Element({ matcher: this.matcher, value: Promise.resolve(elementId) });
+      // TODO: Replace back with performActions for now.
+      return appiumService.tapElement({ element: el })
+        .then(() => done(null))
+        .catch(() => done(new ElementActionError("Failed to tap element.")));
 
-      return gestures.tap({ x, y, element: $element })
-        .resolve()
-        .then((actions) => {
-          commands.interactions.actions(actions)
-            .then(({status}) => {
-              if (status) {
-                return done(new ElementActionError("Failed to tap element."));
-              }
-
-              done(null);
-            })
-            .catch((err) => done(err));
-        })
-        .catch((err) => done(err));
+      // const $element = new Element({ matcher: this.matcher, value: Promise.resolve(el) });
+      //
+      // return gestures.tap({ x, y, element: $element })
+      //   .resolve()
+      //   .then((actions) => {
+      //     appiumService.performActions({ actions })
+      //       .then(() => done(null))
+      //       .catch(() => done(new ElementActionError("Failed to tap element.")));
+      //   })
+      //   .catch((err) => done(err));
     });
   }
 
@@ -399,29 +400,29 @@ class Element {
   getText() {
     const currentValue = getValue(this.matcher, this.value);
 
-    return currentValue.then((elementId) => {
+    return currentValue.then((el) => {
       return platform.select({
         ios: () => {
-          return commands.element.attributes.type(elementId)
+          return appiumService.getElementType({ element: el })
             .then((elementType) => {
               if (elementType === "XCUIElementTypeStaticText") {
-                return commands.element.attributes.text(elementId);
+                return appiumService.getElementText({ element: el });
               }
 
-              return commands.element.attributes.text(elementId)
+              return appiumService.getElementText({ element: el })
                 .then((text) => {
                   if (text) {
                     return text;
                   }
 
-                  const query = {
+                  const matcher = {
                     using: "-ios predicate string",
                     value: `type == "XCUIElementTypeStaticText"`
                   };
 
-                  return commands.element.findElementsFromElement(elementId, query)
-                    .then((textElements) => {
-                      const tasks = textElements.map((elementId) => commands.element.attributes.text(elementId));
+                  return appiumService.findElements({ element: el, matcher })
+                    .then((textEls) => {
+                      const tasks = textEls.map((el) => appiumService.getElementText({ element: el }));
 
                       return Promise.all(tasks)
                         .then((textFragments) => textFragments.join(" "));
@@ -463,50 +464,51 @@ class Element {
   getValue(options) {
     const currentValue = getValue(this.matcher, this.value);
 
-    return currentValue.then((elementId) => {
-      return commands.element.attributes.type(elementId)
-        .then((elementType) => {
-          return commands.element.attributes.value(elementId)
-            .then(({status, value}) => {
-              if (status) {
-                throw new ElementActionError("Failed to get value for element.");
-              }
+    return currentValue.then((el) => {
+      const tasks = [
+        appiumService.getElementType({ element: el }),
+        appiumService.getElementValue({ element: el })
+      ];
 
-              return parseValue(value, elementType, options);
-            });
+      return Promise.all(tasks)
+        .then(([ type, value ]) => {
+          return parseValue(value, type, options);
+        })
+        .catch(() => {
+          throw new ElementActionError("Failed to get value for element.");
         });
     });
   }
 
-  exists() {
-    const currentValue = getValue(this.matcher, this.value);
-
-    return currentValue
-      .then((elementId) => {
-        if (!elementId) {
-          return false;
-        }
-
-        return commands.element.attributes.type(elementId)
-          .then(() => true)
-          .catch(() => false);
-      })
-      .catch((err) => {
-        if (isInstanceOf(err, ElementNotFoundError)) {
-          return this.matcher.resolve()
-            .then(() => true)
-            .catch(() => false);
-        }
-
-        throw err;
-      });
-  }
+  // exists() {
+  //   const currentValue = getValue(this.matcher, this.value);
+  //
+  //   return currentValue
+  //     .then((elementId) => {
+  //       if (!elementId) {
+  //         return false;
+  //       }
+  //
+  //       return commands.element.attributes.type(elementId)
+  //         .then(() => true)
+  //         .catch(() => false);
+  //     })
+  //     .catch((err) => {
+  //       if (isInstanceOf(err, ElementNotFoundError)) {
+  //         return this.matcher.resolve()
+  //           .then(() => true)
+  //           .catch(() => false);
+  //       }
+  //
+  //       throw err;
+  //     });
+  // }
 
   isVisible() {
     const currentValue = getValue(this.matcher, this.value);
 
     return currentValue
-      .then((elementId) => commands.element.attributes.displayed(elementId))
+      .then((element) => appiumService.getElementVisible({ element }))
       .catch((err) => {
         if (isInstanceOf(err, ElementNotFoundError)) {
           return false;
@@ -699,7 +701,7 @@ class Element {
 }
 
 const element = (matcher) => {
-  return new Element({matcher});
+  return new Element({ matcher });
 };
 
 module.exports = {
