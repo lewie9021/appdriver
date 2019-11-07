@@ -7,7 +7,7 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-it("returns the session's capabilities.deviceName", async () => {
+it("returns the 'deviceName' session capability", async () => {
   const deviceName = "iPhone X";
 
   jest.spyOn(sessionStore, "getCapabilities").mockReturnValue(deviceName);
