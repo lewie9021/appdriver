@@ -8,7 +8,9 @@ const elements = require("./src/elements");
 module.exports = {
   by: matchers,
   device: new Device(),
-  element: (matcher) => new Element({ matcher }),
+  element: (matcher) => {
+    return new Element({ value: Promise.resolve({ matcher, element: null }) });
+  },
   elements,
   expect,
   gestures
