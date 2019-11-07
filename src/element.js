@@ -535,37 +535,32 @@ class Element {
   }
 
   swipe({ x = 0, y = 0, distance, direction, duration }) {
-    return this._executeAction((elementId, done) => {
-      if (!elementId) {
+    return this._executeAction((value, done) => {
+      if (!value.element) {
         return done(new ElementActionError("Can't swipe on element that doesn't exist"));
       }
 
-      const $element = new Element({matcher: this.matcher, value: Promise.resolve(elementId)});
+      const $element = new Element({ value: Promise.resolve(value) });
 
-      return gestures.swipe({x, y, distance, direction, duration, element: $element})
+      return gestures.swipe({ x, y, distance, direction, duration, element: $element })
         .resolve()
         .then((actions) => {
-          commands.interactions.actions(actions)
-            .then(({status}) => {
-              if (status) {
-                return done(new ElementActionError("Failed to swipe on element."));
-              }
-
-              done(null);
-            })
-            .catch((err) => done(err));
+          appiumService.performActions({ actions })
+            .then(() => done(null))
+            .catch(() => done(new ElementActionError("Failed to swipe on element.")));
         })
         .catch((err) => done(err));
     });
   }
 
   swipeUp({ x = 0, y = 0, distance, percentage, duration }) {
-    return this._executeAction((elementId, done) => {
-      if (!elementId) {
+    return this._executeAction((value, done) => {
+      if (!value.element) {
         return done(new ElementActionError("Can't swipe up on element that doesn't exist"));
       }
 
-      const $element = new Element({matcher: this.matcher, value: Promise.resolve(elementId)});
+      const $element = new Element({ value: Promise.resolve(value) });
+
       const resolveSwipeDistance = () => {
         if (!percentage) {
           return Promise.resolve(distance);
@@ -581,27 +576,22 @@ class Element {
             .resolve();
         })
         .then((actions) => {
-          commands.interactions.actions(actions)
-            .then(({status}) => {
-              if (status) {
-                return done(new ElementActionError("Failed to swipe up on element."));
-              }
-
-              done(null);
-            })
-            .catch((err) => done(err));
+          appiumService.performActions({ actions })
+            .then(() => done(null))
+            .catch(() => done(new ElementActionError("Failed to swipe up on element.")));
         })
         .catch((err) => done(err));
     });
   }
 
   swipeDown({ x = 0, y = 0, distance, percentage, duration }) {
-    return this._executeAction((elementId, done) => {
-      if (!elementId) {
+    return this._executeAction((value, done) => {
+      if (!value.element) {
         return done(new ElementActionError("Can't swipe down on element that doesn't exist"));
       }
 
-      const $element = new Element({matcher: this.matcher, value: Promise.resolve(elementId)});
+      const $element = new Element({ value: Promise.resolve(value) });
+
       const resolveSwipeDistance = () => {
         if (!percentage) {
           return Promise.resolve(distance);
@@ -617,27 +607,22 @@ class Element {
             .resolve();
         })
         .then((actions) => {
-          commands.interactions.actions(actions)
-            .then(({status}) => {
-              if (status) {
-                return done(new ElementActionError("Failed to swipe down on element."));
-              }
-
-              done(null);
-            })
-            .catch((err) => done(err));
+          appiumService.performActions({ actions })
+            .then(() => done(null))
+            .catch(() => done(new ElementActionError("Failed to swipe down on element.")));
         })
         .catch((err) => done(err));
     });
   }
 
   swipeLeft({ x = 0, y = 0, distance, percentage, duration }) {
-    return this._executeAction((elementId, done) => {
-      if (!elementId) {
+    return this._executeAction((value, done) => {
+      if (!value.element) {
         return done(new ElementActionError("Can't swipe left on element that doesn't exist"));
       }
 
-      const $element = new Element({matcher: this.matcher, value: Promise.resolve(elementId)});
+      const $element = new Element({ value: Promise.resolve(value) });
+
       const resolveSwipeDistance = () => {
         if (!percentage) {
           return Promise.resolve(distance);
@@ -653,27 +638,22 @@ class Element {
             .resolve();
         })
         .then((actions) => {
-          commands.interactions.actions(actions)
-            .then(({status}) => {
-              if (status) {
-                return done(new ElementActionError("Failed to swipe left on element."));
-              }
-
-              done(null);
-            })
-            .catch((err) => done(err));
+          appiumService.performActions({ actions })
+            .then(() => done(null))
+            .catch(() => done(new ElementActionError("Failed to swipe left on element.")));
         })
         .catch((err) => done(err));
     });
   }
 
   swipeRight({ x = 0, y = 0, distance, percentage, duration }) {
-    return this._executeAction((elementId, done) => {
-      if (!elementId) {
+    return this._executeAction((value, done) => {
+      if (!value.element) {
         return done(new ElementActionError("Can't swipe right on element that doesn't exist"));
       }
 
-      const $element = new Element({matcher: this.matcher, value: Promise.resolve(elementId)});
+      const $element = new Element({ value: Promise.resolve(value) });
+
       const resolveSwipeDistance = () => {
         if (!percentage) {
           return Promise.resolve(distance);
@@ -689,15 +669,9 @@ class Element {
             .resolve();
         })
         .then((actions) => {
-          commands.interactions.actions(actions)
-            .then(({status}) => {
-              if (status) {
-                return done(new ElementActionError("Failed to swipe right on element."));
-              }
-
-              done(null);
-            })
-            .catch((err) => done(err));
+          appiumService.performActions({ actions })
+            .then(() => done(null))
+            .catch(() => done(new ElementActionError("Failed to swipe right on element.")));
         })
         .catch((err) => done(err));
     });
