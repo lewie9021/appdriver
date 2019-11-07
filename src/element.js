@@ -1,4 +1,3 @@
-const commands = require("./commands");
 const { sessionStore } = require("./stores/sessionStore");
 const { createAppiumService } = require("./services/appiumService");
 const gestures = require("./gestures");

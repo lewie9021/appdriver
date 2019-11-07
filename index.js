@@ -1,4 +1,4 @@
-const matchers = require("./src/matchers-v2");
+const matchers = require("./src/matchers");
 const { Device } = require("./src/device");
 const expect = require("./src/expect");
 const gestures = require("./src/gestures");

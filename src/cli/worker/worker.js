@@ -1,6 +1,5 @@
 const yargs = require("yargs");
 const mocha = require("./mocha");
-const commands = require("../../commands");
 const { sessionStore } = require("../../stores/sessionStore");
 const { createAppiumService } = require("../../services/appiumService");
 
