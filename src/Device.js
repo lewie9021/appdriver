@@ -64,7 +64,8 @@ class Device {
   }
 
   getOrientation() {
-    return appiumService.getOrientation();
+    return appiumService.getOrientation()
+      .catch(handleActionError("Failed to get device orientation."));
   }
 
   setOrientation(orientation) {
