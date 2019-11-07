@@ -347,7 +347,6 @@ function createAppiumService(sessionStore) {
   };
 
   // ({ sessionId: String?, element: AppiumElement, keys: Array<String> }) => Promise.
-  // Note: status of 13 means hardware keyboard needs to be disconnected.
   const sendElementKeys = ({ sessionId = sessionStore.getSessionId(), element, keys }) => {
     return request({
       method: "POST",
