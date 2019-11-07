@@ -1,7 +1,7 @@
 const appiumServer = require("../helpers/appiumServer");
 
 const { element, by } = require("../../");
-const { Element } = require("../../src/element");
+const { Element } = require("../../src/Element");
 const { ElementActionError } = require("../../src/errors");
 
 afterEach(() => {

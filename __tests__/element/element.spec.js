@@ -2,7 +2,7 @@ const appiumServer = require("../helpers/appiumServer");
 const fetch = require("node-fetch");
 
 const { element, by } = require("../../");
-const { Element } = require("../../src/element");
+const { Element } = require("../../src/Element");
 
 afterEach(() => {
   appiumServer.resetMocks();

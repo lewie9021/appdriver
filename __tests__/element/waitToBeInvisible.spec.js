@@ -5,7 +5,7 @@ jest.mock("../../src/session");
 const mockSession = require("../helpers/mockSession");
 
 const { element, by } = require("../../");
-const { Element } = require("../../src/element");
+const { Element } = require("../../src/Element");
 const { ElementActionError } = require("../../src/errors");
 
 beforeEach(() => {

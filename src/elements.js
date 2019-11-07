@@ -1,6 +1,6 @@
 const { sessionStore } = require("./stores/sessionStore");
 const { createAppiumService } = require("./services/appiumService");
-const { Element } = require("./element");
+const { Element } = require("./Element");
 
 const appiumService = createAppiumService(sessionStore);
 
