@@ -18,9 +18,9 @@ const poll = (func, opts) => {
 
 const getCurrentValue = (elementValue) => {
   return elementValue.then((value) => {
-    if (isNull(value.element) && value.matcher) {
+    if (isNull(value.ref) && value.matcher) {
       return appiumService.findElement({ matcher: value.matcher })
-        .then((element) => ({ matcher: value.matcher, element }))
+        .then((ref) => ({ ref, matcher: value.matcher }))
         .catch(() => {
           throw new ElementNotFoundError("Failed to find element", value.matcher);
         });
@@ -146,9 +146,9 @@ class Element {
     return new Element({ value: nextValue });
   }
 
-  _getElementId() {
+  _getRef() {
     return getCurrentValue(this.value)
-      .then((value) => value.element.ELEMENT);
+      .then((value) => value.ref.ELEMENT);
   }
 
   findElement(matcher) {
@@ -157,12 +157,12 @@ class Element {
     const nextValue = new Promise((resolve, reject) => {
       currentValue.then(
         (value) => {
-          if (!value.element) {
+          if (!value.ref) {
             throw new ElementActionError("Failed to find element from element that doesn't exist.");
           }
 
-          return appiumService.findElement({ matcher, element: value.element })
-            .then((element) => resolve({ matcher, element }));
+          return appiumService.findElement({ matcher, element: value.ref })
+            .then((ref) => resolve({ matcher, ref }));
         },
         (err) => reject(err)
       );
@@ -176,14 +176,14 @@ class Element {
 
     return currentValue
       .then((value) => {
-        if (!value.element) {
+        if (!value.ref) {
           throw new ElementActionError("Failed to find elements from element that doesn't exist.");
         }
 
-        return appiumService.findElements({ element: value.element, matcher })
-          .then((elements) => {
-            return elements.map((element) => {
-              return new Element({ value: Promise.resolve({ element, matcher: null }) });
+        return appiumService.findElements({ element: value.ref, matcher })
+          .then((refs) => {
+            return refs.map((ref) => {
+              return new Element({ value: Promise.resolve({ ref, matcher: null }) });
             });
           });
       })
@@ -194,7 +194,7 @@ class Element {
 
   tap({ x = 0, y = 0 } = {}) {
     return this._executeAction((value, done) => {
-      if (!value.element) {
+      if (!value.ref) {
         return done(new ElementActionError("Failed to tap element that doesn't exist."));
       }
 
@@ -213,7 +213,7 @@ class Element {
 
   longPress({ x = 0, y = 0, duration = 750 } = {}) {
     return this._executeAction((value, done) => {
-      if (!value.element) {
+      if (!value.ref) {
         return done(new ElementActionError("Failed to long press element that doesn't exist."));
       }
 
@@ -232,7 +232,7 @@ class Element {
 
   typeText(text) {
     return this._executeAction((value, done) => {
-      if (!value.element) {
+      if (!value.ref) {
         return done(new ElementActionError("Can't type text on element that doesn't exist"));
       }
 
@@ -240,7 +240,7 @@ class Element {
         return done(new ElementActionError(`Failed to type text. 'text' must be a string, instead got ${typeof text}.`));
       }
 
-      return appiumService.sendElementKeys({ element: value.element, keys: text.split("") })
+      return appiumService.sendElementKeys({ element: value.ref, keys: text.split("") })
         .then(() => done(null))
         .catch((err) => {
           if (isInstanceOf(err, AppiumError)) {
@@ -256,11 +256,11 @@ class Element {
 
   clearText() {
     return this._executeAction((value, done) => {
-      if (!value.element) {
+      if (!value.ref) {
         return done(new ElementActionError("Failed to clear text for element that doesn't exist."));
       }
 
-      return appiumService.clearElementText({ element: value.element })
+      return appiumService.clearElementText({ element: value.ref })
         .then(() => done(null))
         .catch(() => done(new ElementActionError("Failed to clear text on element.")));
     });
@@ -270,11 +270,11 @@ class Element {
     const currentValue = getCurrentValue(this.value);
 
     return currentValue.then((value) => {
-      if (!value.element) {
+      if (!value.ref) {
         throw new ElementActionError("Failed to get size of element that doesn't exist.");
       }
 
-      return appiumService.getElementSize({ element: value.element })
+      return appiumService.getElementSize({ element: value.ref })
         .catch(() => {
           throw new ElementActionError("Failed to get size of element.")
         });
@@ -322,7 +322,7 @@ class Element {
     });
 
     return currentValue.then((value) => {
-      if (!value.element) {
+      if (!value.ref) {
         throw new ElementActionError("Failed to get attribute of element that doesn't exist.");
       }
 
@@ -332,7 +332,7 @@ class Element {
         throw new ElementActionError(`Invalid attribute.\n\nValid attributes are:\n\n${validAttributes.map((x) => `- ${x.name}`).join("\n")}`);
       }
 
-      return appiumService.getElementAttribute({ element: value.element, attribute: attribute.internalName || attribute.name })
+      return appiumService.getElementAttribute({ element: value.ref, attribute: attribute.internalName || attribute.name })
         .then(attribute.transform)
         .catch(() => {
           throw new ElementActionError("Failed to get element attribute.");
@@ -344,11 +344,11 @@ class Element {
     const currentValue = getCurrentValue(this.value);
 
     return currentValue.then((value) => {
-      if (!value.element) {
+      if (!value.ref) {
         throw new ElementActionError("Failed to get location of element that doesn't exist.");
       }
 
-      return appiumService.getElementLocation({ element: value.element, relative })
+      return appiumService.getElementLocation({ element: value.ref, relative })
         .catch(() => {
           throw new ElementActionError("Failed to get location of element.");
         });
@@ -405,13 +405,13 @@ class Element {
     return currentValue.then((value) => {
       return platform.select({
         ios: () => {
-          return appiumService.getElementType({ element: value.element })
+          return appiumService.getElementType({ element: value.ref })
             .then((elementType) => {
               if (elementType === "XCUIElementTypeStaticText") {
-                return appiumService.getElementText({ element: value.element });
+                return appiumService.getElementText({ element: value.ref });
               }
 
-              return appiumService.getElementText({ element: value.element })
+              return appiumService.getElementText({ element: value.ref })
                 .then((text) => {
                   if (text) {
                     return text;
@@ -422,9 +422,9 @@ class Element {
                     value: `type == "XCUIElementTypeStaticText"`
                   };
 
-                  return appiumService.findElements({ element: value.element, matcher })
-                    .then((textElements) => {
-                      const tasks = textElements.map((element) => appiumService.getElementText({ element }));
+                  return appiumService.findElements({ element: value.ref, matcher })
+                    .then((refs) => {
+                      const tasks = refs.map((ref) => appiumService.getElementText({ element: ref }));
 
                       return Promise.all(tasks)
                         .then((textFragments) => textFragments.join(" "));
@@ -436,10 +436,10 @@ class Element {
             });
         },
         android: () => {
-          return appiumService.getElementType({ element: value.element })
+          return appiumService.getElementType({ element: value.ref })
             .then((elementType) => {
               if (elementType === "android.widget.TextView") {
-                return appiumService.getElementText({ element: value.element });
+                return appiumService.getElementText({ element: value.ref });
               }
 
               const matcher = {
@@ -447,9 +447,9 @@ class Element {
                 value: "android.widget.TextView"
               };
 
-              return appiumService.findElements({ element: value.element, matcher })
-                .then((textElements) => {
-                  const tasks = textElements.map((element) => appiumService.getElementText({ element }));
+              return appiumService.findElements({ element: value.ref, matcher })
+                .then((refs) => {
+                  const tasks = refs.map((ref) => appiumService.getElementText({ element: ref }));
 
                   return Promise.all(tasks)
                     .then((textFragments) => textFragments.join(" "));
@@ -468,8 +468,8 @@ class Element {
 
     return currentValue.then((value) => {
       const tasks = [
-        appiumService.getElementType({ element: value.element }),
-        appiumService.getElementValue({ element: value.element })
+        appiumService.getElementType({ element: value.ref }),
+        appiumService.getElementValue({ element: value.ref })
       ];
 
       return Promise.all(tasks)
@@ -485,11 +485,11 @@ class Element {
 
     return currentValue
       .then((value) => {
-        if (!value.element) {
+        if (!value.ref) {
           return false;
         }
 
-        return appiumService.getElementType({ element: value.element })
+        return appiumService.getElementType({ element: value.ref })
           .then(() => true)
           .catch(() => false);
       })
@@ -507,7 +507,7 @@ class Element {
 
     return currentValue
       .then((value) => {
-        return appiumService.getElementVisible({ element: value.element })
+        return appiumService.getElementVisible({ element: value.ref })
       })
       .catch((err) => {
         if (isInstanceOf(err, ElementNotFoundError)) {
@@ -522,11 +522,11 @@ class Element {
     const currentValue = getCurrentValue(this.value);
 
     return currentValue.then((value) => {
-      if (!value.element) {
+      if (!value.ref) {
         throw new ElementActionError("Failed to retrieve disabled status of element that doesn't exist.");
       }
 
-      return appiumService.getElementDisabled({ element: value.element })
+      return appiumService.getElementDisabled({ element: value.ref })
         .catch(() => {
           throw new ElementActionError("Failed to retrieve disabled status of element.");
         });
@@ -535,7 +535,7 @@ class Element {
 
   swipe({ x = 0, y = 0, distance, direction, duration }) {
     return this._executeAction((value, done) => {
-      if (!value.element) {
+      if (!value.ref) {
         return done(new ElementActionError("Can't swipe on element that doesn't exist"));
       }
 
@@ -554,7 +554,7 @@ class Element {
 
   swipeUp({ x = 0, y = 0, distance, percentage, duration }) {
     return this._executeAction((value, done) => {
-      if (!value.element) {
+      if (!value.ref) {
         return done(new ElementActionError("Can't swipe up on element that doesn't exist"));
       }
 
@@ -585,7 +585,7 @@ class Element {
 
   swipeDown({ x = 0, y = 0, distance, percentage, duration }) {
     return this._executeAction((value, done) => {
-      if (!value.element) {
+      if (!value.ref) {
         return done(new ElementActionError("Can't swipe down on element that doesn't exist"));
       }
 
@@ -616,7 +616,7 @@ class Element {
 
   swipeLeft({ x = 0, y = 0, distance, percentage, duration }) {
     return this._executeAction((value, done) => {
-      if (!value.element) {
+      if (!value.ref) {
         return done(new ElementActionError("Can't swipe left on element that doesn't exist"));
       }
 
@@ -647,7 +647,7 @@ class Element {
 
   swipeRight({ x = 0, y = 0, distance, percentage, duration }) {
     return this._executeAction((value, done) => {
-      if (!value.element) {
+      if (!value.ref) {
         return done(new ElementActionError("Can't swipe right on element that doesn't exist"));
       }
 

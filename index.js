@@ -12,11 +12,11 @@ module.exports = {
   by: matchers,
   device: new Device(),
   element: (matcher) => {
-    return new Element({ value: Promise.resolve({ matcher, element: null }) });
+    return new Element({ value: Promise.resolve({ ref: null, matcher }) });
   },
   elements: (matcher) => {
     return appiumService.findElements({ matcher })
-      .then((refs) => refs.map((ref) => new Element({ value: Promise.resolve({ element: ref, matcher: null }) })));
+      .then((refs) => refs.map((ref) => new Element({ value: Promise.resolve({ ref, matcher: null }) })));
   },
   expect: (value) => {
     return new Expect(value);

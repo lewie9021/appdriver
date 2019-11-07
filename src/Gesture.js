@@ -9,11 +9,11 @@ class Gesture {
     const resolvedActions = await Promise.all(
       this.actions.map(async (action) => {
         if (action.element) {
-          const elementId = await action.element._getElementId();
+          const ref = await action.element._getRef();
 
           return {
             ...action,
-            element: elementId
+            element: ref
           };
         }
 
