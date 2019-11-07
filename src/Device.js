@@ -1,11 +1,17 @@
 const fs = require("fs");
 const { sessionStore } = require("./stores/sessionStore");
-const { createAppiumService } = require("./services/appiumService");
+const { appiumService } = require("./services/appiumService");
 const gestures = require("./gestures");
-const { delay, isUndefined, platform } = require("./utils");
-const { ActionError } = require("./errors");
+const { delay, isUndefined, isInstanceOf, platform } = require("./utils");
+const { ActionError, AppiumError } = require("./errors");
 
-const appiumService = createAppiumService(sessionStore);
+const handleActionError = (message) => (err) => {
+  if (isInstanceOf(err, AppiumError)) {
+    throw new ActionError(message);
+  }
+
+  throw err;
+};
 
 class Device {
 
@@ -45,9 +51,7 @@ class Device {
 
   getViewport() {
     return appiumService.getViewport()
-      .catch(() => {
-        throw new ActionError("Failed to get device viewport.");
-      });
+      .catch(handleActionError("Failed to get device viewport."));
   }
 
   async performGesture(gesture) {
@@ -173,11 +177,13 @@ class Device {
   // Seems to fire and forget...
   hideKeyboard() {
     return appiumService.hideKeyboard()
-      .then(() => delay(500));
+      .then(() => delay(500))
+      .catch(handleActionError("Failed to hide keyboard."));
   }
 
   isKeyboardVisible() {
-    return appiumService.getKeyboardVisible();
+    return appiumService.getKeyboardVisible()
+      .catch(handleActionError("Failed to get keyboard visibility status."));
   }
 
   takeScreenshot({ filePath } = {}) {
@@ -202,7 +208,8 @@ class Device {
   }
 
   goBack() {
-    return appiumService.goBack();
+    return appiumService.goBack()
+      .catch(handleActionError("Failed to go back."));
   }
 
   startScreenRecording(options = {}) {

@@ -1,23 +1,39 @@
-const appiumServer = require("../helpers/appiumServer");
+jest.mock("../../src/services/appiumService");
+
+const { appiumService } = require("../../src/services/appiumService");
+const { AppiumError, ActionError } = require("../../src/errors");
 const { device } = require("../../");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.restoreAllMocks();
 });
 
-it("hides the keyboard", async () => {
-  const hideKeyboardMock = appiumServer.mockHideKeyboard();
+it("executes the 'hideKeyboard' method on the Appium Service", async () => {
+  jest.spyOn(appiumService, "hideKeyboard").mockResolvedValue(null);
 
   await device.hideKeyboard();
 
-  expect(appiumServer.getCalls(hideKeyboardMock)).toHaveLength(1);
+  expect(appiumService.hideKeyboard).toHaveBeenCalled();
 });
 
-it("correctly handles hide keyboard request errors", async () => {
-  const hideKeyboardMock = appiumServer.mockHideKeyboard({status: 3});
+it("throws an ActionError for Appium request errors", async () => {
+  const error = new AppiumError("Request error.", 3);
+
+  jest.spyOn(appiumService, "hideKeyboard").mockRejectedValue(error);
 
   await expect(device.hideKeyboard())
-    .rejects.toThrow(new Error("Failed to hide keyboard."));
+    .rejects.toThrow(new ActionError("Failed to hide keyboard."));
 
-  expect(appiumServer.getCalls(hideKeyboardMock)).toHaveLength(1);
+  expect(appiumService.hideKeyboard).toHaveBeenCalled();
+});
+
+it("propagates other types of errors", async () => {
+  const error = new Error("Something went wrong.");
+
+  jest.spyOn(appiumService, "hideKeyboard").mockRejectedValue(error);
+
+  await expect(device.hideKeyboard())
+    .rejects.toThrow(error);
+
+  expect(appiumService.hideKeyboard).toHaveBeenCalled();
 });

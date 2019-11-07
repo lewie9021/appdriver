@@ -1,29 +1,41 @@
-const appiumServer = require("../helpers/appiumServer");
-const fetch = require("node-fetch");
+jest.mock("../../src/services/appiumService");
 
+const { appiumService } = require("../../src/services/appiumService");
+const { AppiumError, ActionError } = require("../../src/errors");
 const { device } = require("../../");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.restoreAllMocks();
 });
 
-it("returns the device viewport width and height", async () => {
-  const width = 640;
-  const height = 480;
-
-  appiumServer.mockWindowRect({width, height});
+it("returns the result of 'getViewport' on the Appium Service", async () => {
+  const viewport = { width: 640, height: 480 };
+  jest.spyOn(appiumService, "getViewport").mockResolvedValue(viewport);
 
   const result = await device.getViewport();
 
-  expect(result).toEqual({width, height});
-  expect(fetch).toHaveBeenCalledTimes(1);
+  expect(result).toEqual(viewport);
+  expect(appiumService.getViewport).toHaveBeenCalled();
 });
 
-it("correctly handles session window rect request errors", async () => {
-  appiumServer.mockWindowRect({status: 3});
+it("throws an ActionError for Appium request errors", async () => {
+  const error = new AppiumError("Request error.", 3);
+
+  jest.spyOn(appiumService, "getViewport").mockRejectedValue(error);
 
   await expect(device.getViewport())
-    .rejects.toThrow(new Error("Failed to get device viewport."));
+    .rejects.toThrow(new ActionError("Failed to get device viewport."));
 
-  expect(fetch).toHaveBeenCalledTimes(1);
+  expect(appiumService.getViewport).toHaveBeenCalled();
+});
+
+it("propagates other types of errors", async () => {
+  const error = new Error("Something went wrong.");
+
+  jest.spyOn(appiumService, "getViewport").mockRejectedValue(error);
+
+  await expect(device.getViewport())
+    .rejects.toThrow(error);
+
+  expect(appiumService.getViewport).toHaveBeenCalled();
 });

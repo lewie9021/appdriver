@@ -1,59 +1,39 @@
-const appiumServer = require("../helpers/appiumServer");
-const { NotImplementedError } = require("../../src/errors");
+jest.mock("../../src/services/appiumService");
 
-jest.mock("../../src/session");
-const mockSession = require("../helpers/mockSession");
-
+const { appiumService } = require("../../src/services/appiumService");
+const { AppiumError, ActionError, NotImplementedError } = require("../../src/errors");
 const { device } = require("../../");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.restoreAllMocks();
 });
 
-describe("Android", () => {
-  beforeEach(() => {
-    mockSession({
-      sessionId: "sessionId",
-      platformName: "Android"
-    });
-  });
+it("executes the 'goBack' method on the Appium Service", async () => {
+  jest.spyOn(appiumService, "goBack").mockResolvedValue(null);
 
-  it("taps the hardware back button", async () => {
-    const backMock = appiumServer.mockBack();
+  await device.goBack();
 
-    await device.goBack();
-
-    expect(appiumServer.getCalls(backMock)).toHaveLength(1);
-  });
-
-  it("correctly handles back request errors", async () => {
-    const backMock = appiumServer.mockBack({status: 3});
-
-    await expect(device.goBack())
-      .rejects.toThrow(new Error("Failed to go back."));
-
-    expect(appiumServer.getCalls(backMock)).toHaveLength(1);
-  });
+  expect(appiumService.goBack).toHaveBeenCalled();
 });
 
-describe("iOS", () => {
-  beforeEach(() => {
-    mockSession({
-      sessionId: "sessionId",
-      platformName: "iOS"
-    });
-  });
+it("throws an ActionError for Appium request errors", async () => {
+  const error = new AppiumError("Request error.", 3);
 
-  it("throws a not implemented error", async () => {
-    const backMock = appiumServer.mockBack();
-    mockSession({
-      sessionId: "sessionId",
-      platformName: "iOS"
-    });
+  jest.spyOn(appiumService, "goBack").mockRejectedValue(error);
 
-    await expect(device.goBack())
-      .rejects.toThrow(NotImplementedError);
+  await expect(device.goBack())
+    .rejects.toThrow(new ActionError("Failed to go back."));
 
-    expect(appiumServer.getCalls(backMock)).toHaveLength(0);
-  });
+  expect(appiumService.goBack).toHaveBeenCalled();
+});
+
+it("propagates other types of errors", async () => {
+  const error = new NotImplementedError();
+
+  jest.spyOn(appiumService, "goBack").mockRejectedValue(error);
+
+  await expect(device.goBack())
+    .rejects.toThrow(error);
+
+  expect(appiumService.goBack).toHaveBeenCalled();
 });
