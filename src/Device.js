@@ -69,7 +69,8 @@ class Device {
   }
 
   setOrientation(orientation) {
-    return appiumService.setOrientation({ orientation });
+    return appiumService.setOrientation({ orientation })
+      .catch(handleActionError(`Failed to set device orientation to '${orientation}'.`));
   }
 
   async swipe({ x = 0, y = 0, distance, direction, duration }) {
