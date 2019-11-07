@@ -1,7 +1,7 @@
 const { sessionStore } = require("./stores/sessionStore");
 const { createAppiumService } = require("./services/appiumService");
 const gestures = require("./gestures");
-const expect = require("./expect");
+const { Expect } = require("./Expect");
 const { ElementNotFoundError, ElementActionError, ElementWaitError, AppiumError } = require("./errors");
 const { isInstanceOf, isNull, pollFor, delay, toBoolean, toNumber, platform } = require("./utils");
 const { transformBounds } = require("./attributeTransforms");
@@ -366,7 +366,7 @@ class Element {
   waitToBeVisible(options = {}) {
     const maxDuration = options.maxDuration || 5000;
     const interval = options.interval || 200;
-    const conditionFn = ($e) => expect($e.isVisible()).toEqual(true);
+    const conditionFn = ($e) => new Expect($e.isVisible()).toEqual(true);
     const timeoutError = `Element not visible after ${maxDuration}ms timeout (interval: ${interval}ms).`;
 
     return this._executeWait(conditionFn, maxDuration, interval, timeoutError);
@@ -375,7 +375,7 @@ class Element {
   waitToBeInvisible(options = {}) {
     const maxDuration = options.maxDuration || 5000;
     const interval = options.interval || 200;
-    const conditionFn = ($e) => expect($e.isVisible()).toEqual(false);
+    const conditionFn = ($e) => new Expect($e.isVisible()).toEqual(false);
     const timeoutError = `Element still visible after ${maxDuration}ms timeout (interval: ${interval}ms).`;
 
     return this._executeWait(conditionFn, maxDuration, interval, timeoutError);
@@ -384,7 +384,7 @@ class Element {
   waitToExist(options = {}) {
     const maxDuration = options.maxDuration || 5000;
     const interval = options.interval || 200;
-    const conditionFn = ($e) => expect($e.exists()).toEqual(true);
+    const conditionFn = ($e) => new Expect($e.exists()).toEqual(true);
     const timeoutError = `Element not found after ${maxDuration}ms timeout (interval: ${interval}ms).`;
 
     return this._executeWait(conditionFn, maxDuration, interval, timeoutError);
@@ -393,7 +393,7 @@ class Element {
   waitToNotExist(options = {}) {
     const maxDuration = options.maxDuration || 5000;
     const interval = options.interval || 200;
-    const conditionFn = ($e) => expect($e.exists()).toEqual(false);
+    const conditionFn = ($e) => new Expect($e.exists()).toEqual(false);
     const timeoutError = `Element still found after ${maxDuration}ms timeout (interval: ${interval}ms).`;
 
     return this._executeWait(conditionFn, maxDuration, interval, timeoutError);
