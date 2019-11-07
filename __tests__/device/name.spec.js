@@ -1,26 +1,17 @@
+jest.mock("../../src/stores/sessionStore");
+
+const { sessionStore } = require("../../src/stores/sessionStore");
 const { device } = require("../../");
-const mockSession = require("../helpers/mockSession");
 
-it("returns name of device from session (iOS simulator)", () => {
-  const deviceName = "iPhone X";
-
-  mockSession({
-    sessionId: "sessionId",
-    platformName: "iOS",
-    deviceName
-  });
-
-  expect(device.name).toEqual(deviceName);
+afterEach(() => {
+  jest.restoreAllMocks();
 });
 
-it("returns name of device from session (Android emulator)", () => {
-  const deviceName = "Pixel_2_API_27";
+it("returns the session's capabilities.deviceName", async () => {
+  const deviceName = "iPhone X";
 
-  mockSession({
-    sessionId: "sessionId",
-    platformName: "Android",
-    deviceName
-  });
+  jest.spyOn(sessionStore, "getCapabilities").mockReturnValue(deviceName);
 
   expect(device.name).toEqual(deviceName);
+  expect(sessionStore.getCapabilities).toHaveBeenCalledWith("deviceName");
 });
