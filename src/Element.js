@@ -145,7 +145,7 @@ class Element {
 
   _getRef() {
     return getCurrentValue(this.value)
-      .then((value) => value.ref.ELEMENT);
+      .then((value) => value.ref);
   }
 
   findElement(matcher) {
