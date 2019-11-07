@@ -17,17 +17,29 @@ const poll = (func, opts) => {
 };
 
 const getCurrentValue = (elementValue) => {
-  return elementValue.then((value) => {
-    if (isNull(value.ref) && value.matcher) {
-      return appiumService.findElement({ matcher: value.matcher })
-        .then((ref) => ({ ref, matcher: value.matcher }))
-        .catch(() => {
-          throw new ElementNotFoundError("Failed to find element", value.matcher);
-        });
-    }
+  return elementValue
+    .catch((err) => {
+      if (isInstanceOf(err, ElementNotFoundError) && err.matcher) {
+        return appiumService.findElement({ matcher: err.matcher })
+          .then((ref) => ({ ref, matcher: err.matcher }))
+          .catch(() => {
+            throw new ElementNotFoundError("Failed to find element", err.matcher);
+          });
+      }
 
-    return value;
-  });
+      throw err;
+    })
+    .then((value) => {
+      if (isNull(value.ref) && value.matcher) {
+        return appiumService.findElement({ matcher: value.matcher })
+          .then((ref) => ({ ref, matcher: value.matcher }))
+          .catch(() => {
+            throw new ElementNotFoundError("Failed to find element", value.matcher);
+          });
+      }
+
+      return value;
+    });
 };
 
 const parseValue = (rawValue, elementType, options) => {
@@ -75,8 +87,8 @@ class Element {
     const currentValue = getCurrentValue(this.value);
 
     const nextValue = new Promise((resolve, reject) => {
-      currentValue.then(
-        (value) => {
+      currentValue
+        .then((value) => {
           const done = (err) => {
             if (err) {
               return reject(err);
@@ -86,23 +98,8 @@ class Element {
           };
 
           action(value, done);
-        },
-        (err) => {
-          if (isInstanceOf(err, ElementNotFoundError)) {
-            const done = (err, value) => {
-              if (err) {
-                return reject(err);
-              }
-
-              resolve(value);
-            };
-
-            return action(null, done);
-          }
-
-          reject(err);
-        }
-      );
+        })
+        .catch(reject);
     });
 
     return new Element({ value: nextValue });
@@ -128,7 +125,7 @@ class Element {
         (err) => {
           if (isInstanceOf(err, ElementNotFoundError) && err.matcher) {
             return pollFor(() => {
-              $element = new Element({ value: Promise.resolve({ matcher: err.matcher, element: null }) });
+              $element = new Element({ value: Promise.resolve({ matcher: err.matcher, ref: null }) });
 
               return conditionFn($element);
             }, { maxDuration, interval })
