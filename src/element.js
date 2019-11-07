@@ -465,10 +465,10 @@ class Element {
   getValue(options) {
     const currentValue = getCurrentValue(this.value);
 
-    return currentValue.then((el) => {
+    return currentValue.then((value) => {
       const tasks = [
-        appiumService.getElementType({ element: el }),
-        appiumService.getElementValue({ element: el })
+        appiumService.getElementType({ element: value.element }),
+        appiumService.getElementValue({ element: value.element })
       ];
 
       return Promise.all(tasks)
