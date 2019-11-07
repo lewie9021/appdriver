@@ -58,7 +58,6 @@ const parseValue = (rawValue, elementType, options) => {
 
 class Element {
   constructor({ value, thenable = true }) {
-    // this.matcher = matcher;
     this.value = value;
 
     if (thenable) {
@@ -258,96 +257,100 @@ class Element {
   }
 
   clearText() {
-    return this._executeAction((elementId, done) => {
-      if (!elementId) {
+    return this._executeAction((value, done) => {
+      if (!value.element) {
         return done(new ElementActionError("Failed to clear text for element that doesn't exist."));
       }
 
-      commands.element.actions.clear(elementId)
+      return appiumService.clearElementText({ element: value.element })
         .then(() => done(null))
-        .catch(done);
+        .catch(() => done(new ElementActionError("Failed to clear text on element.")));
     });
   }
 
   getSize() {
-    const currentValue = getCurrentValue(this.matcher, this.value);
+    const currentValue = getCurrentValue(this.value);
 
-    return currentValue.then((elementId) => {
-      if (!elementId) {
+    return currentValue.then((value) => {
+      if (!value.element) {
         throw new ElementActionError("Failed to get size of element that doesn't exist.");
       }
 
-      return commands.element.attributes.size(elementId);
+      return appiumService.getElementSize({ element: value.element })
+        .catch(() => {
+          throw new ElementActionError("Failed to get size of element.")
+        });
     });
   }
 
-  getAttribute(name) {
-    const currentValue = getCurrentValue(this.matcher, this.value);
-    const validAttributes = platform.select({
-      ios: () => [
-        { name: "uid", internalName: "UID" },
-        { name: "accessibilityContainer", transform: toBoolean },
-        { name: "accessible", transform: toBoolean },
-        { name: "enabled", transform: toBoolean },
-        // { name: "frame" }, // 500 error on ScrollView element.
-        { name: "label" },
-        { name: "name" },
-        { name: "rect", transform: JSON.parse },
-        { name: "type" },
-        { name: "value" },
-        { name: "visible", transform: toBoolean }
-      ],
-      android: () => [
-        { name: "checkable", transform: toBoolean },
-        { name: "checked", transform: toBoolean },
-        { name: "className" },
-        { name: "clickable", transform: toBoolean },
-        { name: "contentDescription" },
-        { name: "enabled", transform: toBoolean },
-        { name: "focusable", transform: toBoolean },
-        { name: "focused", transform: toBoolean },
-        { name: "longClickable", transform: toBoolean },
-        { name: "package" },
-        // { name: "password" }, // Doesn't seem to work.
-        { name: "resourceId" },
-        { name: "scrollable", transform: toBoolean },
-        { name: "selectionStart", internalName: "selection-start", transform: toNumber },
-        { name: "selectionEnd", internalName: "selection-end", transform: toNumber },
-        { name: "selected", transform: toBoolean },
-        { name: "text" },
-        { name: "bounds", transform: transformBounds },
-        { name: "displayed", transform: toBoolean },
-        { name: "contentSize", transform: JSON.parse } // Only works on ScrollViews
-      ]
-    });
-
-    return currentValue.then((elementId) => {
-      if (!elementId) {
-        throw new ElementActionError("Failed to get attribute of element that doesn't exist.");
-      }
-
-      const attribute = validAttributes.find((x) => x.name === name);
-
-      if (!attribute) {
-        throw new ElementActionError(`Invalid attribute.\n\nValid attributes are:\n\n${validAttributes.map((x) => `- ${x.name}`).join("\n")}`);
-      }
-
-      return commands.element.attributes.attribute(elementId, attribute.internalName || attribute.name, attribute.name)
-        .then(attribute.transform);
-    });
-  }
+  // getAttribute(name) {
+  //   const currentValue = getCurrentValue(this.matcher, this.value);
+  //   const validAttributes = platform.select({
+  //     ios: () => [
+  //       { name: "uid", internalName: "UID" },
+  //       { name: "accessibilityContainer", transform: toBoolean },
+  //       { name: "accessible", transform: toBoolean },
+  //       { name: "enabled", transform: toBoolean },
+  //       // { name: "frame" }, // 500 error on ScrollView element.
+  //       { name: "label" },
+  //       { name: "name" },
+  //       { name: "rect", transform: JSON.parse },
+  //       { name: "type" },
+  //       { name: "value" },
+  //       { name: "visible", transform: toBoolean }
+  //     ],
+  //     android: () => [
+  //       { name: "checkable", transform: toBoolean },
+  //       { name: "checked", transform: toBoolean },
+  //       { name: "className" },
+  //       { name: "clickable", transform: toBoolean },
+  //       { name: "contentDescription" },
+  //       { name: "enabled", transform: toBoolean },
+  //       { name: "focusable", transform: toBoolean },
+  //       { name: "focused", transform: toBoolean },
+  //       { name: "longClickable", transform: toBoolean },
+  //       { name: "package" },
+  //       // { name: "password" }, // Doesn't seem to work.
+  //       { name: "resourceId" },
+  //       { name: "scrollable", transform: toBoolean },
+  //       { name: "selectionStart", internalName: "selection-start", transform: toNumber },
+  //       { name: "selectionEnd", internalName: "selection-end", transform: toNumber },
+  //       { name: "selected", transform: toBoolean },
+  //       { name: "text" },
+  //       { name: "bounds", transform: transformBounds },
+  //       { name: "displayed", transform: toBoolean },
+  //       { name: "contentSize", transform: JSON.parse } // Only works on ScrollViews
+  //     ]
+  //   });
+  //
+  //   return currentValue.then((elementId) => {
+  //     if (!elementId) {
+  //       throw new ElementActionError("Failed to get attribute of element that doesn't exist.");
+  //     }
+  //
+  //     const attribute = validAttributes.find((x) => x.name === name);
+  //
+  //     if (!attribute) {
+  //       throw new ElementActionError(`Invalid attribute.\n\nValid attributes are:\n\n${validAttributes.map((x) => `- ${x.name}`).join("\n")}`);
+  //     }
+  //
+  //     return commands.element.attributes.attribute(elementId, attribute.internalName || attribute.name, attribute.name)
+  //       .then(attribute.transform);
+  //   });
+  // }
 
   getLocation({relative = false} = {}) {
-    const currentValue = getCurrentValue(this.matcher, this.value);
+    const currentValue = getCurrentValue(this.value);
 
-    return currentValue.then((elementId) => {
-      if (!elementId) {
+    return currentValue.then((value) => {
+      if (!value.element) {
         throw new ElementActionError("Failed to get location of element that doesn't exist.");
       }
 
-      return relative
-        ? commands.element.attributes.locationInView(elementId)
-        : commands.element.attributes.location(elementId);
+      return appiumService.getElementLocation({ element: value.element, relative })
+        .catch(() => {
+          throw new ElementActionError("Failed to get location of element.");
+        });
     });
   }
 
@@ -428,7 +431,7 @@ class Element {
                 });
             })
             .catch(() => {
-              throw new ElementActionError("Failed to get text for element.");
+              throw new ElementActionError("Failed to get text of element.");
             });
         },
         android: () => {
@@ -460,7 +463,7 @@ class Element {
   }
 
   getValue(options) {
-    const currentValue = getCurrentValue(this.matcher, this.value);
+    const currentValue = getCurrentValue(this.value);
 
     return currentValue.then((el) => {
       const tasks = [
@@ -469,11 +472,9 @@ class Element {
       ];
 
       return Promise.all(tasks)
-        .then(([ type, value ]) => {
-          return parseValue(value, type, options);
-        })
+        .then(([ type, value ]) => parseValue(value, type, options))
         .catch(() => {
-          throw new ElementActionError("Failed to get value for element.");
+          throw new ElementActionError("Failed to get value of element.");
         });
     });
   }
@@ -519,14 +520,17 @@ class Element {
   }
 
   isDisabled() {
-    const currentValue = getCurrentValue(this.matcher, this.value);
+    const currentValue = getCurrentValue(this.value);
 
-    return currentValue.then((elementId) => {
-      if (!elementId) {
+    return currentValue.then((value) => {
+      if (!value.element) {
         throw new ElementActionError("Failed to retrieve disabled status of element that doesn't exist.");
       }
 
-      return commands.element.attributes.disabled(elementId);
+      return appiumService.getElementDisabled({ element: value.element })
+        .catch(() => {
+          throw new ElementActionError("Failed to retrieve disabled status of element.");
+        });
     });
   }
 
