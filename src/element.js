@@ -19,7 +19,7 @@ const poll = (func, opts) => {
 
 const getCurrentValue = (elementValue) => {
   return elementValue.then((value) => {
-    if (isNull(value.element)) {
+    if (isNull(value.element) && value.matcher) {
       return appiumService.findElement({ matcher: value.matcher })
         .then((element) => ({ matcher: value.matcher, element }))
         .catch(() => {
@@ -127,7 +127,7 @@ class Element {
             });
         },
         (err) => {
-          if (isInstanceOf(err, ElementNotFoundError)) {
+          if (isInstanceOf(err, ElementNotFoundError) && err.matcher) {
             return pollFor(() => {
               $element = new Element({ value: Promise.resolve({ matcher: err.matcher, element: null }) });
 
@@ -172,30 +172,26 @@ class Element {
     return new Element({ value: nextValue });
   }
 
-  // findElements(matcher) {
-  //   const currentValue = getValue(this.matcher, this.value);
-  //
-  //   return currentValue
-  //     .then((elementId) => {
-  //       if (!elementId) {
-  //         throw new ElementActionError("Failed to find elements from element that doesn't exist.");
-  //       }
-  //
-  //       return matcher.resolve(true, elementId)
-  //         .then((elementIds) => {
-  //           const elementMatcher = () => {
-  //             throw new NotImplementedError();
-  //           };
-  //
-  //           return elementIds.map((elementId) => {
-  //             return new Element({matcher: elementMatcher, value: Promise.resolve(elementId)});
-  //           });
-  //         });
-  //     })
-  //     .catch((err) => {
-  //       throw new ElementActionError(err.message);
-  //     });
-  // }
+  findElements(matcher) {
+    const currentValue = getCurrentValue(this.value);
+
+    return currentValue
+      .then((value) => {
+        if (!value.element) {
+          throw new ElementActionError("Failed to find elements from element that doesn't exist.");
+        }
+
+        return appiumService.findElements({ element: value.element, matcher })
+          .then((elements) => {
+            return elements.map((element) => {
+              return new Element({ value: Promise.resolve({ element, matcher: null }) });
+            });
+          });
+      })
+      .catch((err) => {
+        throw new ElementActionError(err.message);
+      });
+  }
 
   tap({ x = 0, y = 0 } = {}) {
     return this._executeAction((value, done) => {
@@ -485,29 +481,27 @@ class Element {
     });
   }
 
-  // exists() {
-  //   const currentValue = getValue(this.matcher, this.value);
-  //
-  //   return currentValue
-  //     .then((elementId) => {
-  //       if (!elementId) {
-  //         return false;
-  //       }
-  //
-  //       return commands.element.attributes.type(elementId)
-  //         .then(() => true)
-  //         .catch(() => false);
-  //     })
-  //     .catch((err) => {
-  //       if (isInstanceOf(err, ElementNotFoundError)) {
-  //         return this.matcher.resolve()
-  //           .then(() => true)
-  //           .catch(() => false);
-  //       }
-  //
-  //       throw err;
-  //     });
-  // }
+  exists() {
+    const currentValue = getCurrentValue(this.value);
+
+    return currentValue
+      .then((value) => {
+        if (!value.element) {
+          return false;
+        }
+
+        return appiumService.getElementType({ element: value.element })
+          .then(() => true)
+          .catch(() => false);
+      })
+      .catch((err) => {
+        if (isInstanceOf(err, ElementNotFoundError)) {
+          return false;
+        }
+
+        throw err;
+      });
+  }
 
   isVisible() {
     const currentValue = getCurrentValue(this.value);
