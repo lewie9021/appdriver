@@ -282,6 +282,5 @@ class Device {
 }
 
 module.exports = {
-  device: new Device(),
   Device
 };

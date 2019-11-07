@@ -1,6 +1,6 @@
 const { sessionStore } = require("./src/stores/sessionStore");
 const { createAppiumService } = require("./src/services/appiumService");
-const { Device } = require("./src/device");
+const { Device } = require("./src/Device");
 const { Element } = require("./src/Element");
 const matchers = require("./src/matchers");
 const gestures = require("./src/gestures");
