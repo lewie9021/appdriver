@@ -1,9 +1,12 @@
-const matchers = require("./src/matchers");
+const { sessionStore } = require("./src/stores/sessionStore");
+const { createAppiumService } = require("./src/services/appiumService");
 const { Device } = require("./src/device");
-const expect = require("./src/expect");
-const gestures = require("./src/gestures");
 const { Element } = require("./src/Element");
-const elements = require("./src/elements");
+const matchers = require("./src/matchers");
+const gestures = require("./src/gestures");
+const expect = require("./src/expect");
+
+const appiumService = createAppiumService(sessionStore);
 
 module.exports = {
   by: matchers,
@@ -11,7 +14,10 @@ module.exports = {
   element: (matcher) => {
     return new Element({ value: Promise.resolve({ matcher, element: null }) });
   },
-  elements,
+  elements: (matcher) => {
+    return appiumService.findElements({ matcher })
+      .then((refs) => refs.map((ref) => new Element({ value: Promise.resolve({ element: ref, matcher: null }) })));
+  },
   expect,
   gestures
 };
