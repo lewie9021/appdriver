@@ -21,7 +21,10 @@ const getCurrentValue = (elementValue) => {
   return elementValue.then((value) => {
     if (isNull(value.element)) {
       return appiumService.findElement({ matcher: value.matcher })
-        .then((element) => ({ matcher: value.matcher, element }));
+        .then((element) => ({ matcher: value.matcher, element }))
+        .catch(() => {
+          throw new ElementNotFoundError("Failed to find element", value.matcher);
+        });
     }
 
     return value;
@@ -422,8 +425,8 @@ class Element {
                   };
 
                   return appiumService.findElements({ element: value.element, matcher })
-                    .then((textEls) => {
-                      const tasks = textEls.map((element) => appiumService.getElementText({ element }));
+                    .then((textElements) => {
+                      const tasks = textElements.map((element) => appiumService.getElementText({ element }));
 
                       return Promise.all(tasks)
                         .then((textFragments) => textFragments.join(" "));
@@ -435,20 +438,20 @@ class Element {
             });
         },
         android: () => {
-          return commands.element.attributes.type(elementId)
+          return appiumService.getElementType({ element: value.element })
             .then((elementType) => {
               if (elementType === "android.widget.TextView") {
-                return commands.element.attributes.text(elementId);
+                return appiumService.getElementText({ element: value.element });
               }
 
-              const query = {
+              const matcher = {
                 using: "class name",
                 value: "android.widget.TextView"
               };
 
-              return commands.element.findElementsFromElement(elementId, query)
+              return appiumService.findElements({ element: value.element, matcher })
                 .then((textElements) => {
-                  const tasks = textElements.map((elementId) => commands.element.attributes.text(elementId));
+                  const tasks = textElements.map((element) => appiumService.getElementText({ element }));
 
                   return Promise.all(tasks)
                     .then((textFragments) => textFragments.join(" "));
