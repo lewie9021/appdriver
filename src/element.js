@@ -3,7 +3,7 @@ const { sessionStore } = require("./stores/sessionStore");
 const { createAppiumService } = require("./services/appiumService");
 const gestures = require("./gestures");
 const expect = require("./expect");
-const { ElementNotFoundError, ElementActionError, ElementWaitError, NotImplementedError } = require("./errors");
+const { ElementNotFoundError, ElementActionError, ElementWaitError, AppiumError } = require("./errors");
 const { isInstanceOf, isNull, pollFor, delay, toBoolean, toNumber, platform } = require("./utils");
 const { transformBounds } = require("./attributeTransforms");
 
@@ -17,7 +17,7 @@ const poll = (func, opts) => {
     });
 };
 
-const getValue = (elementValue) => {
+const getCurrentValue = (elementValue) => {
   return elementValue.then((value) => {
     if (isNull(value.element)) {
       return appiumService.findElement({ matcher: value.matcher })
@@ -71,7 +71,7 @@ class Element {
   }
 
   _executeAction(action) {
-    const currentValue = getValue(this.value);
+    const currentValue = getCurrentValue(this.value);
 
     const nextValue = new Promise((resolve, reject) => {
       currentValue.then(
@@ -108,7 +108,7 @@ class Element {
   }
 
   _executeWait(conditionFn, maxDuration, interval, timeoutError) {
-    const currentValue = getValue(this.value);
+    const currentValue = getCurrentValue(this.value);
     let $element;
 
     const nextValue = new Promise((resolve, reject) => {
@@ -146,12 +146,12 @@ class Element {
   }
 
   _getElementId() {
-    return getValue(this.value)
+    return getCurrentValue(this.value)
       .then((value) => value.element.ELEMENT);
   }
 
   findElement(matcher) {
-    const currentValue = getValue(this.value);
+    const currentValue = getCurrentValue(this.value);
 
     const nextValue = new Promise((resolve, reject) => {
       currentValue.then(
@@ -215,33 +215,27 @@ class Element {
   }
 
   longPress({ x = 0, y = 0, duration = 750 } = {}) {
-    return this._executeAction((elementId, done) => {
-      if (!elementId) {
+    return this._executeAction((value, done) => {
+      if (!value.element) {
         return done(new ElementActionError("Failed to long press element that doesn't exist."));
       }
 
-      const $element = new Element({ matcher: this.matcher, value: Promise.resolve(elementId) });
+      const $element = new Element({ value: Promise.resolve(value) });
 
       return gestures.longPress({x, y, duration, element: $element})
         .resolve()
         .then((actions) => {
-          commands.interactions.actions(actions)
-            .then(({status}) => {
-              if (status) {
-                return done(new ElementActionError("Failed to long press element."));
-              }
-
-              done(null);
-            })
-            .catch((err) => done(err));
+          appiumService.performActions({ actions })
+            .then(() => done(null))
+            .catch(() => done(new ElementActionError("Failed to long press element.")));
           })
           .catch((err) => done(err));
     });
   }
 
   typeText(text) {
-    return this._executeAction((elementId, done) => {
-      if (!elementId) {
+    return this._executeAction((value, done) => {
+      if (!value.element) {
         return done(new ElementActionError("Can't type text on element that doesn't exist"));
       }
 
@@ -249,9 +243,17 @@ class Element {
         return done(new ElementActionError(`Failed to type text. 'text' must be a string, instead got ${typeof text}.`));
       }
 
-      commands.element.actions.sendKeys(elementId, text.split(""))
+      return appiumService.sendElementKeys({ element: value.element, keys: text.split("") })
         .then(() => done(null))
-        .catch(done);
+        .catch((err) => {
+          if (isInstanceOf(err, AppiumError)) {
+            if (err.status === 13 && sessionStore.getCapabilities("platformName") === "iOS") {
+              return done(new ElementActionError("Failed to type text. Make sure hardware keyboard is disconnected from iOS simulator."));
+            }
+          }
+
+          return done(new ElementActionError("Failed to type text on element."));
+        });
     });
   }
 
@@ -268,7 +270,7 @@ class Element {
   }
 
   getSize() {
-    const currentValue = getValue(this.matcher, this.value);
+    const currentValue = getCurrentValue(this.matcher, this.value);
 
     return currentValue.then((elementId) => {
       if (!elementId) {
@@ -280,7 +282,7 @@ class Element {
   }
 
   getAttribute(name) {
-    const currentValue = getValue(this.matcher, this.value);
+    const currentValue = getCurrentValue(this.matcher, this.value);
     const validAttributes = platform.select({
       ios: () => [
         { name: "uid", internalName: "UID" },
@@ -336,7 +338,7 @@ class Element {
   }
 
   getLocation({relative = false} = {}) {
-    const currentValue = getValue(this.matcher, this.value);
+    const currentValue = getCurrentValue(this.matcher, this.value);
 
     return currentValue.then((elementId) => {
       if (!elementId) {
@@ -394,7 +396,7 @@ class Element {
   }
 
   getText() {
-    const currentValue = getValue(this.value);
+    const currentValue = getCurrentValue(this.value);
 
     return currentValue.then((value) => {
       return platform.select({
@@ -458,7 +460,7 @@ class Element {
   }
 
   getValue(options) {
-    const currentValue = getValue(this.matcher, this.value);
+    const currentValue = getCurrentValue(this.matcher, this.value);
 
     return currentValue.then((el) => {
       const tasks = [
@@ -501,7 +503,7 @@ class Element {
   // }
 
   isVisible() {
-    const currentValue = getValue(this.value);
+    const currentValue = getCurrentValue(this.value);
 
     return currentValue
       .then((value) => {
@@ -517,7 +519,7 @@ class Element {
   }
 
   isDisabled() {
-    const currentValue = getValue(this.matcher, this.value);
+    const currentValue = getCurrentValue(this.matcher, this.value);
 
     return currentValue.then((elementId) => {
       if (!elementId) {
