@@ -209,7 +209,7 @@ function createAppiumService(sessionStore) {
     });
   };
 
-  // ({ sessionId: String?, matcher: AppiumMatcher, element: AppiumElement }) => Promise<AppiumElement>.
+  // ({ sessionId: String?, matcher: AppiumMatcher, element?: AppiumElement }) => Promise<AppiumElement>.
   const findElement = ({ sessionId = sessionStore.getSessionId(), matcher, element }) => {
     if (element) {
       return request({
@@ -226,7 +226,7 @@ function createAppiumService(sessionStore) {
     });
   };
 
-  // ({ sessionId: String?, matcher: AppiumMatcher, element: AppiumElement }) => Promise<Array<AppiumElement>>.
+  // ({ sessionId: String?, matcher: AppiumMatcher, element?: AppiumElement }) => Promise<Array<AppiumElement>>.
   const findElements = ({ sessionId = sessionStore.getSessionId(), matcher, element }) => {
     if (element) {
       return request({

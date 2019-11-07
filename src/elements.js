@@ -1,19 +1,12 @@
+const { sessionStore } = require("./stores/sessionStore");
+const { createAppiumService } = require("./services/appiumService");
 const { Element } = require("./element");
 
-const elements = async (matcher) => {
-  const response = await matcher.resolve(true);
+const appiumService = createAppiumService(sessionStore);
 
-  return response.map((elementId) => {
-    // TODO: Crude implementation to maintain consistency.
-    // Could probably use element.exist check before returning value?.
-    const elementMatcher = {
-      type: "element id",
-      value: elementId,
-      resolve: () => Promise.resolve(elementId)
-    };
-
-    return new Element({matcher: elementMatcher, value: Promise.resolve(elementId)});
-  });
+const elements = (matcher) => {
+  return appiumService.findElements({ matcher })
+    .then((refs) => refs.map((ref) => new Element({ value: Promise.resolve({ element: ref, matcher: null }) })));
 };
 
 module.exports = elements;
