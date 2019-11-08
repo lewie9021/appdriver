@@ -154,8 +154,8 @@ function createAppiumService(sessionStore) {
     });
   };
 
-  // ({ sessionId: String?, ...options: Object }) => Promise.
-  const startScreenRecording = ({ sessionId = sessionStore.getSessionId(), ...options }) => {
+  // ({ sessionId: String?, options: Object }) => Promise.
+  const startScreenRecording = ({ sessionId = sessionStore.getSessionId(), options }) => {
     return request({
       method: "POST",
       path: `/session/${sessionId}/appium/start_recording_screen`,

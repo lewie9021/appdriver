@@ -1,44 +1,87 @@
-const appiumServer = require("../helpers/appiumServer");
+jest.mock("../../src/stores/sessionStore");
+jest.mock("../../src/services/appiumService");
+
+const { sessionStore } = require("../../src/stores/sessionStore");
+const { appiumService } = require("../../src/services/appiumService");
+const { AppiumError, ActionError } = require("../../src/errors");
 const { device } = require("../../");
-const mockSession = require("../helpers/mockSession");
+
+afterEach(() => {
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
+});
 
 const defaultParameters = [
+  {name: "forceRestart", key: "forceRestart", value: false},
   {name: "maxDuration", key: "timeLimit", value: 180},
   {name: "format", key: "videoType", value: "mpeg4"},
   {name: "quality", key: "videoQuality", value: "medium"},
   {name: "fps", key: "videoFps", value: 10}
 ];
 
-afterEach(() => {
-  appiumServer.resetMocks();
-  device._screenRecording = null;
-});
-
-it("starts recording the screen", async () => {
-  const startRecordingScreenMock = appiumServer.mockStartRecordingScreen();
+it("executes the 'startScreenRecording' method on the Appium Service", async () => {
+  jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("iOS");
+  jest.spyOn(appiumService, "startScreenRecording").mockResolvedValue(null);
 
   await device.startScreenRecording();
 
-  expect(appiumServer.getCalls(startRecordingScreenMock)).toHaveLength(1);
-  expect(device._screenRecording).not.toBeNull();
+  expect(sessionStore.getCapabilities).toHaveBeenCalledWith("platformName");
+  expect(appiumService.startScreenRecording).toHaveBeenCalled();
+  expect(sessionStore.setState).toHaveBeenCalledWith({ screenRecording: { filePath: null } });
 });
 
 defaultParameters.forEach(({ name, key, value }) => {
-  it(`defaults the '${name}' parameter to ${JSON.stringify(value)}`, async () => {
-    const startRecordingScreenMock = appiumServer.mockStartRecordingScreen();
+  it(`defaults '${name}' parameter to ${JSON.stringify(value)}`, async () => {
+    jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("iOS");
+    jest.spyOn(appiumService, "startScreenRecording").mockResolvedValue(null);
 
     await device.startScreenRecording();
 
-    const startRecordingScreenMockCalls = appiumServer.getCalls(startRecordingScreenMock);
-
-    expect(startRecordingScreenMockCalls[0].options.body).toEqual({
-      options: expect.objectContaining({
-        [key]: value
-      })
+    expect(sessionStore.getCapabilities).toHaveBeenCalledWith("platformName");
+    expect(appiumService.startScreenRecording).toHaveBeenCalledWith({
+      options: expect.objectContaining({ [key]: value })
     });
   });
 });
 
+it("throws an ActionError for Appium request errors", async () => {
+  const error = new AppiumError("Request error.", 3);
+
+  jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("iOS");
+  jest.spyOn(appiumService, "startScreenRecording").mockRejectedValue(error);
+
+  await expect(device.startScreenRecording())
+    .rejects.toThrow(new ActionError("Failed to start screen recording."));
+
+  expect(sessionStore.getCapabilities).toHaveBeenCalledWith("platformName");
+  expect(appiumService.startScreenRecording).toHaveBeenCalled();
+});
+
+it("throws an ActionError if there's already a recording in progress", async () => {
+  jest.spyOn(sessionStore, "getScreenRecording").mockReturnValue({ filePath: null });
+  jest.spyOn(appiumService, "startScreenRecording").mockResolvedValue(null);
+
+  await expect(device.startScreenRecording())
+    .rejects.toThrow(new ActionError("Screen recording already in progress."));
+
+  expect(sessionStore.getScreenRecording).toHaveBeenCalled();
+  expect(appiumService.startScreenRecording).not.toHaveBeenCalled();
+});
+
+it("propagates other types of errors", async () => {
+  const error = new Error("Something went wrong.");
+
+  jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("iOS");
+  jest.spyOn(appiumService, "startScreenRecording").mockRejectedValue(error);
+
+  await expect(device.startScreenRecording())
+    .rejects.toThrow(error);
+
+  expect(sessionStore.getCapabilities).toHaveBeenCalledWith("platformName");
+  expect(appiumService.startScreenRecording).toHaveBeenCalled();
+});
+
+/*
 it("supports passing a 'maxDuration' parameter ", async () => {
   const startRecordingScreenMock = appiumServer.mockStartRecordingScreen();
   const maxDuration = 30;
@@ -67,25 +110,6 @@ it("supports passing a 'forceRestart' parameter ", async () => {
       forceRestart
     })
   });
-});
-
-it("throws if there's already a recording in progress", async () => {
-  const startRecordingScreenMock = appiumServer.mockStartRecordingScreen();
-  device._screenRecording = { filePath: "some/other/path" };
-
-  await expect(device.startScreenRecording())
-    .rejects.toThrow(new Error("Screen recording already in progress."));
-
-  expect(appiumServer.getCalls(startRecordingScreenMock)).toHaveLength(0);
-});
-
-it("correctly handles start recording screen request errors", async () => {
-  const startRecordingScreenMock = appiumServer.mockStartRecordingScreen({ status: 3 });
-
-  await expect(device.startScreenRecording({ filePath: "some/path" }))
-    .rejects.toThrow(new Error("Failed to start screen recording."));
-
-  expect(appiumServer.getCalls(startRecordingScreenMock)).toHaveLength(1);
 });
 
 describe("iOS", () => {
@@ -180,3 +204,4 @@ describe("Android", () => {
     expect(appiumServer.getCalls(startRecordingScreenMock)).toHaveLength(0);
   });
 });
+ */

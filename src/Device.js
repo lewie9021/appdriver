@@ -182,9 +182,9 @@ class Device {
       .catch(handleActionError("Failed to go back."));
   }
 
-  startScreenRecording(options = {}) {
-    const { filePath = null, maxDuration = 180, forceRestart = false } = options;
-    const { format = "mpeg4", quality = "medium", fps = 10, size = null } = options;
+  startScreenRecording(opts = {}) {
+    const { filePath = null, maxDuration = 180, forceRestart = false } = opts;
+    const { format = "mpeg4", quality = "medium", fps = 10, size = null } = opts;
 
     if (size) {
       if (!size.width && !size.height) {
@@ -208,24 +208,25 @@ class Device {
       screenRecording: { filePath }
     });
 
-    return appiumService.startScreenRecording({
-      options: platform.select({
-        ios: () => ({
-          timeLimit: maxDuration,
-          forceRestart,
-          videoType: format,
-          videoQuality: quality,
-          videoFps: fps
-        }),
-        android: () => ({
-          timeLimit: maxDuration,
-          forceRestart,
-          videoSize: size
-            ? `${size.width}x${size.height}`
-            : null
-        })
+    const options = platform.select({
+      ios: () => ({
+        timeLimit: maxDuration,
+        forceRestart,
+        videoType: format,
+        videoQuality: quality,
+        videoFps: fps
+      }),
+      android: () => ({
+        timeLimit: maxDuration,
+        forceRestart,
+        videoSize: size
+          ? `${size.width}x${size.height}`
+          : null
       })
     });
+
+    return appiumService.startScreenRecording({ options })
+      .catch(handleActionError("Failed to start screen recording."));
   }
 
   stopScreenRecording() {
