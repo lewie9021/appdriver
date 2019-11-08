@@ -58,9 +58,7 @@ class Device {
     const actions = await gesture.resolve();
 
     return appiumService.performActions({ actions })
-      .catch(() => {
-        throw new ActionError("Failed to perform gesture.");
-      });
+      .catch(handleActionError("Failed to perform gesture."));
   }
 
   getOrientation() {

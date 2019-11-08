@@ -1,47 +1,42 @@
-const appiumServer = require("../helpers/appiumServer");
-const fetch = require("node-fetch");
+jest.mock("../../src/services/appiumService");
 
+const { appiumService } = require("../../src/services/appiumService");
+const { AppiumError, ActionError } = require("../../src/errors");
 const { device, gestures } = require("../../");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
-it("executes the given gesture", async () => {
-  appiumServer.mockActions();
+it("executes the 'performActions' method on the Appium Service with the given 'gesture'", async () => {
+  const gesture = gestures.tap({ x: 100, y: 100 });
 
-  await device.performGesture(gestures.swipeUp({x: 150, y: 200, distance: 100}));
+  jest.spyOn(appiumService, "performActions").mockResolvedValue(null);
 
-  expect(fetch).toHaveBeenCalledTimes(1);
-  expect(fetch).toHaveBeenLastCalledWith(
-    expect.any(String),
-    expect.objectContaining({
-      method: "POST",
-      body: JSON.stringify({
-        actions: [{
-          id: "finger1",
-          type: "pointer",
-          parameters: {
-            pointerType: "touch"
-          },
-          actions: [
-            {type: "pointerMove", duration: 0, origin: "viewport", x: 150, y: 200},
-            {type: "pointerDown", button: 0},
-            {type: "pause", duration: 250},
-            {type: "pointerMove", duration: 50, origin: "pointer", x: 0, y: -100},
-            {type: "pointerUp", button: 0}
-          ]
-        }]
-      })
-    })
-  );
+  await device.performGesture(gesture);
+
+  expect(appiumService.performActions).toHaveBeenCalledWith({ actions: await gesture.resolve() });
 });
 
-it("correctly handles W3C actions request errors", async () => {
-  appiumServer.mockActions({status: 3});
+it("throws an ActionError for Appium request errors", async () => {
+  const error = new AppiumError("Request error.", 3);
 
-  await expect(device.performGesture(gestures.swipeUp({x: 150, y: 200, distance: 100})))
-    .rejects.toThrow(new Error("Failed to perform gesture."));
+  jest.spyOn(appiumService, "performActions").mockRejectedValue(error);
 
-  expect(fetch).toHaveBeenCalledTimes(1);
+  await expect(device.performGesture(gestures.tap({ x: 100, y: 100 })))
+    .rejects.toThrow(new ActionError("Failed to perform gesture."));
+
+  expect(appiumService.performActions).toHaveBeenCalled();
+});
+
+it("propagates other types of errors", async () => {
+  const error = new Error("Something went wrong.");
+
+  jest.spyOn(appiumService, "performActions").mockRejectedValue(error);
+
+  await expect(device.performGesture(gestures.tap({ x: 100, y: 100 })))
+    .rejects.toThrow(error);
+
+  expect(appiumService.performActions).toHaveBeenCalled();
 });
