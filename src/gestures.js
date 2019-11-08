@@ -32,7 +32,7 @@ const longPress = ({ x, y, duration = 750, element }) => {
 };
 
 // Note: Having type: "pointerMove", origin: "pointer", and duration: <= 10 doesn't work on Android.
-const swipe = ({ x, y, direction, distance, element, duration = 50 }) => {
+const swipe = ({ x = 0, y = 0, direction, distance, element, duration = 50 }) => {
   const relativePoint = getRelativePoint({ direction, distance });
 
   return create()

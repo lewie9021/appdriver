@@ -73,10 +73,11 @@ class Device {
       .catch(handleActionError(`Failed to set device orientation to '${orientation}'.`));
   }
 
-  async swipe({ x = 0, y = 0, distance, direction, duration }) {
-    const gesture = gestures.swipe({ x, y, distance, direction, duration });
+  async swipe({ x, y, distance, direction, duration }) {
+    const swipeGesture = await gestures.swipe({ x, y, distance, direction, duration }).resolve();
 
-    return this.performGesture(gesture);
+    return appiumService.performActions({ actions: swipeGesture })
+      .catch(handleActionError("Failed to perform swipe gesture."));
   }
 
   async swipeLeft({ x, y, distance, percentage, duration }) {
