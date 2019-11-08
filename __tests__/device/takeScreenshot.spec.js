@@ -3,13 +3,13 @@ jest.mock("../../src/services/appiumService");
 
 const fs = require("fs");
 const { appiumService } = require("../../src/services/appiumService");
-const { AppiumError, ActionError, NotImplementedError } = require("../../src/errors");
+const { AppiumError, ActionError } = require("../../src/errors");
 const { device } = require("../../");
 
 afterEach(() => {
+  jest.resetAllMocks();
   jest.restoreAllMocks();
 });
-
 
 it("returns a buffer containing the result of 'takeScreenshot' on the Appium Service", async () => {
   const screenshot = "dGVzdA==";
@@ -48,7 +48,7 @@ it("throws an ActionError if it is unable to store on disk when a 'filePath' is 
 });
 
 it("propagates other types of errors", async () => {
-  const error = new NotImplementedError();
+  const error = new Error("Something went wrong.");
 
   jest.spyOn(appiumService, "takeScreenshot").mockRejectedValue(error);
 

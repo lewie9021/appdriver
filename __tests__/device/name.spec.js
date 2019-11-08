@@ -4,6 +4,7 @@ const { sessionStore } = require("../../src/stores/sessionStore");
 const { device } = require("../../");
 
 afterEach(() => {
+  jest.resetAllMocks();
   jest.restoreAllMocks();
 });
 

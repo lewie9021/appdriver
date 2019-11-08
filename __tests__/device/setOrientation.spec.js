@@ -1,10 +1,11 @@
 jest.mock("../../src/services/appiumService");
 
 const { appiumService } = require("../../src/services/appiumService");
-const { AppiumError, ActionError, NotImplementedError } = require("../../src/errors");
+const { AppiumError, ActionError } = require("../../src/errors");
 const { device } = require("../../");
 
 afterEach(() => {
+  jest.resetAllMocks();
   jest.restoreAllMocks();
 });
 

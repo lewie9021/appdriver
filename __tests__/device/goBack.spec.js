@@ -5,6 +5,7 @@ const { AppiumError, ActionError, NotImplementedError } = require("../../src/err
 const { device } = require("../../");
 
 afterEach(() => {
+  jest.resetAllMocks();
   jest.restoreAllMocks();
 });
 
