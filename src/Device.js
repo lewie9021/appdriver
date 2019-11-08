@@ -89,18 +89,10 @@ class Device {
       swipeDistance = viewport.width * percentage;
     }
 
-    const gesture = gestures.swipeLeft({
-      x: isUndefined(x)
-        ? swipeDistance
-        : x,
-      y: isUndefined(y)
-        ? 0
-        : y,
-      distance: swipeDistance,
-      duration
-    });
+    const swipeLeftGesture = gestures.swipeLeft({ x, y, distance: swipeDistance, duration });
 
-    return this.performGesture(gesture);
+    return appiumService.performActions({ actions: await swipeLeftGesture.resolve() })
+      .catch(handleActionError("Failed to perform swipe left gesture."));
   }
 
   async swipeRight({ x, y, distance, percentage, duration }) {
@@ -112,18 +104,10 @@ class Device {
       swipeDistance = viewport.width * percentage;
     }
 
-    const gesture = gestures.swipeRight({
-      x: isUndefined(x)
-        ? 0
-        : x,
-      y: isUndefined(y)
-        ? 0
-        : y,
-      distance: swipeDistance,
-      duration
-    });
+    const swipeRightGesture = gestures.swipeRight({ x, y, distance: swipeDistance, duration });
 
-    return this.performGesture(gesture);
+    return appiumService.performActions({ actions: await swipeRightGesture.resolve() })
+      .catch(handleActionError("Failed to perform swipe right gesture."));
   }
 
   async swipeUp({ x, y, distance, percentage, duration }) {

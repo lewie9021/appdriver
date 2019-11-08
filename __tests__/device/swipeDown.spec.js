@@ -9,7 +9,7 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-it("executes the 'performActions' method on the Appium Service with a swipe up gesture", async () => {
+it("executes the 'performActions' method on the Appium Service with a swipe down gesture", async () => {
   const x = 100;
   const y = 50;
   const distance = 100;
@@ -52,7 +52,6 @@ it("defines the swipe up duration between (x, y) and (dest.x, dest.y) when 'dura
   expect(appiumService.performActions).toHaveBeenCalledWith({ actions: await swipeDownGesture.resolve() });
 });
 
-// TODO: Note that it no longer derives the y value from the percentage / distance.
 it("defaults 'x' and 'y' parameters to 0", async () => {
   const distance = 100;
   const swipeDownGesture = gestures.swipeDown({ x: 0, y: 0, distance });
