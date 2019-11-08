@@ -200,13 +200,14 @@ class Device {
         return new Promise((resolve, reject) => {
           fs.writeFile(filePath, Buffer.from(value, "base64"), (err) => {
             if (err) {
-              return reject(err);
+              return reject(new ActionError("Failed to store screenshot on disk."));
             }
 
             resolve(buffer);
           });
         });
-      });
+      })
+      .catch(handleActionError("Failed to take screenshot."));
   }
 
   goBack() {
