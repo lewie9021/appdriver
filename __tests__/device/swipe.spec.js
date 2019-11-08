@@ -1,7 +1,7 @@
 jest.mock("../../src/services/appiumService");
 
 const { appiumService } = require("../../src/services/appiumService");
-const { AppiumError, ActionError, NotImplementedError } = require("../../src/errors");
+const { AppiumError, ActionError } = require("../../src/errors");
 const { device, gestures } = require("../../");
 
 afterEach(() => {
@@ -35,11 +35,10 @@ it("defines the swipe duration between (x, y) and (dest.x, dest.y) when 'duratio
 
   await device.swipe({ x, y, distance, direction, duration });
 
-  expect(appiumService.performActions).toHaveBeenCalledTimes(1);
   expect(appiumService.performActions).toHaveBeenCalledWith({ actions: await swipeGesture.resolve() });
 });
 
-it("defaults x and y to 0", async () => {
+it("defaults 'x' and 'y' parameters to 0", async () => {
   const distance = 100;
   const direction = 90;
   const swipeGesture = gestures.swipe({ x: 0, y: 0, distance, direction });
@@ -51,7 +50,7 @@ it("defaults x and y to 0", async () => {
   expect(appiumService.performActions).toHaveBeenCalledWith({ actions: await swipeGesture.resolve() });
 });
 
-it("defaults duration to 50", async () => {
+it("defaults 'duration' parameter to 50", async () => {
   const x = 100;
   const y = 50;
   const distance = 100;

@@ -50,7 +50,7 @@ const swipeRight = ({ x, y, distance, element, duration = 50 }) => {
   return swipe({ x, y, distance, duration, element, direction: 90 });
 };
 
-const swipeUp = ({ x, y, distance, element, duration = 50 }) => {
+const swipeUp = ({ x = 0, y = 0, distance, element, duration = 50 }) => {
   return swipe({ x, y, distance, duration, element, direction: 0 });
 };
 

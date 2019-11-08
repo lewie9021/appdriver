@@ -74,9 +74,9 @@ class Device {
   }
 
   async swipe({ x, y, distance, direction, duration }) {
-    const swipeGesture = await gestures.swipe({ x, y, distance, direction, duration }).resolve();
+    const swipeGesture = gestures.swipe({ x, y, distance, direction, duration });
 
-    return appiumService.performActions({ actions: swipeGesture })
+    return appiumService.performActions({ actions: await swipeGesture.resolve() })
       .catch(handleActionError("Failed to perform swipe gesture."));
   }
 
@@ -135,18 +135,10 @@ class Device {
       swipeDistance = viewport.height * percentage;
     }
 
-    const gesture = gestures.swipeUp({
-      x: isUndefined(x)
-        ? 0
-        : x,
-      y: isUndefined(y)
-        ? swipeDistance
-        : y,
-      distance: swipeDistance,
-      duration
-    });
+    const swipeUpGesture = gestures.swipeUp({ x, y, distance: swipeDistance, duration });
 
-    return this.performGesture(gesture);
+    return appiumService.performActions({ actions: await swipeUpGesture.resolve() })
+      .catch(handleActionError("Failed to perform swipe up gesture."));
   }
 
   async swipeDown({ x, y, distance, percentage, duration }) {
