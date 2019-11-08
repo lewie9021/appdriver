@@ -150,18 +150,10 @@ class Device {
       swipeDistance = viewport.height * percentage;
     }
 
-    const gesture = gestures.swipeDown({
-      x: isUndefined(x)
-        ? 0
-        : x,
-      y: isUndefined(y)
-        ? 0
-        : y,
-      distance: swipeDistance,
-      duration
-    });
+    const swipeDownGesture = gestures.swipeDown({ x, y, distance: swipeDistance, duration });
 
-    return this.performGesture(gesture);
+    return appiumService.performActions({ actions: await swipeDownGesture.resolve() })
+      .catch(handleActionError("Failed to perform swipe down gesture."));
   }
 
   wait(duration) {
