@@ -8,7 +8,7 @@ afterEach(() => {
 });
 
 it("returns the 'platformVersion' session capability", async () => {
-  const platformVersion = "iPhone X";
+  const platformVersion = "12.4";
 
   jest.spyOn(sessionStore, "getCapabilities").mockReturnValue(platformVersion);
 
