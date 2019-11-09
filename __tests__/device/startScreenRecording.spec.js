@@ -44,6 +44,34 @@ defaultParameters.forEach(({ name, key, value }) => {
   });
 });
 
+it("supports passing a 'maxDuration' parameter ", async () => {
+  const maxDuration = 30;
+
+  jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("iOS");
+  jest.spyOn(appiumService, "startScreenRecording").mockResolvedValue(null);
+
+  await device.startScreenRecording({ maxDuration });
+
+  expect(sessionStore.getCapabilities).toHaveBeenCalledWith("platformName");
+  expect(appiumService.startScreenRecording).toHaveBeenCalledWith({
+    options: expect.objectContaining({ timeLimit: maxDuration })
+  });
+});
+
+it("supports passing a 'forceRestart' parameter ", async () => {
+  const forceRestart = true;
+
+  jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("iOS");
+  jest.spyOn(appiumService, "startScreenRecording").mockResolvedValue(null);
+
+  await device.startScreenRecording({ forceRestart });
+
+  expect(sessionStore.getCapabilities).toHaveBeenCalledWith("platformName");
+  expect(appiumService.startScreenRecording).toHaveBeenCalledWith({
+    options: expect.objectContaining({ forceRestart })
+  });
+});
+
 it("throws an ActionError for Appium request errors", async () => {
   const error = new AppiumError("Request error.", 3);
 
@@ -81,127 +109,81 @@ it("propagates other types of errors", async () => {
   expect(appiumService.startScreenRecording).toHaveBeenCalled();
 });
 
-/*
-it("supports passing a 'maxDuration' parameter ", async () => {
-  const startRecordingScreenMock = appiumServer.mockStartRecordingScreen();
-  const maxDuration = 30;
-
-  await device.startScreenRecording({ maxDuration });
-
-  const startRecordingScreenMockCalls = appiumServer.getCalls(startRecordingScreenMock);
-
-  expect(startRecordingScreenMockCalls[0].options.body).toEqual({
-    options: expect.objectContaining({
-      timeLimit: maxDuration
-    })
-  });
-});
-
-it("supports passing a 'forceRestart' parameter ", async () => {
-  const startRecordingScreenMock = appiumServer.mockStartRecordingScreen();
-  const forceRestart = true;
-
-  await device.startScreenRecording({ forceRestart });
-
-  const startRecordingScreenMockCalls = appiumServer.getCalls(startRecordingScreenMock);
-
-  expect(startRecordingScreenMockCalls[0].options.body).toEqual({
-    options: expect.objectContaining({
-      forceRestart
-    })
-  });
-});
-
 describe("iOS", () => {
   beforeEach(() => {
-    mockSession({
-      sessionId: "sessionId",
-      platformName: "iOS"
-    });
+    jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("iOS");
   });
 
   it("supports passing a 'format' parameter", async () => {
-    const startRecordingScreenMock = appiumServer.mockStartRecordingScreen();
     const format = "mp4";
+
+    jest.spyOn(appiumService, "startScreenRecording").mockResolvedValue(null);
 
     await device.startScreenRecording({ format });
 
-    const startRecordingScreenMockCalls = appiumServer.getCalls(startRecordingScreenMock);
-
-    expect(startRecordingScreenMockCalls[0].options.body).toEqual({
-      options: expect.objectContaining({
-        videoType: format
-      })
+    expect(sessionStore.getCapabilities).toHaveBeenCalledWith("platformName");
+    expect(appiumService.startScreenRecording).toHaveBeenCalledWith({
+      options: expect.objectContaining({ videoType: format })
     });
   });
 
   it("supports passing a 'quality' parameter", async () => {
-    const startRecordingScreenMock = appiumServer.mockStartRecordingScreen();
     const quality = "high";
+
+    jest.spyOn(appiumService, "startScreenRecording").mockResolvedValue(null);
 
     await device.startScreenRecording({ quality });
 
-    const startRecordingScreenMockCalls = appiumServer.getCalls(startRecordingScreenMock);
-
-    expect(startRecordingScreenMockCalls[0].options.body).toEqual({
-      options: expect.objectContaining({
-        videoQuality: quality
-      })
+    expect(sessionStore.getCapabilities).toHaveBeenCalledWith("platformName");
+    expect(appiumService.startScreenRecording).toHaveBeenCalledWith({
+      options: expect.objectContaining({ videoQuality: quality })
     });
   });
 
   it("supports passing a 'fps' parameter", async () => {
-    const startRecordingScreenMock = appiumServer.mockStartRecordingScreen();
     const fps = 30;
+
+    jest.spyOn(appiumService, "startScreenRecording").mockResolvedValue(null);
 
     await device.startScreenRecording({ fps });
 
-    const startRecordingScreenMockCalls = appiumServer.getCalls(startRecordingScreenMock);
-
-    expect(startRecordingScreenMockCalls[0].options.body).toEqual({
-      options: expect.objectContaining({
-        videoFps: fps
-      })
+    expect(sessionStore.getCapabilities).toHaveBeenCalledWith("platformName");
+    expect(appiumService.startScreenRecording).toHaveBeenCalledWith({
+      options: expect.objectContaining({ videoFps: fps })
     });
   });
 });
 
 describe("Android", () => {
   beforeEach(() => {
-    mockSession({
-      sessionId: "sessionId",
-      platformName: "Android"
-    });
+    jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("Android");
   });
 
   it("supports passing a 'size' parameter", async () => {
-    const startRecordingScreenMock = appiumServer.mockStartRecordingScreen();
     const size = { width: 640, height: 480 };
+
+    jest.spyOn(appiumService, "startScreenRecording").mockResolvedValue(null);
 
     await device.startScreenRecording({ size });
 
-    const startRecordingScreenMockCalls = appiumServer.getCalls(startRecordingScreenMock);
-
-    expect(startRecordingScreenMockCalls[0].options.body).toEqual({
-      options: expect.objectContaining({
-        videoSize: `${size.width}x${size.height}`
-      })
+    expect(sessionStore.getCapabilities).toHaveBeenCalledWith("platformName");
+    expect(appiumService.startScreenRecording).toHaveBeenCalledWith({
+      options: expect.objectContaining({ videoSize: `${size.width}x${size.height}` })
     });
   });
 
   it("throws if 'size.width' and 'size.height' aren't passed together", async () => {
-    const startRecordingScreenMock = appiumServer.mockStartRecordingScreen();
+    jest.spyOn(appiumService, "startScreenRecording").mockResolvedValue(null);
 
-    await expect(device.startScreenRecording({ size: { } }))
-      .rejects.toThrow(new Error("You must provide a 'size.width' and 'size.height' when passing a 'size'."));
+    await expect(device.startScreenRecording({ size: {} }))
+      .rejects.toThrow(new AppiumError("You must provide a 'size.width' and 'size.height' when passing a 'size'."));
 
     await expect(device.startScreenRecording({ size: { width: 640 } }))
-      .rejects.toThrow(new Error("You must provide a 'size.height' when passing a 'size.width'."));
+      .rejects.toThrow(new AppiumError("You must provide a 'size.height' when passing a 'size.width'."));
 
     await expect(device.startScreenRecording({ size: { height: 480 } }))
-      .rejects.toThrow(new Error("You must provide a 'size.width' when passing a 'size.height'."));
+      .rejects.toThrow(new AppiumError("You must provide a 'size.width' when passing a 'size.height'."));
 
-    expect(appiumServer.getCalls(startRecordingScreenMock)).toHaveLength(0);
+    expect(appiumService.startScreenRecording).not.toHaveBeenCalled();
   });
 });
- */
