@@ -237,10 +237,9 @@ class Device {
     const filePath = sessionStore.getScreenRecording("filePath");
 
     return appiumService.stopScreenRecording()
+      .finally(() => sessionStore.setState({ screenRecording: null }))
       .then((value) => {
         const buffer = Buffer.from(value, "base64");
-
-        this._screenRecording = null;
 
         if (!filePath) {
           return Promise.resolve(buffer);
@@ -255,7 +254,8 @@ class Device {
             resolve(buffer);
           });
         });
-      });
+      })
+      .catch(handleActionError("Failed to stop screen recording."));
   }
 }
 

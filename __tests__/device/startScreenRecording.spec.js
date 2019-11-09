@@ -172,7 +172,7 @@ describe("Android", () => {
     });
   });
 
-  it("throws if 'size.width' and 'size.height' aren't passed together", async () => {
+  it("throws an ActionError if 'size.width' and 'size.height' aren't passed together", async () => {
     jest.spyOn(appiumService, "startScreenRecording").mockResolvedValue(null);
 
     await expect(device.startScreenRecording({ size: {} }))

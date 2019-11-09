@@ -1,94 +1,105 @@
+jest.mock("fs");
+jest.mock("../../src/services/appiumService");
+
 const fs = require("fs");
-const appiumServer = require("../helpers/appiumServer");
+const { sessionStore } = require("../../src/stores/sessionStore");
+const { appiumService } = require("../../src/services/appiumService");
+const { AppiumError, ActionError } = require("../../src/errors");
 const { device } = require("../../");
 
-beforeEach(() => {
-  device._screenRecording = { filePath: null };
-});
-
 afterEach(() => {
-  appiumServer.resetMocks();
+  sessionStore.resetState();
+
+  jest.resetAllMocks();
   jest.restoreAllMocks();
-  device._screenRecording = null;
 });
 
-it("stops recording the screen", async () => {
-  const stopRecordingScreenMock = appiumServer.mockStopRecordingScreen({ value: "dGVzdA==" });
+it("returns a buffer containing the result of 'stopScreenRecording' on the Appium Service", async () => {
+  const screenRecording = "dGVzdA==";
 
-  await device.stopScreenRecording();
+  sessionStore.setState({ screenRecording: { filePath: null } });
+  jest.spyOn(appiumService, "stopScreenRecording").mockResolvedValue(screenRecording);
 
-  expect(appiumServer.getCalls(stopRecordingScreenMock)).toHaveLength(1);
-  expect(device._screenRecording).toBeNull();
+  const result = await device.stopScreenRecording();
+
+  expect(result).toBeInstanceOf(Buffer);
+  expect(result.toString("base64")).toEqual(screenRecording);
+  expect(appiumService.stopScreenRecording).toHaveBeenCalled();
 });
 
-it("returns a buffer containing the base64 encoding of the video", async () => {
-  appiumServer.mockStopRecordingScreen({ value: "dGVzdA==" });
-
-  const buffer = await device.stopScreenRecording();
-
-  expect(buffer).toBeInstanceOf(Buffer);
-});
-
-it("stores on disk if a 'filePath' is configured", async () => {
+it("stores the screen recording on disk if a 'filePath' is configured", async () => {
   const filePath = "some/path";
 
-  appiumServer.mockStopRecordingScreen({ value: "dGVzdA==" });
-  const writeFileSpy = jest.spyOn(fs, "writeFile")
-    .mockImplementation((path, data, cb) => cb());
+  sessionStore.setState({ screenRecording: { filePath } });
+  jest.spyOn(appiumService, "stopScreenRecording").mockResolvedValue("dGVzdA==");
+  jest.spyOn(fs, "writeFile").mockImplementation((path, data, cb) => cb());
 
-  device._screenRecording = { filePath };
+  const buffer = await device.stopScreenRecording({ filePath });
 
-  const buffer = await device.stopScreenRecording();
-
-  expect(writeFileSpy).toHaveBeenCalledWith(filePath, buffer, expect.any(Function));
-  expect(device._screenRecording).toBeNull();
+  expect(fs.writeFile).toHaveBeenCalledWith(filePath, buffer, expect.any(Function));
 });
 
-it("doesn't doesn't store on disk if a 'filePath' isn't configured", async () => {
-  appiumServer.mockStopRecordingScreen({ value: "dGVzdA==" });
-  const writeFileSpy = jest.spyOn(fs, "writeFile")
-    .mockImplementation((path, data, cb) => cb());
-
-  device._screenRecording = { filePath: null };
+it("resets the screen recording state on success", async () => {
+  sessionStore.setState({ screenRecording: { filePath: null } });
+  jest.spyOn(appiumService, "stopScreenRecording").mockResolvedValue("dGVzdA==");
 
   await device.stopScreenRecording();
 
-  expect(writeFileSpy).not.toHaveBeenCalled();
-  expect(device._screenRecording).toBeNull();
+  expect(sessionStore.getScreenRecording()).toBeNull();
 });
 
-it("throws if no screen recording is in progress", async () => {
-  const stopRecordingScreenMock = appiumServer.mockStopRecordingScreen({ value: "dGVzdA==" });
-  device._screenRecording = null;
+it("resets the screen recording state on error", async () => {
+  const error = new AppiumError("Request error.", 3);
+
+  sessionStore.setState({ screenRecording: { filePath: null } });
+  jest.spyOn(appiumService, "stopScreenRecording").mockRejectedValue(error);
 
   await expect(device.stopScreenRecording())
-    .rejects.toThrow(new Error("No screen recording in progress to stop."));
+    .rejects.toThrow(Error);
 
-  expect(appiumServer.getCalls(stopRecordingScreenMock)).toHaveLength(0);
+  expect(sessionStore.getScreenRecording()).toBeNull();
 });
 
-it("correctly handles stop recording screen request errors", async () => {
-  const stopRecordingScreenMock = appiumServer.mockStopRecordingScreen({ status: 3 });
-  const writeFileSpy = jest.spyOn(fs, "writeFile")
-    .mockImplementation((path, data, cb) => cb());
+it("throws an ActionError if there isn't a recording in progress", async () => {
+  expect.assertions(3);
 
-  await expect(device.stopScreenRecording())
-    .rejects.toThrow(new Error("Failed to stop screen recording."));
+  sessionStore.setState({ screenRecording: null });
+  jest.spyOn(appiumService, "stopScreenRecording").mockResolvedValue(null);
 
-  expect(appiumServer.getCalls(stopRecordingScreenMock)).toHaveLength(1);
-  expect(writeFileSpy).not.toHaveBeenCalled();
+  try {
+    await device.stopScreenRecording();
+  } catch (error) {
+    expect(error).toBeInstanceOf(ActionError);
+    expect(error).toHaveProperty("message", "No screen recording in progress to stop.");
+  }
+
+  expect(appiumService.stopScreenRecording).not.toHaveBeenCalled();
 });
 
-it("correct handles file system errors", async () => {
-  const stopRecordingScreenMock = appiumServer.mockStopRecordingScreen({ value: "dGVzdA==" });
-  const writeFileSpy = jest.spyOn(fs, "writeFile")
-    .mockImplementation((path, data, cb) => cb(new Error("File System error.")));
+it("throws an ActionError for Appium request errors", async () => {
+  const error = new AppiumError("Request error.", 3);
 
-  device._screenRecording = { filePath: "some/path" };
+  sessionStore.setState({ screenRecording: { filePath: null } });
+  jest.spyOn(appiumService, "stopScreenRecording").mockRejectedValue(error);
+
+  try {
+    await device.stopScreenRecording();
+  } catch (error) {
+    expect(error).toBeInstanceOf(ActionError);
+    expect(error).toHaveProperty("message", "Failed to stop screen recording.");
+  }
+
+  expect(appiumService.stopScreenRecording).toHaveBeenCalled();
+});
+
+it("propagates other types of errors", async () => {
+  const error = new Error("Something went wrong.");
+
+  sessionStore.setState({ screenRecording: { filePath: null } });
+  jest.spyOn(appiumService, "stopScreenRecording").mockRejectedValue(error);
 
   await expect(device.stopScreenRecording())
-    .rejects.toThrow(new Error("File System error."));
+    .rejects.toThrow(error);
 
-  expect(appiumServer.getCalls(stopRecordingScreenMock)).toHaveLength(1);
-  expect(writeFileSpy).toHaveBeenCalled();
+  expect(appiumService.stopScreenRecording).toHaveBeenCalled();
 });

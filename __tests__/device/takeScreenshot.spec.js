@@ -23,6 +23,17 @@ it("returns a buffer containing the result of 'takeScreenshot' on the Appium Ser
   expect(appiumService.takeScreenshot).toHaveBeenCalled();
 });
 
+it("stores the screenshot on disk if a 'filePath' is configured", async () => {
+  const filePath = "some/path";
+
+  jest.spyOn(appiumService, "takeScreenshot").mockResolvedValue("dGVzdA==");
+  jest.spyOn(fs, "writeFile").mockImplementation((path, data, cb) => cb());
+
+  const buffer = await device.takeScreenshot({ filePath });
+
+  expect(fs.writeFile).toHaveBeenCalledWith(filePath, buffer, expect.any(Function));
+});
+
 it("throws an ActionError for Appium request errors", async () => {
   const error = new AppiumError("Request error.", 3);
 
@@ -56,15 +67,4 @@ it("propagates other types of errors", async () => {
     .rejects.toThrow(error);
 
   expect(appiumService.takeScreenshot).toHaveBeenCalled();
-});
-
-it("stores the screenshot on disk if a 'filePath' is configured", async () => {
-  const filePath = "some/path";
-
-  jest.spyOn(appiumService, "takeScreenshot").mockResolvedValue("dGVzdA==");
-  jest.spyOn(fs, "writeFile").mockImplementation((path, data, cb) => cb());
-
-  const buffer = await device.takeScreenshot({ filePath });
-
-  expect(fs.writeFile).toHaveBeenCalledWith(filePath, buffer, expect.any(Function));
 });
