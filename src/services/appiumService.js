@@ -338,11 +338,22 @@ function createAppiumService(sessionStore) {
     });
   };
 
-  // ({ sessionId: String?, element: AppiumElement }) => Promise.
-  const tapElement = ({ sessionId = sessionStore.getSessionId(), element }) => {
-    return request({
-      method: "POST",
-      path: `/session/${sessionId}/element/${element.ELEMENT}/click`
+  // ({ sessionId: String?, element: AppiumElement, x: Number?, y: Number?, duration: Number? }) => Promise.
+  const tapElement = ({ sessionId = sessionStore.getSessionId(), element, x = 0, y = 0, duration = 100 }) => {
+    return performActions({
+      sessionId, actions: [{
+        id: "finger1",
+        type: "pointer",
+        parameters: {
+          pointerType: "touch"
+        },
+        actions: [
+          { type: "pointerMove", duration: 0, origin: { element }, x, y },
+          { type: "pointerDown", button: 0 },
+          { type: "pause", duration },
+          { type: "pointerUp", button: 0 }
+        ]
+      }]
     });
   };
 

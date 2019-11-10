@@ -201,16 +201,15 @@ class Element {
         return done(new ElementActionError("Failed to tap element that doesn't exist."));
       }
 
-      const $element = new Element({ value: Promise.resolve(value) });
+      return appiumService.tapElement({ element: value.ref, x, y })
+        .then(() => done(null))
+        .catch((err) => {
+          if (isInstanceOf(err, AppiumError)) {
+            return done(new ElementActionError("Failed to tap element."));
+          }
 
-      return gestures.tap({ x, y, element: $element })
-        .resolve()
-        .then((actions) => {
-          appiumService.performActions({ actions })
-            .then(() => done(null))
-            .catch(() => done(new ElementActionError("Failed to tap element.")));
-        })
-        .catch((err) => done(err));
+          done(err);
+        });
     });
   }
 
