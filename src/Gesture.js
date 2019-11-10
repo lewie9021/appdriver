@@ -64,6 +64,7 @@ class Gesture {
     }];
   }
 
+  // TODO: What about options.element without x and y?
   press(options = {}) {
     // TODO: What if only x or y is passed. The user wouldn't know that their coordinate is ignored.
     if (isNumber(options.x) && isNumber(options.y)) {
