@@ -412,5 +412,5 @@ function createAppiumService(sessionStore) {
 
 module.exports = {
   createAppiumService,
-  appiumService: createAppiumService()
+  appiumService: createAppiumService(sessionStore)
 };
