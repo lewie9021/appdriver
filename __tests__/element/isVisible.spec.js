@@ -1,54 +1,95 @@
-const appiumServer = require("../helpers/appiumServer");
-const fetch = require("node-fetch");
+jest.mock("../../src/services/appiumService");
 
+const { appiumService } = require("../../src/services/appiumService");
+const { createFindElementMock } = require("../appiumServiceMocks");
+const { ElementActionError, AppiumError } = require("../../src/errors");
 const { element, by } = require("../../");
-const { ElementActionError } = require("../../src/errors");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
-it("returns the element's displayed value", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementDisplayed({elementId: "elementId", displayed: true});
+it("returns the element's visibility status", async () => {
+  const ref = createFindElementMock();
+  const visible = true;
 
-  const result = await element(by.label("button")).isVisible();
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementVisible").mockResolvedValue(visible);
 
-  expect(fetch).toHaveBeenCalledTimes(2);
-  expect(result).toEqual(true);
+  const result = await element(by.label("box")).isVisible();
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementVisible).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementVisible).toHaveBeenCalledWith(expect.objectContaining({ element: ref }));
+  expect(result).toEqual(visible);
 });
 
-it("returns false if an ElementNotFoundError exception is thrown", async () => {
-  appiumServer.mockFindElement({status: 7, elementId: "elementId"});
+it("returns 'false' if the element isn't found", async () => {
+  const error = new AppiumError("Request error.", 7);
 
-  const result = await element(by.label("button")).isVisible();
+  jest.spyOn(appiumService, "findElement").mockRejectedValue(error);
+  jest.spyOn(appiumService, "getElementVisible").mockResolvedValue(false);
+
+  const result = await element(by.label("box")).isVisible();
 
   expect(result).toEqual(false);
-
-  expect(fetch).toHaveBeenCalledTimes(1);
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementVisible).toHaveBeenCalledTimes(0);
 });
 
-it("correctly propagates errors", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockActions({ status: 3 });
-  appiumServer.mockElementDisplayed({elementId: "elementId", displayed: true});
+it("throws an ElementActionError for Appium request errors", async () => {
+  const ref = createFindElementMock();
+  const error = new AppiumError("Request error.", 3);
 
-  const result = element(by.label("button"))
-    .tap()
-    .isVisible();
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementVisible").mockRejectedValue(error);
+  expect.assertions(4);
 
-  await expect(result)
-    .rejects.toThrow(ElementActionError);
+  try {
+    await element(by.label("box")).isVisible();
+  } catch (error) {
+    expect(error).toBeInstanceOf(ElementActionError);
+    expect(error).toHaveProperty("message", "Failed to retrieve visibility status of element.");
+  }
 
-  expect(fetch).toHaveBeenCalledTimes(2);
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementVisible).toHaveBeenCalledTimes(1);
 });
 
-it("correctly handles displayed attribute request errors", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementDisplayed({status: 3, elementId: "elementId"});
+it("propagates errors from further up the chain", async () => {
+  const ref = createFindElementMock();
+  const tapError = new AppiumError("Request error.", 3);
 
-  await expect(element(by.label("product-title")).isVisible())
-    .rejects.toThrow(new ElementActionError("Failed to retrieve visibility status of element."));
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "tapElement").mockRejectedValue(tapError);
+  jest.spyOn(appiumService, "getElementVisible").mockResolvedValue({ x: 300, y: 50 });
+  expect.assertions(5);
 
-  expect(fetch).toHaveBeenCalledTimes(2);
+  try {
+    await element(by.label("input"))
+      .tap()
+      .isVisible();
+  } catch (error) {
+    expect(error).toBeInstanceOf(ElementActionError);
+    expect(error).toHaveProperty("message", "Failed to tap element.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.tapElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementVisible).toHaveBeenCalledTimes(0);
+});
+
+it("propagates other types of errors", async () => {
+  const ref = createFindElementMock();
+  const error = new Error("Something went wrong.");
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementVisible").mockRejectedValue(error);
+
+  await expect(element(by.label("box")).isVisible())
+    .rejects.toThrow(error);
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementVisible).toHaveBeenCalledTimes(1);
 });

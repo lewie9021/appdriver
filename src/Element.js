@@ -487,15 +487,14 @@ class Element {
     const currentValue = getCurrentValue(this.value);
 
     return currentValue
-      .then((value) => {
-        return appiumService.getElementVisible({ element: value.ref })
-      })
+      .then((value) => appiumService.getElementVisible({ element: value.ref }))
+      .catch(handleActionError("Failed to retrieve visibility status of element."))
       .catch((err) => {
         if (isInstanceOf(err, ElementNotFoundError)) {
           return false;
         }
 
-        throw new ElementActionError("Failed to retrieve visibility status of element.");
+        throw err;
       });
   }
 
