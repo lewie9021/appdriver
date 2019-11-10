@@ -1,42 +1,99 @@
-const appiumServer = require("../helpers/appiumServer");
-const fetch = require("node-fetch");
+jest.mock("../../src/services/appiumService");
 
+const { appiumService } = require("../../src/services/appiumService");
+const { createFindElementMock } = require("../appiumServiceMocks");
+const { ElementNotFoundError, ElementActionError, AppiumError } = require("../../src/errors");
 const { element, by } = require("../../");
-const { ElementNotFoundError, ElementActionError } = require("../../src/errors");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
 it("returns the element's width and height", async () => {
-  const width = 200;
-  const height = 150;
+  const ref = createFindElementMock();
+  const size = { width: 200, height: 150 };
 
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementSize({elementId: "elementId", width, height});
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementSize").mockResolvedValue(size);
 
   const result = await element(by.label("box")).getSize();
 
-  expect(fetch).toHaveBeenCalledTimes(2);
-  expect(result).toEqual({width, height});
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementSize).toHaveBeenCalledTimes(1);
+  expect(result).toEqual(size);
 });
 
-it("correctly propagates errors", async () => {
-  appiumServer.mockFindElement({status: 7, elementId: "elementId"});
-  appiumServer.mockElementSize({elementId: "elementId", width: 100, height: 32});
+it("throws an ElementNotFoundError if the element isn't found", async () => {
+  const error = new AppiumError("Request error.", 7);
 
-  await expect(element(by.label("box")).getSize())
-    .rejects.toThrow(ElementNotFoundError);
+  jest.spyOn(appiumService, "findElement").mockRejectedValue(error);
+  expect.assertions(4);
 
-  expect(fetch).toHaveBeenCalledTimes(1);
+
+  try {
+    await element(by.label("box")).getSize();
+  } catch (error) {
+    expect(error).toBeInstanceOf(ElementNotFoundError);
+    expect(error).toHaveProperty("message", "Failed to find element.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementSize).toHaveBeenCalledTimes(0);
 });
 
-it("correctly handles size attribute request errors", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementSize({status: 3, elementId: "elementId"});
+it("throws an ElementActionError for Appium request errors", async () => {
+  const ref = createFindElementMock();
+  const error = new AppiumError("Request error.", 3);
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementSize").mockRejectedValue(error);
+  expect.assertions(4);
+
+  try {
+    await element(by.label("box")).getSize();
+  } catch (error) {
+    expect(error).toBeInstanceOf(ElementActionError);
+    expect(error).toHaveProperty("message", "Failed to get element size.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementSize).toHaveBeenCalledTimes(1);
+});
+
+it.skip("propagates errors from further up the chain", async () => {
+  const ref = createFindElementMock();
+  const error = new Error("Something went wrong.");
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "tapElement").mockRejectedValue(error);
+  jest.spyOn(appiumService, "getElementSize").mockResolvedValue({ width: 640, height: 480 });
+  expect.assertions(4);
+
+  try {
+    await element(by.label("box"))
+      .tap()
+      .getSize();
+  } catch (error) {
+    expect(error).toBeInstanceOf(ElementActionError);
+    expect(error).toHaveProperty("message", "Failed to tap element.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.tapElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementSize).toHaveBeenCalledTimes(1);
+});
+
+it("propagates other types of errors", async () => {
+  const ref = createFindElementMock();
+  const error = new Error("Something went wrong.");
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementSize").mockRejectedValue(error);
 
   await expect(element(by.label("box")).getSize())
-    .rejects.toThrow(new ElementActionError("Failed to get element size."));
+    .rejects.toThrow(error);
 
-  expect(fetch).toHaveBeenCalledTimes(2);
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementSize).toHaveBeenCalledTimes(1);
 });

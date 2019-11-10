@@ -61,10 +61,9 @@ it("resets the screen recording state on error", async () => {
 });
 
 it("throws an ActionError if there isn't a recording in progress", async () => {
-  expect.assertions(3);
-
   sessionStore.setState({ screenRecording: null });
   jest.spyOn(appiumService, "stopScreenRecording").mockResolvedValue(null);
+  expect.assertions(3);
 
   try {
     await device.stopScreenRecording();
@@ -81,6 +80,7 @@ it("throws an ActionError for Appium request errors", async () => {
 
   sessionStore.setState({ screenRecording: { filePath: null } });
   jest.spyOn(appiumService, "stopScreenRecording").mockRejectedValue(error);
+  expect.assertions(3);
 
   try {
     await device.stopScreenRecording();

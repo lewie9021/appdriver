@@ -21,7 +21,7 @@ const getCurrentValue = (elementValue) => {
         return appiumService.findElement({ matcher: err.matcher })
           .then((ref) => ({ ref, matcher: err.matcher }))
           .catch(() => {
-            throw new ElementNotFoundError("Failed to find element", err.matcher);
+            throw new ElementNotFoundError("Failed to find element.", err.matcher);
           });
       }
 
@@ -32,7 +32,7 @@ const getCurrentValue = (elementValue) => {
         return appiumService.findElement({ matcher: value.matcher })
           .then((ref) => ({ ref, matcher: value.matcher }))
           .catch(() => {
-            throw new ElementNotFoundError("Failed to find element", value.matcher);
+            throw new ElementNotFoundError("Failed to find element.", value.matcher);
           });
       }
 
@@ -66,6 +66,14 @@ const parseValue = (rawValue, elementType, options) => {
     default:
       return rawValue;
   }
+};
+
+const handleActionError = (message) => (err) => {
+  if (isInstanceOf(err, AppiumError)) {
+    throw new ElementActionError(message);
+  }
+
+  throw err;
 };
 
 class Element {
@@ -264,16 +272,15 @@ class Element {
   getSize() {
     const currentValue = getCurrentValue(this.value);
 
-    return currentValue.then((value) => {
-      if (!value.ref) {
-        throw new ElementActionError("Failed to get size of element that doesn't exist.");
-      }
+    return currentValue
+      .then((value) => {
+        if (!value.ref) {
+          throw new ElementActionError("Failed to get size of element that doesn't exist.");
+        }
 
-      return appiumService.getElementSize({ element: value.ref })
-        .catch(() => {
-          throw new ElementActionError("Failed to get size of element.")
-        });
-    });
+        return appiumService.getElementSize({ element: value.ref });
+      })
+      .catch(handleActionError("Failed to get element size."));
   }
 
   getAttribute(name) {
