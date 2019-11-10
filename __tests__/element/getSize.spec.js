@@ -28,8 +28,8 @@ it("throws an ElementNotFoundError if the element isn't found", async () => {
   const error = new AppiumError("Request error.", 7);
 
   jest.spyOn(appiumService, "findElement").mockRejectedValue(error);
+  jest.spyOn(appiumService, "getElementSize").mockResolvedValue({ width: 640, height: 480 });
   expect.assertions(4);
-
 
   try {
     await element(by.label("box")).getSize();
