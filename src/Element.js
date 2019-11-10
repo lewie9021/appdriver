@@ -265,13 +265,7 @@ class Element {
     const currentValue = getCurrentValue(this.value);
 
     return currentValue
-      .then((value) => {
-        if (!value.ref) {
-          throw new ElementActionError("Failed to get size of element that doesn't exist.");
-        }
-
-        return appiumService.getElementSize({ element: value.ref });
-      })
+      .then((value) => appiumService.getElementSize({ element: value.ref }))
       .catch(handleActionError("Failed to get element size."));
   }
 
@@ -337,16 +331,9 @@ class Element {
   getLocation({relative = false} = {}) {
     const currentValue = getCurrentValue(this.value);
 
-    return currentValue.then((value) => {
-      if (!value.ref) {
-        throw new ElementActionError("Failed to get location of element that doesn't exist.");
-      }
-
-      return appiumService.getElementLocation({ element: value.ref, relative })
-        .catch(() => {
-          throw new ElementActionError("Failed to get location of element.");
-        });
-    });
+    return currentValue
+      .then((value) => appiumService.getElementLocation({ element: value.ref, relative }))
+      .catch(handleActionError("Failed to get element location."));
   }
 
   waitFor(conditionFn, options = {}) {

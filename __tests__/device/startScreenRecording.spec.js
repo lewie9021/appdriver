@@ -58,7 +58,7 @@ it("supports passing a 'maxDuration' parameter ", async () => {
   });
 });
 
-it("supports passing a 'forceRestart' parameter ", async () => {
+it("supports passing a 'forceRestart' parameter", async () => {
   const forceRestart = true;
 
   jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("iOS");
