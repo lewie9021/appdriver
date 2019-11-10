@@ -61,17 +61,17 @@ it("throws an ElementActionError for Appium request errors", async () => {
   expect(appiumService.getElementSize).toHaveBeenCalledTimes(1);
 });
 
-it.skip("propagates errors from further up the chain", async () => {
+it("propagates errors from further up the chain", async () => {
   const ref = createFindElementMock();
-  const error = new Error("Something went wrong.");
+  const tapError = new AppiumError("Request error.", 3);
 
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
-  jest.spyOn(appiumService, "tapElement").mockRejectedValue(error);
+  jest.spyOn(appiumService, "tapElement").mockRejectedValue(tapError);
   jest.spyOn(appiumService, "getElementSize").mockResolvedValue({ width: 640, height: 480 });
-  expect.assertions(4);
+  expect.assertions(5);
 
   try {
-    await element(by.label("box"))
+    await element(by.label("input"))
       .tap()
       .getSize();
   } catch (error) {
@@ -81,7 +81,7 @@ it.skip("propagates errors from further up the chain", async () => {
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
   expect(appiumService.tapElement).toHaveBeenCalledTimes(1);
-  expect(appiumService.getElementSize).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementSize).toHaveBeenCalledTimes(0);
 });
 
 it("propagates other types of errors", async () => {
