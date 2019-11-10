@@ -117,10 +117,10 @@ it("throws an ElementActionError for Appium request errors", async () => {
 
 it("propagates errors from further up the chain", async () => {
   const ref = createFindElementMock();
-  const tapError = new AppiumError("Request error.", 3);
+  const error = new AppiumError("Request error.", 3);
 
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
-  jest.spyOn(appiumService, "sendElementKeys").mockRejectedValue(tapError);
+  jest.spyOn(appiumService, "sendElementKeys").mockRejectedValue(error);
   jest.spyOn(appiumService, "tapElement").mockResolvedValue(null);
   expect.assertions(5);
 
@@ -128,9 +128,9 @@ it("propagates errors from further up the chain", async () => {
     await element(by.label("input"))
       .typeText("Hello world!")
       .tap();
-  } catch (error) {
-    expect(error).toBeInstanceOf(ElementActionError);
-    expect(error).toHaveProperty("message", "Failed to type text on element.");
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to type text on element.");
   }
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);

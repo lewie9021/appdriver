@@ -234,24 +234,17 @@ class Element {
 
   typeText(text) {
     return this._executeAction((value, done) => {
-      if (!value.ref) {
-        return done(new ElementActionError("Can't type text on element that doesn't exist"));
-      }
-
-      if (typeof text !== "string") {
-        return done(new ElementActionError(`Failed to type text. 'text' must be a string, instead got ${typeof text}.`));
-      }
-
       return appiumService.sendElementKeys({ element: value.ref, keys: text.split("") })
         .then(() => done(null))
         .catch((err) => {
           if (isInstanceOf(err, AppiumError)) {
             if (err.status === 13 && sessionStore.getCapabilities("platformName") === "iOS") {
-              return done(new ElementActionError("Failed to type text. Make sure hardware keyboard is disconnected from iOS simulator."));
+              return done(new ElementActionError("Failed to type text on element. Make sure hardware keyboard is disconnected from iOS simulator."));
             }
+            return done(new ElementActionError("Failed to type text on element."));
           }
 
-          return done(new ElementActionError("Failed to type text on element."));
+          return done(err);
         });
     });
   }
