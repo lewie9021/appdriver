@@ -261,6 +261,7 @@ function createAppiumService(sessionStore) {
   };
 
   // ({ sessionId: String?, element: AppiumElement }) => Promise<Boolean>.
+  // TODO: Flip return value.
   const getElementDisabled = ({ sessionId = sessionStore.getSessionId(), element }) => {
     return request({
       method: "GET",
