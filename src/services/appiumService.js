@@ -340,7 +340,7 @@ function createAppiumService(sessionStore) {
   };
 
   // ({ sessionId: String?, element: AppiumElement, x: Number?, y: Number?, duration: Number? }) => Promise.
-  const tapElement = ({ sessionId = sessionStore.getSessionId(), element, x = 0, y = 0, duration = 100 }) => {
+  const tapElement = ({ sessionId = sessionStore.getSessionId(), element, x = 0, y = 0, duration = 0 }) => {
     return performActions({
       sessionId, actions: [{
         id: "finger1",
@@ -349,7 +349,25 @@ function createAppiumService(sessionStore) {
           pointerType: "touch"
         },
         actions: [
-          { type: "pointerMove", duration: 0, origin: { element }, x, y },
+          { type: "pointerMove", duration: 0, origin: { element: element.ELEMENT }, x, y },
+          { type: "pointerDown", button: 0 },
+          { type: "pause", duration },
+          { type: "pointerUp", button: 0 }
+        ]
+      }]
+    });
+  };
+
+  const longPressElement = ({ sessionId = sessionStore.getSessionId(), element, x, y, duration = 750 }) => {
+    return performActions({
+      sessionId, actions: [{
+        id: "finger1",
+        type: "pointer",
+        parameters: {
+          pointerType: "touch"
+        },
+        actions: [
+          { type: "pointerMove", duration: 0, origin: { element: element.ELEMENT }, x, y },
           { type: "pointerDown", button: 0 },
           { type: "pause", duration },
           { type: "pointerUp", button: 0 }
@@ -406,6 +424,7 @@ function createAppiumService(sessionStore) {
     getElementValue,
     getElementLocation,
     tapElement,
+    longPressElement,
     sendElementKeys,
     clearElementText
   };
