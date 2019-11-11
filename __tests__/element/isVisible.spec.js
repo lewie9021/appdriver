@@ -15,13 +15,13 @@ it("returns the element's visibility status", async () => {
   const visible = true;
 
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
-  jest.spyOn(appiumService, "getElementVisible").mockResolvedValue(visible);
+  jest.spyOn(appiumService, "getElementVisibleAttribute").mockResolvedValue(visible);
 
   const result = await element(by.label("box")).isVisible();
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
-  expect(appiumService.getElementVisible).toHaveBeenCalledTimes(1);
-  expect(appiumService.getElementVisible).toHaveBeenCalledWith(expect.objectContaining({ element: ref }));
+  expect(appiumService.getElementVisibleAttribute).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementVisibleAttribute).toHaveBeenCalledWith(expect.objectContaining({ element: ref }));
   expect(result).toEqual(visible);
 });
 
@@ -29,13 +29,13 @@ it("returns 'false' if the element isn't found", async () => {
   const error = new AppiumError("Request error.", 7);
 
   jest.spyOn(appiumService, "findElement").mockRejectedValue(error);
-  jest.spyOn(appiumService, "getElementVisible").mockResolvedValue(false);
+  jest.spyOn(appiumService, "getElementVisibleAttribute").mockResolvedValue(false);
 
   const result = await element(by.label("box")).isVisible();
 
   expect(result).toEqual(false);
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
-  expect(appiumService.getElementVisible).toHaveBeenCalledTimes(0);
+  expect(appiumService.getElementVisibleAttribute).toHaveBeenCalledTimes(0);
 });
 
 it("throws an ElementActionError for Appium request errors", async () => {
@@ -43,7 +43,7 @@ it("throws an ElementActionError for Appium request errors", async () => {
   const error = new AppiumError("Request error.", 3);
 
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
-  jest.spyOn(appiumService, "getElementVisible").mockRejectedValue(error);
+  jest.spyOn(appiumService, "getElementVisibleAttribute").mockRejectedValue(error);
   expect.assertions(4);
 
   try {
@@ -54,7 +54,7 @@ it("throws an ElementActionError for Appium request errors", async () => {
   }
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
-  expect(appiumService.getElementVisible).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementVisibleAttribute).toHaveBeenCalledTimes(1);
 });
 
 it("propagates errors from further up the chain", async () => {
@@ -63,7 +63,7 @@ it("propagates errors from further up the chain", async () => {
 
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
   jest.spyOn(appiumService, "tapElement").mockRejectedValue(tapError);
-  jest.spyOn(appiumService, "getElementVisible").mockResolvedValue({ x: 300, y: 50 });
+  jest.spyOn(appiumService, "getElementVisibleAttribute").mockResolvedValue({ x: 300, y: 50 });
   expect.assertions(5);
 
   try {
@@ -77,7 +77,7 @@ it("propagates errors from further up the chain", async () => {
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
   expect(appiumService.tapElement).toHaveBeenCalledTimes(1);
-  expect(appiumService.getElementVisible).toHaveBeenCalledTimes(0);
+  expect(appiumService.getElementVisibleAttribute).toHaveBeenCalledTimes(0);
 });
 
 it("propagates other types of errors", async () => {
@@ -85,11 +85,11 @@ it("propagates other types of errors", async () => {
   const error = new Error("Something went wrong.");
 
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
-  jest.spyOn(appiumService, "getElementVisible").mockRejectedValue(error);
+  jest.spyOn(appiumService, "getElementVisibleAttribute").mockRejectedValue(error);
 
   await expect(element(by.label("box")).isVisible())
     .rejects.toThrow(error);
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
-  expect(appiumService.getElementVisible).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementVisibleAttribute).toHaveBeenCalledTimes(1);
 });

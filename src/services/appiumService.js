@@ -253,7 +253,7 @@ function createAppiumService(sessionStore) {
 
   // ({ sessionId: String?, element: AppiumElement }) => Promise<Boolean>.
   // Note: doesn't work on iOS yet. See https://github.com/appium/appium/issues/13441.
-  const getElementSelected = ({ sessionId = sessionStore.getSessionId(), element }) => {
+  const getElementSelectedAttribute = ({ sessionId = sessionStore.getSessionId(), element }) => {
     return request({
       method: "GET",
       path: `/session/${sessionId}/element/${element.ELEMENT}/selected`
@@ -261,8 +261,7 @@ function createAppiumService(sessionStore) {
   };
 
   // ({ sessionId: String?, element: AppiumElement }) => Promise<Boolean>.
-  // TODO: Flip return value.
-  const getElementDisabled = ({ sessionId = sessionStore.getSessionId(), element }) => {
+  const getElementEnabledAttribute = ({ sessionId = sessionStore.getSessionId(), element }) => {
     return request({
       method: "GET",
       path: `/session/${sessionId}/element/${element.ELEMENT}/enabled`
@@ -270,7 +269,7 @@ function createAppiumService(sessionStore) {
   };
 
   // ({ sessionId: String?, element: AppiumElement }) => Promise<Boolean>.
-  const getElementVisible = ({ sessionId = sessionStore.getSessionId(), element }) => {
+  const getElementVisibleAttribute = ({ sessionId = sessionStore.getSessionId(), element }) => {
     return request({
       method: "GET",
       path: `/session/${sessionId}/element/${element.ELEMENT}/displayed`
@@ -285,8 +284,8 @@ function createAppiumService(sessionStore) {
     });
   };
 
-  // ({ sessionId: String??, element: AppiumElement }) => Promise<String>.
-  const getElementName = ({ sessionId = sessionStore.getSessionId(), element }) => {
+  // ({ sessionId: String?, element: AppiumElement }) => Promise<String>.
+  const getElementNameAttribute = ({ sessionId = sessionStore.getSessionId(), element }) => {
     return request({
       method: "GET",
       path: `/session/${sessionId}/element/${element.ELEMENT}/name`
@@ -294,9 +293,9 @@ function createAppiumService(sessionStore) {
   };
 
   // ({ sessionId: String??, element: AppiumElement }) => Promise<String>.
-  const getElementType = ({ sessionId = sessionStore.getSessionId(), element }) => {
+  const getElementTypeAttribute = ({ sessionId = sessionStore.getSessionId(), element }) => {
     return platform.select({
-      ios: () => getElementName({ sessionId, element }),
+      ios: () => getElementNameAttribute({ sessionId, element }),
       android: () => getElementAttribute({ sessionId, element, attribute: "className" })
     });
   };
@@ -309,7 +308,7 @@ function createAppiumService(sessionStore) {
   };
 
   // ({ sessionId: String?, element: AppiumElement }) => Promise<String>.
-  const getElementText = ({ sessionId = sessionStore.getSessionId(), element }) => {
+  const getElementTextAttribute = ({ sessionId = sessionStore.getSessionId(), element }) => {
     return request({
       method: "GET",
       path: `/session/${sessionId}/element/${element.ELEMENT}/text`
@@ -317,10 +316,58 @@ function createAppiumService(sessionStore) {
   };
 
   // ({ sessionId: String?, element: AppiumElement }) => Promise<String>.
+  const getElementText = ({ sessionId = sessionStore.getSessionId(), element }) => {
+    return getElementTypeAttribute({ element })
+      .then((type) => {
+        return platform.select({
+          ios: () => {
+            return getElementTextAttribute({ element })
+              .then((text) => {
+                if (text || type === "XCUIElementTypeStaticText") {
+                  return text;
+                }
+
+                const matcher = {
+                  using: "-ios predicate string",
+                  value: `type == "XCUIElementTypeStaticText"`
+                };
+
+                return findElements({ element, matcher })
+                  .then((refs) => {
+                    const tasks = refs.map((ref) => getElementTextAttribute({ element: ref }));
+
+                    return Promise.all(tasks)
+                      .then((textFragments) => textFragments.join(" "));
+                  });
+              });
+          },
+          android: () => {
+            if (type === "android.widget.TextView") {
+              return getElementTextAttribute({ element });
+            }
+
+            const matcher = {
+              using: "class name",
+              value: "android.widget.TextView"
+            };
+
+            return findElements({ element, matcher })
+              .then((refs) => {
+                const tasks = refs.map((ref) => getElementTextAttribute({ element: ref }));
+
+                return Promise.all(tasks)
+                  .then((textFragments) => textFragments.join(" "));
+              });
+          }
+        });
+      });
+  };
+
+  // ({ sessionId: String?, element: AppiumElement }) => Promise<String>.
   const getElementValue = ({ sessionId = sessionStore.getSessionId(), element }) => {
     return platform.select({
       ios: () => getElementAttribute({ sessionId, element, attribute: "value" }),
-      android: () => getElementText({ sessionId, element })
+      android: () => getElementTextAttribute({ sessionId, element })
     });
   };
 
@@ -358,6 +405,7 @@ function createAppiumService(sessionStore) {
     });
   };
 
+  // ({ sessionId: String?, element: AppiumElement, x: Number?, y: Number?, duration: Number? }) => Promise.
   const longPressElement = ({ sessionId = sessionStore.getSessionId(), element, x, y, duration = 750 }) => {
     return performActions({
       sessionId, actions: [{
@@ -413,14 +461,15 @@ function createAppiumService(sessionStore) {
     findElement,
     findElements,
     getElementAttribute,
-    getElementSelected,
-    getElementDisabled,
-    getElementVisible,
+    getElementSelectedAttribute,
+    getElementEnabledAttribute,
+    getElementVisibleAttribute,
     getElementSize,
-    getElementName,
-    getElementType,
+    getElementNameAttribute,
+    getElementTypeAttribute,
     getElementExists,
     getElementText,
+    getElementTextAttribute,
     getElementValue,
     getElementLocation,
     tapElement,

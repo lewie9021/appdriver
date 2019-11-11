@@ -384,59 +384,7 @@ class Element {
     const currentValue = getCurrentValue(this.value);
 
     return currentValue
-      .then((value) => {
-        return platform.select({
-          ios: () => {
-            return appiumService.getElementType({ element: value.ref })
-              .then((elementType) => {
-                if (elementType === "XCUIElementTypeStaticText") {
-                  return appiumService.getElementText({ element: value.ref });
-                }
-
-                return appiumService.getElementText({ element: value.ref })
-                  .then((text) => {
-                    if (text) {
-                      return text;
-                    }
-
-                    const matcher = {
-                      using: "-ios predicate string",
-                      value: `type == "XCUIElementTypeStaticText"`
-                    };
-
-                    return appiumService.findElements({ element: value.ref, matcher })
-                      .then((refs) => {
-                        const tasks = refs.map((ref) => appiumService.getElementText({ element: ref }));
-
-                        return Promise.all(tasks)
-                          .then((textFragments) => textFragments.join(" "));
-                      });
-                  });
-              });
-          },
-          android: () => {
-            return appiumService.getElementType({ element: value.ref })
-              .then((elementType) => {
-                if (elementType === "android.widget.TextView") {
-                  return appiumService.getElementText({ element: value.ref });
-                }
-
-                const matcher = {
-                  using: "class name",
-                  value: "android.widget.TextView"
-                };
-
-                return appiumService.findElements({ element: value.ref, matcher })
-                  .then((refs) => {
-                    const tasks = refs.map((ref) => appiumService.getElementText({ element: ref }));
-
-                    return Promise.all(tasks)
-                      .then((textFragments) => textFragments.join(" "));
-                  });
-              });
-          }
-        });
-      })
+      .then((value) => appiumService.getElementText({ element: value.ref }))
       .catch(handleActionError("Failed to get text of element."));
   }
 
@@ -445,7 +393,7 @@ class Element {
 
     return currentValue.then((value) => {
       const tasks = [
-        appiumService.getElementType({ element: value.ref }),
+        appiumService.getElementTypeAttribute({ element: value.ref }),
         appiumService.getElementValue({ element: value.ref })
       ];
 
@@ -466,7 +414,7 @@ class Element {
           return false;
         }
 
-        return appiumService.getElementType({ element: value.ref })
+        return appiumService.getElementTypeAttribute({ element: value.ref })
           .then(() => true)
           .catch(() => false);
       })
@@ -483,7 +431,7 @@ class Element {
     const currentValue = getCurrentValue(this.value);
 
     return currentValue
-      .then((value) => appiumService.getElementVisible({ element: value.ref }))
+      .then((value) => appiumService.getElementVisibleAttribute({ element: value.ref }))
       .catch(handleActionError("Failed to retrieve visibility status of element."))
       .catch((err) => {
         if (isInstanceOf(err, ElementNotFoundError)) {
@@ -502,7 +450,7 @@ class Element {
         throw new ElementActionError("Failed to retrieve disabled status of element that doesn't exist.");
       }
 
-      return appiumService.getElementDisabled({ element: value.ref })
+      return appiumService.getElementEnabledAttribute({ element: value.ref })
         .catch(() => {
           throw new ElementActionError("Failed to retrieve disabled status of element.");
         });
