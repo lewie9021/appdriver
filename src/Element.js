@@ -385,7 +385,7 @@ class Element {
 
     return currentValue
       .then((value) => appiumService.getElementText({ element: value.ref }))
-      .catch(handleActionError("Failed to get text of element."));
+      .catch(handleActionError("Failed to get element text."));
   }
 
   getValue(options) {
