@@ -383,65 +383,61 @@ class Element {
   getText() {
     const currentValue = getCurrentValue(this.value);
 
-    return currentValue.then((value) => {
-      return platform.select({
-        ios: () => {
-          return appiumService.getElementType({ element: value.ref })
-            .then((elementType) => {
-              if (elementType === "XCUIElementTypeStaticText") {
-                return appiumService.getElementText({ element: value.ref });
-              }
+    return currentValue
+      .then((value) => {
+        return platform.select({
+          ios: () => {
+            return appiumService.getElementType({ element: value.ref })
+              .then((elementType) => {
+                if (elementType === "XCUIElementTypeStaticText") {
+                  return appiumService.getElementText({ element: value.ref });
+                }
 
-              return appiumService.getElementText({ element: value.ref })
-                .then((text) => {
-                  if (text) {
-                    return text;
-                  }
+                return appiumService.getElementText({ element: value.ref })
+                  .then((text) => {
+                    if (text) {
+                      return text;
+                    }
 
-                  const matcher = {
-                    using: "-ios predicate string",
-                    value: `type == "XCUIElementTypeStaticText"`
-                  };
+                    const matcher = {
+                      using: "-ios predicate string",
+                      value: `type == "XCUIElementTypeStaticText"`
+                    };
 
-                  return appiumService.findElements({ element: value.ref, matcher })
-                    .then((refs) => {
-                      const tasks = refs.map((ref) => appiumService.getElementText({ element: ref }));
+                    return appiumService.findElements({ element: value.ref, matcher })
+                      .then((refs) => {
+                        const tasks = refs.map((ref) => appiumService.getElementText({ element: ref }));
 
-                      return Promise.all(tasks)
-                        .then((textFragments) => textFragments.join(" "));
-                    });
-                });
-            })
-            .catch(() => {
-              throw new ElementActionError("Failed to get text of element.");
-            });
-        },
-        android: () => {
-          return appiumService.getElementType({ element: value.ref })
-            .then((elementType) => {
-              if (elementType === "android.widget.TextView") {
-                return appiumService.getElementText({ element: value.ref });
-              }
+                        return Promise.all(tasks)
+                          .then((textFragments) => textFragments.join(" "));
+                      });
+                  });
+              });
+          },
+          android: () => {
+            return appiumService.getElementType({ element: value.ref })
+              .then((elementType) => {
+                if (elementType === "android.widget.TextView") {
+                  return appiumService.getElementText({ element: value.ref });
+                }
 
-              const matcher = {
-                using: "class name",
-                value: "android.widget.TextView"
-              };
+                const matcher = {
+                  using: "class name",
+                  value: "android.widget.TextView"
+                };
 
-              return appiumService.findElements({ element: value.ref, matcher })
-                .then((refs) => {
-                  const tasks = refs.map((ref) => appiumService.getElementText({ element: ref }));
+                return appiumService.findElements({ element: value.ref, matcher })
+                  .then((refs) => {
+                    const tasks = refs.map((ref) => appiumService.getElementText({ element: ref }));
 
-                  return Promise.all(tasks)
-                    .then((textFragments) => textFragments.join(" "));
-                });
-            })
-            .catch(() => {
-              throw new ElementActionError("Failed to get text for element.");
-            });
-        }
-      });
-    });
+                    return Promise.all(tasks)
+                      .then((textFragments) => textFragments.join(" "));
+                  });
+              });
+          }
+        });
+      })
+      .catch(handleActionError("Failed to get text of element."));
   }
 
   getValue(options) {
