@@ -9,6 +9,7 @@ describe("Button Screen", () => {
     $screen = await element(by.label("button-screen")).waitToBeVisible();
   });
 
+  // Note: Nested TextViews on Android don't seem to happen anymore. Previously RN v0.59.x and Appium v1.11.x did.
   it("works", async () => {
     const $button = await $screen.findElement(by.label("button"));
 
