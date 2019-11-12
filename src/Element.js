@@ -1,6 +1,5 @@
 const { sessionStore } = require("./stores/sessionStore");
 const { appiumService } = require("./services/appiumService");
-const gestures = require("./gestures");
 const { Expect } = require("./Expect");
 const { ElementNotFoundError, ElementActionError, ElementWaitError, AppiumError } = require("./errors");
 const { isInstanceOf, isNull, pollFor, delay, toBoolean, toNumber, platform } = require("./utils");
@@ -130,17 +129,18 @@ class Element {
     const currentValue = getCurrentValue(this.value);
 
     const nextValue = new Promise((resolve, reject) => {
-      currentValue.then(
-        (value) => {
-          if (!value.ref) {
-            throw new ElementActionError("Failed to find element from element that doesn't exist.");
+      currentValue
+        .then((value) => {
+          return appiumService.findElement({ matcher, element: value.ref })
+            .then((ref) => resolve({ matcher: null, ref }));
+        })
+        .catch((err) => {
+          if (isInstanceOf(err, AppiumError)) {
+            return reject(new ElementActionError("Failed to find element from element."));
           }
 
-          return appiumService.findElement({ matcher, element: value.ref })
-            .then((ref) => resolve({ matcher, ref }));
-        },
-        (err) => reject(err)
-      );
+          reject(err);
+        });
     });
 
     return new Element({ value: nextValue });
@@ -151,10 +151,6 @@ class Element {
 
     return currentValue
       .then((value) => {
-        if (!value.ref) {
-          throw new ElementActionError("Failed to find elements from element that doesn't exist.");
-        }
-
         return appiumService.findElements({ element: value.ref, matcher })
           .then((refs) => {
             return refs.map((ref) => {
