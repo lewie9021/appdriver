@@ -476,34 +476,27 @@ class Element {
     });
   }
 
-  swipeLeft({ x = 0, y = 0, distance, percentage, duration }) {
+  swipeLeft({ x = 0, y = 0, distance, percentage, duration = 50 }) {
     return this._executeAction((value, done) => {
-      if (!value.ref) {
-        return done(new ElementActionError("Can't swipe left on element that doesn't exist"));
-      }
-
-      const $element = new Element({ value: Promise.resolve(value) });
-
       const resolveSwipeDistance = () => {
         if (!percentage) {
           return Promise.resolve(distance);
         }
 
-        return this.getSize()
+        return appiumService.getElementSize({ element: value.ref })
           .then((size) => size.width * percentage);
       };
 
       return resolveSwipeDistance()
-        .then((swipeDistance) => {
-          return gestures.swipeLeft({ x, y, distance: swipeDistance, duration, element: $element })
-            .resolve();
-        })
-        .then((actions) => {
-          appiumService.performActions({ actions })
-            .then(() => done(null))
-            .catch(() => done(new ElementActionError("Failed to swipe left on element.")));
-        })
-        .catch((err) => done(err));
+        .then((distance) => appiumService.swipeElement({ element: value.ref, x, y, distance, direction: 270, duration }))
+        .then(() => done(null))
+        .catch((err) => {
+          if (isInstanceOf(err, AppiumError)) {
+            return done(new ElementActionError("Failed to swipe left on element."));
+          }
+
+          done(err);
+        });
     });
   }
 

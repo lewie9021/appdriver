@@ -32,7 +32,7 @@ it("returns an instance of Element to enable function chaining", async () => {
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
   jest.spyOn(appiumService, "swipeElement").mockResolvedValue(null);
 
-  const $element = await element(by.label("list-item")).swipe({ direction: 270 });
+  const $element = await element(by.label("list-item")).swipe({ distance: 100, direction: 270 });
 
   expect($element).toBeInstanceOf(Element);
 });
@@ -85,7 +85,7 @@ it("supports passing a 'duration' parameter to redefine the swipe duration", asy
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
   jest.spyOn(appiumService, "swipeElement").mockResolvedValue(null);
 
-  await element(by.label("list-item")).swipe({ duration, direction: 270 });
+  await element(by.label("list-item")).swipe({ duration, distance: 100, direction: 270 });
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
   expect(appiumService.swipeElement).toHaveBeenCalledTimes(1);
