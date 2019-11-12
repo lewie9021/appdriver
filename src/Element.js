@@ -2,8 +2,7 @@ const { sessionStore } = require("./stores/sessionStore");
 const { appiumService } = require("./services/appiumService");
 const { Expect } = require("./Expect");
 const { ElementNotFoundError, ElementActionError, ElementWaitError, AppiumError } = require("./errors");
-const { isInstanceOf, isNull, pollFor, delay, toBoolean, toNumber, platform } = require("./utils");
-const { transformBounds } = require("./attributeTransforms");
+const { isInstanceOf, isNull, pollFor, delay } = require("./utils");
 
 const poll = (func, opts) => {
   return func()
