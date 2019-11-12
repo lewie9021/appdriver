@@ -272,7 +272,7 @@ function createAppiumService(sessionStore) {
     });
   };
 
-  // ({ sessionId: String?, element: AppiumElement, attribute: String }) => Promise<String>.
+  // ({ sessionId: String?, element: AppiumElement, attribute: String }) => Promise<Boolean | String | Number | Object>.
   const getElementAttribute = ({ sessionId = sessionStore.getSessionId(), element, attribute }) => {
     const validAttributes = platform.select({
       ios: () => [
