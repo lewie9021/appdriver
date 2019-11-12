@@ -460,35 +460,6 @@ class Element {
           done(err);
         });
     });
-
-    return this._executeAction((value, done) => {
-      if (!value.ref) {
-        return done(new ElementActionError("Can't swipe down on element that doesn't exist"));
-      }
-
-      const $element = new Element({ value: Promise.resolve(value) });
-
-      const resolveSwipeDistance = () => {
-        if (!percentage) {
-          return Promise.resolve(distance);
-        }
-
-        return this.getSize()
-          .then((size) => size.height * percentage);
-      };
-
-      return resolveSwipeDistance()
-        .then((swipeDistance) => {
-          return gestures.swipeDown({ x, y, distance: swipeDistance, duration, element: $element })
-            .resolve();
-        })
-        .then((actions) => {
-          appiumService.performActions({ actions })
-            .then(() => done(null))
-            .catch(() => done(new ElementActionError("Failed to swipe down on element.")));
-        })
-        .catch((err) => done(err));
-    });
   }
 
   swipeLeft({ x = 0, y = 0, distance, percentage, duration = 50 }) {
