@@ -232,6 +232,7 @@ class Element {
             if (err.status === 13 && sessionStore.getCapabilities("platformName") === "iOS") {
               return done(new ElementActionError("Failed to type text on element. Make sure hardware keyboard is disconnected from iOS simulator."));
             }
+
             return done(new ElementActionError("Failed to type text on element."));
           }
 
@@ -242,13 +243,15 @@ class Element {
 
   clearText() {
     return this._executeAction((value, done) => {
-      if (!value.ref) {
-        return done(new ElementActionError("Failed to clear text for element that doesn't exist."));
-      }
-
       return appiumService.clearElementText({ element: value.ref })
         .then(() => done(null))
-        .catch(() => done(new ElementActionError("Failed to clear text on element.")));
+        .catch((err) => {
+          if (isInstanceOf(err, AppiumError)) {
+            return done(new ElementActionError("Failed to clear text on element."))
+          }
+
+          return done(err);
+        });
     });
   }
 
