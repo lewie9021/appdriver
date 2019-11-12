@@ -400,22 +400,17 @@ class Element {
       .catch(handleActionError("Failed to retrieve disabled status of element."));
   }
 
-  swipe({ x = 0, y = 0, distance, direction, duration }) {
+  swipe({ x = 0, y = 0, distance, direction, duration = 50 }) {
     return this._executeAction((value, done) => {
-      if (!value.ref) {
-        return done(new ElementActionError("Can't swipe on element that doesn't exist"));
-      }
+      return appiumService.swipeElement({ element: value.ref, x, y, distance, direction, duration })
+        .then(() => done(null))
+        .catch((err) => {
+          if (isInstanceOf(err, AppiumError)) {
+            return done(new ElementActionError("Failed to swipe on element."));
+          }
 
-      const $element = new Element({ value: Promise.resolve(value) });
-
-      return gestures.swipe({ x, y, distance, direction, duration, element: $element })
-        .resolve()
-        .then((actions) => {
-          appiumService.performActions({ actions })
-            .then(() => done(null))
-            .catch(() => done(new ElementActionError("Failed to swipe on element.")));
-        })
-        .catch((err) => done(err));
+          done(err);
+        });
     });
   }
 
