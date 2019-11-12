@@ -2,7 +2,7 @@ const fetch = require("node-fetch").default;
 const { configService } = require("./configService");
 const { AppiumError } = require("../errors");
 const { NotImplementedError } = require("../errors");
-const { platform, isInstanceOf } = require("../utils");
+const { platform, isInstanceOf, getRelativePoint } = require("../utils");
 
 const BASE_URL = configService.getBaseUrl();
 
@@ -475,6 +475,28 @@ function createAppiumService(sessionStore) {
     });
   };
 
+  // ({ sessionId: String?, element: AppiumElement, x: Number, y: Number, distance: Number, direction: Number, duration: Number }) => Promise.
+  const swipeElement = ({ sessionId = sessionStore.getSessionId(), element, x, y, distance, direction, duration }) => {
+    const relativePoint = getRelativePoint({ direction, distance });
+
+    return performActions({
+      sessionId, actions: [{
+        id: "finger1",
+        type: "pointer",
+        parameters: {
+          pointerType: "touch"
+        },
+        actions: [
+          { type: "pointerMove", duration: 0, origin: { element: element.ELEMENT }, x, y },
+          { type: "pointerDown", button: 0 },
+          { type: "pause", duration: 250 },
+          { type: "pointerMove", duration, origin: "pointer", x: relativePoint.x, y: relativePoint.y },
+          { type: "pointerUp", button: 0 }
+        ]
+      }]
+    });
+  };
+
   // ({ sessionId: String?, element: AppiumElement, keys: Array<String> }) => Promise.
   const sendElementKeys = ({ sessionId = sessionStore.getSessionId(), element, keys }) => {
     return request({
@@ -525,6 +547,7 @@ function createAppiumService(sessionStore) {
     getElementLocation,
     tapElement,
     longPressElement,
+    swipeElement,
     sendElementKeys,
     clearElementText
   };
