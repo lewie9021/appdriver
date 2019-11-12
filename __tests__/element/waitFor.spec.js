@@ -1,35 +1,77 @@
-const appiumServer = require("../helpers/appiumServer");
-const fetch = require("node-fetch");
+jest.mock("../../src/services/appiumService");
 
-const { element, by, expect: assert } = require("../../");
+const { appiumService } = require("../../src/services/appiumService");
+const { createFindElementMock } = require("../appiumServiceMocks");
+const { ElementNotFoundError, ElementActionError, AppiumError } = require("../../src/errors");
 const { Element } = require("../../src/Element");
-const { ElementActionError } = require("../../src/errors");
-
-jest.setTimeout(6000);
+const { element, by } = require("../../");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
 it("returns an instance of Element to enable function chaining", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
+  const ref = createFindElementMock();
 
-  const $element = await element(by.label("button")).waitFor(() => Promise.resolve());
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+
+  const $element = await element(by.label("input")).waitFor(() => Promise.resolve());
 
   expect($element).toBeInstanceOf(Element);
-  expect(fetch).toHaveBeenCalledTimes(1);
-  await expect($element.value).resolves.toEqual("elementId");
 });
 
-it("returns a new element to avoid unwanted mutation", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
+it("polls 'conditionFn' until it resolves when there's an element reference", async () => {
+  let pollCount = 0;
+  const totalPollCount = 5;
+  const ref = createFindElementMock();
+  const conditionFn = jest.fn(() => {
+    pollCount +=1;
 
-  const $element = await element(by.label("button"));
-  const $newElement = await $element.waitFor(() => Promise.resolve());
+    return pollCount >= totalPollCount
+      ? Promise.resolve()
+      : Promise.reject(new Error("Test"));
+  });
 
-  expect($newElement).not.toBe($element);
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+
+  await element(by.label("input")).waitFor(conditionFn);
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(conditionFn).toHaveBeenCalledTimes(totalPollCount);
 });
 
+it("polls 'conditionFn' until it resolves when there isn't an element reference", async () => {
+  let pollCount = 0;
+  const totalPollCount = 5;
+  const error = new AppiumError("Request error.", 3);
+  const conditionFn = jest.fn(() => {
+    pollCount +=1;
+
+    return pollCount >= totalPollCount
+      ? Promise.resolve()
+      : Promise.reject(new Error("Test"));
+  });
+
+  jest.spyOn(appiumService, "findElement").mockRejectedValue(error);
+
+  await element(by.label("input")).waitFor(conditionFn);
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(conditionFn).toHaveBeenCalledTimes(totalPollCount);
+});
+
+it.todo("supports passing a 'maxDuration' parameter");
+
+it.todo("supports passing a 'interval' parameter");
+
+it.todo("throws an ElementWaitError if the polling times out");
+
+it.todo("propagates errors from further up the chain");
+
+it.todo("propagates other types of errors");
+
+/*
 it("correctly propagates errors", async () => {
   appiumServer.mockFindElement({ elementId: "elementId" });
   appiumServer.mockActions({ status: 3 });
@@ -259,3 +301,4 @@ describe("interval parameter", () => {
     expect(conditionFn).toHaveBeenCalledTimes((5000 / interval) + 1);
   });
 });
+ */
