@@ -2,7 +2,7 @@ const fetch = require("node-fetch").default;
 const { configService } = require("./configService");
 const { AppiumError } = require("../errors");
 const { NotImplementedError } = require("../errors");
-const { platform } = require("../utils");
+const { platform, isInstanceOf } = require("../utils");
 
 const BASE_URL = configService.getBaseUrl();
 
@@ -304,7 +304,14 @@ function createAppiumService(sessionStore) {
   const getElementExists = ({ sessionId = sessionStore.getSessionId(), matcher }) => {
     return findElement({ sessionId, matcher })
       .then(() => true)
-      .catch(() => false);
+      .catch((err) => {
+        // TODO: Maybe we should be more specific. Probably error code 7?
+        if (isInstanceOf(err, AppiumError)) {
+          return false;
+        }
+
+        throw err;
+      });
   };
 
   // ({ sessionId: String?, element: AppiumElement }) => Promise<String>.

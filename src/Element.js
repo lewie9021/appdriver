@@ -403,18 +403,10 @@ class Element {
     const currentValue = getCurrentValue(this.value);
 
     return currentValue
-      .then((value) => {
-        if (!value.ref) {
-          return false;
-        }
-
-        return appiumService.getElementTypeAttribute({ element: value.ref })
-          .then(() => true)
-          .catch(() => false);
-      })
+      .then((value) => appiumService.getElementExists({ matcher: value.matcher }))
       .catch((err) => {
         if (isInstanceOf(err, ElementNotFoundError)) {
-          return false;
+          return appiumService.getElementExists({ matcher: err.matcher });
         }
 
         throw err;
