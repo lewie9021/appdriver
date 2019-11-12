@@ -1,346 +1,101 @@
-jest.mock("../../src/session");
-const mockSession = require("../helpers/mockSession");
+jest.mock("../../src/services/appiumService");
 
-const appiumServer = require("../helpers/appiumServer");
-
+const { appiumService } = require("../../src/services/appiumService");
+const { createFindElementMock } = require("../appiumServiceMocks");
+const { ElementNotFoundError, ElementActionError, AppiumError } = require("../../src/errors");
 const { element, by } = require("../../");
-const { ElementActionError } = require("../../src/errors");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
-it("throws if an invalid attribute is passed", async () => {
-  const name = "invalid";
+it("returns the element's attribute value", async () => {
+  const ref = createFindElementMock();
+  const name = "name";
+  const value = "value";
 
-  const findElementMock = appiumServer.mockFindElement({elementId: "elementId"});
-  const elementAttributeMock = appiumServer.mockElementAttribute({status: 3, elementId: "elementId", name});
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementAttribute").mockResolvedValue(value);
 
-  await expect(element(by.label("box")).getAttribute(name))
-    .rejects.toThrowError(ElementActionError);
+  const result = await element(by.label("box")).getAttribute(name);
 
-  expect(appiumServer.getCalls(findElementMock)).toHaveLength(1);
-  expect(appiumServer.getCalls(elementAttributeMock)).toHaveLength(0);
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementAttribute).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementAttribute).toHaveBeenCalledWith(expect.objectContaining({ element: ref, attribute: name }));
+  expect(result).toEqual(value);
 });
 
-it("correctly handles attribute request errors", async () => {
-  const attributeName = "name";
+it("throws an ElementNotFoundError if the element isn't found", async () => {
+  const error = new AppiumError("Request error.", 7);
 
-  const findElementMock = appiumServer.mockFindElement({elementId: "elementId"});
-  const elementAttributeMock = appiumServer.mockElementAttribute({status: 3, elementId: "elementId", name: attributeName});
+  jest.spyOn(appiumService, "findElement").mockRejectedValue(error);
+  jest.spyOn(appiumService, "getElementAttribute").mockResolvedValue({ x: 100, y: 200 });
+  expect.assertions(4);
 
-  await expect(element(by.label("box")).getAttribute(attributeName))
-    .rejects.toThrow(new ElementActionError(`Failed to get '${attributeName}' attribute of element.`));
+  try {
+    await element(by.label("box")).getAttribute("name");
+  } catch (error) {
+    expect(error).toBeInstanceOf(ElementNotFoundError);
+    expect(error).toHaveProperty("message", "Failed to find element.");
+  }
 
-  expect(appiumServer.getCalls(findElementMock)).toHaveLength(1);
-  expect(appiumServer.getCalls(elementAttributeMock)).toHaveLength(1);
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementAttribute).toHaveBeenCalledTimes(0);
 });
 
-it.todo("handles case when element doesn't exists");
+it("throws an ElementActionError for Appium request errors", async () => {
+  const ref = createFindElementMock();
+  const error = new AppiumError("Request error.", 3);
 
-const testAttribute = (suiteTitle, { attribute, response, expected }) => {
-  describe(suiteTitle, () => {
-    it(`returns the '${attribute}' attribute as a ${typeof expected}`, async () => {
-      const findElementMock = appiumServer.mockFindElement({elementId: "elementId"});
-      const elementAttributeMock = appiumServer.mockElementAttribute({elementId: "elementId", name: response.name, value: response.value});
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementAttribute").mockRejectedValue(error);
+  expect.assertions(4);
 
-      const result = await element(by.label("box")).getAttribute(attribute);
+  try {
+    await element(by.label("box")).getAttribute("name");
+  } catch (error) {
+    expect(error).toBeInstanceOf(ElementActionError);
+    expect(error).toHaveProperty("message", "Failed to get element attribute.");
+  }
 
-      expect(result).toEqual(expected);
-      expect(appiumServer.getCalls(findElementMock)).toHaveLength(1);
-      expect(appiumServer.getCalls(elementAttributeMock)).toHaveLength(1);
-    });
-
-    it("correctly handles request error", async () => {
-      const findElementMock = appiumServer.mockFindElement({elementId: "elementId"});
-      const elementAttributeMock = appiumServer.mockElementAttribute({status: 3, elementId: "elementId", name: response.name});
-
-      await expect(element(by.label("box")).getAttribute(attribute))
-        .rejects.toThrow(new ElementActionError(`Failed to get '${attribute}' attribute of element.`));
-
-      expect(appiumServer.getCalls(findElementMock)).toHaveLength(1);
-      expect(appiumServer.getCalls(elementAttributeMock)).toHaveLength(1);
-    });
-  });
-};
-
-describe("iOS", () => {
-  beforeEach(() => {
-    mockSession({
-      sessionId: "sessionId",
-      platformName: "iOS"
-    });
-  });
-
-  testAttribute("uid", {
-    attribute: "uid",
-    response: {
-      name: "UID",
-      value: "45000000-0000-0000-5F0B-010000000000"
-    },
-    expected: "45000000-0000-0000-5F0B-010000000000"
-  });
-
-  testAttribute("accessibilityContainer", {
-    attribute: "accessibilityContainer",
-    response: {
-      name: "accessibilityContainer",
-      value: "true"
-    },
-    expected: true
-  });
-
-  testAttribute("accessible", {
-    attribute: "accessible",
-    response: {
-      name: "accessible",
-      value: "false"
-    },
-    expected: false
-  });
-
-  testAttribute("accessible", {
-    attribute: "accessible",
-    response: {
-      name: "accessible",
-      value: "false"
-    },
-    expected: false
-  });
-
-  testAttribute("enabled", {
-    attribute: "enabled",
-    response: {
-      name: "enabled",
-      value: "false"
-    },
-    expected: false
-  });
-
-  testAttribute("label", {
-    attribute: "label",
-    response: {
-      name: "label",
-      value: "Label"
-    },
-    expected: "Label"
-  });
-
-  testAttribute("name", {
-    attribute: "name",
-    response: {
-      name: "name",
-      value: "button"
-    },
-    expected: "button"
-  });
-
-  testAttribute("rect", {
-    attribute: "rect",
-    response: {
-      name: "rect",
-      value: `{"y":230,"x":16,"width":343,"height":49}`
-    },
-    expected: {
-      y: 230,
-      x: 16,
-      width: 343,
-      height: 49
-    }
-  });
-
-  testAttribute("type", {
-    attribute: "type",
-    response: {
-      name: "type",
-      value: "XCUIElementTypeTextField"
-    },
-    expected: "XCUIElementTypeTextField"
-  });
-
-  testAttribute("value", {
-    attribute: "value",
-    response: {
-      name: "value",
-      value: "Text Input Value"
-    },
-    expected: "Text Input Value"
-  });
-
-  testAttribute("visible", {
-    attribute: "visible",
-    response: {
-      name: "visible",
-      value: "true"
-    },
-    expected: true
-  });
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementAttribute).toHaveBeenCalledTimes(1);
 });
 
-describe("Android", () => {
-  beforeEach(() => {
-    mockSession({
-      sessionId: "sessionId",
-      platformName: "Android"
-    });
-  });
+it("propagates errors from further up the chain", async () => {
+  const ref = createFindElementMock();
+  const tapError = new AppiumError("Request error.", 3);
 
-  // TODO: checkable.
-  // TODO: checked.
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "tapElement").mockRejectedValue(tapError);
+  jest.spyOn(appiumService, "getElementAttribute").mockResolvedValue({ x: 300, y: 50 });
+  expect.assertions(5);
 
-  testAttribute("className", {
-    attribute: "className",
-    response: {
-      name: "className",
-      value: "android.widget.EditText"
-    },
-    expected: "android.widget.EditText"
-  });
+  try {
+    await element(by.label("input"))
+      .tap()
+      .getAttribute("name");
+  } catch (error) {
+    expect(error).toBeInstanceOf(ElementActionError);
+    expect(error).toHaveProperty("message", "Failed to tap element.");
+  }
 
-  testAttribute("clickable", {
-    attribute: "clickable",
-    response: {
-      name: "clickable",
-      value: "false"
-    },
-    expected: false
-  });
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.tapElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementAttribute).toHaveBeenCalledTimes(0);
+});
 
-  testAttribute("contentDescription", {
-    attribute: "contentDescription",
-    response: {
-      name: "contentDescription",
-      value: "button"
-    },
-    expected: "button"
-  });
+it("propagates other types of errors", async () => {
+  const ref = createFindElementMock();
+  const error = new Error("Something went wrong.");
 
-  testAttribute("enabled", {
-    attribute: "clickable",
-    response: {
-      name: "clickable",
-      value: "true"
-    },
-    expected: true
-  });
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementAttribute").mockRejectedValue(error);
 
-  testAttribute("focusable", {
-    attribute: "focusable",
-    response: {
-      name: "focusable",
-      value: "false"
-    },
-    expected: false
-  });
+  await expect(element(by.label("box")).getAttribute("name"))
+    .rejects.toThrow(error);
 
-  testAttribute("focused", {
-    attribute: "focused",
-    response: {
-      name: "focused",
-      value: "true"
-    },
-    expected: true
-  });
-
-  testAttribute("longClickable", {
-    attribute: "longClickable",
-    response: {
-      name: "longClickable",
-      value: "false"
-    },
-    expected: false
-  });
-
-  testAttribute("resourceId", {
-    attribute: "resourceId",
-    response: {
-      name: "resourceId",
-      value: "element-resource-id"
-    },
-    expected: "element-resource-id"
-  });
-
-  testAttribute("scrollable", {
-    attribute: "scrollable",
-    response: {
-      name: "scrollable",
-      value: "true"
-    },
-    expected: true
-  });
-
-  testAttribute("selectionStart", {
-    attribute: "selectionStart",
-    response: {
-      name: "selection-start",
-      value: "6"
-    },
-    expected: 6
-  });
-
-  testAttribute("selectionEnd", {
-    attribute: "selectionEnd",
-    response: {
-      name: "selection-end",
-      value: "10"
-    },
-    expected: 10
-  });
-
-  testAttribute("selected", {
-    attribute: "selected",
-    response: {
-      name: "selected",
-      value: "false"
-    },
-    expected: false
-  });
-
-  testAttribute("text", {
-    attribute: "text",
-    response: {
-      name: "text",
-      value: "Text Input Value"
-    },
-    expected: "Text Input Value"
-  });
-
-  testAttribute("bounds", {
-    attribute: "bounds",
-    response: {
-      name: "bounds",
-      value: "[42,252][1038,372]"
-    },
-    expected: {
-      x1: 42,
-      y1: 252,
-      x2: 1038,
-      y2: 372
-    }
-  });
-
-  testAttribute("displayed", {
-    attribute: "displayed",
-    response: {
-      name: "displayed",
-      value: "true"
-    },
-    expected: true
-  });
-
-  testAttribute("contentSize", {
-    attribute: "contentSize",
-    response: {
-      name: "contentSize",
-      value: "{\"width\":1080,\"height\":1584,\"top\":210,\"left\":0,\"scrollableOffset\":2545,\"touchPadding\":21}"
-    },
-    expected: {
-      width: 1080,
-      height: 1584,
-      top: 210,
-      left: 0,
-      scrollableOffset: 2545,
-      touchPadding: 21
-    }
-  });
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementAttribute).toHaveBeenCalledTimes(1);
 });
