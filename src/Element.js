@@ -439,16 +439,10 @@ class Element {
   isDisabled() {
     const currentValue = getCurrentValue(this.value);
 
-    return currentValue.then((value) => {
-      if (!value.ref) {
-        throw new ElementActionError("Failed to retrieve disabled status of element that doesn't exist.");
-      }
-
-      return appiumService.getElementEnabledAttribute({ element: value.ref })
-        .catch(() => {
-          throw new ElementActionError("Failed to retrieve disabled status of element.");
-        });
-    });
+    return currentValue
+      .then((value) => appiumService.getElementEnabledAttribute({ element: value.ref }))
+      .then((enabled) => !enabled)
+      .catch(handleActionError("Failed to retrieve disabled status of element."));
   }
 
   swipe({ x = 0, y = 0, distance, direction, duration }) {

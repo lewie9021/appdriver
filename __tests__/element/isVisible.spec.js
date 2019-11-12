@@ -63,7 +63,7 @@ it("propagates errors from further up the chain", async () => {
 
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
   jest.spyOn(appiumService, "tapElement").mockRejectedValue(tapError);
-  jest.spyOn(appiumService, "getElementVisibleAttribute").mockResolvedValue({ x: 300, y: 50 });
+  jest.spyOn(appiumService, "getElementVisibleAttribute").mockResolvedValue(true);
   expect.assertions(5);
 
   try {

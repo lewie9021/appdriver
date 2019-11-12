@@ -1,41 +1,99 @@
-const appiumServer = require("../helpers/appiumServer");
-const fetch = require("node-fetch");
+jest.mock("../../src/services/appiumService");
 
+const { appiumService } = require("../../src/services/appiumService");
+const { createFindElementMock } = require("../appiumServiceMocks");
+const { ElementNotFoundError, ElementActionError, AppiumError } = require("../../src/errors");
 const { element, by } = require("../../");
-const { ElementNotFoundError, ElementActionError } = require("../../src/errors");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
 it("returns the element's disabled status", async () => {
-  const disabled = true;
+  const ref = createFindElementMock();
+  const enabled = false;
 
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementEnabled({elementId: "elementId", enabled: !disabled});
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementEnabledAttribute").mockResolvedValue(enabled);
 
-  const result = await element(by.label("text-input")).isDisabled();
+  const result = await element(by.label("input")).isDisabled();
 
-  expect(fetch).toHaveBeenCalledTimes(2);
-  expect(result).toEqual(disabled);
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementEnabledAttribute).toHaveBeenCalledTimes(1);
+  expect(result).toEqual(!enabled);
 });
 
-it("correctly propagates errors", async () => {
-  appiumServer.mockFindElement({status: 7, elementId: "elementId"});
-  appiumServer.mockElementEnabled({elementId: "elementId", enabled: true});
+it("throws an ElementNotFoundError if the element isn't found", async () => {
+  const error = new AppiumError("Request error.", 7);
 
-  await expect(element(by.label("text-input")).isDisabled())
-    .rejects.toThrow(ElementNotFoundError);
+  jest.spyOn(appiumService, "findElement").mockRejectedValue(error);
+  jest.spyOn(appiumService, "getElementEnabledAttribute").mockResolvedValue(false);
+  expect.assertions(4);
 
-  expect(fetch).toHaveBeenCalledTimes(1);
+  try {
+    await element(by.label("input")).isDisabled();
+  } catch (error) {
+    expect(error).toBeInstanceOf(ElementNotFoundError);
+    expect(error).toHaveProperty("message", "Failed to find element.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementEnabledAttribute).toHaveBeenCalledTimes(0);
 });
 
-it("correctly handles enabled attribute request errors", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementEnabled({status: 3, elementId: "elementId"});
+it("throws an ElementActionError for Appium request errors", async () => {
+  const ref = createFindElementMock();
+  const error = new AppiumError("Request error.", 3);
 
-  await expect(element(by.label("text-input")).isDisabled())
-    .rejects.toThrow(new ElementActionError("Failed to retrieve disabled status of element."));
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementEnabledAttribute").mockRejectedValue(error);
+  expect.assertions(4);
 
-  expect(fetch).toHaveBeenCalledTimes(2);
+  try {
+    await element(by.label("input")).isDisabled();
+  } catch (error) {
+    expect(error).toBeInstanceOf(ElementActionError);
+    expect(error).toHaveProperty("message", "Failed to retrieve disabled status of element.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementEnabledAttribute).toHaveBeenCalledTimes(1);
+});
+
+it("propagates errors from further up the chain", async () => {
+  const ref = createFindElementMock();
+  const tapError = new AppiumError("Request error.", 3);
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "tapElement").mockRejectedValue(tapError);
+  jest.spyOn(appiumService, "getElementEnabledAttribute").mockResolvedValue(true);
+  expect.assertions(5);
+
+  try {
+    await element(by.label("input"))
+      .tap()
+      .isDisabled();
+  } catch (error) {
+    expect(error).toBeInstanceOf(ElementActionError);
+    expect(error).toHaveProperty("message", "Failed to tap element.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.tapElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementEnabledAttribute).toHaveBeenCalledTimes(0);
+});
+
+it("propagates other types of errors", async () => {
+  const ref = createFindElementMock();
+  const error = new Error("Something went wrong.");
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementEnabledAttribute").mockRejectedValue(error);
+
+  await expect(element(by.label("input")).isDisabled())
+    .rejects.toThrow(error);
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementEnabledAttribute).toHaveBeenCalledTimes(1);
 });
