@@ -197,10 +197,6 @@ class Element {
 
   tap({ x = 0, y = 0 } = {}) {
     return this._executeAction((value, done) => {
-      if (!value.ref) {
-        return done(new ElementActionError("Failed to tap element that doesn't exist."));
-      }
-
       return appiumService.tapElement({ element: value.ref, x, y })
         .then(() => done(null))
         .catch((err) => {
@@ -215,20 +211,15 @@ class Element {
 
   longPress({ x = 0, y = 0, duration = 750 } = {}) {
     return this._executeAction((value, done) => {
-      if (!value.ref) {
-        return done(new ElementActionError("Failed to long press element that doesn't exist."));
-      }
+      return appiumService.longPressElement({ element: value.ref, x, y, duration })
+        .then(() => done(null))
+        .catch((err) => {
+          if (isInstanceOf(err, AppiumError)) {
+            return done(new ElementActionError("Failed to long press element."));
+          }
 
-      const $element = new Element({ value: Promise.resolve(value) });
-
-      return gestures.longPress({x, y, duration, element: $element})
-        .resolve()
-        .then((actions) => {
-          appiumService.performActions({ actions })
-            .then(() => done(null))
-            .catch(() => done(new ElementActionError("Failed to long press element.")));
-          })
-          .catch((err) => done(err));
+          done(err);
+        });
     });
   }
 
