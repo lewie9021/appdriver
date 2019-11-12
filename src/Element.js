@@ -40,34 +40,6 @@ const getCurrentValue = (elementValue) => {
     });
 };
 
-const parseValue = (rawValue, elementType, options) => {
-  switch (elementType) {
-    case "XCUIElementTypeTextField":
-      return rawValue || "";
-    case "XCUIElementTypeSwitch":
-      return rawValue === "1";
-    case "XCUIElementTypeButton":
-      // Possibly a switch?
-      if (rawValue === "1" || rawValue === "0") {
-        return Boolean(parseInt(rawValue));
-      }
-
-      return rawValue;
-    case "android.widget.Switch":
-      return rawValue === "ON";
-    case "XCUIElementTypeSlider":
-      if (!options || !options.sliderRange) {
-        throw new Error("You must provide a 'sliderRange' option when dealing with slider elements.");
-      }
-
-      return ((options.sliderRange[1] - options.sliderRange[0]) * parseFloat(rawValue.replace("%", ""))) / 100;
-    case "android.widget.SeekBar":
-      return parseFloat(rawValue);
-    default:
-      return rawValue;
-  }
-};
-
 const handleActionError = (message) => (err) => {
   if (isInstanceOf(err, AppiumError)) {
     throw new ElementActionError(message);
@@ -385,18 +357,9 @@ class Element {
   getValue(options) {
     const currentValue = getCurrentValue(this.value);
 
-    return currentValue.then((value) => {
-      const tasks = [
-        appiumService.getElementTypeAttribute({ element: value.ref }),
-        appiumService.getElementValue({ element: value.ref })
-      ];
-
-      return Promise.all(tasks)
-        .then(([ type, value ]) => parseValue(value, type, options))
-        .catch(() => {
-          throw new ElementActionError("Failed to get value of element.");
-        });
-    });
+    return currentValue
+      .then((value) => appiumService.getElementValue({ element: value.ref, options }))
+      .catch(handleActionError("Failed to get element value."));
   }
 
   exists() {

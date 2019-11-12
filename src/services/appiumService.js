@@ -54,6 +54,34 @@ const request = ({ method, path, query, payload, transform }) => {
     });
 };
 
+const parseValue = (rawValue, elementType, options) => {
+  switch (elementType) {
+    case "XCUIElementTypeTextField":
+      return rawValue || "";
+    case "XCUIElementTypeSwitch":
+      return rawValue === "1";
+    case "XCUIElementTypeButton":
+      // Possibly a switch?
+      if (rawValue === "1" || rawValue === "0") {
+        return Boolean(parseInt(rawValue));
+      }
+
+      return rawValue;
+    case "android.widget.Switch":
+      return rawValue === "ON";
+    case "XCUIElementTypeSlider":
+      if (!options || !options.sliderRange) {
+        throw new Error("You must provide a 'sliderRange' option when dealing with slider elements.");
+      }
+
+      return ((options.sliderRange[1] - options.sliderRange[0]) * parseFloat(rawValue.replace("%", ""))) / 100;
+    case "android.widget.SeekBar":
+      return parseFloat(rawValue);
+    default:
+      return rawValue;
+  }
+};
+
 function createAppiumService(sessionStore) {
   // () => Promise<Object>.
   const getStatus = () => {
@@ -324,11 +352,11 @@ function createAppiumService(sessionStore) {
 
   // ({ sessionId: String?, element: AppiumElement }) => Promise<String>.
   const getElementText = ({ sessionId = sessionStore.getSessionId(), element }) => {
-    return getElementTypeAttribute({ element })
+    return getElementTypeAttribute({ sessionId, element })
       .then((type) => {
         return platform.select({
           ios: () => {
-            return getElementTextAttribute({ element })
+            return getElementTextAttribute({ sessionId, element })
               .then((text) => {
                 if (text || type === "XCUIElementTypeStaticText") {
                   return text;
@@ -339,9 +367,9 @@ function createAppiumService(sessionStore) {
                   value: `type == "XCUIElementTypeStaticText"`
                 };
 
-                return findElements({ element, matcher })
+                return findElements({ sessionId, element, matcher })
                   .then((refs) => {
-                    const tasks = refs.map((ref) => getElementTextAttribute({ element: ref }));
+                    const tasks = refs.map((ref) => getElementTextAttribute({ sessionId, element: ref }));
 
                     return Promise.all(tasks)
                       .then((textFragments) => textFragments.join(" "));
@@ -350,7 +378,7 @@ function createAppiumService(sessionStore) {
           },
           android: () => {
             if (type === "android.widget.TextView") {
-              return getElementTextAttribute({ element });
+              return getElementTextAttribute({ sessionId, element });
             }
 
             const matcher = {
@@ -358,9 +386,9 @@ function createAppiumService(sessionStore) {
               value: "android.widget.TextView"
             };
 
-            return findElements({ element, matcher })
+            return findElements({ sessionId, element, matcher })
               .then((refs) => {
-                const tasks = refs.map((ref) => getElementTextAttribute({ element: ref }));
+                const tasks = refs.map((ref) => getElementTextAttribute({ sessionId, element: ref }));
 
                 return Promise.all(tasks)
                   .then((textFragments) => textFragments.join(" "));
@@ -370,11 +398,27 @@ function createAppiumService(sessionStore) {
       });
   };
 
-  // ({ sessionId: String?, element: AppiumElement }) => Promise<String>.
-  const getElementValue = ({ sessionId = sessionStore.getSessionId(), element }) => {
+  // ({ sessionId: String?, element: AppiumElement, options? Object }) => Promise<Number | Boolean | String>.
+  const getElementValue = ({ sessionId = sessionStore.getSessionId(), element, options = {} }) => {
     return platform.select({
-      ios: () => getElementAttribute({ sessionId, element, attribute: "value" }),
-      android: () => getElementTextAttribute({ sessionId, element })
+      ios: () => {
+        const tasks = [
+          getElementTypeAttribute({ sessionId, element }),
+          getElementAttribute({ sessionId, element, attribute: "value" })
+        ];
+
+        return Promise.all(tasks)
+          .then(([ type, value ]) => parseValue(value, type, options));
+      },
+      android: () => {
+        const tasks = [
+          getElementTypeAttribute({ sessionId, element }),
+          getElementTextAttribute({ sessionId, element })
+        ];
+
+        return Promise.all(tasks)
+          .then(([ type, value ]) => parseValue(value, type, options));
+      }
     });
   };
 
