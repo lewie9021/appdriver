@@ -1,199 +1,183 @@
-const appiumServer = require("../helpers/appiumServer");
+jest.mock("../../src/services/appiumService");
 
-const { element, by } = require("../../");
+const { appiumService } = require("../../src/services/appiumService");
+const { createFindElementMock } = require("../appiumServiceMocks");
+const { ElementNotFoundError, ElementActionError, AppiumError } = require("../../src/errors");
 const { Element } = require("../../src/Element");
-const { ElementActionError } = require("../../src/errors");
+const { element, by } = require("../../");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
+});
+
+it("executes the 'swipeElement' method on the Appium Service", async () => {
+  const ref = createFindElementMock();
+  const distance = 100;
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "swipeElement").mockResolvedValue(null);
+
+  await element(by.label("list-item")).swipeDown({ distance });
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.swipeElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.swipeElement).toHaveBeenCalledWith(expect.objectContaining({ element: ref, distance, direction: 180 }));
 });
 
 it("returns an instance of Element to enable function chaining", async () => {
-  const findElementMock = appiumServer.mockFindElement({elementId: "elementId"});
-  const actionsMock = appiumServer.mockActions();
+  const ref = createFindElementMock();
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "swipeElement").mockResolvedValue(null);
 
   const $element = await element(by.label("list-item")).swipeDown({ distance: 100 });
 
-  const findElementMockCalls = appiumServer.getCalls(findElementMock);
-  const actionMockCalls = appiumServer.getCalls(actionsMock);
-
   expect($element).toBeInstanceOf(Element);
-  expect(findElementMockCalls).toHaveLength(1);
-  expect(actionMockCalls).toHaveLength(1);
-  await expect($element.value).resolves.toEqual("elementId");
 });
 
-it("correctly executes swipe down gesture", async () => {
-  const findElementMock = appiumServer.mockFindElement({elementId: "elementId"});
-  const actionsMock = appiumServer.mockActions();
+it("defaults 'x' and 'y' parameters to 0", async () => {
+  const ref = createFindElementMock();
 
-  await element(by.label("list-item")).swipeDown({ x: 100, y: 24, distance: 24 });
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "swipeElement").mockResolvedValue(null);
 
-  const findElementMockCalls = appiumServer.getCalls(findElementMock);
-  const actionMockCalls = appiumServer.getCalls(actionsMock);
+  await element(by.label("list-item")).swipeDown({ distance: 100 });
 
-  expect(findElementMockCalls).toHaveLength(1);
-  expect(actionMockCalls).toHaveLength(1);
-  expect(actionMockCalls[0].options.body).toEqual({
-    actions: [{
-      id: "finger1",
-      type: "pointer",
-      parameters: {
-        pointerType: "touch"
-      },
-      actions: [
-        {type: "pointerMove", duration: 0, origin: { element: "elementId" }, x: 100, y: 24},
-        {type: "pointerDown", button: 0},
-        {type: "pause", duration: 250},
-        {type: "pointerMove", duration: 50, origin: "pointer", x: 0, y: 24},
-        {type: "pointerUp", button: 0}
-      ]
-    }]
-  });
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.swipeElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.swipeElement).toHaveBeenCalledWith(expect.objectContaining({ x: 0, y: 0 }));
 });
 
-it("correctly executes gesture with percentage value", async () => {
-  const findElementMock = appiumServer.mockFindElement({ elementId: "elementId" });
-  const elementSizeMock = appiumServer.mockElementSize({ elementId: "elementId", width: 100, height: 48 });
-  const actionsMock = appiumServer.mockActions();
+it("defaults the 'duration' parameter to 50", async () => {
+  const ref = createFindElementMock();
 
-  await element(by.label("list-item")).swipeDown({ percentage: 0.5 });
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "swipeElement").mockResolvedValue(null);
 
-  const findElementMockCalls = appiumServer.getCalls(findElementMock);
-  const elementSizeMockCalls = appiumServer.getCalls(elementSizeMock);
-  const actionMockCalls = appiumServer.getCalls(actionsMock);
+  await element(by.label("list-item")).swipeDown({ distance: 100 });
 
-  expect(findElementMockCalls).toHaveLength(2);
-  expect(elementSizeMockCalls).toHaveLength(1);
-  expect(actionMockCalls).toHaveLength(1);
-
-  expect(actionMockCalls[0].payload).toEqual({
-    actions: [{
-      id: "finger1",
-      type: "pointer",
-      parameters: {
-        pointerType: "touch"
-      },
-      actions: [
-        {type: "pointerMove", duration: 0, origin: { element: "elementId" }, x: 0, y: 0},
-        {type: "pointerDown", button: 0},
-        {type: "pause", duration: 250},
-        {type: "pointerMove", duration: 50, origin: "pointer", x: 0, y: 24},
-        {type: "pointerUp", button: 0}
-      ]
-    }]
-  });
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.swipeElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.swipeElement).toHaveBeenCalledWith(expect.objectContaining({ duration: 50 }));
 });
 
-it("defaults x and y to 0", async () => {
-  const findElementMock = appiumServer.mockFindElement({elementId: "elementId"});
-  const actionsMock = appiumServer.mockActions();
+it("supports passing 'x' and 'y' parameters to offset from the top left of the element", async () => {
+  const ref = createFindElementMock();
+  const x = 100;
+  const y = 300;
 
-  await element(by.label("list-item")).swipeDown({ distance: 48 });
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "swipeElement").mockResolvedValue(null);
 
-  const findElementMockCalls = appiumServer.getCalls(findElementMock);
-  const actionMockCalls = appiumServer.getCalls(actionsMock);
+  await element(by.label("list-item")).swipeDown({ x, y, distance: 100 });
 
-  expect(findElementMockCalls).toHaveLength(1);
-  expect(actionMockCalls).toHaveLength(1);
-
-  expect(actionMockCalls[0].options.body).toEqual({
-    actions: [{
-      id: "finger1",
-      type: "pointer",
-      parameters: {
-        pointerType: "touch"
-      },
-      actions: [
-        {type: "pointerMove", duration: 0, origin: {element: "elementId"}, x: 0, y: 0},
-        {type: "pointerDown", button: 0},
-        {type: "pause", duration: 250},
-        {type: "pointerMove", duration: 50, origin: "pointer", x: 0, y: 48},
-        {type: "pointerUp", button: 0}
-      ]
-    }]
-  });
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.swipeElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.swipeElement).toHaveBeenCalledWith(expect.objectContaining({ x, y }));
 });
 
-it("correctly executes gesture with duration parameter", async () => {
-  const findElementMock = appiumServer.mockFindElement({elementId: "elementId"});
-  const actionsMock = appiumServer.mockActions();
-  const duration = 500;
+it("support passing a 'percentage' parameter to calculate the swipe distance", async () => {
+  const ref = createFindElementMock();
+  const size = { width: 200, height: 64 };
+  const percentage = 0.75;
 
-  await element(by.label("list-item")).swipeDown({ y: 48, distance: 48, duration });
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementSize").mockResolvedValue(size);
+  jest.spyOn(appiumService, "swipeElement").mockResolvedValue(null);
 
-  const findElementMockCalls = appiumServer.getCalls(findElementMock);
-  const actionMockCalls = appiumServer.getCalls(actionsMock);
+  await element(by.label("list-item")).swipeDown({ percentage });
 
-  expect(findElementMockCalls).toHaveLength(1);
-  expect(actionMockCalls).toHaveLength(1);
-
-  expect(actionMockCalls[0].options.body).toEqual({
-    actions: [{
-      id: "finger1",
-      type: "pointer",
-      parameters: {
-        pointerType: "touch"
-      },
-      actions: [
-        {type: "pointerMove", duration: 0, origin: {element: "elementId"}, x: 0, y: 48},
-        {type: "pointerDown", button: 0},
-        {type: "pause", duration: 250},
-        {type: "pointerMove", duration, origin: "pointer", x: 0, y: 48},
-        {type: "pointerUp", button: 0}
-      ]
-    }]
-  });
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementSize).toHaveBeenCalledTimes(1);
+  expect(appiumService.swipeElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.swipeElement).toHaveBeenCalledWith(expect.objectContaining({ distance: size.height * percentage }));
 });
 
-it("correctly propagates errors", async () => {
-  const findElementMock = appiumServer.mockFindElement({ elementId: "elementId" });
-  const clearElementMock = appiumServer.mockClearElement({ status: 7, elementId: "elementId" });
-  const actionsMock = appiumServer.mockActions();
+it("supports passing a 'duration' parameter to redefine the swipe duration", async () => {
+  const ref = createFindElementMock();
+  const duration = 1000;
 
-  const result = element(by.label("list-item"))
-    .clearText()
-    .swipeDown({ x: 100, y: 48, distance: 48 });
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "swipeElement").mockResolvedValue(null);
 
-  await expect(result)
-    .rejects.toThrow(ElementActionError);
+  await element(by.label("list-item")).swipeDown({ duration, distance: 100 });
 
-  const findElementMockCalls = appiumServer.getCalls(findElementMock);
-  const clearElementMockCalls = appiumServer.getCalls(clearElementMock);
-  const actionMockCalls = appiumServer.getCalls(actionsMock);
-
-  expect(findElementMockCalls).toHaveLength(1);
-  expect(clearElementMockCalls).toHaveLength(1);
-  expect(actionMockCalls).toHaveLength(0);
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.swipeElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.swipeElement).toHaveBeenCalledWith(expect.objectContaining({ duration }));
 });
 
-it("throws action error if element doesn't exist", async () => {
-  const findElementMock = appiumServer.mockFindElement({status: 7, elementId: "elementId"});
-  const actionsMock = appiumServer.mockActions();
+it("throws an ElementNotFoundError if the element isn't found", async () => {
+  const error = new AppiumError("Request error.", 7);
 
-  const result = element(by.label("list-item"))
-    .swipeDown({ x: 100, distance: 48 });
+  jest.spyOn(appiumService, "findElement").mockRejectedValue(error);
+  jest.spyOn(appiumService, "swipeElement").mockResolvedValue(null);
+  expect.assertions(4);
 
-  await expect(result)
-    .rejects.toThrow(ElementActionError);
+  try {
+    await element(by.label("list-item")).swipeDown({ distance: 100 });
+  } catch (error) {
+    expect(error).toBeInstanceOf(ElementNotFoundError);
+    expect(error).toHaveProperty("message", "Failed to find element.");
+  }
 
-  const findElementMockCalls = appiumServer.getCalls(findElementMock);
-  const actionMockCalls = appiumServer.getCalls(actionsMock);
-
-  expect(findElementMockCalls).toHaveLength(1);
-  expect(actionMockCalls).toHaveLength(0);
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.swipeElement).toHaveBeenCalledTimes(0);
 });
 
-it("correctly handles W3C action request errors", async () => {
-  const findElementMock = appiumServer.mockFindElement({elementId: "elementId"});
-  const actionsMock = appiumServer.mockActions({status: 3});
+it("throws an ElementActionError for Appium request errors", async () => {
+  const ref = createFindElementMock();
+  const error = new AppiumError("Request error.", 3);
 
-  await expect(element(by.label("list-item")).swipeDown({ x: 100, distance: 48 }))
-    .rejects.toThrow(new ElementActionError("Failed to swipe down on element."));
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "swipeElement").mockRejectedValue(error);
+  expect.assertions(4);
 
-  const findElementMockCalls = appiumServer.getCalls(findElementMock);
-  const actionMockCalls = appiumServer.getCalls(actionsMock);
+  try {
+    await element(by.label("list-item")).swipeDown({ distance: 100 });
+  } catch (error) {
+    expect(error).toBeInstanceOf(ElementActionError);
+    expect(error).toHaveProperty("message", "Failed to swipe down on element.");
+  }
 
-  expect(findElementMockCalls).toHaveLength(1);
-  expect(actionMockCalls).toHaveLength(1);
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.swipeElement).toHaveBeenCalledTimes(1);
+});
+
+it("propagates errors from further up the chain", async () => {
+  const ref = createFindElementMock();
+  const error = new AppiumError("Request error.", 3);
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "sendElementKeys").mockRejectedValue(error);
+  jest.spyOn(appiumService, "swipeElement").mockResolvedValue(null);
+  expect.assertions(5);
+
+  try {
+    await element(by.label("input"))
+      .typeText("Hello world!")
+      .swipeDown({ distance: 100 });
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to type text on element.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.sendElementKeys).toHaveBeenCalledTimes(1);
+  expect(appiumService.swipeElement).toHaveBeenCalledTimes(0);
+});
+
+it("propagates other types of errors", async () => {
+  const ref = createFindElementMock();
+  const error = new Error("Something went wrong.");
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "swipeElement").mockRejectedValue(error);
+
+  await expect(element(by.label("list-item")).swipeDown({ distance: 100 }))
+    .rejects.toThrow(error);
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.swipeElement).toHaveBeenCalledTimes(1);
 });

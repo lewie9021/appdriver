@@ -414,38 +414,53 @@ class Element {
     });
   }
 
-  swipeUp({ x = 0, y = 0, distance, percentage, duration }) {
+  swipeUp({ x = 0, y = 0, distance, percentage, duration = 50 }) {
     return this._executeAction((value, done) => {
-      if (!value.ref) {
-        return done(new ElementActionError("Can't swipe up on element that doesn't exist"));
-      }
-
-      const $element = new Element({ value: Promise.resolve(value) });
-
       const resolveSwipeDistance = () => {
         if (!percentage) {
           return Promise.resolve(distance);
         }
 
-        return this.getSize()
+        return appiumService.getElementSize({ element: value.ref })
           .then((size) => size.height * percentage);
       };
 
       return resolveSwipeDistance()
-        .then((swipeDistance) => {
-          return gestures.swipeUp({ x, y, distance: swipeDistance, duration, element: $element })
-            .resolve();
-        })
-        .then((actions) => {
-          appiumService.performActions({ actions })
-            .then(() => done(null))
-            .catch(() => done(new ElementActionError("Failed to swipe up on element.")));
-        })
-        .catch((err) => done(err));
+        .then((distance) => appiumService.swipeElement({ element: value.ref, x, y, distance, direction: 0, duration }))
+        .then(() => done(null))
+        .catch((err) => {
+          if (isInstanceOf(err, AppiumError)) {
+            return done(new ElementActionError("Failed to swipe up on element."));
+          }
+
+          done(err);
+        });
     });
   }
 
-  swipeDown({ x = 0, y = 0, distance, percentage, duration }) {
+  swipeDown({ x = 0, y = 0, distance, percentage, duration = 50 }) {
+    return this._executeAction((value, done) => {
+      const resolveSwipeDistance = () => {
+        if (!percentage) {
+          return Promise.resolve(distance);
+        }
+
+        return appiumService.getElementSize({ element: value.ref })
+          .then((size) => size.height * percentage);
+      };
+
+      return resolveSwipeDistance()
+        .then((distance) => appiumService.swipeElement({ element: value.ref, x, y, distance, direction: 180, duration }))
+        .then(() => done(null))
+        .catch((err) => {
+          if (isInstanceOf(err, AppiumError)) {
+            return done(new ElementActionError("Failed to swipe down on element."));
+          }
+
+          done(err);
+        });
+    });
+
     return this._executeAction((value, done) => {
       if (!value.ref) {
         return done(new ElementActionError("Can't swipe down on element that doesn't exist"));
@@ -500,34 +515,27 @@ class Element {
     });
   }
 
-  swipeRight({ x = 0, y = 0, distance, percentage, duration }) {
+  swipeRight({ x = 0, y = 0, distance, percentage, duration = 50 }) {
     return this._executeAction((value, done) => {
-      if (!value.ref) {
-        return done(new ElementActionError("Can't swipe right on element that doesn't exist"));
-      }
-
-      const $element = new Element({ value: Promise.resolve(value) });
-
       const resolveSwipeDistance = () => {
         if (!percentage) {
           return Promise.resolve(distance);
         }
 
-        return this.getSize()
+        return appiumService.getElementSize({ element: value.ref })
           .then((size) => size.width * percentage);
       };
 
       return resolveSwipeDistance()
-        .then((swipeDistance) => {
-          return gestures.swipeRight({ x, y, distance: swipeDistance, duration, element: $element })
-            .resolve();
-        })
-        .then((actions) => {
-          appiumService.performActions({ actions })
-            .then(() => done(null))
-            .catch(() => done(new ElementActionError("Failed to swipe right on element.")));
-        })
-        .catch((err) => done(err));
+        .then((distance) => appiumService.swipeElement({ element: value.ref, x, y, distance, direction: 90, duration }))
+        .then(() => done(null))
+        .catch((err) => {
+          if (isInstanceOf(err, AppiumError)) {
+            return done(new ElementActionError("Failed to swipe right on element."));
+          }
+
+          done(err);
+        });
     });
   }
 }
