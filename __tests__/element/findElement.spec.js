@@ -11,8 +11,8 @@ afterEach(() => {
 });
 
 it("modifies the internal element reference to the newly found element", async () => {
-  const ref = createFindElementMock({ elementId: "31000000-0000-0000-CC4E-000000000000" });
-  const ref2 = createFindElementMock({ elementId: "45000000-0000-0000-W6AJ-000000000000" });
+  const ref = createFindElementMock({ elementId: "elementId" });
+  const ref2 = createFindElementMock({ elementId: "innerElementId" });
 
   jest.spyOn(appiumService, "findElement").mockResolvedValueOnce(ref);
   jest.spyOn(appiumService, "findElement").mockResolvedValueOnce(ref2);

@@ -159,7 +159,11 @@ class Element {
           });
       })
       .catch((err) => {
-        throw new ElementActionError(err.message);
+        if (isInstanceOf(err, AppiumError)) {
+          throw new ElementActionError("Failed to find elements from element.");
+        }
+
+        throw err;
       });
   }
 
