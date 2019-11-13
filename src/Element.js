@@ -83,13 +83,12 @@ class Element {
 
   _executeWait(conditionFn, maxDuration, interval, timeoutError) {
     const currentValue = getCurrentValue(this.value);
-    let $element;
 
     const nextValue = new Promise((resolve, reject) => {
       currentValue.then(
         (value) => {
           pollFor(() => {
-            $element = new Element({ value: Promise.resolve(value) });
+            const $element = new Element({ value: Promise.resolve(value) });
 
             return conditionFn($element);
           }, { maxDuration, interval })
@@ -101,11 +100,11 @@ class Element {
         (err) => {
           if (isInstanceOf(err, ElementNotFoundError) && err.matcher) {
             return pollFor(() => {
-              $element = new Element({ value: Promise.resolve({ matcher: err.matcher, ref: null }) });
+              const $element = new Element({ value: Promise.resolve({ ref: null, matcher: err.matcher }) });
 
               return conditionFn($element);
             }, { maxDuration, interval })
-              .then(() => $element.value.then(resolve))
+              .then(() => resolve({ ref: null, matcher: err.matcher }))
               .catch((errors) => {
                 reject(new ElementWaitError(timeoutError));
               });
