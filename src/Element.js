@@ -314,9 +314,10 @@ class Element {
 
     return currentValue
       .then((value) => appiumService.getElementExists({ matcher: value.matcher }))
+      .catch(handleActionError("Failed to retrieve existence status of element."))
       .catch((err) => {
         if (isInstanceOf(err, ElementNotFoundError)) {
-          return appiumService.getElementExists({ matcher: err.matcher });
+          return false;
         }
 
         throw err;

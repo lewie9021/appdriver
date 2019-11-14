@@ -1,39 +1,59 @@
-const appiumServer = require("../helpers/appiumServer");
+jest.mock("../../src/services/appiumService");
 
-const { by, element, expect: assert } = require("../../");
-const { ElementActionError } = require("../../src/errors");
+const { appiumService } = require("../../src/services/appiumService");
+const { createFindElementMock } = require("../appiumServiceMocks");
+const { ElementActionError, AppiumError } = require("../../src/errors");
+const { element, by, expect: assert } = require("../../");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
 it("doesn't throw if expectation is met", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementDisplayed({elementId: "elementId", displayed: true});
+  const ref = createFindElementMock();
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementVisibleAttribute").mockResolvedValue(true);
 
   const $element = await element(by.label("button"));
 
   await expect(assert($element).toBeVisible())
-    .resolves.toBe(undefined);
+    .resolves.toEqual(undefined);
 });
 
 it("throws if expectation is not met", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementDisplayed({elementId: "elementId", displayed: false});
+  const ref = createFindElementMock();
 
-  const $element = await element(by.label("button"));
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementVisibleAttribute").mockResolvedValue(false);
+  expect.assertions(2);
 
-  await expect(assert($element).toBeVisible())
-    .rejects.toThrow(new Error("Expected element to be visible but instead got 'false'."));
+  try {
+    const $element = await element(by.label("button"));
+
+    await assert($element).toBeVisible();
+  } catch (err) {
+    expect(err).toBeInstanceOf(Error);
+    expect(err).toHaveProperty("message", "Expected element to be visible but instead got 'false'.");
+  }
 });
 
 // TODO: Could maybe wrap the error?
 it("correctly propagates errors", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementDisplayed({status: 3, elementId: "elementId"});
+  const ref = createFindElementMock();
+  const error = new AppiumError("Request error.", 3);
 
-  const $element = await element(by.label("button"));
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementVisibleAttribute").mockRejectedValue(error);
+  expect.assertions(2);
 
-  await expect(assert($element).toBeVisible())
-    .rejects.toThrow(new ElementActionError("Failed to retrieve visibility status of element."));
+  try {
+    const $element = await element(by.label("button"));
+
+    await assert($element).toBeVisible();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to retrieve visibility status of element.");
+  }
 });

@@ -42,6 +42,25 @@ it("calls 'getElementExists' even if finding the element failed", async () => {
   expect(result).toEqual(exists);
 });
 
+it("throws an ElementActionError for Appium request errors", async () => {
+  const ref = createFindElementMock();
+  const error = new AppiumError("Request error.", 3);
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementExists").mockRejectedValue(error);
+  expect.assertions(4);
+
+  try {
+    await element(by.label("box")).exists();
+  } catch (error) {
+    expect(error).toBeInstanceOf(ElementActionError);
+    expect(error).toHaveProperty("message", "Failed to retrieve existence status of element.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementExists).toHaveBeenCalledTimes(1);
+});
+
 it("propagates errors from further up the chain", async () => {
   const ref = createFindElementMock();
   const tapError = new AppiumError("Request error.", 3);
