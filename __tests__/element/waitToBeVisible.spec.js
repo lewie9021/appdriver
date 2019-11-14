@@ -36,7 +36,7 @@ it("polls element visibility status until it resolves when there's an element re
   expect(appiumService.getElementVisibleAttribute).toHaveBeenCalledTimes(3);
 });
 
-it("polls 'conditionFn' until it resolves when there isn't an element reference", async () => {
+it("polls element visibility status until it resolves when there isn't an element reference", async () => {
   const ref = createFindElementMock();
   const error = new AppiumError("Request error.", 3);
 
