@@ -46,21 +46,6 @@ it("polls 'conditionFn' until it resolves when there's an element reference", as
   expect(conditionFn).toHaveBeenCalledTimes(totalPollCount);
 });
 
-it("forwards the new element value once resolved when there's an element reference", async() => {
-  const totalPollCount = 3;
-  const conditionFn = createConditionFn(totalPollCount, new Error("Test"));
-  const ref = createFindElementMock();
-  const matcher = by.label("input");
-
-  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
-
-  const result = await element(matcher).waitFor(conditionFn);
-
-  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
-  expect(conditionFn).toHaveBeenCalledTimes(totalPollCount);
-  await expect(result.value).resolves.toEqual({ ref, matcher });
-});
-
 it("polls 'conditionFn' until it resolves when there isn't an element reference", async () => {
   const totalPollCount = 5;
   const conditionFn = createConditionFn(totalPollCount, new Error("Test"));
@@ -72,21 +57,6 @@ it("polls 'conditionFn' until it resolves when there isn't an element reference"
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
   expect(conditionFn).toHaveBeenCalledTimes(totalPollCount);
-});
-
-it("forwards the new element value once resolved when there isn't an element reference", async () => {
-  const totalPollCount = 3;
-  const conditionFn = createConditionFn(totalPollCount, new Error("Test"));
-  const error = new AppiumError("Request error.", 3);
-  const matcher = by.label("input");
-
-  jest.spyOn(appiumService, "findElement").mockRejectedValue(error);
-
-  const result = await element(matcher).waitFor(conditionFn);
-
-  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
-  expect(conditionFn).toHaveBeenCalledTimes(totalPollCount);
-  await expect(result.value).resolves.toEqual({ ref: null, matcher });
 });
 
 it("throws an ElementWaitError if the polling times out", async () => {
