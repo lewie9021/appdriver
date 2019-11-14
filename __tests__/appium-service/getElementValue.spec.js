@@ -1,4 +1,6 @@
-// TODO: Rewrite to new ensure use cases are supported.
+// TODO: Rewrite to ensure use cases are covered.
+it.todo("Rewrite to ensure use cases are covered.");
+
 // const appiumServer = require("../helpers/appiumServer");
 // const fetch = require("node-fetch");
 //
