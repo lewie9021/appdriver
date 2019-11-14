@@ -20,7 +20,7 @@ it("returns an Element instance that is 'thenable'", async () => {
   const result = element(by.label("list-item"));
 
   expect(result).toBeInstanceOf(Element);
-  expect(typeof result.then).toEqual("function");
+  expect(result.then).toBeInstanceOf(Function);
 });
 
 it("supports method chaining", async () => {

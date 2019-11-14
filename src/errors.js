@@ -9,11 +9,12 @@ class ElementNotFoundError extends Error {
 }
 
 class ElementsNotFoundError extends Error {
-  constructor(message) {
+  constructor(message, matcher) {
     super(message);
 
     Error.captureStackTrace(this, ElementsNotFoundError);
     this.name = this.constructor.name;
+    this.matcher = matcher;
   }
 }
 
