@@ -317,7 +317,8 @@ class Element {
       .catch(handleActionError("Failed to retrieve existence status of element."))
       .catch((err) => {
         if (isInstanceOf(err, ElementNotFoundError)) {
-          return false;
+          return appiumService.getElementExists({ matcher: err.matcher })
+            .catch(handleActionError("Failed to retrieve existence status of element."));
         }
 
         throw err;
