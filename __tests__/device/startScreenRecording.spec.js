@@ -77,9 +77,14 @@ it("throws an ActionError for Appium request errors", async () => {
 
   jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("iOS");
   jest.spyOn(appiumService, "startScreenRecording").mockRejectedValue(error);
+  expect.assertions(4);
 
-  await expect(device.startScreenRecording())
-    .rejects.toThrow(new ActionError("Failed to start screen recording."));
+  try {
+    await device.startScreenRecording();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ActionError);
+    expect(err).toHaveProperty("message", "Failed to start screen recording.");
+  }
 
   expect(sessionStore.getCapabilities).toHaveBeenCalledWith("platformName");
   expect(appiumService.startScreenRecording).toHaveBeenCalled();
@@ -88,9 +93,14 @@ it("throws an ActionError for Appium request errors", async () => {
 it("throws an ActionError if there's already a recording in progress", async () => {
   jest.spyOn(sessionStore, "getScreenRecording").mockReturnValue({ filePath: null });
   jest.spyOn(appiumService, "startScreenRecording").mockResolvedValue(null);
+  expect.assertions(4);
 
-  await expect(device.startScreenRecording())
-    .rejects.toThrow(new ActionError("Screen recording already in progress."));
+  try {
+    await device.startScreenRecording();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ActionError);
+    expect(err).toHaveProperty("message", "Screen recording already in progress.");
+  }
 
   expect(sessionStore.getScreenRecording).toHaveBeenCalled();
   expect(appiumService.startScreenRecording).not.toHaveBeenCalled();
@@ -101,9 +111,14 @@ it("propagates other types of errors", async () => {
 
   jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("iOS");
   jest.spyOn(appiumService, "startScreenRecording").mockRejectedValue(error);
+  expect.assertions(4);
 
-  await expect(device.startScreenRecording())
-    .rejects.toThrow(error);
+  try {
+    await device.startScreenRecording();
+  } catch (err) {
+    expect(err).toBeInstanceOf(error.constructor);
+    expect(err).toHaveProperty("message", error.message);
+  }
 
   expect(sessionStore.getCapabilities).toHaveBeenCalledWith("platformName");
   expect(appiumService.startScreenRecording).toHaveBeenCalled();
@@ -174,15 +189,28 @@ describe("Android", () => {
 
   it("throws an ActionError if 'size.width' and 'size.height' aren't passed together", async () => {
     jest.spyOn(appiumService, "startScreenRecording").mockResolvedValue(null);
+    expect.assertions(7);
 
-    await expect(device.startScreenRecording({ size: {} }))
-      .rejects.toThrow(new AppiumError("You must provide a 'size.width' and 'size.height' when passing a 'size'."));
+    try {
+      await device.startScreenRecording({ size: {} });
+    } catch (err) {
+      expect(err).toBeInstanceOf(ActionError);
+      expect(err).toHaveProperty("message", "You must provide a 'size.width' and 'size.height' when passing a 'size'.");
+    }
 
-    await expect(device.startScreenRecording({ size: { width: 640 } }))
-      .rejects.toThrow(new AppiumError("You must provide a 'size.height' when passing a 'size.width'."));
+    try {
+      await device.startScreenRecording({ size: { width: 640 } });
+    } catch (err) {
+      expect(err).toBeInstanceOf(ActionError);
+      expect(err).toHaveProperty("message", "You must provide a 'size.height' when passing a 'size.width'.");
+    }
 
-    await expect(device.startScreenRecording({ size: { height: 480 } }))
-      .rejects.toThrow(new AppiumError("You must provide a 'size.width' when passing a 'size.height'."));
+    try {
+      await device.startScreenRecording({ size: { height: 480 } });
+    } catch (err) {
+      expect(err).toBeInstanceOf(ActionError);
+      expect(err).toHaveProperty("message", "You must provide a 'size.width' when passing a 'size.height'.");
+    }
 
     expect(appiumService.startScreenRecording).not.toHaveBeenCalled();
   });

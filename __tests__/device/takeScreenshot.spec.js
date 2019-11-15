@@ -38,9 +38,14 @@ it("throws an ActionError for Appium request errors", async () => {
   const error = new AppiumError("Request error.", 3);
 
   jest.spyOn(appiumService, "takeScreenshot").mockRejectedValue(error);
+  expect.assertions(3);
 
-  await expect(device.takeScreenshot())
-    .rejects.toThrow(new ActionError("Failed to take screenshot."));
+  try {
+    await device.takeScreenshot();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ActionError);
+    expect(err).toHaveProperty("message", "Failed to take screenshot.");
+  }
 
   expect(appiumService.takeScreenshot).toHaveBeenCalled();
 });
@@ -50,9 +55,14 @@ it("throws an ActionError if it is unable to store on disk when a 'filePath' is 
 
   jest.spyOn(appiumService, "takeScreenshot").mockResolvedValue("dGVzdA==");
   jest.spyOn(fs, "writeFile").mockImplementation((path, data, cb) => cb(error));
+  expect.assertions(4);
 
-  await expect(device.takeScreenshot({ filePath: "some/path" }))
-    .rejects.toThrow(new ActionError("Failed to store screenshot on disk."));
+  try {
+    await device.takeScreenshot({ filePath: "some/path" });
+  } catch (err) {
+    expect(err).toBeInstanceOf(ActionError);
+    expect(err).toHaveProperty("message", "Failed to store screenshot on disk.");
+  }
 
   expect(appiumService.takeScreenshot).toHaveBeenCalled();
   expect(fs.writeFile).toHaveBeenCalled();
@@ -62,9 +72,14 @@ it("propagates other types of errors", async () => {
   const error = new Error("Something went wrong.");
 
   jest.spyOn(appiumService, "takeScreenshot").mockRejectedValue(error);
+  expect.assertions(3);
 
-  await expect(device.takeScreenshot())
-    .rejects.toThrow(error);
+  try {
+    await device.takeScreenshot();
+  } catch (err) {
+    expect(err).toBeInstanceOf(error.constructor);
+    expect(err).toHaveProperty("message", error.message);
+  }
 
   expect(appiumService.takeScreenshot).toHaveBeenCalled();
 });

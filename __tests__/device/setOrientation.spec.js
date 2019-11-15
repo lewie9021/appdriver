@@ -23,9 +23,14 @@ it("throws an ActionError for Appium request errors", async () => {
   const orientation = "PORTRAIT";
 
   jest.spyOn(appiumService, "setOrientation").mockRejectedValue(error);
+  expect.assertions(3);
 
-  await expect(device.setOrientation(orientation))
-    .rejects.toThrow(new ActionError(`Failed to set device orientation to '${orientation}'.`));
+  try {
+    await device.setOrientation(orientation);
+  } catch (err) {
+    expect(err).toBeInstanceOf(ActionError);
+    expect(err).toHaveProperty("message", `Failed to set device orientation to '${orientation}'.`);
+  }
 
   expect(appiumService.setOrientation).toHaveBeenCalled();
 });
@@ -34,9 +39,14 @@ it("propagates other types of errors", async () => {
   const error = new Error("Something went wrong.");
 
   jest.spyOn(appiumService, "setOrientation").mockRejectedValue(error);
+  expect.assertions(3);
 
-  await expect(device.setOrientation("LANDSCAPE"))
-    .rejects.toThrow(error);
+  try {
+    await device.setOrientation("LANDSCAPE");
+  } catch (err) {
+    expect(err).toBeInstanceOf(error.constructor);
+    expect(err).toHaveProperty("message", error.message);
+  }
 
   expect(appiumService.setOrientation).toHaveBeenCalled();
 });

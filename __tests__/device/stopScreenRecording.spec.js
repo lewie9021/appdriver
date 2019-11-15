@@ -53,9 +53,14 @@ it("resets the screen recording state on error", async () => {
 
   sessionStore.setState({ screenRecording: { filePath: null } });
   jest.spyOn(appiumService, "stopScreenRecording").mockRejectedValue(error);
+  expect.assertions(3);
 
-  await expect(device.stopScreenRecording())
-    .rejects.toThrow(Error);
+  try {
+    await device.stopScreenRecording();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ActionError);
+    expect(err).toHaveProperty("message", "Failed to stop screen recording.");
+  }
 
   expect(sessionStore.getScreenRecording()).toBeNull();
 });
@@ -67,9 +72,9 @@ it("throws an ActionError if there isn't a recording in progress", async () => {
 
   try {
     await device.stopScreenRecording();
-  } catch (error) {
-    expect(error).toBeInstanceOf(ActionError);
-    expect(error).toHaveProperty("message", "No screen recording in progress to stop.");
+  } catch (err) {
+    expect(err).toBeInstanceOf(ActionError);
+    expect(err).toHaveProperty("message", "No screen recording in progress to stop.");
   }
 
   expect(appiumService.stopScreenRecording).not.toHaveBeenCalled();
@@ -84,9 +89,9 @@ it("throws an ActionError for Appium request errors", async () => {
 
   try {
     await device.stopScreenRecording();
-  } catch (error) {
-    expect(error).toBeInstanceOf(ActionError);
-    expect(error).toHaveProperty("message", "Failed to stop screen recording.");
+  } catch (err) {
+    expect(err).toBeInstanceOf(ActionError);
+    expect(err).toHaveProperty("message", "Failed to stop screen recording.");
   }
 
   expect(appiumService.stopScreenRecording).toHaveBeenCalled();
@@ -97,9 +102,14 @@ it("propagates other types of errors", async () => {
 
   sessionStore.setState({ screenRecording: { filePath: null } });
   jest.spyOn(appiumService, "stopScreenRecording").mockRejectedValue(error);
+  expect.assertions(3);
 
-  await expect(device.stopScreenRecording())
-    .rejects.toThrow(error);
+  try {
+    await device.stopScreenRecording();
+  } catch (err) {
+    expect(err).toBeInstanceOf(error.constructor);
+    expect(err).toHaveProperty("message", error.message);
+  }
 
   expect(appiumService.stopScreenRecording).toHaveBeenCalled();
 });

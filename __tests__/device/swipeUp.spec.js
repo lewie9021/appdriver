@@ -81,9 +81,14 @@ it("throws an ActionError for Appium request errors", async () => {
   const error = new AppiumError("Request error.", 3);
 
   jest.spyOn(appiumService, "performActions").mockRejectedValue(error);
+  expect.assertions(3);
 
-  await expect(device.swipeUp({ distance: 100 }))
-    .rejects.toThrow(new ActionError("Failed to perform swipe up gesture."));
+  try {
+    await device.swipeUp({ distance: 100 });
+  } catch (err) {
+    expect(err).toBeInstanceOf(ActionError);
+    expect(err).toHaveProperty("message", "Failed to perform swipe up gesture.");
+  }
 
   expect(appiumService.performActions).toHaveBeenCalled();
 });
@@ -92,9 +97,14 @@ it("propagates other types of errors", async () => {
   const error = new Error("Something went wrong.");
 
   jest.spyOn(appiumService, "performActions").mockRejectedValue(error);
+  expect.assertions(3);
 
-  await expect(device.swipeUp({ distance: 100 }))
-    .rejects.toThrow(error);
+  try {
+    await device.swipeUp({ distance: 100 });
+  } catch (err) {
+    expect(err).toBeInstanceOf(error.constructor);
+    expect(err).toHaveProperty("message", error.message);
+  }
 
   expect(appiumService.performActions).toHaveBeenCalled();
 });

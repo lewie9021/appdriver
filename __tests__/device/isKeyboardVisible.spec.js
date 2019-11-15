@@ -23,9 +23,14 @@ it("throws an ActionError for Appium request errors", async () => {
   const error = new AppiumError("Request error.", 3);
 
   jest.spyOn(appiumService, "getKeyboardVisible").mockRejectedValue(error);
+  expect.assertions(3);
 
-  await expect(device.isKeyboardVisible())
-    .rejects.toThrow(new ActionError("Failed to get keyboard visibility status."));
+  try {
+    await device.isKeyboardVisible();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ActionError);
+    expect(err).toHaveProperty("message", "Failed to get keyboard visibility status.");
+  }
 
   expect(appiumService.getKeyboardVisible).toHaveBeenCalled();
 });
@@ -34,9 +39,14 @@ it("propagates other types of errors", async () => {
   const error = new Error("Something went wrong.");
 
   jest.spyOn(appiumService, "getKeyboardVisible").mockRejectedValue(error);
+  expect.assertions(3);
 
-  await expect(device.isKeyboardVisible())
-    .rejects.toThrow(error);
+  try {
+    await device.isKeyboardVisible();
+  } catch (err) {
+    expect(err).toBeInstanceOf(error.constructor);
+    expect(err).toHaveProperty("message", error.message);
+  }
 
   expect(appiumService.getKeyboardVisible).toHaveBeenCalled();
 });
