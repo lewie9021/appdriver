@@ -32,7 +32,7 @@ it("throws an ActionError for Appium request errors", async () => {
     expect(err).toHaveProperty("message", "Failed to perform gesture.");
   }
 
-  expect(appiumService.performActions).toHaveBeenCalled();
+  expect(appiumService.performActions).toHaveBeenCalledTimes(1);
 });
 
 it("propagates other types of errors", async () => {
@@ -48,5 +48,5 @@ it("propagates other types of errors", async () => {
     expect(err).toHaveProperty("message", error.message);
   }
 
-  expect(appiumService.performActions).toHaveBeenCalled();
+  expect(appiumService.performActions).toHaveBeenCalledTimes(1);
 });

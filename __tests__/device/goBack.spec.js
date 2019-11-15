@@ -14,7 +14,7 @@ it("executes the 'goBack' method on the Appium Service", async () => {
 
   await device.goBack();
 
-  expect(appiumService.goBack).toHaveBeenCalled();
+  expect(appiumService.goBack).toHaveBeenCalledTimes(1);
 });
 
 it("throws an ActionError for Appium request errors", async () => {
@@ -30,7 +30,7 @@ it("throws an ActionError for Appium request errors", async () => {
     expect(err).toHaveProperty("message", "Failed to go back.");
   }
 
-  expect(appiumService.goBack).toHaveBeenCalled();
+  expect(appiumService.goBack).toHaveBeenCalledTimes(1);
 });
 
 it("propagates other types of errors", async () => {
@@ -46,5 +46,5 @@ it("propagates other types of errors", async () => {
     expect(err).toHaveProperty("message", error.message);
   }
 
-  expect(appiumService.goBack).toHaveBeenCalled();
+  expect(appiumService.goBack).toHaveBeenCalledTimes(1);
 });

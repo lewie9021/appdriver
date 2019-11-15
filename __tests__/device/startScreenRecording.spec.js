@@ -26,7 +26,7 @@ it("executes the 'startScreenRecording' method on the Appium Service", async () 
   await device.startScreenRecording();
 
   expect(sessionStore.getCapabilities).toHaveBeenCalledWith("platformName");
-  expect(appiumService.startScreenRecording).toHaveBeenCalled();
+  expect(appiumService.startScreenRecording).toHaveBeenCalledTimes(1);
   expect(sessionStore.setState).toHaveBeenCalledWith({ screenRecording: { filePath: null } });
 });
 
@@ -87,7 +87,7 @@ it("throws an ActionError for Appium request errors", async () => {
   }
 
   expect(sessionStore.getCapabilities).toHaveBeenCalledWith("platformName");
-  expect(appiumService.startScreenRecording).toHaveBeenCalled();
+  expect(appiumService.startScreenRecording).toHaveBeenCalledTimes(1);
 });
 
 it("throws an ActionError if there's already a recording in progress", async () => {
@@ -102,8 +102,8 @@ it("throws an ActionError if there's already a recording in progress", async () 
     expect(err).toHaveProperty("message", "Screen recording already in progress.");
   }
 
-  expect(sessionStore.getScreenRecording).toHaveBeenCalled();
-  expect(appiumService.startScreenRecording).not.toHaveBeenCalled();
+  expect(sessionStore.getScreenRecording).toHaveBeenCalledTimes(1);
+  expect(appiumService.startScreenRecording).not.toHaveBeenCalledTimes(1);
 });
 
 it("propagates other types of errors", async () => {
@@ -121,7 +121,7 @@ it("propagates other types of errors", async () => {
   }
 
   expect(sessionStore.getCapabilities).toHaveBeenCalledWith("platformName");
-  expect(appiumService.startScreenRecording).toHaveBeenCalled();
+  expect(appiumService.startScreenRecording).toHaveBeenCalledTimes(1);
 });
 
 describe("iOS", () => {
@@ -212,6 +212,6 @@ describe("Android", () => {
       expect(err).toHaveProperty("message", "You must provide a 'size.width' when passing a 'size.height'.");
     }
 
-    expect(appiumService.startScreenRecording).not.toHaveBeenCalled();
+    expect(appiumService.startScreenRecording).not.toHaveBeenCalledTimes(1);
   });
 });

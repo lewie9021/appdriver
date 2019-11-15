@@ -20,7 +20,7 @@ it("returns a buffer containing the result of 'takeScreenshot' on the Appium Ser
 
   expect(result).toBeInstanceOf(Buffer);
   expect(result.toString("base64")).toEqual(screenshot);
-  expect(appiumService.takeScreenshot).toHaveBeenCalled();
+  expect(appiumService.takeScreenshot).toHaveBeenCalledTimes(1);
 });
 
 it("stores the screenshot on disk if a 'filePath' is configured", async () => {
@@ -47,7 +47,7 @@ it("throws an ActionError for Appium request errors", async () => {
     expect(err).toHaveProperty("message", "Failed to take screenshot.");
   }
 
-  expect(appiumService.takeScreenshot).toHaveBeenCalled();
+  expect(appiumService.takeScreenshot).toHaveBeenCalledTimes(1);
 });
 
 it("throws an ActionError if it is unable to store on disk when a 'filePath' is configured", async () => {
@@ -64,8 +64,8 @@ it("throws an ActionError if it is unable to store on disk when a 'filePath' is 
     expect(err).toHaveProperty("message", "Failed to store screenshot on disk.");
   }
 
-  expect(appiumService.takeScreenshot).toHaveBeenCalled();
-  expect(fs.writeFile).toHaveBeenCalled();
+  expect(appiumService.takeScreenshot).toHaveBeenCalledTimes(1);
+  expect(fs.writeFile).toHaveBeenCalledTimes(1);
 });
 
 it("propagates other types of errors", async () => {
@@ -81,5 +81,5 @@ it("propagates other types of errors", async () => {
     expect(err).toHaveProperty("message", error.message);
   }
 
-  expect(appiumService.takeScreenshot).toHaveBeenCalled();
+  expect(appiumService.takeScreenshot).toHaveBeenCalledTimes(1);
 });

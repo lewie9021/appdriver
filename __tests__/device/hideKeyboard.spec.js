@@ -14,7 +14,7 @@ it("executes the 'hideKeyboard' method on the Appium Service", async () => {
 
   await device.hideKeyboard();
 
-  expect(appiumService.hideKeyboard).toHaveBeenCalled();
+  expect(appiumService.hideKeyboard).toHaveBeenCalledTimes(1);
 });
 
 it("throws an ActionError for Appium request errors", async () => {
@@ -30,7 +30,7 @@ it("throws an ActionError for Appium request errors", async () => {
     expect(err).toHaveProperty("message", "Failed to hide keyboard.");
   }
 
-  expect(appiumService.hideKeyboard).toHaveBeenCalled();
+  expect(appiumService.hideKeyboard).toHaveBeenCalledTimes(1);
 });
 
 it("propagates other types of errors", async () => {
@@ -46,5 +46,5 @@ it("propagates other types of errors", async () => {
     expect(err).toHaveProperty("message", error.message);
   }
 
-  expect(appiumService.hideKeyboard).toHaveBeenCalled();
+  expect(appiumService.hideKeyboard).toHaveBeenCalledTimes(1);
 });

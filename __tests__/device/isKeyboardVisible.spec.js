@@ -16,7 +16,7 @@ it("returns the result of 'getKeyboardVisible' on the Appium Service", async () 
   const result = await device.isKeyboardVisible();
 
   expect(result).toEqual(visible);
-  expect(appiumService.getKeyboardVisible).toHaveBeenCalled();
+  expect(appiumService.getKeyboardVisible).toHaveBeenCalledTimes(1);
 });
 
 it("throws an ActionError for Appium request errors", async () => {
@@ -32,7 +32,7 @@ it("throws an ActionError for Appium request errors", async () => {
     expect(err).toHaveProperty("message", "Failed to get keyboard visibility status.");
   }
 
-  expect(appiumService.getKeyboardVisible).toHaveBeenCalled();
+  expect(appiumService.getKeyboardVisible).toHaveBeenCalledTimes(1);
 });
 
 it("propagates other types of errors", async () => {
@@ -48,5 +48,5 @@ it("propagates other types of errors", async () => {
     expect(err).toHaveProperty("message", error.message);
   }
 
-  expect(appiumService.getKeyboardVisible).toHaveBeenCalled();
+  expect(appiumService.getKeyboardVisible).toHaveBeenCalledTimes(1);
 });

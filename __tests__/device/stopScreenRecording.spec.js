@@ -24,7 +24,7 @@ it("returns a buffer containing the result of 'stopScreenRecording' on the Appiu
 
   expect(result).toBeInstanceOf(Buffer);
   expect(result.toString("base64")).toEqual(screenRecording);
-  expect(appiumService.stopScreenRecording).toHaveBeenCalled();
+  expect(appiumService.stopScreenRecording).toHaveBeenCalledTimes(1);
 });
 
 it("stores the screen recording on disk if a 'filePath' is configured", async () => {
@@ -77,7 +77,7 @@ it("throws an ActionError if there isn't a recording in progress", async () => {
     expect(err).toHaveProperty("message", "No screen recording in progress to stop.");
   }
 
-  expect(appiumService.stopScreenRecording).not.toHaveBeenCalled();
+  expect(appiumService.stopScreenRecording).not.toHaveBeenCalledTimes(1);
 });
 
 it("throws an ActionError for Appium request errors", async () => {
@@ -94,7 +94,7 @@ it("throws an ActionError for Appium request errors", async () => {
     expect(err).toHaveProperty("message", "Failed to stop screen recording.");
   }
 
-  expect(appiumService.stopScreenRecording).toHaveBeenCalled();
+  expect(appiumService.stopScreenRecording).toHaveBeenCalledTimes(1);
 });
 
 it("propagates other types of errors", async () => {
@@ -111,5 +111,5 @@ it("propagates other types of errors", async () => {
     expect(err).toHaveProperty("message", error.message);
   }
 
-  expect(appiumService.stopScreenRecording).toHaveBeenCalled();
+  expect(appiumService.stopScreenRecording).toHaveBeenCalledTimes(1);
 });

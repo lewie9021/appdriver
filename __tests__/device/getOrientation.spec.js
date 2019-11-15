@@ -16,7 +16,7 @@ it("returns the result of 'getOrientation' on the Appium Service", async () => {
   const result = await device.getOrientation();
 
   expect(result).toEqual(orientation);
-  expect(appiumService.getOrientation).toHaveBeenCalled();
+  expect(appiumService.getOrientation).toHaveBeenCalledTimes(1);
 });
 
 it("throws an ActionError for Appium request errors", async () => {
@@ -32,7 +32,7 @@ it("throws an ActionError for Appium request errors", async () => {
     expect(err).toHaveProperty("message", "Failed to get device orientation.");
   }
 
-  expect(appiumService.getOrientation).toHaveBeenCalled();
+  expect(appiumService.getOrientation).toHaveBeenCalledTimes(1);
 });
 
 it("propagates other types of errors", async () => {
@@ -48,5 +48,5 @@ it("propagates other types of errors", async () => {
     expect(err).toHaveProperty("message", error.message);
   }
 
-  expect(appiumService.getOrientation).toHaveBeenCalled();
+  expect(appiumService.getOrientation).toHaveBeenCalledTimes(1);
 });
