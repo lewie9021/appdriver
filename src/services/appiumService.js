@@ -1,5 +1,4 @@
-const fetch = require("node-fetch").default;
-const { configService } = require("./configService");
+const { sessionStore } = require("../stores/sessionStore");
 const { AppiumError } = require("../errors");
 const { NotImplementedError } = require("../errors");
 const { platform, isInstanceOf, getRelativePoint, toBoolean, toNumber } = require("../utils");
