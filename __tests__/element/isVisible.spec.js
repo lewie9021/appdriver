@@ -48,9 +48,9 @@ it("throws an ElementActionError for Appium request errors", async () => {
 
   try {
     await element(by.label("box")).isVisible();
-  } catch (error) {
-    expect(error).toBeInstanceOf(ElementActionError);
-    expect(error).toHaveProperty("message", "Failed to retrieve visibility status of element.");
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to retrieve visibility status of element.");
   }
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
@@ -70,9 +70,9 @@ it("propagates errors from further up the chain", async () => {
     await element(by.label("input"))
       .tap()
       .isVisible();
-  } catch (error) {
-    expect(error).toBeInstanceOf(ElementActionError);
-    expect(error).toHaveProperty("message", "Failed to tap element.");
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to tap element.");
   }
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);

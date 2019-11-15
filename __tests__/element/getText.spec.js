@@ -33,9 +33,9 @@ it("throws an ElementNotFoundError if the element isn't found", async () => {
 
   try {
     await element(by.label("box")).getText();
-  } catch (error) {
-    expect(error).toBeInstanceOf(ElementNotFoundError);
-    expect(error).toHaveProperty("message", "Failed to find element.");
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementNotFoundError);
+    expect(err).toHaveProperty("message", "Failed to find element.");
   }
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
@@ -52,9 +52,9 @@ it("throws an ElementActionError for Appium request errors", async () => {
 
   try {
     await element(by.label("box")).getText();
-  } catch (error) {
-    expect(error).toBeInstanceOf(ElementActionError);
-    expect(error).toHaveProperty("message", "Failed to get element text.");
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to get element text.");
   }
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
@@ -74,9 +74,9 @@ it("propagates errors from further up the chain", async () => {
     await element(by.label("input"))
       .tap()
       .getText();
-  } catch (error) {
-    expect(error).toBeInstanceOf(ElementActionError);
-    expect(error).toHaveProperty("message", "Failed to tap element.");
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to tap element.");
   }
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);

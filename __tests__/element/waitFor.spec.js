@@ -129,9 +129,9 @@ it("propagates errors from further up the chain", async () => {
     await element(by.label("input"))
       .tap()
       .waitFor(conditionFn);
-  } catch (error) {
-    expect(error).toBeInstanceOf(ElementActionError);
-    expect(error).toHaveProperty("message", "Failed to tap element.");
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to tap element.");
   }
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
