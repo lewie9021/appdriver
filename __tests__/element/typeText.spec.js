@@ -124,11 +124,16 @@ it("propagates other types of errors", async () => {
   const error = new Error("Something went wrong.");
 
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
-  jest.spyOn(appiumService, "tapElement").mockRejectedValue(error);
+  jest.spyOn(appiumService, "sendElementKeys").mockRejectedValue(error);
+  expect.assertions(4);
 
-  await expect(element(by.label("box")).tap())
-    .rejects.toThrow(error);
+  try {
+    await element(by.label("input")).typeText("Hello World");
+  } catch (err) {
+    expect(err).toBeInstanceOf(error.constructor);
+    expect(err).toHaveProperty("message", error.message);
+  }
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
-  expect(appiumService.tapElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.sendElementKeys).toHaveBeenCalledTimes(1);
 });

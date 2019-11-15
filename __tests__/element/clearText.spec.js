@@ -101,9 +101,14 @@ it("propagates other types of errors", async () => {
 
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
   jest.spyOn(appiumService, "clearElementText").mockRejectedValue(error);
+  expect.assertions(4);
 
-  await expect(element(by.label("input")).clearText())
-    .rejects.toThrow(error);
+  try {
+    await element(by.label("input")).clearText();
+  } catch (err) {
+    expect(err).toBeInstanceOf(error.constructor);
+    expect(err).toHaveProperty("message", error.message);
+  }
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
   expect(appiumService.clearElementText).toHaveBeenCalledTimes(1);
