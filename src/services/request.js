@@ -27,17 +27,29 @@ const qs = (params) => {
   return "?" + pairs.join("&");
 };
 
+const getFetchOpts = ({ method, payload }) => {
+  let result = {};
+
+  if (method) {
+    result.method = method;
+  }
+
+  if (payload) {
+    result.body = JSON.stringify(payload);
+
+    if (!result.headers) {
+      result.headers = {};
+    }
+
+    result.headers["Content-Type"] = "application/json";
+  }
+
+  return result;
+};
+
 const request = ({ method, path, query, payload, transform }) => {
   const url = `${BASE_URL}${path}${qs(query)}`;
-  const opts = {
-    method: method,
-    body: payload
-      ? JSON.stringify(payload)
-      : undefined,
-    headers: {
-      "Content-Type": "application/json"
-    }
-  };
+  const opts = getFetchOpts({ method, path, query, payload });
 
   return fetch(url, opts)
     .then((res) => res.json())
@@ -52,4 +64,7 @@ const request = ({ method, path, query, payload, transform }) => {
     });
 };
 
-module.exports = request;
+module.exports = {
+  request,
+  BASE_URL
+};
