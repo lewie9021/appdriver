@@ -33,9 +33,6 @@
   "jest": {
     "testMatch": [
       "<rootDir>/__tests__/**/*.spec.js"
-    ],
-    "setupFiles": [
-      "<rootDir>/setupJest.js"
     ]
   }
 }
