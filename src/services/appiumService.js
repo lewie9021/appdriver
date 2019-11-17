@@ -3,7 +3,7 @@ const { AppiumError } = require("../errors");
 const { NotImplementedError } = require("../errors");
 const { platform, isInstanceOf, getRelativePoint, toBoolean, toNumber } = require("../utils");
 const { transformBounds } = require("../attributeTransforms");
-const request = require("./request");
+const { request } = require("./request");
 
 const parseValue = (rawValue, elementType, options) => {
   switch (elementType) {
