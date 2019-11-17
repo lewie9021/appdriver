@@ -65,13 +65,27 @@ it("defaults 'x' parameter to 0", async () => {
 
 it("defaults 'y' parameter to the distance parameter", async () => {
   const distance = 100;
-  const swipeLeftGesture = gestures.swipeUp({ x: 0, y: distance, distance });
+  const swipeUpGesture = gestures.swipeUp({ x: 0, y: distance, distance });
 
   jest.spyOn(appiumService, "performActions").mockResolvedValue(null);
 
   await device.swipeUp({ x: 0, distance });
 
-  expect(appiumService.performActions).toHaveBeenCalledWith({ actions: await swipeLeftGesture.resolve() });
+  expect(appiumService.performActions).toHaveBeenCalledWith({ actions: await swipeUpGesture.resolve() });
+});
+
+it("defaults 'y' parameter to the percentage parameter", async () => {
+  const percentage = 0.5;
+  const viewport = { width: 640, height: 480 };
+  const swipeUpGesture = gestures.swipeUp({ x: 0, y: viewport.height * percentage, distance: viewport.height * percentage });
+
+  jest.spyOn(appiumService, "getViewport").mockResolvedValue(viewport);
+  jest.spyOn(appiumService, "performActions").mockResolvedValue(null);
+
+  await device.swipeUp({ x: 0, percentage });
+
+  expect(appiumService.getViewport).toHaveBeenCalledTimes(1);
+  expect(appiumService.performActions).toHaveBeenCalledWith({ actions: await swipeUpGesture.resolve() });
 });
 
 it("defaults 'duration' parameter to 50", async () => {
