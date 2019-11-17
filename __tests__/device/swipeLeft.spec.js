@@ -52,14 +52,24 @@ it("defines the swipe up duration between (x, y) and (dest.x, dest.y) when 'dura
   expect(appiumService.performActions).toHaveBeenCalledWith({ actions: await swipeLeftGesture.resolve() });
 });
 
-// TODO: Note that it no longer derives the x value from the percentage / distance.
-it("defaults 'x' and 'y' parameters to 0", async () => {
+it("defaults 'y' parameter to 0", async () => {
   const distance = 100;
   const swipeLeftGesture = gestures.swipeLeft({ x: 0, y: 0, distance });
 
   jest.spyOn(appiumService, "performActions").mockResolvedValue(null);
 
-  await device.swipeLeft({ distance });
+  await device.swipeLeft({ x: 0, distance });
+
+  expect(appiumService.performActions).toHaveBeenCalledWith({ actions: await swipeLeftGesture.resolve() });
+});
+
+it("defaults 'x' parameter to the distance parameter", async () => {
+  const distance = 100;
+  const swipeLeftGesture = gestures.swipeLeft({ x: distance, y: 0, distance });
+
+  jest.spyOn(appiumService, "performActions").mockResolvedValue(null);
+
+  await device.swipeLeft({ y: 0, distance });
 
   expect(appiumService.performActions).toHaveBeenCalledWith({ actions: await swipeLeftGesture.resolve() });
 });
