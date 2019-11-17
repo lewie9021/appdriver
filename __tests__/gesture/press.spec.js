@@ -2,6 +2,7 @@ jest.mock("../../src/services/appiumService");
 
 const { createFindElementMock } = require("../appiumServiceMocks");
 const { appiumService } = require("../../src/services/appiumService");
+const { AppiumError, ElementNotFoundError } = require("../../src/errors");
 const Gesture = require("../../src/Gesture");
 const { element, by } = require("../../");
 
@@ -92,4 +93,23 @@ it("supports passing an element, making x and y coordinates relative to it", () 
       { type: "pointerDown", button: 0 }
     ]
   }]);
+});
+
+it("throws if the element is not found", async () => {
+  const error = new AppiumError("Request error.", 7);
+
+  jest.spyOn(appiumService, "findElement").mockRejectedValue(error);
+
+  const gesture = new Gesture();
+  const $element = element(by.label("button"));
+
+  gesture.press({ element: $element, x: 100, y: 100 });
+  expect.assertions(2);
+
+  try {
+    await gesture.resolve();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementNotFoundError);
+    expect(err).toHaveProperty("message", "Failed to find element.");
+  }
 });

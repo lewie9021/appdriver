@@ -241,7 +241,7 @@ class Element {
       .catch(handleActionError("Failed to get element attribute."));
   }
 
-  getLocation({relative = false} = {}) {
+  getLocation({ relative = false } = {}) {
     const currentValue = getCurrentValue(this.value);
 
     return currentValue

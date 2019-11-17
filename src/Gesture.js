@@ -9,7 +9,6 @@ class Gesture {
     const resolvedActions = await Promise.all(
       this.actions.map(async (action) => {
         if (action.element) {
-          // TODO: ref might be null.
           const ref = await action.element._getRef();
 
           return {
