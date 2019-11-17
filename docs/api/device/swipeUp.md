@@ -17,19 +17,19 @@ Performs a swipe up gesture in the context of the device viewport.
 
 #### Examples
 
-Swipe up 50% of the screen. This will swipe up from the coordinate (0, viewport.height / 2) to (0, 0), relative to the device viewport.
+Swipe up 50% of the screen. This will swipe up from the coordinate (0, 500) to (0, 500 - (viewport.height / 2)), relative to the device viewport.
 
 ```javascript
 (async () => {
-  await device.swipeUp({percentage: 0.5});
+  await device.swipeUp({ y: 500, percentage: 0.5 });
 })();
 ```
 
-Swipe up 200 pixels. This will swipe up from the coordinate (150, 200) to (150, 0), relative to the device viewport.
+Swipe up 200 pixels. This will swipe up from the coordinate (100, 500) to (100, 300), relative to the device viewport.
 
 ```javascript
 (async () => {
-  await device.swipeUp({x: 150, distance: 200});
+  await device.swipeUp({ x: 100, y: 500, distance: 200 });
 })();
 ```
 

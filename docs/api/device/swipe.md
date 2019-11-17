@@ -21,7 +21,7 @@ Swipe left 100 pixels. This will swipe left from the coordinate (200, 200) to (1
 
 ```javascript
 (async () => {
-  await device.swipe({x: 200, y: 200, distance: 100, direction: 270});
+  await device.swipe({ x: 200, y: 200, distance: 100, direction: 270 });
 })();
 ```
 
