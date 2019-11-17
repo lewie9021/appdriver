@@ -26,12 +26,12 @@ Swipe left 100 pixels. This will swipe left from the coordinate (100, 24) to (0,
 })();
 ```
 
-Swipe left 100% of the element width. Given the element has a width of 200, this will swipe left from the coordinate (300, 0) to (100, 0), relative to the element.
+Swipe left 50% of the element width. Given the element has a width of 200, this will swipe left from the coordinate (200, 0) to (100, 0), relative to the element.
 
 ```javascript
 (async () => {
   await element(by.label("list-item"))
-    .swipeLeft({ x: 300, percentage: 1 });
+    .swipeLeft({ x: 200, percentage: 0.5 });
 })();
 ```
 
