@@ -1,5 +1,19 @@
 # Change Log
 
+## [Unreleased]
+
+### Changed
+
+- Major internal refactoring to greatly improve error handling and testability.
+- `.swipeLeft` on Element no longer defaults its x to the width of the element.
+- `.swipeUp` on Element no longer defaults its y to the height of the element.
+- `.swipeLeft` on Device no longer defaults its x to the width of the viewport.
+- `.swipeUp` on Device no longer defaults its y to the height of the viewport.
+
+### Fixed
+
+- `.findElement` on Element correctly support chaining methods that apply to the newly found element. 
+
 ## [v1.0.0-alpha.10] - 2019-10-30
 
 ### Added
