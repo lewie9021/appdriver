@@ -14,7 +14,6 @@ const handleActionError = (message) => (err) => {
 };
 
 class Device {
-
   get name() {
     return sessionStore.getCapabilities("deviceName");
   }
@@ -71,14 +70,14 @@ class Device {
       .catch(handleActionError(`Failed to set device orientation to '${orientation}'.`));
   }
 
-  async swipe({ x, y, distance, direction, duration }) {
+  async swipe({ x = 0, y = 0, distance, direction, duration = 50 }) {
     const swipeGesture = gestures.swipe({ x, y, distance, direction, duration });
 
     return appiumService.performActions({ actions: await swipeGesture.resolve() })
       .catch(handleActionError("Failed to perform swipe gesture."));
   }
 
-  async swipeLeft({ x, y, distance, percentage, duration }) {
+  async swipeLeft({ x = 0, y = 0, distance, percentage, duration = 50 }) {
     let swipeDistance = distance;
 
     if (percentage) {
@@ -93,7 +92,7 @@ class Device {
       .catch(handleActionError("Failed to perform swipe left gesture."));
   }
 
-  async swipeRight({ x, y, distance, percentage, duration }) {
+  async swipeRight({ x = 0, y = 0, distance, percentage, duration = 50 }) {
     let swipeDistance = distance;
 
     if (percentage) {
@@ -108,7 +107,7 @@ class Device {
       .catch(handleActionError("Failed to perform swipe right gesture."));
   }
 
-  async swipeUp({ x, y, distance, percentage, duration }) {
+  async swipeUp({ x = 0, y = 0, distance, percentage, duration = 50 }) {
     let swipeDistance = distance;
 
     if (percentage) {
@@ -123,7 +122,7 @@ class Device {
       .catch(handleActionError("Failed to perform swipe up gesture."));
   }
 
-  async swipeDown({ x, y, distance, percentage, duration }) {
+  async swipeDown({ x = 0, y = 0, distance, percentage, duration = 50 }) {
     let swipeDistance = distance;
 
     if (percentage) {
