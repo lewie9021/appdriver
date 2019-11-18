@@ -5,10 +5,6 @@
 ### Changed
 
 - Major internal refactoring to greatly improve error handling and testability.
-- `.swipeLeft` on Element no longer defaults its x to the width of the element.
-- `.swipeUp` on Element no longer defaults its y to the height of the element.
-- `.swipeLeft` on Device no longer defaults its x to the width of the viewport.
-- `.swipeUp` on Device no longer defaults its y to the height of the viewport.
 
 ### Fixed
 
