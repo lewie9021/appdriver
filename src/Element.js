@@ -2,7 +2,7 @@ const { sessionStore } = require("./stores/sessionStore");
 const { appiumService } = require("./services/appiumService");
 const { Expect } = require("./Expect");
 const { ElementNotFoundError, ElementActionError, ElementWaitError, AppiumError } = require("./errors");
-const { isInstanceOf, isNull, pollFor, delay } = require("./utils");
+const { isUndefined, isInstanceOf, isNull, pollFor, delay } = require("./utils");
 
 const poll = (func, opts) => {
   return func()
@@ -363,7 +363,7 @@ class Element {
     });
   }
 
-  swipeUp({ x = 0, y = 0, distance, percentage, duration = 50 }) {
+  swipeUp({ x = 0, y, distance, percentage, duration = 50 }) {
     return this._executeAction((value, done) => {
       const resolveSwipeDistance = () => {
         if (!percentage) {
@@ -375,7 +375,16 @@ class Element {
       };
 
       return resolveSwipeDistance()
-        .then((distance) => appiumService.swipeElement({ element: value.ref, x, y, distance, direction: 0, duration }))
+        .then((swipeDistance) => {
+          return appiumService.swipeElement({
+            element: value.ref,
+            x,
+            y: isUndefined(y) ? swipeDistance : y,
+            distance: swipeDistance,
+            direction: 0,
+            duration
+          });
+        })
         .then(() => done(null))
         .catch((err) => {
           if (isInstanceOf(err, AppiumError)) {
@@ -411,7 +420,7 @@ class Element {
     });
   }
 
-  swipeLeft({ x = 0, y = 0, distance, percentage, duration = 50 }) {
+  swipeLeft({ x, y = 0, distance, percentage, duration = 50 }) {
     return this._executeAction((value, done) => {
       const resolveSwipeDistance = () => {
         if (!percentage) {
@@ -423,7 +432,16 @@ class Element {
       };
 
       return resolveSwipeDistance()
-        .then((distance) => appiumService.swipeElement({ element: value.ref, x, y, distance, direction: 270, duration }))
+        .then((swipeDistance) => {
+          return appiumService.swipeElement({
+            element: value.ref,
+            x: isUndefined(x) ? swipeDistance : x,
+            y,
+            distance: swipeDistance,
+            direction: 270,
+            duration
+          });
+        })
         .then(() => done(null))
         .catch((err) => {
           if (isInstanceOf(err, AppiumError)) {

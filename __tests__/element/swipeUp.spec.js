@@ -36,7 +36,7 @@ it("returns an instance of Element to enable function chaining", async () => {
   expect($element).toBeInstanceOf(Element);
 });
 
-it("defaults 'x' and 'y' parameters to 0", async () => {
+it("defaults 'x' parameter to 0", async () => {
   const ref = createFindElementMock();
 
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
@@ -46,7 +46,39 @@ it("defaults 'x' and 'y' parameters to 0", async () => {
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
   expect(appiumService.swipeElement).toHaveBeenCalledTimes(1);
-  expect(appiumService.swipeElement).toHaveBeenCalledWith(expect.objectContaining({ x: 0, y: 0 }));
+  expect(appiumService.swipeElement).toHaveBeenCalledWith(expect.objectContaining({ x: 0 }));
+});
+
+it("defaults 'y' parameter to the distance parameter", async () => {
+  const ref = createFindElementMock();
+  const distance = 100;
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "swipeElement").mockResolvedValue(null);
+
+  await element(by.label("list-item")).swipeUp({ distance });
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.swipeElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.swipeElement).toHaveBeenCalledWith(expect.objectContaining({ y: distance, distance }));
+});
+
+it("defaults 'y' parameter to the percentage parameter", async () => {
+  const ref = createFindElementMock();
+  const size = { width: 640, height: 480 };
+  const percentage = 0.5;
+  const distance = size.height * percentage;
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementSize").mockResolvedValue(size);
+  jest.spyOn(appiumService, "swipeElement").mockResolvedValue(null);
+
+  await element(by.label("list-item")).swipeUp({ percentage });
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementSize).toHaveBeenCalledTimes(1);
+  expect(appiumService.swipeElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.swipeElement).toHaveBeenCalledWith(expect.objectContaining({ y: distance, distance }));
 });
 
 it("defaults the 'duration' parameter to 50", async () => {
