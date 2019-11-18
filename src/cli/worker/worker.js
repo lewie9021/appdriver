@@ -19,9 +19,16 @@ const params = yargs
 
 (async () => {
   const { capability, specFiles } = params;
-  const session = await appiumService.createSession({ desiredCapabilities: capability });
-  const failures = await mocha.runTestSpecs(capability, specFiles, { timeout: 30 * 1000 });
-  await appiumService.endSession({ sessionId: session.sessionId });
 
-  process.exitCode = (failures > 0) ? 1 : 0;
+  try {
+    const session = await appiumService.createSession({ desiredCapabilities: capability });
+    const failures = await mocha.runTestSpecs(capability, specFiles, { timeout: 30 * 1000 });
+    await appiumService.endSession({ sessionId: session.sessionId });
+
+    process.exitCode = (failures > 0) ? 1 : 0;
+  } catch (err) {
+    console.error(err);
+
+    process.exitCode = 1;
+  }
 })();
