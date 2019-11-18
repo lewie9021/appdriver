@@ -82,9 +82,7 @@ class Gesture {
     return this;
   }
 
-  wait(options) {
-    const duration = options.duration;
-
+  wait(duration) {
     this.actions.push({
       type: "wait",
       duration

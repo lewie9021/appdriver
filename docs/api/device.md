@@ -8,7 +8,7 @@ The `device` object provides a way of performing interactions within the applica
 (async () => {
   const swipeUp = gestures.create()
     .press({x: 160, y: 200})
-    .wait({duration: 250})
+    .wait(250)
     .moveTo({y: 100})
     .release();
   

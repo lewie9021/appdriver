@@ -79,7 +79,7 @@ Unlike Appium based clients, [Detox](https://github.com/wix/Detox) is yet to sup
   const $destination = await element(by.label("destination"));
   const dragAndDrop = gestures.create()
     .press({element: $box})
-    .wait({duration: 250})
+    .wait(250)
     .moveTo({element: $destination})
     .release();
   

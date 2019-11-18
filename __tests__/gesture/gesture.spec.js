@@ -4,7 +4,7 @@ describe("Common Gestures", () => {
   it("correctly defines a tap gesture", () => {
     const tap = new Gesture()
       .press({x: 0, y: 0})
-      .wait({duration: 100})
+      .wait(100)
       .release();
 
     return expect(tap.resolve()).resolves.toEqual([{
@@ -25,7 +25,7 @@ describe("Common Gestures", () => {
   it("correctly defines a long press gesture", () => {
     const longPress = new Gesture()
       .press({x: 0, y: 0})
-      .wait({duration: 1000})
+      .wait(1000)
       .release();
 
     return expect(longPress.resolve()).resolves.toEqual([{
@@ -46,7 +46,7 @@ describe("Common Gestures", () => {
   it("correctly defines a swipe left gesture", () => {
     const swipeLeft = new Gesture()
       .press({x: 150, y: 200})
-      .wait({duration: 250})
+      .wait(250)
       .moveTo({x: -100, y: 0, relative: true, duration: 50})
       .release();
 
@@ -69,7 +69,7 @@ describe("Common Gestures", () => {
   it("correctly defines a swipe right gesture", () => {
     const swipeRight = new Gesture()
       .press({x: 150, y: 200})
-      .wait({duration: 250})
+      .wait(250)
       .moveTo({x: 100, y: 0, relative: true, duration: 50})
       .release();
 
@@ -92,7 +92,7 @@ describe("Common Gestures", () => {
   it("correctly defines a swipe up gesture", () => {
     const swipeUp = new Gesture()
       .press({x: 150, y: 300})
-      .wait({duration: 250})
+      .wait(250)
       .moveTo({x: 0, y: -100, relative: true, duration: 50})
       .release();
 
@@ -115,7 +115,7 @@ describe("Common Gestures", () => {
   it("correctly defines a swipe down gesture", () => {
     const swipeDown = new Gesture()
       .press({x: 150, y: 200})
-      .wait({duration: 250})
+      .wait(250)
       .moveTo({x: 0, y: 100, relative: true, duration: 50})
       .release();
 
