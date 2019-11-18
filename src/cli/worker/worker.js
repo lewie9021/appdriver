@@ -1,7 +1,6 @@
 const yargs = require("yargs");
 const mocha = require("./mocha");
-const { sessionStore } = require("../../stores/sessionStore");
-const { createAppiumService } = require("../../services/appiumService");
+const { appiumService } = require("../../services/appiumService");
 
 const params = yargs
   .option("capability", {
@@ -17,8 +16,6 @@ const params = yargs
     coerce: JSON.parse
   })
   .argv;
-
-const appiumService = createAppiumService(sessionStore);
 
 (async () => {
   const { capability, specFiles } = params;
