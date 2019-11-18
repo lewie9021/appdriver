@@ -5,6 +5,7 @@
 ### Changed
 
 - Major internal refactoring to greatly improve error handling and testability.
+- `.wait` for gestures now simply takes a duration value just like `.wait` on Device.
 
 ### Fixed
 
