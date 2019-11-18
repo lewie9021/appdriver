@@ -44,6 +44,7 @@ function runTestSpecs(capability, specFiles, opts) {
               stack: err.stack
             }
           });
+          console.error(err);
         });
       }
     });

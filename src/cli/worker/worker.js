@@ -22,7 +22,7 @@ const params = yargs
 
   try {
     const session = await appiumService.createSession({ desiredCapabilities: capability });
-    const failures = await mocha.runTestSpecs(capability, specFiles, { timeout: 30 * 1000 });
+    const failures = await mocha.runTestSpecs(capability, specFiles, { timeout: 30 * 1000, fullStackTrace: true });
     await appiumService.endSession({ sessionId: session.sessionId });
 
     process.exitCode = (failures > 0) ? 1 : 0;
