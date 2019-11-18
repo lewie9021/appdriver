@@ -104,8 +104,6 @@ class Expect {
   }
 }
 
-const expect = (value) => {
-  return new Expect(value);
+module.exports = {
+  Expect
 };
-
-module.exports = expect;

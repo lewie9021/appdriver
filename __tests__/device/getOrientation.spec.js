@@ -1,44 +1,52 @@
-const appiumServer = require("../helpers/appiumServer");
+jest.mock("../../src/services/appiumService");
 
+const { appiumService } = require("../../src/services/appiumService");
+const { AppiumError, ActionError } = require("../../src/errors");
 const { device } = require("../../");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
-it("returns the device orientation (portrait)", async () => {
+it("returns the result of 'getOrientation' on the Appium Service", async () => {
   const orientation = "PORTRAIT";
-
-  const getOrientationMock = appiumServer.mockGetOrientation({ orientation });
-
-  const result = await device.getOrientation();
-
-  const getOrientationMockCalls = appiumServer.getCalls(getOrientationMock);
-
-  expect(result).toEqual(orientation);
-  expect(getOrientationMockCalls).toHaveLength(1);
-});
-
-it("returns the device orientation (landscape)", async () => {
-  const orientation = "LANDSCAPE";
-
-  const getOrientationMock = appiumServer.mockGetOrientation({ orientation });
+  jest.spyOn(appiumService, "getOrientation").mockResolvedValue(orientation);
 
   const result = await device.getOrientation();
 
-  const getOrientationMockCalls = appiumServer.getCalls(getOrientationMock);
-
   expect(result).toEqual(orientation);
-  expect(getOrientationMockCalls).toHaveLength(1);
+  expect(appiumService.getOrientation).toHaveBeenCalledTimes(1);
 });
 
-it("correctly handles get orientation request errors", async () => {
-  const getOrientationMock = appiumServer.mockGetOrientation({ status: 3 });
+it("throws an ActionError for Appium request errors", async () => {
+  const error = new AppiumError("Request error.", 3);
 
-  await expect(device.getOrientation())
-    .rejects.toThrow(new Error("Failed to get device orientation."));
+  jest.spyOn(appiumService, "getOrientation").mockRejectedValue(error);
+  expect.assertions(3);
 
-  const getOrientationMockCalls = appiumServer.getCalls(getOrientationMock);
+  try {
+    await device.getOrientation();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ActionError);
+    expect(err).toHaveProperty("message", "Failed to get device orientation.");
+  }
 
-  expect(getOrientationMockCalls).toHaveLength(1);
+  expect(appiumService.getOrientation).toHaveBeenCalledTimes(1);
+});
+
+it("propagates other types of errors", async () => {
+  const error = new Error("Something went wrong.");
+
+  jest.spyOn(appiumService, "getOrientation").mockRejectedValue(error);
+  expect.assertions(3);
+
+  try {
+    await device.getOrientation();
+  } catch (err) {
+    expect(err).toBeInstanceOf(error.constructor);
+    expect(err).toHaveProperty("message", error.message);
+  }
+
+  expect(appiumService.getOrientation).toHaveBeenCalledTimes(1);
 });

@@ -1,44 +1,52 @@
-const appiumServer = require("../helpers/appiumServer");
+jest.mock("../../src/services/appiumService");
 
+const { appiumService } = require("../../src/services/appiumService");
+const { AppiumError, ActionError } = require("../../src/errors");
 const { device } = require("../../");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
-it("sets the device orientation (portrait)", async () => {
+it("executes the 'setOrientation' method on the Appium Service", async () => {
+  const orientation = "PORTRAIT";
+  jest.spyOn(appiumService, "setOrientation").mockResolvedValue(null);
+
+  await device.setOrientation(orientation);
+
+  expect(appiumService.setOrientation).toHaveBeenCalledWith({ orientation });
+});
+
+it("throws an ActionError for Appium request errors", async () => {
+  const error = new AppiumError("Request error.", 3);
   const orientation = "PORTRAIT";
 
-  const setOrientationMock = appiumServer.mockSetOrientation();
+  jest.spyOn(appiumService, "setOrientation").mockRejectedValue(error);
+  expect.assertions(3);
 
-  await device.setOrientation(orientation);
+  try {
+    await device.setOrientation(orientation);
+  } catch (err) {
+    expect(err).toBeInstanceOf(ActionError);
+    expect(err).toHaveProperty("message", `Failed to set device orientation to '${orientation}'.`);
+  }
 
-  const setOrientationMockCalls = appiumServer.getCalls(setOrientationMock);
-
-  expect(setOrientationMockCalls).toHaveLength(1);
-  expect(setOrientationMockCalls[0].options.body).toEqual({ orientation });
+  expect(appiumService.setOrientation).toHaveBeenCalledTimes(1);
 });
 
-it("sets the device orientation (landscape)", async () => {
-  const orientation = "LANDSCAPE";
+it("propagates other types of errors", async () => {
+  const error = new Error("Something went wrong.");
 
-  const setOrientationMock = appiumServer.mockSetOrientation();
+  jest.spyOn(appiumService, "setOrientation").mockRejectedValue(error);
+  expect.assertions(3);
 
-  await device.setOrientation(orientation);
+  try {
+    await device.setOrientation("LANDSCAPE");
+  } catch (err) {
+    expect(err).toBeInstanceOf(error.constructor);
+    expect(err).toHaveProperty("message", error.message);
+  }
 
-  const setOrientationMockCalls = appiumServer.getCalls(setOrientationMock);
-
-  expect(setOrientationMockCalls).toHaveLength(1);
-  expect(setOrientationMockCalls[0].options.body).toEqual({ orientation });
-});
-
-it("correctly handles set orientation request errors", async () => {
-  const getOrientationMock = appiumServer.mockSetOrientation({ status: 3 });
-
-  await expect(device.setOrientation())
-    .rejects.toThrow(new Error("Failed to set device orientation."));
-
-  const getOrientationMockCalls = appiumServer.getCalls(getOrientationMock);
-
-  expect(getOrientationMockCalls).toHaveLength(1);
+  expect(appiumService.setOrientation).toHaveBeenCalledTimes(1);
 });

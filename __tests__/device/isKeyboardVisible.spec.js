@@ -1,34 +1,52 @@
-const appiumServer = require("../helpers/appiumServer");
+jest.mock("../../src/services/appiumService");
 
+const { appiumService } = require("../../src/services/appiumService");
+const { AppiumError, ActionError } = require("../../src/errors");
 const { device } = require("../../");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
-it("returns true when the keyboard is visible", async () => {
-  const isKeyboardShownMock = appiumServer.mockIsKeyboardShown({shown: true});
+it("returns the result of 'getKeyboardVisible' on the Appium Service", async () => {
+  const visible = true;
+  jest.spyOn(appiumService, "getKeyboardVisible").mockResolvedValue(visible);
 
   const result = await device.isKeyboardVisible();
 
-  expect(result).toEqual(true);
-  expect(appiumServer.getCalls(isKeyboardShownMock)).toHaveLength(1);
+  expect(result).toEqual(visible);
+  expect(appiumService.getKeyboardVisible).toHaveBeenCalledTimes(1);
 });
 
-it("returns false when the keyboard isn't visible", async () => {
-  const isKeyboardShownMock = appiumServer.mockIsKeyboardShown({shown: false});
+it("throws an ActionError for Appium request errors", async () => {
+  const error = new AppiumError("Request error.", 3);
 
-  const result = await device.isKeyboardVisible();
+  jest.spyOn(appiumService, "getKeyboardVisible").mockRejectedValue(error);
+  expect.assertions(3);
 
-  expect(result).toEqual(false);
-  expect(appiumServer.getCalls(isKeyboardShownMock)).toHaveLength(1);
+  try {
+    await device.isKeyboardVisible();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ActionError);
+    expect(err).toHaveProperty("message", "Failed to get keyboard visibility status.");
+  }
+
+  expect(appiumService.getKeyboardVisible).toHaveBeenCalledTimes(1);
 });
 
-it("correctly handles keyboard visibility request errors", async () => {
-  const isKeyboardShownMock = appiumServer.mockIsKeyboardShown({status: 3});
+it("propagates other types of errors", async () => {
+  const error = new Error("Something went wrong.");
 
-  await expect(device.isKeyboardVisible())
-    .rejects.toThrow(new Error("Failed to get keyboard visibility status."));
+  jest.spyOn(appiumService, "getKeyboardVisible").mockRejectedValue(error);
+  expect.assertions(3);
 
-  expect(appiumServer.getCalls(isKeyboardShownMock)).toHaveLength(1);
+  try {
+    await device.isKeyboardVisible();
+  } catch (err) {
+    expect(err).toBeInstanceOf(error.constructor);
+    expect(err).toHaveProperty("message", error.message);
+  }
+
+  expect(appiumService.getKeyboardVisible).toHaveBeenCalledTimes(1);
 });

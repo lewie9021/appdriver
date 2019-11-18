@@ -1,49 +1,101 @@
-const appiumServer = require("../helpers/appiumServer");
+jest.mock("../../src/services/appiumService");
 
-const { ElementActionError } = require("../../src/errors");
-const { Element } = require("../../src/element");
-
+const { appiumService } = require("../../src/services/appiumService");
+const { createFindElementMock } = require("../appiumServiceMocks");
+const { ElementNotFoundError, ElementActionError, AppiumError } = require("../../src/errors");
 const { element, by } = require("../../");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
-it("returns a new element if a match is found", async () => {
-  const findElementMock = appiumServer.mockFindElement({elementId: "elementId"});
-  const findElementFromElementMock = appiumServer.mockFindElementFromElement({elementId: "elementId", element: "innerElementId"});
+it("modifies the internal element reference to the newly found element", async () => {
+  const ref = createFindElementMock({ elementId: "elementId" });
+  const ref2 = createFindElementMock({ elementId: "innerElementId" });
 
-  const $textInput = await element(by.label("form"))
-    .findElement(by.label("text-input"));
+  jest.spyOn(appiumService, "findElement").mockResolvedValueOnce(ref);
+  jest.spyOn(appiumService, "findElement").mockResolvedValueOnce(ref2);
 
-  expect($textInput).toBeInstanceOf(Element);
-  await expect($textInput.value).resolves.toEqual("innerElementId");
-  expect(appiumServer.getCalls(findElementMock)).toHaveLength(1);
-  expect(appiumServer.getCalls(findElementFromElementMock)).toHaveLength(1);
+  const result = await element(by.label("screen")).findElement(by.label("input"));
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(2);
+  await expect(result.value).resolves.toEqual({ matcher: null, ref: ref2 });
 });
 
-it("throws an ElementActionError exception if a match isn't found", async () => {
-  const findElementMock = appiumServer.mockFindElement({elementId: "elementId"});
-  const findElementFromElementMock = appiumServer.mockFindElementFromElement({status: 7, elementId: "elementId"});
+it("throws an ElementNotFoundError if the element isn't found", async () => {
+  const ref = createFindElementMock();
+  const error = new AppiumError("Request error.", 7);
 
-  const result = element(by.label("form"))
-    .findElement(by.label("text-input"));
+  jest.spyOn(appiumService, "findElement").mockRejectedValueOnce(error);
+  jest.spyOn(appiumService, "findElement").mockResolvedValueOnce(ref);
+  expect.assertions(3);
 
-  await expect(result).rejects.toThrowError(ElementActionError);
+  try {
+    await element(by.label("screen")).findElement(by.label("input"));
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementNotFoundError);
+    expect(err).toHaveProperty("message", "Failed to find element.");
+  }
 
-  expect(appiumServer.getCalls(findElementMock)).toHaveLength(1);
-  expect(appiumServer.getCalls(findElementFromElementMock)).toHaveLength(1);
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
 });
 
-it("throws an ElementActionError if element doesn't exist", async () => {
-  const findElementMock = appiumServer.mockFindElement({status: 3, elementId: "elementId"});
-  const findElementFromElementMock = appiumServer.mockFindElementFromElement({elementId: "elementId", element: "innerElementId"});
+it("throws an ElementActionError for Appium request errors", async () => {
+  const ref = createFindElementMock();
+  const error = new AppiumError("Request error.", 3);
 
-  const result = element(by.label("form"))
-    .findElement(by.label("text-input"));
+  jest.spyOn(appiumService, "findElement").mockResolvedValueOnce(ref);
+  jest.spyOn(appiumService, "findElement").mockRejectedValueOnce(error);
+  expect.assertions(3);
 
-  await expect(result).rejects.toThrowError(ElementActionError);
+  try {
+    await element(by.label("screen")).findElement(by.label("input"));
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to find element from element.");
+  }
 
-  expect(appiumServer.getCalls(findElementMock)).toHaveLength(1);
-  expect(appiumServer.getCalls(findElementFromElementMock)).toHaveLength(0);
+  expect(appiumService.findElement).toHaveBeenCalledTimes(2);
+});
+
+it("propagates errors from further up the chain", async () => {
+  const ref = createFindElementMock({ elementId: "31000000-0000-0000-CC4E-000000000000" });
+  const ref2 = createFindElementMock({ elementId: "45000000-0000-0000-W6AJ-000000000000" });
+  const tapError = new AppiumError("Request error.", 3);
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValueOnce(ref);
+  jest.spyOn(appiumService, "tapElement").mockRejectedValue(tapError);
+  jest.spyOn(appiumService, "findElement").mockResolvedValueOnce(ref2);
+  expect.assertions(4);
+
+  try {
+    await element(by.label("screen"))
+      .tap()
+      .findElement(by.label("input"));
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to tap element.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.tapElement).toHaveBeenCalledTimes(1);
+});
+
+it("propagates other types of errors", async () => {
+  const ref = createFindElementMock();
+  const error = new Error("Something went wrong.");
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValueOnce(ref);
+  jest.spyOn(appiumService, "findElement").mockRejectedValueOnce(error);
+  expect.assertions(3);
+
+  try {
+    await element(by.label("screen")).findElement(by.label("input"));
+  } catch (err) {
+    expect(err).toBeInstanceOf(error.constructor);
+    expect(err).toHaveProperty("message", error.message);
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(2);
 });

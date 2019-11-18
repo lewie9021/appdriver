@@ -1,26 +1,18 @@
+jest.mock("../../src/stores/sessionStore");
+
+const { sessionStore } = require("../../src/stores/sessionStore");
 const { device } = require("../../");
-const mockSession = require("../helpers/mockSession");
 
-it("returns platform version of device from session (iOS simulator)", () => {
-  const platformVersion = "12.1";
-
-  mockSession({
-    sessionId: "sessionId",
-    platformName: "iOS",
-    platformVersion
-  });
-
-  expect(device.platformVersion).toEqual(platformVersion);
+afterEach(() => {
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
-it("returns platform version of device from session (Android emulator)", () => {
-  const platformVersion = "8.1";
+it("returns the 'platformVersion' session capability", async () => {
+  const platformVersion = "12.4";
 
-  mockSession({
-    sessionId: "sessionId",
-    platformName: "Android",
-    platformVersion
-  });
+  jest.spyOn(sessionStore, "getCapabilities").mockReturnValue(platformVersion);
 
   expect(device.platformVersion).toEqual(platformVersion);
+  expect(sessionStore.getCapabilities).toHaveBeenCalledWith("platformVersion");
 });

@@ -22,7 +22,7 @@ Swipe left 100 pixels. This will swipe left from the coordinate (100, 24) to (0,
 ```javascript
 (async () => {
   await element(by.label("list-item"))
-    .swipe({x: 100, y: 24, distance: 100, direction: 270});
+    .swipe({ x: 100, y: 24, distance: 100, direction: 270 });
 })();
 ```
 

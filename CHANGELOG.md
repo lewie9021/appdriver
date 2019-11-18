@@ -1,5 +1,15 @@
 # Change Log
 
+## [Unreleased]
+
+### Changed
+
+- Major internal refactoring to greatly improve error handling and testability.
+
+### Fixed
+
+- `.findElement` on Element correctly support chaining methods that apply to the newly found element. 
+
 ## [v1.0.0-alpha.10] - 2019-10-30
 
 ### Added

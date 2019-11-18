@@ -1,6 +1,7 @@
 const yargs = require("yargs");
 const mocha = require("./mocha");
-const commands = require("../../commands");
+const { sessionStore } = require("../../stores/sessionStore");
+const { createAppiumService } = require("../../services/appiumService");
 
 const params = yargs
   .option("capability", {
@@ -17,11 +18,13 @@ const params = yargs
   })
   .argv;
 
+const appiumService = createAppiumService(sessionStore);
+
 (async () => {
   const { capability, specFiles } = params;
-  const session = await commands.session.create(capability);
+  const session = await appiumService.createSession({ desiredCapabilities: capability });
   const failures = await mocha.runTestSpecs(capability, specFiles, { timeout: 30 * 1000 });
-  await commands.session.end(session.sessionId);
+  await appiumService.endSession({ sessionId: session.sessionId });
 
   process.exitCode = (failures > 0) ? 1 : 0;
 })();

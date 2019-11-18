@@ -9,7 +9,7 @@ describe("Swipeable Screen", () => {
 
   it("removes the item", async () => {
     await element(by.label("list-item"))
-      .swipe({ distance: 100, direction: 270 });
+      .swipe({ distance: 200, direction: 270 });
 
     await element(by.label("remove-button")).tap();
   });
