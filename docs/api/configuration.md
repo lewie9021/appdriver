@@ -1,5 +1,7 @@
 # Configuration
 
+> Note: This is documentation for the new configuration file format. See [Writing Your First Test](../guides/writing-your-first-test.md) guide for an idea of the current configuration format.
+
 Description: TODO.
 
 ### Options
