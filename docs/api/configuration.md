@@ -9,7 +9,7 @@ Description: TODO.
   - `username` (`String?`): Username for server authentication - useful when connecting to cloud services such as SauceLabs or BrowserStack.
   - `password` (`String?`): Password for server authentication - useful when connecting to cloud services such as SauceLabs or BrowserStack.
 - `ui` (`String?`): Interface to use when writing tests (e.g. `describe` and `it`). Defaults to "bdd". See [Mocha Interfaces](https://mochajs.org/#interfaces) for other options.
-- `specs` (`Array<String>`): List of spec file paths.
+- `specs` (`Array<String>`): List of spec file paths (Glob pattern matching not yet supported).
 - `reporters` (`Array<Function>?`): List of reporters to provide insight throughout your test run. Defaults to the [Basic](#basic) reporter. 
 - `plugins` (`Array<Function>?`): List of plugins to provide functionality throughout your test run.
 - `maxDevices` (`Number?`): Maximum number of `devices` to run in parallel. Defaults to 1 (series).
