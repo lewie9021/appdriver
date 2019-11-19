@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased]
+## [v1.0.0-alpha.11] - 2019-11-19
 
 ### Changed
 
