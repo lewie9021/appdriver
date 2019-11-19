@@ -1,23 +1,50 @@
-const appiumServer = require("../helpers/appiumServer");
+jest.mock("../../src/services/appiumService");
+
+const { appiumService } = require("../../src/services/appiumService");
+const { AppiumError, ActionError } = require("../../src/errors");
 const { device } = require("../../");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
-it("hides the keyboard", async () => {
-  const hideKeyboardMock = appiumServer.mockHideKeyboard();
+it("executes the 'hideKeyboard' method on the Appium Service", async () => {
+  jest.spyOn(appiumService, "hideKeyboard").mockResolvedValue(null);
 
   await device.hideKeyboard();
 
-  expect(appiumServer.getCalls(hideKeyboardMock)).toHaveLength(1);
+  expect(appiumService.hideKeyboard).toHaveBeenCalledTimes(1);
 });
 
-it("correctly handles hide keyboard request errors", async () => {
-  const hideKeyboardMock = appiumServer.mockHideKeyboard({status: 3});
+it("throws an ActionError for Appium request errors", async () => {
+  const error = new AppiumError("Request error.", 3);
 
-  await expect(device.hideKeyboard())
-    .rejects.toThrow(new Error("Failed to hide keyboard."));
+  jest.spyOn(appiumService, "hideKeyboard").mockRejectedValue(error);
+  expect.assertions(3);
 
-  expect(appiumServer.getCalls(hideKeyboardMock)).toHaveLength(1);
+  try {
+    await device.hideKeyboard();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ActionError);
+    expect(err).toHaveProperty("message", "Failed to hide keyboard.");
+  }
+
+  expect(appiumService.hideKeyboard).toHaveBeenCalledTimes(1);
+});
+
+it("propagates other types of errors", async () => {
+  const error = new Error("Something went wrong.");
+
+  jest.spyOn(appiumService, "hideKeyboard").mockRejectedValue(error);
+  expect.assertions(3);
+
+  try {
+    await device.hideKeyboard();
+  } catch (err) {
+    expect(err).toBeInstanceOf(error.constructor);
+    expect(err).toHaveProperty("message", error.message);
+  }
+
+  expect(appiumService.hideKeyboard).toHaveBeenCalledTimes(1);
 });

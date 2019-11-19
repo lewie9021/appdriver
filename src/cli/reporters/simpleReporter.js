@@ -16,11 +16,8 @@ function simpleReporter(events) {
   const getCapabilityText = (capability) => `${weights.bold}${getCapabilityName(capability)}${weights.end}`;
   const getDurationText = (duration) =>  `${colors.cyan}(${duration}ms)${colors.end}`;
 
-  events.on("worker:started", ({ capability, worker }) => {
+  events.on("worker:started", ({ capability }) => {
     console.log(`${getCapabilityText(capability)}: Started`);
-
-    worker.stdout.pipe(process.stdout);
-    worker.stderr.pipe(process.stdout);
   });
 
   events.on("worker:finished", ({ capability }) => {
@@ -37,7 +34,6 @@ function simpleReporter(events) {
     const nameText = `${colors.red}${name}${colors.end}`;
 
     console.log(`${getCapabilityText(capability)}: ${nameText} ${getDurationText(duration)}`);
-    console.error(message, stack);
   });
 }
 

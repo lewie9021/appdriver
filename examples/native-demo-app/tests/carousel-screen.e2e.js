@@ -1,4 +1,4 @@
-const { by, element, device } = require("../../../index");
+const { by, element, device, expect } = require("../../../index");
 
 describe("Carousel Screen", () => {
   before(async () => {
@@ -8,7 +8,9 @@ describe("Carousel Screen", () => {
   });
 
   it("works", async () => {
-    await device.swipeLeft({y: 300, percentage: 0.75});
-    await device.swipeLeft({y: 300, percentage: 0.75});
+    await device.swipeLeft({ y: 300, percentage: 0.75 });
+    await expect(element(by.label("page-two"))).toBeVisible();
+    await device.swipeLeft({ y: 300, percentage: 0.75 });
+    await expect(element(by.label("page-three"))).toBeVisible();
   });
 });

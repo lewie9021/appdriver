@@ -62,7 +62,7 @@ describe("Form Screen", () => {
       .waitToBeVisible()
       .longPress();
 
-    await device.wait({ duration: 200 });
+    await device.wait(200);
 
     await element(by.text("OK")).tap();
   });

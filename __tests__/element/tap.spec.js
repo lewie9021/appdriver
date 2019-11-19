@@ -1,122 +1,158 @@
-const appiumServer = require("../helpers/appiumServer");
+jest.mock("../../src/services/appiumService");
 
+const { appiumService } = require("../../src/services/appiumService");
+const { createFindElementMock } = require("../appiumServiceMocks");
+const { ElementNotFoundError, ElementActionError, AppiumError } = require("../../src/errors");
+const { Element } = require("../../src/Element");
 const { element, by } = require("../../");
-const { Element } = require("../../src/element");
-const { ElementActionError } = require("../../src/errors");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
+});
+
+it("executes the 'tapElement' method on the Appium Service", async () => {
+  const ref = createFindElementMock();
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "tapElement").mockResolvedValue(null);
+
+  await element(by.label("button")).tap();
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.tapElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.tapElement).toHaveBeenCalledWith(expect.objectContaining({ element: ref }));
 });
 
 it("returns an instance of Element to enable function chaining", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockActions();
+  const ref = createFindElementMock();
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "tapElement").mockResolvedValue(null);
 
   const $element = await element(by.label("button")).tap();
 
   expect($element).toBeInstanceOf(Element);
-  await expect($element.value).resolves.toEqual("elementId");
 });
 
-it("executes a tap gesture", async () => {
-  const elementId = "elementId";
+it("defaults 'x' and 'y' parameters to 0", async () => {
+  const ref = createFindElementMock();
 
-  const findElementMock = appiumServer.mockFindElement({elementId});
-  const tapElementMock = appiumServer.mockActions();
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "tapElement").mockResolvedValue(null);
 
   await element(by.label("button")).tap();
 
-  const findElementMockCalls = appiumServer.getCalls(findElementMock);
-  const tapElementMockCalls = appiumServer.getCalls(tapElementMock);
-
-  expect(findElementMockCalls).toHaveLength(1);
-  expect(tapElementMockCalls).toHaveLength(1);
-  expect(tapElementMockCalls[0].options.body).toEqual({
-    actions: [{
-      id: "finger1",
-      type: "pointer",
-      parameters: {
-        pointerType: "touch"
-      },
-      actions: [
-        {type: "pointerMove", duration: 0, origin: {element: elementId}, x: 0, y: 0},
-        {type: "pointerDown", button: 0},
-        {type: "pause", duration: 100},
-        {type: "pointerUp", button: 0}
-      ]
-    }]
-  });
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.tapElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.tapElement).toHaveBeenCalledWith({ element: ref, x: 0, y: 0 });
 });
 
-it("accepts x and y parameters to offset from the top left of the element", async () => {
-  const elementId = "elementId";
-  const x = 100;
-  const y = 24;
+// TODO: Not sure if this is really just a false positive.
+it.skip("returns a new element to avoid unwanted mutation", async () => {
+  const ref = createFindElementMock();
 
-  const findElementMock = appiumServer.mockFindElement({elementId});
-  const tapElementMock = appiumServer.mockActions();
-
-  await element(by.label("button")).tap({ x, y });
-
-  const findElementMockCalls = appiumServer.getCalls(findElementMock);
-  const tapElementMockCalls = appiumServer.getCalls(tapElementMock);
-
-  expect(findElementMockCalls).toHaveLength(1);
-  expect(tapElementMockCalls).toHaveLength(1);
-  expect(tapElementMockCalls[0].options.body).toEqual({
-    actions: [{
-      id: "finger1",
-      type: "pointer",
-      parameters: {
-        pointerType: "touch"
-      },
-      actions: [
-        {type: "pointerMove", duration: 0, origin: {element: elementId}, x, y},
-        {type: "pointerDown", button: 0},
-        {type: "pause", duration: 100},
-        {type: "pointerUp", button: 0}
-      ]
-    }]
-  });
-});
-
-it("returns a new element to avoid unwanted mutation", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockActions();
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "tapElement").mockResolvedValue(null);
 
   const $element = await element(by.label("button"));
   const $newElement = await $element.tap();
 
   expect($newElement).not.toBe($element);
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.tapElement).toHaveBeenCalledTimes(1);
 });
 
-it("correctly propagates errors", async () => {
-  appiumServer.mockFindElement({ elementId: "elementId" });
-  appiumServer.mockClearElement({ status: 3, elementId: "elementId" });
-  appiumServer.mockActions();
+it("supports passing 'x' and 'y' parameters to offset from the top left of the element", async () => {
+  const ref = createFindElementMock();
+  const x = 100;
+  const y = 300;
 
-  const result = element(by.label("button"))
-    .clearText()
-    .tap();
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "tapElement").mockResolvedValue(null);
 
-  await expect(result)
-    .rejects.toThrow(ElementActionError);
+  await element(by.label("button")).tap({ x, y });
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.tapElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.tapElement).toHaveBeenCalledWith({ element: ref, x, y });
 });
 
-it("throws action error if element doesn't exist", async () => {
-  appiumServer.mockFindElement({ status: 7, elementId: "elementId" });
-  appiumServer.mockActions();
+it("throws an ElementNotFoundError if the element isn't found", async () => {
+  const error = new AppiumError("Request error.", 7);
 
-  const result = element(by.label("button")).tap();
+  jest.spyOn(appiumService, "findElement").mockRejectedValue(error);
+  jest.spyOn(appiumService, "tapElement").mockResolvedValue(null);
+  expect.assertions(4);
 
-  await expect(result)
-    .rejects.toThrow(ElementActionError);
+  try {
+    await element(by.label("box")).tap();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementNotFoundError);
+    expect(err).toHaveProperty("message", "Failed to find element.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.tapElement).toHaveBeenCalledTimes(0);
 });
 
-it("correctly handles W3C action request errors", async () => {
-  appiumServer.mockFindElement({ elementId: "elementId" });
-  appiumServer.mockActions({ status: 3 });
+it("throws an ElementActionError for Appium request errors", async () => {
+  const ref = createFindElementMock();
+  const error = new AppiumError("Request error.", 3);
 
-  return expect(element(by.label("button")).tap())
-    .rejects.toThrow(new ElementActionError("Failed to tap element."));
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "tapElement").mockRejectedValue(error);
+  expect.assertions(4);
+
+  try {
+    await element(by.label("box")).tap();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to tap element.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.tapElement).toHaveBeenCalledTimes(1);
+});
+
+it("propagates errors from further up the chain", async () => {
+  const ref = createFindElementMock();
+  const error = new AppiumError("Request error.", 3);
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "sendElementKeys").mockRejectedValue(error);
+  jest.spyOn(appiumService, "tapElement").mockResolvedValue(null);
+  expect.assertions(5);
+
+  try {
+    await element(by.label("input"))
+      .typeText("Hello world!")
+      .tap();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to type text on element.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.sendElementKeys).toHaveBeenCalledTimes(1);
+  expect(appiumService.tapElement).toHaveBeenCalledTimes(0);
+});
+
+it("propagates other types of errors", async () => {
+  const ref = createFindElementMock();
+  const error = new Error("Something went wrong.");
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "tapElement").mockRejectedValue(error);
+  expect.assertions(4);
+
+  try {
+    await element(by.label("box")).tap();
+  } catch (err) {
+    expect(err).toBeInstanceOf(error.constructor);
+    expect(err).toHaveProperty("message", error.message);
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.tapElement).toHaveBeenCalledTimes(1);
 });

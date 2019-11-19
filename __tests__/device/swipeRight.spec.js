@@ -1,211 +1,109 @@
-const appiumServer = require("../helpers/appiumServer");
-const fetch = require("node-fetch");
+jest.mock("../../src/services/appiumService");
 
-const { device } = require("../../");
+const { appiumService } = require("../../src/services/appiumService");
+const { AppiumError, ActionError } = require("../../src/errors");
+const { device, gestures } = require("../../");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
-it("correctly executes gesture with distance value", async () => {
-  appiumServer.mockActions();
+it("executes the 'performActions' method on the Appium Service with a swipe right gesture", async () => {
+  const x = 100;
+  const y = 50;
+  const distance = 100;
+  const swipeRightGesture = gestures.swipeRight({ x, y, distance });
 
-  await device.swipeRight({x: 250, y: 200, distance: 100});
+  jest.spyOn(appiumService, "performActions").mockResolvedValue(null);
 
-  expect(fetch).toHaveBeenCalledTimes(1);
-  expect(fetch).toHaveBeenLastCalledWith(
-    expect.any(String),
-    expect.objectContaining({
-      method: "POST",
-      body: JSON.stringify({
-        actions: [{
-          id: "finger1",
-          type: "pointer",
-          parameters: {
-            pointerType: "touch"
-          },
-          actions: [
-            {type: "pointerMove", duration: 0, origin: "viewport", x: 250, y: 200},
-            {type: "pointerDown", button: 0},
-            {type: "pause", duration: 250},
-            {type: "pointerMove", duration: 50, origin: "pointer", x: 100, y: 0},
-            {type: "pointerUp", button: 0}
-          ]
-        }]
-      })
-    })
-  );
+  await device.swipeRight({ x, y, distance });
+
+  expect(appiumService.performActions).toHaveBeenCalledWith({ actions: await swipeRightGesture.resolve() });
 });
 
-it("correctly executes gesture with percentage value", async () => {
-  appiumServer.mockWindowRect({width: 1000, height: 1600});
-  appiumServer.mockActions();
+it("converts the 'percentage' parameter to a distance relative to the device viewport", async () => {
+  const x = 100;
+  const y = 50;
+  const percentage = 0.5;
+  const viewport = { width: 640, height: 480 };
+  const swipeRightGesture = gestures.swipeRight({ x, y, distance: viewport.width * percentage });
 
-  await device.swipeRight({x: 850, y: 200, percentage: 0.75});
+  jest.spyOn(appiumService, "getViewport").mockResolvedValue(viewport);
+  jest.spyOn(appiumService, "performActions").mockResolvedValue(null);
 
-  expect(fetch).toHaveBeenCalledTimes(2);
-  expect(fetch).toHaveBeenLastCalledWith(
-    expect.any(String),
-    expect.objectContaining({
-      method: "POST",
-      body: JSON.stringify({
-        actions: [{
-          id: "finger1",
-          type: "pointer",
-          parameters: {
-            pointerType: "touch"
-          },
-          actions: [
-            {type: "pointerMove", duration: 0, origin: "viewport", x: 850, y: 200},
-            {type: "pointerDown", button: 0},
-            {type: "pause", duration: 250},
-            {type: "pointerMove", duration: 50, origin: "pointer", x: 750, y: 0},
-            {type: "pointerUp", button: 0}
-          ]
-        }]
-      })
-    })
-  );
+  await device.swipeRight({ x, y, percentage });
+
+  expect(appiumService.getViewport).toHaveBeenCalledTimes(1);
+  expect(appiumService.performActions).toHaveBeenCalledWith({ actions: await swipeRightGesture.resolve() });
 });
 
-it("correctly executes gesture with duration parameter", async () => {
-  appiumServer.mockActions();
+it("defines the swipe up duration between (x, y) and (dest.x, dest.y) when 'duration' is passed", async () => {
+  const x = 100;
+  const y = 50;
+  const distance = 100;
+  const duration = 1000;
+  const swipeRightGesture = gestures.swipeRight({ x, y, distance, duration });
 
-  await device.swipeRight({x: 850, y: 200, distance: 500, duration: 250});
+  jest.spyOn(appiumService, "performActions").mockResolvedValue(null);
 
-  expect(fetch).toHaveBeenCalledTimes(1);
-  expect(fetch).toHaveBeenLastCalledWith(
-    expect.any(String),
-    expect.objectContaining({
-      method: "POST",
-      body: JSON.stringify({
-        actions: [{
-          id: "finger1",
-          type: "pointer",
-          parameters: {
-            pointerType: "touch"
-          },
-          actions: [
-            {type: "pointerMove", duration: 0, origin: "viewport", x: 850, y: 200},
-            {type: "pointerDown", button: 0},
-            {type: "pause", duration: 250},
-            {type: "pointerMove", duration: 250, origin: "pointer", x: 500, y: 0},
-            {type: "pointerUp", button: 0}
-          ]
-        }]
-      })
-    })
-  );
+  await device.swipeRight({ x, y, distance, duration });
+
+  expect(appiumService.performActions).toHaveBeenCalledWith({ actions: await swipeRightGesture.resolve() });
 });
 
-it("defaults x to 0", async () => {
-  appiumServer.mockWindowRect({width: 1000, height: 1600});
-  appiumServer.mockActions();
+it("defaults 'x' and 'y' parameters to 0", async () => {
+  const distance = 100;
+  const swipeRightGesture = gestures.swipeRight({ x: 0, y: 0, distance });
 
-  await device.swipeRight({y: 200, distance: 500});
-  await device.swipeRight({y: 200, percentage: 0.75});
+  jest.spyOn(appiumService, "performActions").mockResolvedValue(null);
 
-  expect(fetch).toHaveBeenCalledTimes(3);
-  expect(fetch).toHaveBeenNthCalledWith(
-    1,
-    expect.any(String),
-    expect.objectContaining({
-      method: "POST",
-      body: JSON.stringify({
-        actions: [{
-          id: "finger1",
-          type: "pointer",
-          parameters: {
-            pointerType: "touch"
-          },
-          actions: [
-            {type: "pointerMove", duration: 0, origin: "viewport", x: 0, y: 200},
-            {type: "pointerDown", button: 0},
-            {type: "pause", duration: 250},
-            {type: "pointerMove", duration: 50, origin: "pointer", x: 500, y: 0},
-            {type: "pointerUp", button: 0}
-          ]
-        }]
-      })
-    })
-  );
-  expect(fetch).toHaveBeenNthCalledWith(
-    3,
-    expect.any(String),
-    expect.objectContaining({
-      method: "POST",
-      body: JSON.stringify({
-        actions: [{
-          id: "finger1",
-          type: "pointer",
-          parameters: {
-            pointerType: "touch"
-          },
-          actions: [
-            {type: "pointerMove", duration: 0, origin: "viewport", x: 0, y: 200},
-            {type: "pointerDown", button: 0},
-            {type: "pause", duration: 250},
-            {type: "pointerMove", duration: 50, origin: "pointer", x: 750, y: 0},
-            {type: "pointerUp", button: 0}
-          ]
-        }]
-      })
-    })
-  );
+  await device.swipeRight({ distance });
+
+  expect(appiumService.performActions).toHaveBeenCalledWith({ actions: await swipeRightGesture.resolve() });
 });
 
-it("defaults y value to 0", async () => {
-  appiumServer.mockWindowRect({width: 1000, height: 1600});
-  appiumServer.mockActions();
+it("defaults 'duration' parameter to 50", async () => {
+  const x = 100;
+  const y = 50;
+  const distance = 100;
+  const swipeRightGesture = gestures.swipeRight({ x, y, distance, duration: 50 });
 
-  await device.swipeRight({x: 350, distance: 150});
-  await device.swipeRight({x: 500, percentage: 0.2});
+  jest.spyOn(appiumService, "performActions").mockResolvedValue(null);
 
-  expect(fetch).toHaveBeenCalledTimes(3);
-  expect(fetch).toHaveBeenNthCalledWith(
-    1,
-    expect.any(String),
-    expect.objectContaining({
-      method: "POST",
-      body: JSON.stringify({
-        actions: [{
-          id: "finger1",
-          type: "pointer",
-          parameters: {
-            pointerType: "touch"
-          },
-          actions: [
-            {type: "pointerMove", duration: 0, origin: "viewport", x: 350, y: 0},
-            {type: "pointerDown", button: 0},
-            {type: "pause", duration: 250},
-            {type: "pointerMove", duration: 50, origin: "pointer", x: 150, y: 0},
-            {type: "pointerUp", button: 0}
-          ]
-        }]
-      })
-    })
-  );
-  expect(fetch).toHaveBeenNthCalledWith(
-    3,
-    expect.any(String),
-    expect.objectContaining({
-      method: "POST",
-      body: JSON.stringify({
-        actions: [{
-          id: "finger1",
-          type: "pointer",
-          parameters: {
-            pointerType: "touch"
-          },
-          actions: [
-            {type: "pointerMove", duration: 0, origin: "viewport", x: 500, y: 0},
-            {type: "pointerDown", button: 0},
-            {type: "pause", duration: 250},
-            {type: "pointerMove", duration: 50, origin: "pointer", x: 200, y: 0},
-            {type: "pointerUp", button: 0}
-          ]
-        }]
-      })
-    })
-  );
+  await device.swipeRight({ x, y, distance });
+
+  expect(appiumService.performActions).toHaveBeenCalledWith({ actions: await swipeRightGesture.resolve() });
+});
+
+it("throws an ActionError for Appium request errors", async () => {
+  const error = new AppiumError("Request error.", 3);
+
+  jest.spyOn(appiumService, "performActions").mockRejectedValue(error);
+  expect.assertions(3);
+
+  try {
+    await device.swipeRight({ distance: 100 });
+  } catch (err) {
+    expect(err).toBeInstanceOf(ActionError);
+    expect(err).toHaveProperty("message", "Failed to perform swipe right gesture.");
+  }
+
+  expect(appiumService.performActions).toHaveBeenCalledTimes(1);
+});
+
+it("propagates other types of errors", async () => {
+  const error = new Error("Something went wrong.");
+
+  jest.spyOn(appiumService, "performActions").mockRejectedValue(error);
+  expect.assertions(3);
+
+  try {
+    await device.swipeRight({ distance: 100 });
+  } catch (err) {
+    expect(err).toBeInstanceOf(error.constructor);
+    expect(err).toHaveProperty("message", error.message);
+  }
+
+  expect(appiumService.performActions).toHaveBeenCalledTimes(1);
 });

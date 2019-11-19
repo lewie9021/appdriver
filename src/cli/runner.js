@@ -5,7 +5,7 @@ const { transformArgs } = require("./utils");
 const simpleReporter = require("./reporters/simpleReporter");
 
 function runWorker(args) {
-  return cp.fork(path.join(__dirname, "worker", "worker.js"), transformArgs(args), { silent: true });
+  return cp.fork(path.join(__dirname, "worker", "worker.js"), transformArgs(args));
 }
 
 function init({ config }) {

@@ -1,4 +1,3 @@
-const commands = require("./commands");
 const { platform } = require("./utils");
 
 const isContainsQuery = (query) => {
@@ -9,9 +8,14 @@ const isEndsWithQuery = (query) => {
   return query.endsWith("*");
 };
 
+const getByIdMatcher = (id) => ({
+  using: "id",
+  value: id
+});
+
 // Very crude implementation that supports simple fuzzy matching, e.g. "list-item-*" and "*item*"
 // TODO: Needs to escape value to avoid unexpected behaviour.
-const getLabelQuery = (accessibilityLabel) => {
+const getByAccessibilityLabelMatcher = (accessibilityLabel) => {
   if (isContainsQuery(accessibilityLabel)) {
     const query = accessibilityLabel.substr(1, accessibilityLabel.length - 2);
 
@@ -48,7 +52,7 @@ const getLabelQuery = (accessibilityLabel) => {
   };
 };
 
-const getTextQuery = (text) => {
+const getByTextMatcher = (text) => {
   if (isContainsQuery(text)) {
     const query = text.substr(1, text.length - 2);
 
@@ -91,57 +95,8 @@ const getTextQuery = (text) => {
   });
 };
 
-const by = {
-  id: (id) => ({
-    type: "id",
-    value: id,
-    resolve: () => {
-      return commands.element.findElement({
-        using: "id",
-        value: id
-      })
-    }
-  }),
-  label: (accessibilityLabel) => ({
-    type: "accessibility id",
-    value: accessibilityLabel,
-    resolve: (multiple, elementId) => {
-      if (elementId) {
-        const command = multiple
-          ? commands.element.findElementsFromElement
-          : commands.element.findElementFromElement;
-
-        return command(elementId, getLabelQuery(accessibilityLabel));
-      }
-
-      const command = multiple
-        ? commands.element.findElements
-        : commands.element.findElement;
-
-      return command(getLabelQuery(accessibilityLabel));
-    }
-  }),
-  text: (text) => ({
-    type: "text",
-    value: text,
-    resolve: (multiple, elementId) => {
-      if (elementId) {
-        const command = multiple
-          ? commands.element.findElementsFromElement
-          : commands.element.findElementFromElement;
-
-        return command(elementId, getTextQuery(text));
-      }
-
-      const command = multiple
-        ? commands.element.findElements
-        : commands.element.findElement;
-
-      return command(getTextQuery(text));
-    }
-  })
-};
-
 module.exports = {
-  by
+  id: getByIdMatcher,
+  label: getByAccessibilityLabelMatcher,
+  text: getByTextMatcher
 };

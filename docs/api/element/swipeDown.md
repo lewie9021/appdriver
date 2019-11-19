@@ -31,7 +31,7 @@ Swipe down 25% of the element height. Given the element has a height of 40, this
 ```javascript
 (async () => {
   await element(by.label("list-item"))
-    .swipeDown({ percentage: 0.5 });
+    .swipeDown({ percentage: 0.25 });
 })();
 ```
 

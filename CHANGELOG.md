@@ -1,5 +1,17 @@
 # Change Log
 
+## [v1.0.0-alpha.11] - 2019-11-19
+
+### Changed
+
+- Major internal refactoring to greatly improve error handling and testability.
+- `.wait` for gestures now simply takes a duration value just like `.wait` on Device.
+
+### Fixed
+
+- `.findElement` on Element correctly support chaining methods that apply to the newly found element. 
+- Console logs and errors not showing during test runs.
+
 ## [v1.0.0-alpha.10] - 2019-10-30
 
 ### Added

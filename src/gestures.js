@@ -20,14 +20,14 @@ const create = () => {
 const tap = ({ x, y, element }) => {
   return create()
     .press({ x, y, element })
-    .wait({ duration: 100 })
+    .wait(100)
     .release();
 };
 
 const longPress = ({ x, y, duration = 750, element }) => {
   return create()
     .press({x, y, element})
-    .wait({duration})
+    .wait(duration)
     .release();
 };
 
@@ -37,7 +37,7 @@ const swipe = ({ x, y, direction, distance, element, duration = 50 }) => {
 
   return create()
     .press({ x, y, element })
-    .wait({ duration: 250 })
+    .wait(250)
     .moveTo({ x: relativePoint.x, y: relativePoint.y, relative: true, duration })
     .release();
 };
@@ -54,7 +54,7 @@ const swipeUp = ({ x, y, distance, element, duration = 50 }) => {
   return swipe({ x, y, distance, duration, element, direction: 0 });
 };
 
-const swipeDown = ({x, y, distance, element, duration = 50}) => {
+const swipeDown = ({ x, y, distance, element, duration = 50 }) => {
   return swipe({ x, y, distance, duration, element, direction: 180 });
 };
 
