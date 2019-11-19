@@ -8,7 +8,7 @@ Description: TODO.
   - `baseUrl` (`String?`): Base URL of Appium server. Defaults to "http://localhost:4723/wd/hub".
   - `username` (`String?`): Username for server authentication - useful when connecting to cloud services such as SauceLabs or BrowserStack.
   - `password` (`String?`): Password for server authentication - useful when connecting to cloud services such as SauceLabs or BrowserStack.
-- `ui` (`String?`): Interface to use when writing tests (e.g. `describe` and `it`). Defaults to "bdd". 
+- `ui` (`String?`): Interface to use when writing tests (e.g. `describe` and `it`). Defaults to "bdd". See [Mocha Interfaces](https://mochajs.org/#interfaces) for other options.
 - `specs` (`Array<String>`): List of spec file paths.
 - `reporters` (`Array<Function>?`): List of reporters to provide insight throughout your test run. Defaults to the [Basic](#basic) reporter. 
 - `plugins` (`Array<Function>?`): List of plugins to provide functionality throughout your test run.
