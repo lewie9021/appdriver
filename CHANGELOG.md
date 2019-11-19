@@ -10,6 +10,7 @@
 ### Fixed
 
 - `.findElement` on Element correctly support chaining methods that apply to the newly found element. 
+- Console logs and errors not showing during test runs.
 
 ## [v1.0.0-alpha.10] - 2019-10-30
 
