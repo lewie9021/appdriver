@@ -1,4 +1,4 @@
-jest.mock("../../src/stores/sessionStore");
+jest.mock("../../src/worker/stores/sessionStore");
 
 const { sessionStore } = require("../../src/worker/stores/sessionStore");
 const { device } = require("../../");

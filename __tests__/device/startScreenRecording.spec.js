@@ -1,4 +1,4 @@
-jest.mock("../../src/stores/sessionStore");
+jest.mock("../../src/worker/stores/sessionStore");
 jest.mock("../../src/worker/services/appiumService");
 
 const { sessionStore } = require("../../src/worker/stores/sessionStore");
