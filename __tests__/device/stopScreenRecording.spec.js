@@ -1,10 +1,10 @@
 jest.mock("fs");
-jest.mock("../../src/services/appiumService");
+jest.mock("../../src/worker/services/appiumService");
 
 const fs = require("fs");
-const { sessionStore } = require("../../src/stores/sessionStore");
-const { appiumService } = require("../../src/services/appiumService");
-const { AppiumError, ActionError } = require("../../src/errors");
+const { sessionStore } = require("../../src/worker/stores/sessionStore");
+const { appiumService } = require("../../src/worker/services/appiumService");
+const { AppiumError, ActionError } = require("../../src/worker/errors");
 const { device } = require("../../");
 
 afterEach(() => {

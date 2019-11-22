@@ -1,8 +1,6 @@
 const fetch = require("node-fetch").default;
-const { configService } = require("./configService");
+const { configStore } = require("../../stores/configStore");
 const { AppiumError } = require("../errors");
-
-const BASE_URL = configService.getBaseUrl();
 
 const qs = (params) => {
   if (!params) {
@@ -48,7 +46,8 @@ const getFetchOpts = ({ method, payload }) => {
 };
 
 const request = ({ method, path, query, payload, transform }) => {
-  const url = `${BASE_URL}${path}${qs(query)}`;
+  const baseUrl = configStore.getBaseUrl();
+  const url = `${baseUrl}${path}${qs(query)}`;
   const opts = getFetchOpts({ method, path, query, payload });
 
   return fetch(url, opts)
@@ -65,6 +64,5 @@ const request = ({ method, path, query, payload, transform }) => {
 };
 
 module.exports = {
-  request,
-  BASE_URL
+  request
 };

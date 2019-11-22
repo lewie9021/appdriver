@@ -1,4 +1,4 @@
-const { createSessionStore } = require("../src/stores/sessionStore");
+const { createSessionStore } = require("../src/worker/stores/sessionStore");
 
 it("returns null if there's no sessionId", () => {
   const sessionStore = createSessionStore();

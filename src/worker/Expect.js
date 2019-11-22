@@ -1,5 +1,5 @@
 const { NotImplementedError } = require("./errors");
-const { getValueType, isPromise } = require("./utils");
+const { getValueType, isPromise } = require("../utils");
 
 const displayValue = (value) => {
   const valueType = getValueType(value);

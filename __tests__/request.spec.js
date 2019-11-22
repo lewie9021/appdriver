@@ -1,9 +1,12 @@
 jest.mock("node-fetch");
+jest.mock("../src/worker/services/commandLineService");
+jest.mock("../src/worker/services/configService");
+
 const fetch = require("node-fetch").default;
 const { Response } = jest.requireActual("node-fetch");
 
-const { AppiumError } = require("../src/errors");
-const { request, BASE_URL } = require("../src/services/request");
+const { AppiumError } = require("../src/worker/errors");
+const { request, BASE_URL } = require("../src/worker/services/request");
 
 afterEach(() => {
   jest.resetAllMocks();

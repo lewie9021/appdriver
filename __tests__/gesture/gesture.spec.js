@@ -1,4 +1,4 @@
-const Gesture = require("../../src/Gesture");
+const Gesture = require("../../src/worker/Gesture");
 
 describe("Common Gestures", () => {
   it("correctly defines a tap gesture", () => {

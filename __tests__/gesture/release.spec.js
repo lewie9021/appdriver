@@ -1,4 +1,4 @@
-const Gesture = require("../../src/Gesture");
+const Gesture = require("../../src/worker/Gesture");
 
 it("adds a release action to the sequence", () => {
   const gesture = new Gesture();

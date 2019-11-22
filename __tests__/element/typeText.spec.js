@@ -1,11 +1,11 @@
 jest.mock("../../src/stores/sessionStore");
-jest.mock("../../src/services/appiumService");
+jest.mock("../../src/worker/services/appiumService");
 
-const { sessionStore } = require("../../src/stores/sessionStore");
-const { appiumService } = require("../../src/services/appiumService");
+const { sessionStore } = require("../../src/worker/stores/sessionStore");
+const { appiumService } = require("../../src/worker/services/appiumService");
 const { createFindElementMock } = require("../appiumServiceMocks");
-const { ElementNotFoundError, ElementActionError, AppiumError } = require("../../src/errors");
-const { Element } = require("../../src/Element");
+const { ElementNotFoundError, ElementActionError, AppiumError } = require("../../src/worker/errors");
+const { Element } = require("../../src/worker/Element");
 const { element, by } = require("../../");
 
 afterEach(() => {

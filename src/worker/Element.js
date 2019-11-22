@@ -2,7 +2,7 @@ const { sessionStore } = require("./stores/sessionStore");
 const { appiumService } = require("./services/appiumService");
 const { Expect } = require("./Expect");
 const { ElementNotFoundError, ElementActionError, ElementWaitError, AppiumError } = require("./errors");
-const { isUndefined, isInstanceOf, isNull, pollFor, delay } = require("./utils");
+const { isUndefined, isInstanceOf, isNull, pollFor, delay } = require("../utils");
 
 const poll = (func, opts) => {
   return func()

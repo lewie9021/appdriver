@@ -1,4 +1,4 @@
-const { NotImplementedError } = require("../../src/errors");
+const { NotImplementedError } = require("../../src/worker/errors");
 const { expect: assert } = require("../../index");
 
 it("doesn't throw if expectation is met", async () => {
