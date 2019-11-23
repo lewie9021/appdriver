@@ -26,6 +26,18 @@ function createConfigStore() {
 
       return deviceTestTimeout || state.config.testTimeout || (60 * 1000);
     },
+    getWaitForTimeout: (deviceIndex = state.deviceIndex) => {
+      const device = state.config.devices[deviceIndex];
+      const deviceWaitForTimeout = device ? device.waitForTimeout : null;
+
+      return deviceWaitForTimeout || state.config.waitForTimeout || (10 * 1000);
+    },
+    getWaitForInterval: (deviceIndex = state.deviceIndex) => {
+      const device = state.config.devices[deviceIndex];
+      const deviceWaitForInterval = device ? device.waitForInterval : null;
+
+      return deviceWaitForInterval || state.config.waitForInterval || 200;
+    },
     getMaxTestRetries: (deviceIndex = state.deviceIndex) => {
       const device = state.config.devices[deviceIndex];
       const deviceMaxTestRetries = device ? device.maxTestRetries : null;
