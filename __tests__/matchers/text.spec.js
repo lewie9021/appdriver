@@ -1,6 +1,7 @@
-jest.mock("../../src/services/appiumService");jest.mock("../../src/stores/sessionStore");
+jest.mock("../../src/worker/stores/sessionStore");
+jest.mock("../../src/worker/services/appiumService");
 
-const { sessionStore } = require("../../src/stores/sessionStore");
+const { sessionStore } = require("../../src/worker/stores/sessionStore");
 const { by } = require("../../");
 
 afterEach(() => {

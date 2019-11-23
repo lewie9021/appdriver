@@ -1,5 +1,5 @@
-const Gesture = require("../src/Gesture");
-const gestures = require("../src/gestures");
+const Gesture = require("../src/worker/Gesture");
+const gestures = require("../src/worker/gestures");
 
 describe("create", () => {
   it("returns a 'Gesture'", () => {

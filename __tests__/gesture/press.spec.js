@@ -1,9 +1,9 @@
-jest.mock("../../src/services/appiumService");
+jest.mock("../../src/worker/services/appiumService");
 
 const { createFindElementMock } = require("../appiumServiceMocks");
-const { appiumService } = require("../../src/services/appiumService");
-const { AppiumError, ElementNotFoundError } = require("../../src/errors");
-const Gesture = require("../../src/Gesture");
+const { appiumService } = require("../../src/worker/services/appiumService");
+const { AppiumError, ElementNotFoundError } = require("../../src/worker/errors");
+const Gesture = require("../../src/worker/Gesture");
 const { element, by } = require("../../");
 
 afterEach(() => {

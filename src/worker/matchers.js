@@ -1,4 +1,4 @@
-const { platform } = require("./utils");
+const { platform } = require("../utils");
 
 const isContainsQuery = (query) => {
   return query.startsWith("*") && query.endsWith("*");

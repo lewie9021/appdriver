@@ -17,7 +17,7 @@ module.exports = {
   specs: [
     "../tests/hello-world.e2e.js"
   ],
-  capabilities: [
-    simulators.iPhoneX
+  devices: [
+    { capabilities: simulators.iPhoneX }
   ]
 };

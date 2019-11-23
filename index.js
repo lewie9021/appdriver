@@ -1,10 +1,10 @@
-const { appiumService } = require("./src/services/appiumService");
-const { Device } = require("./src/Device");
-const { Element } = require("./src/Element");
-const { Expect } = require("./src/Expect");
-const matchers = require("./src/matchers");
-const gestures = require("./src/gestures");
-const { ElementsNotFoundError, AppiumError } = require("./src/errors");
+const { appiumService } = require("./src/worker/services/appiumService");
+const { Device } = require("./src/worker/Device");
+const { Element } = require("./src/worker/Element");
+const { Expect } = require("./src/worker/Expect");
+const matchers = require("./src/worker/matchers");
+const gestures = require("./src/worker/gestures");
+const { ElementsNotFoundError, AppiumError } = require("./src/worker/errors");
 const { isInstanceOf } = require("./src/utils");
 
 module.exports = {

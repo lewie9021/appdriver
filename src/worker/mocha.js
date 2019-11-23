@@ -1,6 +1,6 @@
 const Mocha = require("mocha");
 
-function runTestSpecs(capability, specFiles, opts) {
+function runTestSpecs(specPaths, opts) {
   return new Promise((resolve) => {
     // Instantiate a Mocha instance.
     const mocha = new Mocha({
@@ -49,7 +49,7 @@ function runTestSpecs(capability, specFiles, opts) {
       }
     });
 
-    specFiles.forEach((specPath) => {
+    specPaths.forEach((specPath) => {
       mocha.addFile(specPath);
     });
 

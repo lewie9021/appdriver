@@ -40,16 +40,16 @@ const emulators = {
 };
 
 module.exports = {
-  maxInstances: 2,
+  maxDevices: 2,
   specs: [
     // "../tests/button-screen.e2e.js",
     // "../tests/carousel-screen.e2e.js"
     "../tests/form-screen.e2e.js"
     // "../tests/swipeable-screen.e2e.js"
   ],
-  capabilities: [
-    simulators.iPhone8,
-    simulators.iPhoneX,
-    emulators.pixel2,
+  devices: [
+    { capabilities: simulators.iPhone8 },
+    { capabilities: simulators.iPhoneX },
+    { capabilities: emulators.pixel2 }
   ]
 };

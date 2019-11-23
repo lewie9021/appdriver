@@ -1,7 +1,7 @@
 const { sessionStore } = require("../stores/sessionStore");
 const { AppiumError } = require("../errors");
 const { NotImplementedError } = require("../errors");
-const { platform, isInstanceOf, getRelativePoint, toBoolean, toNumber } = require("../utils");
+const { platform, isInstanceOf, getRelativePoint, toBoolean, toNumber } = require("../../utils");
 const { transformBounds } = require("../attributeTransforms");
 const { request } = require("./request");
 

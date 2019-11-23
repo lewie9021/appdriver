@@ -1,4 +1,4 @@
-const { sessionStore } = require("./stores/sessionStore");
+const { sessionStore } = require("./worker/stores/sessionStore");
 
 const delay = (ms) => {
   return new Promise((resolve) => {
@@ -132,6 +132,24 @@ const getRelativePoint = ({ direction, distance }) => {
   };
 };
 
+const transformArgs = (args) => {
+  return Object.keys(args)
+    .reduce((result, key) => {
+      const param = `--${key}`;
+      const value = args[key];
+
+      if (isNull(value) || isUndefined(value)) {
+        return result;
+      }
+
+      if (isBoolean(value) && value === true) {
+        return result.concat(param);
+      }
+
+      return result.concat(param, value.toString());
+    }, []);
+};
+
 const platform = {
   select: ({ ios, android }) => {
     switch (sessionStore.getCapabilities("platformName")) {
@@ -161,5 +179,6 @@ module.exports = {
   toNumber,
   getValueType,
   getRelativePoint,
+  transformArgs,
   platform
 };

@@ -2,7 +2,7 @@ const fs = require("fs");
 const { sessionStore } = require("./stores/sessionStore");
 const { appiumService } = require("./services/appiumService");
 const gestures = require("./gestures");
-const { delay, isUndefined, isInstanceOf, platform } = require("./utils");
+const { delay, isUndefined, isInstanceOf, platform } = require("../utils");
 const { ActionError, AppiumError } = require("./errors");
 
 const handleActionError = (message) => (err) => {

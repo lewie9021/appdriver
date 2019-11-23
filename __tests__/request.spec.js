@@ -1,9 +1,19 @@
 jest.mock("node-fetch");
+jest.mock("../src/stores/configStore");
+jest.mock("../src/worker/services/commandLineService");
+
 const fetch = require("node-fetch").default;
 const { Response } = jest.requireActual("node-fetch");
 
-const { AppiumError } = require("../src/errors");
-const { request, BASE_URL } = require("../src/services/request");
+const { configStore } = require("../src/stores/configStore");
+const { AppiumError } = require("../src/worker/errors");
+const { request } = require("../src/worker/services/request");
+
+const BASE_URL = "http://localhost:4723/wd/hub";
+
+beforeEach(() => {
+  jest.spyOn(configStore, "getBaseUrl").mockReturnValue(BASE_URL);
+});
 
 afterEach(() => {
   jest.resetAllMocks();

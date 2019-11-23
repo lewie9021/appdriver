@@ -1,7 +1,7 @@
-jest.mock("../../src/services/appiumService");
+jest.mock("../../src/worker/services/appiumService");
 
-const { appiumService } = require("../../src/services/appiumService");
-const { AppiumError, ActionError } = require("../../src/errors");
+const { appiumService } = require("../../src/worker/services/appiumService");
+const { AppiumError, ActionError } = require("../../src/worker/errors");
 const { device } = require("../../");
 
 afterEach(() => {

@@ -1,7 +1,7 @@
-jest.mock("../src/services/appiumService");
+jest.mock("../src/worker/services/appiumService");
 
-const { appiumService } = require("../src/services/appiumService");
-const { ElementsNotFoundError, AppiumError } = require("../src/errors");
+const { appiumService } = require("../src/worker/services/appiumService");
+const { ElementsNotFoundError, AppiumError } = require("../src/worker/errors");
 const { createFindElementsMock } = require("./appiumServiceMocks");
 const { elements, by } = require("../");
 

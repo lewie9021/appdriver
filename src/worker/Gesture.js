@@ -1,4 +1,4 @@
-const { isNumber } = require("./utils");
+const { isNumber } = require("../utils");
 
 class Gesture {
   constructor() {
