@@ -88,7 +88,7 @@ it("throws an ElementWaitError if the polling times out", async () => {
 it("supports passing a 'maxDuration' parameter", async () => {
   const ref = createFindElementMock();
   const maxDuration = 1000;
-  const interval = 2000;
+  const interval = 50;
 
   jest.spyOn(configStore, "getWaitForTimeout").mockReturnValue(2000);
   jest.spyOn(configStore, "getWaitForInterval").mockReturnValue(interval);

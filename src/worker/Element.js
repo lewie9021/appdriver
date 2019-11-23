@@ -259,8 +259,8 @@ class Element {
   }
 
   waitToBeVisible(options = {}) {
-    const maxDuration = options.maxDuration || 5000;
-    const interval = options.interval || 200;
+    const maxDuration = options.maxDuration || configStore.getWaitForTimeout();
+    const interval = options.interval || configStore.getWaitForInterval();
     const conditionFn = ($e) => new Expect($e.isVisible()).toEqual(true);
     const timeoutError = `Element not visible after ${maxDuration}ms timeout (interval: ${interval}ms).`;
 
