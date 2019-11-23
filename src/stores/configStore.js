@@ -20,8 +20,11 @@ function createConfigStore() {
     getUi: () => {
       return state.config.ui || "bdd";
     },
-    getTestTimeout: () => {
-      return state.config.testTimeout || (60 * 1000);
+    getTestTimeout: (deviceIndex = state.deviceIndex) => {
+      const device = state.config.devices[deviceIndex];
+      const deviceTestTimeout = device ? device.testTimeout : null;
+
+      return deviceTestTimeout || state.config.testTimeout || (60 * 1000);
     },
     getSpecPaths: () => {
       return state.config.specs.map((relativeSpecPath) => path.resolve(path.dirname(state.configPath), relativeSpecPath));
