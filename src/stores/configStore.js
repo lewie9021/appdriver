@@ -17,6 +17,12 @@ function createConfigStore() {
     getBaseUrl: () => {
       return (state.config.appium && state.config.appium.baseUrl) || "http://localhost:4723/wd/hub";
     },
+    getUi: () => {
+      return state.config.ui || "bdd";
+    },
+    getTestTimeout: () => {
+      return state.config.testTimeout || (60 * 1000);
+    },
     getSpecPaths: () => {
       return state.config.specs.map((relativeSpecPath) => path.resolve(path.dirname(state.configPath), relativeSpecPath));
     },

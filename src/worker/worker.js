@@ -9,10 +9,14 @@ const mocha = require("./mocha");
 
   const specPaths = configStore.getSpecPaths();
   const device = configStore.getDevice();
+  const mochaOpts = {
+    ui: configStore.getUi(),
+    timeout: configStore.getTestTimeout()
+  };
 
   try {
     const session = await appiumService.createSession({ desiredCapabilities: device.capabilities });
-    const failures = await mocha.runTestSpecs(specPaths, { timeout: 30 * 1000, fullStackTrace: true });
+    const failures = await mocha.runTestSpecs(specPaths, mochaOpts);
     await appiumService.endSession({ sessionId: session.sessionId });
 
     process.exitCode = (failures > 0) ? 1 : 0;
