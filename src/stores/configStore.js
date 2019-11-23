@@ -26,6 +26,12 @@ function createConfigStore() {
 
       return deviceTestTimeout || state.config.testTimeout || (60 * 1000);
     },
+    getMaxTestRetries: (deviceIndex = state.deviceIndex) => {
+      const device = state.config.devices[deviceIndex];
+      const deviceMaxTestRetries = device ? device.maxTestRetries : null;
+
+      return deviceMaxTestRetries || state.config.maxTestRetries || 3;
+    },
     getSpecPaths: () => {
       return state.config.specs.map((relativeSpecPath) => path.resolve(path.dirname(state.configPath), relativeSpecPath));
     },
