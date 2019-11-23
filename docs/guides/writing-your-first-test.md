@@ -21,8 +21,8 @@ describe("My First Testing App", () => {
 
 Before we can run our test script, we must first define our AppDriver configuration file:
 
-> Note: Configuration of AppDriver is currently very basic.
-> - 'specs' only supports paths directly to files (no fuzzy matching).
+> Note:
+> - 'specs' only supports paths directly to files (no fuzzy matching yet).
 
 **config/local.config.js**
 ```javascript
@@ -45,8 +45,8 @@ module.exports = {
   specs: [
     "../tests/hello-world.e2e.js"
   ],
-  capabilities: [
-    simulators.iPhoneX
+  devices: [
+    { capabilities: simulators.iPhoneX }
   ]
 };
 ```
