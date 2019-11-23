@@ -73,6 +73,7 @@ it("throws an ElementWaitError if the polling times out", async () => {
   jest.spyOn(configStore, "getWaitForInterval").mockReturnValue(interval);
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
   jest.spyOn(appiumService, "getElementExists").mockResolvedValue(false);
+  expect.assertions(3);
 
   try {
     await element(by.label("input")).waitToExist();
@@ -93,6 +94,7 @@ it("supports passing a 'maxDuration' parameter", async () => {
   jest.spyOn(configStore, "getWaitForInterval").mockReturnValue(interval);
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
   jest.spyOn(appiumService, "getElementExists").mockResolvedValue(false);
+  expect.assertions(3);
 
   try {
     await element(by.label("input")).waitToExist({ maxDuration });
@@ -113,6 +115,7 @@ it("supports passing a 'interval' parameter", async () => {
   jest.spyOn(configStore, "getWaitForInterval").mockReturnValue(50);
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
   jest.spyOn(appiumService, "getElementExists").mockResolvedValue(false);
+  expect.assertions(3);
 
   try {
     await element(by.label("input")).waitToExist({ interval });
