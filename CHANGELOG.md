@@ -1,5 +1,11 @@
 # Change Log
 
+## [Unreleased]
+
+### Changed
+
+- Implemented the newly documented configuration format. This now supports defining timeouts, test retries, language (e.g. `describe` & `it`), and reporters.
+
 ## [v1.0.0-alpha.11] - 2019-11-19
 
 ### Changed
