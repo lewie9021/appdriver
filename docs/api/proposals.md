@@ -161,3 +161,17 @@ TODO: Description here.
 :warning: [```.doubleTap(options?: {x?: Number, y?: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/doubleTap.md)
 
 TODO: Description here.
+
+### Configuration
+
+:warning: `appium.username: String?`
+
+Username for server authentication - useful when connecting to cloud services such as SauceLabs or BrowserStack.
+
+:warning: `appium.password: String?`
+
+Password for server authentication - useful when connecting to cloud services such as SauceLabs or BrowserStack.
+
+:warning: `plugins: Array<Function>?`
+
+List of plugins to provide functionality throughout your test run.

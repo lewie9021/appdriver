@@ -1,19 +1,14 @@
 # Configuration
 
-> Note: This is documentation for the new configuration file format. See [Writing Your First Test](../guides/writing-your-first-test.md) guide for an idea of the current configuration format.
-
-Description: TODO.
+The configuration file provides a way of tweaking AppDriver the way you want. While it tries to provide sane defaults for most options, every project is different. At it's most basic, you will need to define a list of `specs` along with a list of `devices` to run.
 
 ### Options
 
 - `appium` (`Object?`):
   - `baseUrl` (`String?`): Base URL of Appium server. Defaults to "http://localhost:4723/wd/hub".
-  - `username` (`String?`): Username for server authentication - useful when connecting to cloud services such as SauceLabs or BrowserStack.
-  - `password` (`String?`): Password for server authentication - useful when connecting to cloud services such as SauceLabs or BrowserStack.
 - `ui` (`String?`): Interface to use when writing tests (e.g. `describe` and `it`). Defaults to "bdd". See [Mocha Interfaces](https://mochajs.org/#interfaces) for other options.
 - `specs` (`Array<String>`): List of spec file paths (Glob pattern matching not yet supported).
 - `reporters` (`Array<Function>?`): List of reporters to provide insight throughout your test run. Defaults to the [Basic](#basic) reporter. 
-- `plugins` (`Array<Function>?`): List of plugins to provide functionality throughout your test run.
 - `maxDevices` (`Number?`): Maximum number of `devices` to run in parallel. Defaults to 1 (series).
 - `devices` (`Array<Object>`):
   - `specs` (`Array<String>?`): List of spec file paths. This will be in addition to the top-level `specs`.
@@ -51,16 +46,8 @@ module.exports = {
 
 ### Reporters
 
-Description: TODO.
-
 #### Basic
 
-Description: TODO.
+This is the default reporter that simply outputs the status and duration of each test.
 
-### Plugins
-
-Description: TODO.
-
-#### Appium Local
-
-Description: TODO.
+<img width="100%" src="https://raw.githubusercontent.com/lewie9021/appdriver/master/docs/assets/basic-reporter.png">
