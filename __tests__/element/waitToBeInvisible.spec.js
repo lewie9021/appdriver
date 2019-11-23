@@ -64,7 +64,7 @@ it("polls element visibility status until it resolves when there isn't an elemen
 
 it("throws an ElementWaitError if the polling times out", async () => {
   const ref = createFindElementMock();
-  const timeout = 200;
+  const timeout = 2000;
   const interval = 50;
 
   jest.spyOn(configStore, "getWaitForTimeout").mockReturnValue(timeout);
