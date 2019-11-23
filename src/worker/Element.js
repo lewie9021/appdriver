@@ -1,3 +1,4 @@
+const { configStore } = require("../stores/configStore");
 const { sessionStore } = require("./stores/sessionStore");
 const { appiumService } = require("./services/appiumService");
 const { Expect } = require("./Expect");
@@ -250,8 +251,8 @@ class Element {
   }
 
   waitFor(conditionFn, options = {}) {
-    const maxDuration = options.maxDuration || 5000;
-    const interval = options.interval || 200;
+    const maxDuration = options.maxDuration || configStore.getWaitForTimeout();
+    const interval = options.interval || configStore.getWaitForInterval();
     const timeoutError = `Wait condition exceeded ${maxDuration}ms timeout (interval: ${interval}ms).`;
 
     return this._executeWait(conditionFn, maxDuration, interval, timeoutError);
