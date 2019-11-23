@@ -48,8 +48,8 @@ module.exports = {
     // "../tests/swipeable-screen.e2e.js"
   ],
   devices: [
-    // { capabilities: simulators.iPhone8 },
+    { capabilities: simulators.iPhone8 },
     { capabilities: simulators.iPhoneX },
-    // { capabilities: emulators.pixel2 }
+    { capabilities: emulators.pixel2 }
   ]
 };
