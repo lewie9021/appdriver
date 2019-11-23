@@ -175,3 +175,7 @@ Password for server authentication - useful when connecting to cloud services su
 :warning: `plugins: Array<Function>?`
 
 List of plugins to provide functionality throughout your test run.
+
+:warning: `device.build: String?`
+
+Build command to execute before running. Useful in local development and have access to the app source code.

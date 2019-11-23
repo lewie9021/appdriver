@@ -16,7 +16,6 @@ The configuration file provides a way of tweaking AppDriver the way you want. Wh
   - `waitForTimeout` (`Number?`): Maximum duration in milliseconds before timing out when using waits within tests. This will override the top-level `waitForTimeout`.
   - `testTimeout` (`Number?`): Maximum duration in milliseconds to wait for a test to complete. This will override the top-level `testTimeout`.
   - `maxTestRetries` (`Number?`): Maximum number of retries for failing tests. This will override the top-level `maxTestRetries`.
-  - `build` (`String?`): Build command to execute before running. Useful in local development and have access to the app source code.
   - `capabilities` (`Object`): Capabilities to send to the Appium server.
 - `waitForInterval` (`Number?`): Interval duration in milliseconds to poll the expectation when using waits within tests. Defaults to 200.
 - `waitForTimeout` (`Number?`): Maximum duration in milliseconds before timing out when using waits within tests. Defaults to 10000.
