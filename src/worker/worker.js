@@ -12,7 +12,6 @@ const mocha = require("./mocha");
   const mochaOpts = {
     ui: configStore.getUi(),
     timeout: configStore.getTestTimeout(),
-    retries: configStore.getMaxTestRetries(),
     slow: configStore.getTestTimeout() * 0.75
   };
 

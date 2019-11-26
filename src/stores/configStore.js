@@ -38,11 +38,11 @@ function createConfigStore() {
 
       return deviceWaitForInterval || state.config.waitForInterval || 200;
     },
-    getMaxTestRetries: (deviceIndex = state.deviceIndex) => {
+    getMaxSpecRetries: (deviceIndex = state.deviceIndex) => {
       const device = state.config.devices[deviceIndex];
-      const deviceMaxTestRetries = device ? device.maxTestRetries : null;
+      const deviceMaxSpecRetries = device ? device.maxSpecRetries : null;
 
-      return deviceMaxTestRetries || state.config.maxTestRetries || 3;
+      return deviceMaxSpecRetries || state.config.maxSpecRetries || 3;
     },
     getSpecPaths: () => {
       return state.config.specs.map((relativeSpecPath) => path.resolve(path.dirname(state.configPath), relativeSpecPath));
