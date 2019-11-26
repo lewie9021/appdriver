@@ -5,6 +5,8 @@
 ### Changed
 
 - Implemented the newly documented configuration format. This now supports defining timeouts, test retries, language (e.g. `describe` & `it`), and reporters.
+- `restartApp` on Device now uses Appium's activate and terminate commands to be more intuitive.
+- `resetApp` and `restartApp` on Device no longer require a capabilities parameter.
 
 ## [v1.0.0-alpha.11] - 2019-11-19
 
