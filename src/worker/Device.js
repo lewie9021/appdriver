@@ -26,24 +26,17 @@ class Device {
     return sessionStore.getCapabilities("platformVersion");
   }
 
-  restartApp(capabilities) {
-    if (!capabilities.noReset) {
-      return Promise.reject(new ActionError("'noReset' must be 'true' in session capabilities to use this command."));
-    }
-
-    return appiumService.resetApp()
+  restartApp() {
+    return appiumService.restartApp()
       .catch(() => {
         throw new ActionError("Failed to restart the application.");
-      })
+      });
   }
 
-  resetApp(capabilities) {
-    if (capabilities.noReset) {
-      return Promise.reject(new ActionError("'noReset' must not be 'true' in session capabilities to use this command."));
-    }
-
+  resetApp() {
     return appiumService.resetApp()
-      .catch(() => {
+      .catch((e) => {
+        console.log(e);
         throw new ActionError("Failed to reset the application.");
       });
   }

@@ -76,28 +76,41 @@ function createAppiumService(sessionStore) {
       .then(sessionStore.reset);
   };
 
-  // ({ sessionId: String? }) => Promise.
-  const launchApp = ({ sessionId = sessionStore.getSessionId() } = {}) => {
+  // ({ sessionId: String?, appId: String }) => Promise.
+  const launchApp = ({ sessionId = sessionStore.getSessionId(), appId } = {}) => {
     return request({
       method: "POST",
-      path: `/session/${sessionId}/appium/app/launch`
+      path: `/session/${sessionId}/appium/device/activate_app`,
+      payload: { appId }
+    });
+  };
+
+  // ({ sessionId: String?, appId: String }) => Promise.
+  const closeApp = ({ sessionId = sessionStore.getSessionId(), appId } = {}) => {
+    return request({
+      method: "POST",
+      path: `/session/${sessionId}/appium/device/terminate_app`,
+      payload: { appId }
     });
   };
 
   // ({ sessionId: String? }) => Promise.
-  const closeApp = ({ sessionId = sessionStore.getSessionId() } = {}) => {
-    return request({
-      method: "POST",
-      path: `/session/${sessionId}/appium/app/close`
-    });
-  };
-
-  // ({ sessionId: String? }) => Promise.
+  // TODO: Throw if capabilities.noReset is true.
   const resetApp = ({ sessionId = sessionStore.getSessionId() } = {}) => {
+    if (sessionStore.getCapabilities("noReset")) {
+      return Promise.reject(new Error("Unable to reset app when capabilities.noReset is enabled.'"));
+    }
+
     return request({
       method: "POST",
       path: `/session/${sessionId}/appium/app/reset`
     });
+  };
+
+  // ({ sessionId: String?, appId: String? }) => Promise.
+  const restartApp = ({ sessionId = sessionStore.getSessionId(), appId = sessionStore.getAppId() } = {}) => {
+    return closeApp({ sessionId, appId })
+      .then(() => launchApp({ sessionId, appId }));
   };
 
   // ({ sessionId: String? }) => Promise<{ width: Number, height: Number }>.
@@ -515,6 +528,7 @@ function createAppiumService(sessionStore) {
     endSession,
     launchApp,
     closeApp,
+    restartApp,
     resetApp,
     getViewport,
     getOrientation,

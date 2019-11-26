@@ -27,6 +27,14 @@ function createSessionStore() {
 
       return state.capabilities;
     },
+    getAppId: () => {
+      const { platformName, bundleId, appPackage } = state.capabilities;
+
+      switch (platformName) {
+        case "iOS": return bundleId;
+        case "Android": return appPackage;
+      }
+    },
     getScreenRecording: (key) => {
       if (key) {
         return state.screenRecording[key];
