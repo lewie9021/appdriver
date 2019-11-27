@@ -294,11 +294,11 @@ class Element {
     return this._executeWait(conditionFn, maxDuration, interval, timeoutError);
   }
 
-  getText() {
+  getText(options) {
     const currentValue = getCurrentValue(this.value);
 
     return currentValue
-      .then((value) => appiumService.getElementText({ element: value.ref }))
+      .then((value) => appiumService.getElementText({ element: value.ref, options }))
       .catch(handleActionError("Failed to get element text."));
   }
 

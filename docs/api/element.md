@@ -49,7 +49,7 @@ Using the virtual keyboard, types the given text into a text element.
 
 Wipes the contents of a text element.
 
-[```.getText() => Promise<String>```](./element/getText.md)
+[```.getText(options?: Object) => Promise<String>```](./element/getText.md)
 
 <img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
