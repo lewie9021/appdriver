@@ -89,7 +89,7 @@ const retry = (func, maxRetries, retries = 0) => {
       .then(() => events.emit("worker:passed", { device, specPath: relativeSpecPath }))
       .catch(() => {
         failures += 1;
-        events.emit("worker:failed", { device, specPath: relativeSpecPath });
+        events.emit("worker:failed", { device, specPath: relativeSpecPath, maxRetries: maxSpecRetries });
       })
       .finally(() => runDeviceSpecs(deviceIndex, specPaths.slice(1)));
   };
