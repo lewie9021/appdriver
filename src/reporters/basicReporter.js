@@ -15,7 +15,7 @@ const getCapabilityName = (capabilities) => {
   return `${capabilities.deviceName} (${capabilities.platformName} ${capabilities.platformVersion})`;
 };
 
-function simpleReporter(events) {
+function basicReporter(events) {
   const getCapabilityText = (capability) => `${weights.bold}${getCapabilityName(capability)}${weights.end}`;
   const getDurationText = (duration) =>  `${colors.cyan}(${duration}ms)${colors.end}`;
 
@@ -48,4 +48,4 @@ function simpleReporter(events) {
   });
 }
 
-module.exports = simpleReporter;
+module.exports = basicReporter;
