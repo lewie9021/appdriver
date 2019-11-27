@@ -14,6 +14,6 @@ describe("Button Screen", () => {
   it("works", async () => {
     const $button = await $screen.findElement(by.label("button"));
 
-    await expect($button).toHaveText("Press Me!");
+    await expect($button).toHaveText("Press Me!", { recursive: true });
   });
 });
