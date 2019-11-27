@@ -1,10 +1,11 @@
 # Change Log
 
-## [Unreleased]
+## [v1.0.0-alpha.12] - 2019-11-27
 
 ### Added
 
 - Support for resetting / restarting the application between specs.
+- Support for passing a `recursive` option to .getText on Element. 
 
 ### Changed
 
