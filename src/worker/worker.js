@@ -7,7 +7,7 @@ const mocha = require("./mocha");
   // Parse CLI options.
   commandLineService.init();
 
-  const specPaths = configStore.getSpecPaths();
+  const specPath = commandLineService.getSpecPath();
   const device = configStore.getDevice();
   const mochaOpts = {
     ui: configStore.getUi(),
@@ -17,7 +17,7 @@ const mocha = require("./mocha");
 
   try {
     const session = await appiumService.createSession({ desiredCapabilities: device.capabilities });
-    const failures = await mocha.runTestSpecs(specPaths, mochaOpts);
+    const failures = await mocha.runTestSpec(specPath, mochaOpts);
     await appiumService.endSession({ sessionId: session.sessionId });
 
     process.exitCode = (failures > 0) ? 1 : 0;

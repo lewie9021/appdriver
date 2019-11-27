@@ -44,8 +44,12 @@ function createConfigStore() {
 
       return deviceMaxSpecRetries || state.config.maxSpecRetries || 3;
     },
-    getSpecPaths: () => {
-      return state.config.specs.map((relativeSpecPath) => path.resolve(path.dirname(state.configPath), relativeSpecPath));
+    getSpecPaths: (deviceIndex = state.deviceIndex) => {
+      const device = state.config.devices[deviceIndex];
+      const deviceSpecs = (device && device.specs) || [];
+
+      return [ ...state.config.specs, ...deviceSpecs ]
+        .map((relativeSpecPath) => path.resolve(path.dirname(state.configPath), relativeSpecPath));
     },
     getReporters: () => {
       if (!state.config.reporters || !state.config.reporters.length) {

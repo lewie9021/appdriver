@@ -17,6 +17,11 @@ const createCommandLineService = () => {
           demandOption: true,
           type: "number"
         })
+        .option("spec", {
+          describe: "Absolute path to spec file.",
+          demandOption: true,
+          type: "string"
+        })
         .argv;
 
       configStore.setState({
@@ -30,6 +35,9 @@ const createCommandLineService = () => {
     },
     getDeviceIndex: () => {
       return params.deviceIndex;
+    },
+    getSpecPath: () => {
+      return params.spec;
     }
   };
 };

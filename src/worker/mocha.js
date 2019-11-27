@@ -1,6 +1,6 @@
 const Mocha = require("mocha");
 
-function runTestSpecs(specPaths, opts) {
+function runTestSpec(specPath, opts) {
   return new Promise((resolve) => {
     // Instantiate a Mocha instance.
     const mocha = new Mocha({
@@ -8,7 +8,7 @@ function runTestSpecs(specPaths, opts) {
       reporter: function(runner, options) {
         runner.on("start", () => {
           process.send({
-            type: "FRAMEWORK_START",
+            type: "SPEC_STARTED",
             payload: {
               total: runner.total
             }
@@ -17,7 +17,7 @@ function runTestSpecs(specPaths, opts) {
 
         runner.on("test", (test) => {
           process.send({
-            type: "TEST_START",
+            type: "TEST_STARTED",
             payload: {
               name: test.fullTitle(),
             }
@@ -49,14 +49,21 @@ function runTestSpecs(specPaths, opts) {
       }
     });
 
-    specPaths.forEach((specPath) => {
-      mocha.addFile(specPath);
-    });
+    mocha
+      .addFile(specPath)
+      .run((failures) => {
+        process.send({
+          type: "SPEC_FINISHED",
+          payload: {
+            failures
+          }
+        });
 
-    mocha.run(resolve);
+        resolve(failures);
+      });
   });
 }
 
 module.exports = {
-  runTestSpecs
+  runTestSpec
 };
