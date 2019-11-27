@@ -5,12 +5,24 @@ const { configStore } = require("../stores/configStore");
 const { commandLineService } = require("./services/commandLineService");
 const { transformArgs } = require("../utils");
 
+const retry = (func, maxRetries, retries = 0) => {
+  return func(retries)
+    .catch(() => {
+      if (retries < maxRetries) {
+        return retry(func, maxRetries, retries + 1);
+      }
+
+      throw new Error(`Failed after ${retries} retries`);
+    })
+};
+
 (async () => {
   // Parse CLI options.
   commandLineService.init();
 
   const reporters = configStore.getReporters();
   const maxDevices = configStore.getMaxDevices();
+  const maxSpecRetries = configStore.getMaxSpecRetries();
   const devices = configStore.getDevices();
   const events = new EventEmitter();
   let totalSpawned = 0;
@@ -18,7 +30,7 @@ const { transformArgs } = require("../utils");
   let failures = 0;
 
   const runWorker = (deviceIndex, specPath) => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       const device = configStore.getDevice(deviceIndex);
       const relativeSpecPath = path.relative(path.dirname(commandLineService.getConfigPath()), specPath);
       const worker = cp.fork(path.join(__dirname, "..", "worker", "worker.js"), transformArgs({
@@ -50,13 +62,9 @@ const { transformArgs } = require("../utils");
       });
 
       worker.on("close", (code) => {
-        if (code !== 0) {
-          failures += 1;
-        }
-
-        events.emit("worker:finished", { device, specPath: relativeSpecPath, success: code === 0 });
-
-        resolve();
+        return code === 0
+          ? resolve()
+          : reject();
       });
     });
   };
@@ -66,8 +74,24 @@ const { transformArgs } = require("../utils");
       return Promise.resolve();
     }
 
-    return runWorker(deviceIndex, specPaths[0])
-      .then(() => runDeviceSpecs(deviceIndex, specPaths.slice(1)));
+    const device = configStore.getDevice(deviceIndex);
+    const relativeSpecPath = path.relative(path.dirname(commandLineService.getConfigPath()), specPaths[0]);
+
+    const retryWorker = () => retry((count) => {
+      if (count > 0) {
+        events.emit("worker:retry", { device, specPath: relativeSpecPath, retries: count, maxRetries: maxSpecRetries });
+      }
+
+      return runWorker(deviceIndex, specPaths[0]);
+    }, maxSpecRetries);
+
+    return retryWorker()
+      .then(() => events.emit("worker:passed", { device, specPath: relativeSpecPath }))
+      .catch(() => {
+        failures += 1;
+        events.emit("worker:failed", { device, specPath: relativeSpecPath });
+      })
+      .finally(() => runDeviceSpecs(deviceIndex, specPaths.slice(1)));
   };
 
   const runDevice = (deviceIndex) => {

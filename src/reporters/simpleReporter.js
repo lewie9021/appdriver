@@ -39,6 +39,13 @@ function simpleReporter(events) {
 
     console.log(`${getCapabilityText(device.capabilities)}: ${nameText} ${getDurationText(duration)}`);
   });
+
+  events.on("worker:retry", ({ device, specPath, retries, maxRetries }) => {
+    const specPathText = `${colors.blue}${specPath}${colors.end}`;
+    const countText = `${colors.cyan}(${retries}/${maxRetries})${colors.end}`;
+
+    console.log(`${getCapabilityText(device.capabilities)}: ${specPathText} ${colors.red}Retrying...${colors.end} ${countText}`);
+  });
 }
 
 module.exports = simpleReporter;
