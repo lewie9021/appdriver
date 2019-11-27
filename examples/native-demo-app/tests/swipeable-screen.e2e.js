@@ -4,6 +4,7 @@ describe("Swipeable Screen", () => {
   before(async () => {
     await element(by.label("menu-screen")).waitToBeVisible();
     await element(by.label("list-item-swipeable-screen")).tap();
+    await element(by.label("menu-screen")).waitToBeInvisible();
     await element(by.label("swipeable-screen")).waitToBeVisible();
   });
 

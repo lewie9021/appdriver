@@ -6,6 +6,7 @@ describe("Button Screen", () => {
   before(async () => {
     await element(by.label("menu-screen")).waitToBeVisible();
     await element(by.label("list-item-button-screen")).tap();
+    await element(by.label("menu-screen")).waitToBeInvisible();
     $screen = await element(by.label("button-screen")).waitToBeVisible();
   });
 
