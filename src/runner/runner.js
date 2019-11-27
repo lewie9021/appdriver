@@ -27,9 +27,6 @@ const { transformArgs } = require("../utils");
         deviceIndex
       }));
 
-      currentlySpawned += 1;
-      totalSpawned += 1;
-
       events.emit("worker:started", { device, worker, specPath: relativeSpecPath });
 
       worker.on("message", ({ type, payload }) => {
@@ -53,8 +50,6 @@ const { transformArgs } = require("../utils");
       });
 
       worker.on("close", (code) => {
-        currentlySpawned -= 1;
-
         if (code !== 0) {
           failures += 1;
         }
@@ -81,9 +76,14 @@ const { transformArgs } = require("../utils");
 
     events.emit("device:started", { device });
 
+    currentlySpawned += 1;
+    totalSpawned += 1;
+
     return runDeviceSpecs(deviceIndex, specPaths)
       .then(() => {
         events.emit("device:finished", { device });
+
+        currentlySpawned -= 1;
 
         if (totalSpawned < devices.length && currentlySpawned < maxDevices) {
           return runDevice(totalSpawned);
