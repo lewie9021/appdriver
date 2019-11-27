@@ -134,7 +134,7 @@ function createAppiumService(sessionStore) {
   const setContext = ({ sessionId = sessionStore.getSessionId(), context }) => {
     return request({
       method: "POST",
-      path: `/session/${sessionId}/contexts`,
+      path: `/session/${sessionId}/context`,
       payload: { name: context }
     });
   };
