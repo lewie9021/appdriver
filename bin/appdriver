@@ -1,27 +1,3 @@
 #!/usr/bin/env node
 
-const path = require("path");
-const yargs = require("yargs");
-const runner = require("../src/cli/runner");
-
-const params = yargs
-  .option("config", {
-    describe:  "Path to config file.",
-    demandOption: true,
-    type: "string",
-    coerce: (arg) => {
-      const configPath = path.join(process.cwd(), arg);
-      const config = require(configPath);
-
-      return {
-        ...config,
-        maxInstances: config.maxInstances || 1,
-        specs: config.specs.map((relativeSpecPath) => {
-          return path.join(path.dirname(configPath), relativeSpecPath);
-        })
-      };
-    }
-  })
-  .argv;
-
-runner.init(params);
+require("../src/runner/runner");

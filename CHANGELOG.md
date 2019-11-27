@@ -1,5 +1,31 @@
 # Change Log
 
+## [v1.0.0-alpha.12] - 2019-11-27
+
+### Added
+
+- Support for resetting / restarting the application between specs.
+- Support for passing a `recursive` option to .getText on Element. 
+
+### Changed
+
+- Implemented the newly documented configuration format. This now supports defining timeouts, test retries, language (e.g. `describe` & `it`), and reporters.
+- `restartApp` on Device now uses Appium's activate and terminate commands to be more intuitive.
+- `resetApp` and `restartApp` on Device no longer require a capabilities parameter.
+- Simple reporter to include the relative spec file path alongside the test name.
+
+## [v1.0.0-alpha.11] - 2019-11-19
+
+### Changed
+
+- Major internal refactoring to greatly improve error handling and testability.
+- `.wait` for gestures now simply takes a duration value just like `.wait` on Device.
+
+### Fixed
+
+- `.findElement` on Element correctly support chaining methods that apply to the newly found element. 
+- Console logs and errors not showing during test runs.
+
 ## [v1.0.0-alpha.10] - 2019-10-30
 
 ### Added

@@ -1,9 +1,9 @@
-const Gesture = require("../../src/Gesture");
+const Gesture = require("../../src/worker/Gesture");
 
 it("adds a wait action to the sequence", () => {
   const gesture = new Gesture();
 
-  gesture.wait({duration: 100});
+  gesture.wait(100);
 
   return expect(gesture.resolve()).resolves.toEqual([{
     id: "finger1",
@@ -20,7 +20,7 @@ it("adds a wait action to the sequence", () => {
 it("allows function chaining", () => {
   const gesture = new Gesture();
 
-  const result = gesture.wait({x: 100, y: 100});
+  const result = gesture.wait(100);
 
   expect(result).toBeInstanceOf(Gesture);
 });

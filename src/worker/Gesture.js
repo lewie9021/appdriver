@@ -1,4 +1,4 @@
-const { isNumber } = require("./utils");
+const { isNumber } = require("../utils");
 
 class Gesture {
   constructor() {
@@ -9,11 +9,11 @@ class Gesture {
     const resolvedActions = await Promise.all(
       this.actions.map(async (action) => {
         if (action.element) {
-          const elementId = await action.element._getElementId();
+          const ref = await action.element._getRef();
 
           return {
             ...action,
-            element: elementId
+            element: ref.ELEMENT
           };
         }
 
@@ -63,6 +63,7 @@ class Gesture {
     }];
   }
 
+  // TODO: What about options.element without x and y?
   press(options = {}) {
     // TODO: What if only x or y is passed. The user wouldn't know that their coordinate is ignored.
     if (isNumber(options.x) && isNumber(options.y)) {
@@ -81,9 +82,7 @@ class Gesture {
     return this;
   }
 
-  wait(options) {
-    const duration = options.duration;
-
+  wait(duration) {
     this.actions.push({
       type: "wait",
       duration

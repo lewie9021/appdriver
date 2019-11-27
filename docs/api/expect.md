@@ -44,7 +44,7 @@ Inverts the chained assertion to test the opposite.
 
 Asserts the element has a value strictly equal to `value`.
 
-[```.toHaveText(text: String) => Promise```](./expect/toHaveText.md)
+[```.toHaveText(text: String, options?: Object) => Promise```](./expect/toHaveText.md)
 
 <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 

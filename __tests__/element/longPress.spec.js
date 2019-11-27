@@ -1,161 +1,170 @@
-const appiumServer = require("../helpers/appiumServer");
-const fetch = require("node-fetch");
+jest.mock("../../src/worker/services/appiumService");
 
+const { appiumService } = require("../../src/worker/services/appiumService");
+const { createFindElementMock } = require("../appiumServiceMocks");
+const { ElementNotFoundError, ElementActionError, AppiumError } = require("../../src/worker/errors");
+const { Element } = require("../../src/worker/Element");
 const { element, by } = require("../../");
-const { Element } = require("../../src/element");
-const { ElementActionError } = require("../../src/errors");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
+});
+
+it("executes the 'longPressElement' method on the Appium Service", async () => {
+  const ref = createFindElementMock();
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "longPressElement").mockResolvedValue(null);
+
+  await element(by.label("button")).longPress();
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.longPressElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.longPressElement).toHaveBeenCalledWith(expect.objectContaining({ element: ref }));
 });
 
 it("returns an instance of Element to enable function chaining", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockActions();
+  const ref = createFindElementMock();
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "longPressElement").mockResolvedValue(null);
 
   const $element = await element(by.label("button")).longPress();
 
   expect($element).toBeInstanceOf(Element);
-  await expect($element.value).resolves.toEqual("elementId");
 });
 
-it("executes a long press gesture", async () => {
-  const elementId = "elementId";
+it("defaults 'x' and 'y' parameters to 0", async () => {
+  const ref = createFindElementMock();
 
-  appiumServer.mockFindElement({elementId});
-  appiumServer.mockActions();
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "longPressElement").mockResolvedValue(null);
 
   await element(by.label("button")).longPress();
 
-  expect(fetch).toHaveBeenCalledTimes(2);
-  expect(fetch).toHaveBeenLastCalledWith(
-    expect.any(String),
-    expect.objectContaining({
-      method: "POST",
-      body: JSON.stringify({
-        actions: [{
-          id: "finger1",
-          type: "pointer",
-          parameters: {
-            pointerType: "touch"
-          },
-          actions: [
-            {type: "pointerMove", duration: 0, origin: {element: elementId}, x: 0, y: 0},
-            {type: "pointerDown", button: 0},
-            {type: "pause", duration: 750},
-            {type: "pointerUp", button: 0}
-          ]
-        }]
-      })
-    })
-  );
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.longPressElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.longPressElement).toHaveBeenCalledWith(expect.objectContaining({ x: 0, y: 0 }));
 });
 
-it("accepts x and y parameters to offset from the top left of the element", async () => {
-  const elementId = "elementId";
-  const x = 32;
-  const y = 64;
+it("defaults the 'duration' parameter to 750", async () => {
+  const ref = createFindElementMock();
 
-  const findElementMock = appiumServer.mockFindElement({elementId});
-  const longPressElementMock = appiumServer.mockActions();
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "longPressElement").mockResolvedValue(null);
+
+  await element(by.label("button")).longPress();
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.longPressElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.longPressElement).toHaveBeenCalledWith(expect.objectContaining({ duration: 750 }));
+});
+
+it("supports passing 'x' and 'y' parameters to offset from the top left of the element", async () => {
+  const ref = createFindElementMock();
+  const x = 100;
+  const y = 300;
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "longPressElement").mockResolvedValue(null);
 
   await element(by.label("button")).longPress({ x, y });
 
-  const findElementMockCalls = appiumServer.getCalls(findElementMock);
-  const longPressElementMockCalls = appiumServer.getCalls(longPressElementMock);
-
-  expect(findElementMockCalls).toHaveLength(1);
-  expect(longPressElementMockCalls).toHaveLength(1);
-  expect(longPressElementMockCalls[0].options.body).toEqual({
-    actions: [{
-      id: "finger1",
-      type: "pointer",
-      parameters: {
-        pointerType: "touch"
-      },
-      actions: [
-        {type: "pointerMove", duration: 0, origin: {element: elementId}, x, y},
-        {type: "pointerDown", button: 0},
-        {type: "pause", duration: 750},
-        {type: "pointerUp", button: 0}
-      ]
-    }]
-  });
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.longPressElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.longPressElement).toHaveBeenCalledWith(expect.objectContaining({ x, y }));
 });
 
-it("accepts a duration parameter to redefine how long to perform the press action", async () => {
-  const elementId = "elementId";
+it("supports passing a 'duration' parameter to redefine the press duration", async () => {
+  const ref = createFindElementMock();
   const duration = 1000;
 
-  appiumServer.mockFindElement({elementId});
-  appiumServer.mockActions();
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "longPressElement").mockResolvedValue(null);
 
-  await element(by.label("button")).longPress({duration});
+  await element(by.label("button")).longPress({ duration });
 
-  expect(fetch).toHaveBeenCalledTimes(2);
-  expect(fetch).toHaveBeenLastCalledWith(
-    expect.any(String),
-    expect.objectContaining({
-      method: "POST",
-      body: JSON.stringify({
-        actions: [{
-          id: "finger1",
-          type: "pointer",
-          parameters: {
-            pointerType: "touch"
-          },
-          actions: [
-            {type: "pointerMove", duration: 0, origin: {element: elementId}, x: 0, y: 0},
-            {type: "pointerDown", button: 0},
-            {type: "pause", duration},
-            {type: "pointerUp", button: 0}
-          ]
-        }]
-      })
-    })
-  );
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.longPressElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.longPressElement).toHaveBeenCalledWith(expect.objectContaining({ duration }));
 });
 
-it("returns a new element to avoid unwanted mutation", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockActions();
+it("throws an ElementNotFoundError if the element isn't found", async () => {
+  const error = new AppiumError("Request error.", 7);
 
-  const $element = await element(by.label("button"));
-  const $newElement = await $element.longPress();
+  jest.spyOn(appiumService, "findElement").mockRejectedValue(error);
+  jest.spyOn(appiumService, "longPressElement").mockResolvedValue(null);
+  expect.assertions(4);
 
-  expect($newElement).not.toBe($element);
+  try {
+    await element(by.label("box")).longPress();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementNotFoundError);
+    expect(err).toHaveProperty("message", "Failed to find element.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.longPressElement).toHaveBeenCalledTimes(0);
 });
 
-it("correctly propagates errors", async () => {
-  appiumServer.mockFindElement({ elementId: "elementId" });
-  appiumServer.mockClearElement({ status: 7, elementId: "elementId" });
-  appiumServer.mockActions();
+it("throws an ElementActionError for Appium request errors", async () => {
+  const ref = createFindElementMock();
+  const error = new AppiumError("Request error.", 3);
 
-  const result = element(by.label("button"))
-    .clearText()
-    .longPress();
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "longPressElement").mockRejectedValue(error);
+  expect.assertions(4);
 
-  await expect(result)
-    .rejects.toThrow(ElementActionError);
+  try {
+    await element(by.label("box")).longPress();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to long press element.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.longPressElement).toHaveBeenCalledTimes(1);
 });
 
-it("throws action error if element doesn't exist", async () => {
-  appiumServer.mockFindElement({status: 7, elementId: "elementId"});
-  appiumServer.mockActions();
+it("propagates errors from further up the chain", async () => {
+  const ref = createFindElementMock();
+  const error = new AppiumError("Request error.", 3);
 
-  const result = element(by.label("button"))
-    .longPress();
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "sendElementKeys").mockRejectedValue(error);
+  jest.spyOn(appiumService, "longPressElement").mockResolvedValue(null);
+  expect.assertions(5);
 
-  await expect(result)
-    .rejects.toThrow(ElementActionError);
+  try {
+    await element(by.label("input"))
+      .typeText("Hello world!")
+      .longPress();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to type text on element.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.sendElementKeys).toHaveBeenCalledTimes(1);
+  expect(appiumService.longPressElement).toHaveBeenCalledTimes(0);
 });
 
-it("correctly handles W3C action request errors", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockActions({status: 3});
+it("propagates other types of errors", async () => {
+  const ref = createFindElementMock();
+  const error = new Error("Something went wrong.");
 
-  await expect(element(by.label("button")).longPress())
-    .rejects.toThrow(new ElementActionError("Failed to long press element."));
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "longPressElement").mockRejectedValue(error);
+  expect.assertions(4);
 
-  expect(fetch).toHaveBeenCalledTimes(2);
+  try {
+    await element(by.label("box")).longPress();
+  } catch (err) {
+    expect(err).toBeInstanceOf(error.constructor);
+    expect(err).toHaveProperty("message", error.message);
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.longPressElement).toHaveBeenCalledTimes(1);
 });

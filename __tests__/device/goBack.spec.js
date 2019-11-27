@@ -1,59 +1,50 @@
-const appiumServer = require("../helpers/appiumServer");
-const { NotImplementedError } = require("../../src/errors");
+jest.mock("../../src/worker/services/appiumService");
 
-jest.mock("../../src/session");
-const mockSession = require("../helpers/mockSession");
-
+const { appiumService } = require("../../src/worker/services/appiumService");
+const { AppiumError, ActionError, NotImplementedError } = require("../../src/worker/errors");
 const { device } = require("../../");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
-describe("Android", () => {
-  beforeEach(() => {
-    mockSession({
-      sessionId: "sessionId",
-      platformName: "Android"
-    });
-  });
+it("executes the 'goBack' method on the Appium Service", async () => {
+  jest.spyOn(appiumService, "goBack").mockResolvedValue(null);
 
-  it("taps the hardware back button", async () => {
-    const backMock = appiumServer.mockBack();
+  await device.goBack();
 
+  expect(appiumService.goBack).toHaveBeenCalledTimes(1);
+});
+
+it("throws an ActionError for Appium request errors", async () => {
+  const error = new AppiumError("Request error.", 3);
+
+  jest.spyOn(appiumService, "goBack").mockRejectedValue(error);
+  expect.assertions(3);
+
+  try {
     await device.goBack();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ActionError);
+    expect(err).toHaveProperty("message", "Failed to go back.");
+  }
 
-    expect(appiumServer.getCalls(backMock)).toHaveLength(1);
-  });
-
-  it("correctly handles back request errors", async () => {
-    const backMock = appiumServer.mockBack({status: 3});
-
-    await expect(device.goBack())
-      .rejects.toThrow(new Error("Failed to go back."));
-
-    expect(appiumServer.getCalls(backMock)).toHaveLength(1);
-  });
+  expect(appiumService.goBack).toHaveBeenCalledTimes(1);
 });
 
-describe("iOS", () => {
-  beforeEach(() => {
-    mockSession({
-      sessionId: "sessionId",
-      platformName: "iOS"
-    });
-  });
+it("propagates other types of errors", async () => {
+  const error = new NotImplementedError();
 
-  it("throws a not implemented error", async () => {
-    const backMock = appiumServer.mockBack();
-    mockSession({
-      sessionId: "sessionId",
-      platformName: "iOS"
-    });
+  jest.spyOn(appiumService, "goBack").mockRejectedValue(error);
+  expect.assertions(3);
 
-    await expect(device.goBack())
-      .rejects.toThrow(NotImplementedError);
+  try {
+    await device.goBack();
+  } catch (err) {
+    expect(err).toBeInstanceOf(error.constructor);
+    expect(err).toHaveProperty("message", error.message);
+  }
 
-    expect(appiumServer.getCalls(backMock)).toHaveLength(0);
-  });
+  expect(appiumService.goBack).toHaveBeenCalledTimes(1);
 });

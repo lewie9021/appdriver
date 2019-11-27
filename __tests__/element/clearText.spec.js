@@ -1,66 +1,115 @@
-const appiumServer = require("../helpers/appiumServer");
-const fetch = require("node-fetch");
+jest.mock("../../src/worker/services/appiumService");
 
+const { appiumService } = require("../../src/worker/services/appiumService");
+const { createFindElementMock } = require("../appiumServiceMocks");
+const { ElementNotFoundError, ElementActionError, AppiumError } = require("../../src/worker/errors");
+const { Element } = require("../../src/worker/Element");
 const { element, by } = require("../../");
-const { Element } = require("../../src/element");
-const { ElementActionError } = require("../../src/errors");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
+});
+
+it("executes the 'clearElementText' method on the Appium Service", async () => {
+  const ref = createFindElementMock();
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "clearElementText").mockResolvedValue(null);
+
+  await element(by.label("input")).clearText();
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.clearElementText).toHaveBeenCalledTimes(1);
+  expect(appiumService.clearElementText).toHaveBeenCalledWith(expect.objectContaining({ element: ref }));
 });
 
 it("returns an instance of Element to enable function chaining", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockClearElement({elementId: "elementId"});
+  const ref = createFindElementMock();
 
-  const $element = await element(by.label("text-input")).clearText();
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "clearElementText").mockResolvedValue(null);
+
+  const $element = await element(by.label("input")).clearText();
 
   expect($element).toBeInstanceOf(Element);
-  expect(fetch).toHaveBeenCalledTimes(2);
-  await expect($element.value).resolves.toEqual("elementId");
 });
 
-it("returns a new element to avoid unwanted mutation", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockClearElement({elementId: "elementId"});
+it("throws an ElementNotFoundError if the element isn't found", async () => {
+  const error = new AppiumError("Request error.", 7);
 
-  const $element = await element(by.label("text-input"));
-  const $newElement = await $element.clearText();
+  jest.spyOn(appiumService, "findElement").mockRejectedValue(error);
+  jest.spyOn(appiumService, "clearElementText").mockResolvedValue(null);
+  expect.assertions(4);
 
-  expect($newElement).not.toBe($element);
+  try {
+    await element(by.label("input")).clearText();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementNotFoundError);
+    expect(err).toHaveProperty("message", "Failed to find element.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.clearElementText).toHaveBeenCalledTimes(0);
 });
 
-it("correctly propagates errors", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockActions({ status: 3 });
-  appiumServer.mockClearElement({elementId: "elementId"});
+it("throws an ElementActionError for Appium request errors", async () => {
+  const ref = createFindElementMock();
+  const error = new AppiumError("Request error.", 3);
 
-  const result = element(by.label("text-input"))
-    .tap()
-    .clearText();
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "clearElementText").mockRejectedValue(error);
+  expect.assertions(4);
 
-  await expect(result)
-    .rejects.toThrow(ElementActionError);
+  try {
+    await element(by.label("input")).clearText();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to clear text on element.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.clearElementText).toHaveBeenCalledTimes(1);
 });
 
-it("throws action error if element doesn't exist", async () => {
-  appiumServer.mockFindElement({status: 7, elementId: "elementId"});
-  appiumServer.mockClearElement({elementId: "elementId"});
+it("propagates errors from further up the chain", async () => {
+  const ref = createFindElementMock();
+  const error = new AppiumError("Request error.", 3);
 
-  const result = element(by.label("text-input"))
-    .clearText();
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "sendElementKeys").mockRejectedValue(error);
+  jest.spyOn(appiumService, "clearElementText").mockResolvedValue(null);
+  expect.assertions(5);
 
-  await expect(result)
-    .rejects.toThrow(ElementActionError);
+  try {
+    await element(by.label("input"))
+      .typeText("Hello world!")
+      .clearText();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to type text on element.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.sendElementKeys).toHaveBeenCalledTimes(1);
+  expect(appiumService.clearElementText).toHaveBeenCalledTimes(0);
 });
 
-it("correctly handles clear action request errors", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockClearElement({status: 3, elementId: "elementId"});
+it("propagates other types of errors", async () => {
+  const ref = createFindElementMock();
+  const error = new Error("Something went wrong.");
 
-  await expect(element(by.label("text-input")).clearText())
-    .rejects.toThrow(new ElementActionError("Failed to clear text."));
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "clearElementText").mockRejectedValue(error);
+  expect.assertions(4);
 
-  expect(fetch).toHaveBeenCalledTimes(2);
+  try {
+    await element(by.label("input")).clearText();
+  } catch (err) {
+    expect(err).toBeInstanceOf(error.constructor);
+    expect(err).toHaveProperty("message", error.message);
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.clearElementText).toHaveBeenCalledTimes(1);
 });
-

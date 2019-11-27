@@ -1,5 +1,5 @@
 const { NotImplementedError } = require("./errors");
-const { getValueType, isPromise } = require("./utils");
+const { getValueType, isPromise } = require("../utils");
 
 const displayValue = (value) => {
   const valueType = getValueType(value);
@@ -23,8 +23,8 @@ class Expect {
     this.value = value;
   }
 
-  async toHaveText(value) {
-    const elementText = await this.value.getText();
+  async toHaveText(value, options) {
+    const elementText = await this.value.getText(options);
 
     if (elementText !== value) {
       throw new Error(`Expected element to have text '${value}' but instead got '${elementText}'.`);
@@ -104,8 +104,6 @@ class Expect {
   }
 }
 
-const expect = (value) => {
-  return new Expect(value);
+module.exports = {
+  Expect
 };
-
-module.exports = expect;

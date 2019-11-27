@@ -21,8 +21,8 @@ describe("My First Testing App", () => {
 
 Before we can run our test script, we must first define our AppDriver configuration file:
 
-> Note: Configuration of AppDriver is currently very basic.
-> - 'specs' only supports paths directly to files (no fuzzy matching).
+> Note:
+> - 'specs' only supports paths directly to files (no fuzzy matching yet).
 
 **config/local.config.js**
 ```javascript
@@ -30,6 +30,7 @@ const path = require("path");
 
 const simulators = {
   iPhoneX: {
+    bundleId: "org.reactjs.native.example.MyFirstTestingApp",
     app: path.join(__dirname, "app", "MyFirstTestingApp.zip"),
     platformName: "iOS",
     platformVersion: "12.1",
@@ -45,8 +46,8 @@ module.exports = {
   specs: [
     "../tests/hello-world.e2e.js"
   ],
-  capabilities: [
-    simulators.iPhoneX
+  devices: [
+    { capabilities: simulators.iPhoneX }
   ]
 };
 ```

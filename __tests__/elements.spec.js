@@ -1,35 +1,50 @@
-const appiumServer = require("./helpers/appiumServer");
+jest.mock("../src/worker/services/appiumService");
 
-jest.mock("../src/session");
-const mockSession = require("./helpers/mockSession");
-
+const { appiumService } = require("../src/worker/services/appiumService");
+const { ElementsNotFoundError, AppiumError } = require("../src/worker/errors");
+const { createFindElementsMock } = require("./appiumServiceMocks");
 const { elements, by } = require("../");
-const { ElementsNotFoundError } = require("../src/errors");
-
-beforeEach(() => {
-  mockSession({
-    sessionId: "sessionId",
-    platformName: "iOS"
-  });
-});
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
 it("returns an array of elements", async () => {
-  const elementIds = ["element-0", "element-1", "element-2"];
-  appiumServer.mockFindElements({elements: elementIds});
+  const refs = createFindElementsMock({ elementIds: [ "elementId", "elementId2", "elementId3"] });
 
-  const result = await elements(by.label("list-item-*"));
+  jest.spyOn(appiumService, "findElements").mockResolvedValue(refs);
+
+  const result = await elements(by.label("list-item"));
 
   expect(result).toBeInstanceOf(Array);
-  expect(result).toHaveLength(elementIds.length);
+  expect(result).toHaveLength(refs.length);
 });
 
-it("correctly handles find elements request errors", async () => {
-  appiumServer.mockFindElements({status: 3});
+it("throws an ElementNotFoundError for Appium request errors", async () => {
+  const error = new AppiumError("Request error.", 3);
 
-  await expect(elements(by.label("list-item-*")))
-    .rejects.toThrow(ElementsNotFoundError);
+  jest.spyOn(appiumService, "findElements").mockRejectedValue(error);
+  expect.assertions(2);
+
+  try {
+    await elements(by.label("list-item"));
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementsNotFoundError);
+    expect(err).toHaveProperty("message", "Failed to find elements.");
+  }
+});
+
+it("propagates other types of errors", async () => {
+  const error = new Error("Something went wrong.");
+
+  jest.spyOn(appiumService, "findElements").mockRejectedValue(error);
+  expect.assertions(2);
+
+  try {
+    await elements(by.label("list-item"));
+  } catch (err) {
+    expect(err).toBeInstanceOf(error.constructor);
+    expect(err).toHaveProperty("message", error.message);
+  }
 });

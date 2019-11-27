@@ -15,7 +15,7 @@ Swipe Gesture:
       x: size.width / 2,
       y: size.height / 2
     })
-    .wait({duration: 250})
+    .wait(250)
     .moveTo({y: (size.height / 2) - 100})
     .release();
   
@@ -31,7 +31,7 @@ Drop 'n' Drag Gesture:
   const $destination = await element(by.label("destination"));
   const dragAndDrop = gestures.create()
     .press({element: $box})
-    .wait({duration: 250})
+    .wait(250)
     .moveTo({element: $destination})
     .release();
   
@@ -62,7 +62,7 @@ Double Tap Gesture:
     .release();
   const doubleTap = gestures.series([
     tap,
-    gestures.wait({duration: 50}),
+    gestures.wait(50),
     tap
   ]);
   
@@ -77,7 +77,7 @@ Press Gesture:
   const $button = await element(by.label("button"));
   const longPress = gestures.create()
     .press()
-    .wait({duration: 500})
+    .wait(500)
     .release();
   
   await $button.performGesture(longPress);
@@ -113,18 +113,26 @@ Pinch Gesture:
 
 ### Gesture API
 
-:white_check_mark: [```.press(options?: {x?: Number, y?: Number, relative?: Boolean, element?: Element}) => Gesture```](./gesture/press.md)
+[```.press(options?: {x?: Number, y?: Number, relative?: Boolean, element?: Element}) => Gesture```](./gesture/press.md)
+
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 TODO: Description here.
 
-:white_check_mark: [```.wait(options: {duration: Number}) => Gesture```](./gesture/wait.md)
+[```.wait(duration: Number) => Gesture```](./gesture/wait.md)
+
+<img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 TODO: Description here.
 
-:white_check_mark: [```.moveTo(options: {x: Number, y: Number, relative?: Boolean, duration?: Number, element?: Element}) => Gesture```](./gesture/moveTo.md)
+[```.moveTo(options: {x: Number, y: Number, relative?: Boolean, duration?: Number, element?: Element}) => Gesture```](./gesture/moveTo.md)
+
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 TODO: Description here.
 
-:white_check_mark: [```.release() => Gesture```](./gesture/release.md)
+[```.release() => Gesture```](./gesture/release.md)
+
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 TODO: Description here.

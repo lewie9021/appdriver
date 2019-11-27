@@ -1,165 +1,64 @@
-const appiumServer = require("../helpers/appiumServer");
-const fetch = require("node-fetch");
+jest.mock("../../src/worker/stores/sessionStore");
+jest.mock("../../src/worker/services/appiumService");
 
-jest.mock("../../src/session");
-const mockSession = require("../helpers/mockSession");
-
+const { sessionStore } = require("../../src/worker/stores/sessionStore");
 const { by } = require("../../");
 
 afterEach(() => {
-  appiumServer.resetMocks();
   jest.resetAllMocks();
-});
-
-it("returns an object containing a resolve method to execute the query", () => {
-  const result = by.label("button");
-
-  expect(result).toHaveProperty("resolve");
-});
-
-const testPlatform = () => {
-  it("supports fetching a single matching element", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-    const accessibilityLabel = "button";
-
-    const matcher = by.label(accessibilityLabel);
-    await matcher.resolve();
-
-    expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.objectContaining({
-        method: "POST",
-        body: JSON.stringify({
-          using: "accessibility id",
-          value: accessibilityLabel,
-        })
-      })
-    );
-  });
-
-  it("supports fetching multiple matching elements", async () => {
-    const accessibilityLabel = "button";
-    appiumServer.mockFindElements({elements: ["element-0", "element-1"]});
-
-    const matcher = by.label(accessibilityLabel);
-
-    await matcher.resolve(true);
-
-    expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.objectContaining({
-        method: "POST",
-        body: JSON.stringify({
-          using: "accessibility id",
-          value: accessibilityLabel,
-        })
-      })
-    );
-  });
-};
-
-describe("iOS", () => {
-  beforeEach(() => {
-    mockSession({
-      sessionId: "sessionId",
-      platformName: "iOS"
-    });
-  });
-
-  testPlatform();
-
-  it("supports fetching elements starting with a given accessibility label", async () => {
-    appiumServer.mockFindElements({elements: ["element-0", "element-1"]});
-
-    const matcher = by.label("list-item-*");
-
-    await matcher.resolve(true);
-
-    expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.objectContaining({
-        method: "POST",
-        body: JSON.stringify({
-          using: "-ios predicate string",
-          value: "name BEGINSWITH 'list-item-'",
-        })
-      })
-    );
-  });
-
-  it("supports fetching elements containing the a accessibility label", async () => {
-    const accessibilityLabel = "*-item-*";
-    appiumServer.mockFindElements({elements: ["element-0", "element-1"]});
-
-    const matcher = by.label(accessibilityLabel);
-
-    await matcher.resolve(true);
-
-    expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.objectContaining({
-        method: "POST",
-        body: JSON.stringify({
-          using: "-ios predicate string",
-          value: "name CONTAINS '-item-'",
-        })
-      })
-    );
-  });
+  jest.restoreAllMocks();
 });
 
 describe("Android", () => {
-  beforeEach(() => {
-    mockSession({
-      sessionId: "sessionId",
-      platformName: "Android"
+  beforeEach(() => jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("Android"));
+
+  it("supports simple queries", () => {
+    const label = "button";
+
+    expect(by.label(label)).toEqual({
+      using: "accessibility id",
+      value: label
     });
   });
 
-  testPlatform();
-
-  it("supports fetching elements starting with a given accessibility label", async () => {
-    appiumServer.mockFindElements({elements: ["element-0", "element-1"]});
-
-    const matcher = by.label("list-item-*");
-
-    await matcher.resolve(true);
-
-    expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.objectContaining({
-        method: "POST",
-        body: JSON.stringify({
-          using: "-android uiautomator",
-          value: "new UiSelector().descriptionStartsWith(\"list-item-\")",
-        })
-      })
-    );
+  it("supports 'ends with' queries", () => {
+    expect(by.label("button-*")).toEqual({
+      using: "-android uiautomator",
+      value: `new UiSelector().descriptionStartsWith("button-")`
+    });
   });
 
-  it("supports fetching elements containing the a accessibility label", async () => {
-    const accessibilityLabel = "*-item-*";
-    appiumServer.mockFindElements({elements: ["element-0", "element-1"]});
+  it("supports 'contains' queries", () => {
+    expect(by.label("*button*")).toEqual({
+      using: "-android uiautomator",
+      value: `new UiSelector().descriptionContains("button")`
+    });
+  });
+});
 
-    const matcher = by.label(accessibilityLabel);
+describe("iOS", () => {
+  beforeEach(() => jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("iOS"));
 
-    await matcher.resolve(true);
+  it("supports simple queries", () => {
+    const label = "button";
 
-    expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.objectContaining({
-        method: "POST",
-        body: JSON.stringify({
-          using: "-android uiautomator",
-          value: "new UiSelector().descriptionContains(\"-item-\")",
-        })
-      })
-    );
+    expect(by.label(label)).toEqual({
+      using: "accessibility id",
+      value: label
+    });
+  });
+
+  it("supports 'ends with' queries", () => {
+    expect(by.label("button-*")).toEqual({
+      using: "-ios predicate string",
+      value: `name BEGINSWITH 'button-'`
+    });
+  });
+
+  it("supports 'contains' queries", () => {
+    expect(by.label("*button*")).toEqual({
+      using: "-ios predicate string",
+      value: `name CONTAINS 'button'`
+    });
   });
 });

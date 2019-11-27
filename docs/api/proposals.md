@@ -1,10 +1,28 @@
 # Proposals
 
-This document contains API features that may eventually be implemented in the future.
+This document contains API proposals that may eventually be implemented in the future.
 
 ### Device
  
 :warning: [```.isReal: Boolean```](./device/isReal.md)
+
+<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />
+
+TODO: Description here.
+
+:warning: [```.getSource() => Promise<String>```](./device/getSource.md)
+
+<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />
+
+TODO: Description here.
+
+:warning: [```.setPortrait() => Promise```](./device/setPortrait.md)
+
+<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />
+
+TODO: Description here.
+
+:warning: [```.setLandscape() => Promise```](./device/setLandscape.md)
 
 <img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />
 
@@ -109,6 +127,18 @@ TODO: Description here.
 Note: Not supported on iOS yet. See https://github.com/appium/appium/issues/13441
 TODO: Description here.
 
+:warning: [```.tapBackspaceKey() => Element```](./element/tapBackspaceKey.md)
+
+<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />
+
+TODO: Description here.
+
+:warning: [```.tapReturnKey() => Element```](./element/tapReturnKey.md)
+
+<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />
+
+TODO: Description here.
+
 :warning: [```.getAttribute(attribute: String) => Promise<Any>```](./element/getAttribute.md)
 
 <img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />
@@ -121,3 +151,31 @@ TODO: Description here.
 <img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />
 
 To be used on scrollable elements, ensuring `element` is fully visible so that interactions are successful. Defaults `swipeGesture` to `gestures.swipeUp`.
+
+### Gestures
+
+:warning: [```.series(Array<Gesture>) => Gesture```](./gestures/series.md)
+
+TODO: Description here.
+
+:warning: [```.doubleTap(options?: {x?: Number, y?: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/doubleTap.md)
+
+TODO: Description here.
+
+### Configuration
+
+:warning: `appium.username: String?`
+
+Username for server authentication - useful when connecting to cloud services such as SauceLabs or BrowserStack.
+
+:warning: `appium.password: String?`
+
+Password for server authentication - useful when connecting to cloud services such as SauceLabs or BrowserStack.
+
+:warning: `plugins: Array<Function>?`
+
+List of plugins to provide functionality throughout your test run.
+
+:warning: `device.build: String?`
+
+Build command to execute before running. Useful in local development and have access to the app source code.

@@ -1,53 +1,85 @@
+jest.mock("fs");
+jest.mock("../../src/worker/services/appiumService");
+
 const fs = require("fs");
-const appiumServer = require("../helpers/appiumServer");
+const { appiumService } = require("../../src/worker/services/appiumService");
+const { AppiumError, ActionError } = require("../../src/worker/errors");
 const { device } = require("../../");
-const { NotImplementedError } = require("../../src/errors");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
   jest.restoreAllMocks();
 });
 
-it("takes a screenshot and stores on disk at the given 'filePath' location", async () => {
-  const encodedScreenshot = "c2NyZWVuc2hvdA==";
-  const decodedScreenshot = Buffer.from(encodedScreenshot, "base64").toString();
-  const filePath = "filePath";
-  const writeFileSpy = jest.spyOn(fs, "writeFile").mockImplementation((path, data, cb) => cb());
+it("returns a buffer containing the result of 'takeScreenshot' on the Appium Service", async () => {
+  const screenshot = "dGVzdA==";
 
-  const screenshotMock = appiumServer.mockScreenshot({ data: encodedScreenshot });
+  jest.spyOn(appiumService, "takeScreenshot").mockResolvedValue(screenshot);
 
-  await device.takeScreenshot({ filePath });
+  const result = await device.takeScreenshot();
 
-  expect(appiumServer.getCalls(screenshotMock)).toHaveLength(1);
-  expect(writeFileSpy).toHaveBeenCalledWith(filePath, decodedScreenshot, expect.any(Function));
+  expect(result).toBeInstanceOf(Buffer);
+  expect(result.toString("base64")).toEqual(screenshot);
+  expect(appiumService.takeScreenshot).toHaveBeenCalledTimes(1);
 });
 
-it("correctly handles screenshot request errors", async () => {
-  const screenshotMock = appiumServer.mockScreenshot({status: 3});
-  const filePath = "filePath";
+it("stores the screenshot on disk if a 'filePath' is configured", async () => {
+  const filePath = "some/path";
 
-  await expect(device.takeScreenshot({ filePath }))
-    .rejects.toThrow(new Error("Failed to take screenshot."));
+  jest.spyOn(appiumService, "takeScreenshot").mockResolvedValue("dGVzdA==");
+  jest.spyOn(fs, "writeFile").mockImplementation((path, data, cb) => cb());
 
-  expect(appiumServer.getCalls(screenshotMock)).toHaveLength(1);
+  const buffer = await device.takeScreenshot({ filePath });
+
+  expect(fs.writeFile).toHaveBeenCalledWith(filePath, buffer, expect.any(Function));
 });
 
-it("correct handles file system errors", async () => {
-  const screenshotMock = appiumServer.mockScreenshot({ data: "dGVzdA==" });
-  const writeFileSpy = jest.spyOn(fs, "writeFile")
-    .mockImplementation((path, data, cb) => cb(new Error("File System error.")));
+it("throws an ActionError for Appium request errors", async () => {
+  const error = new AppiumError("Request error.", 3);
 
-  await expect(device.takeScreenshot({ filePath: "some/path" }))
-    .rejects.toThrow(new Error("File System error."));
+  jest.spyOn(appiumService, "takeScreenshot").mockRejectedValue(error);
+  expect.assertions(3);
 
-  expect(appiumServer.getCalls(screenshotMock)).toHaveLength(1);
-  expect(writeFileSpy).toHaveBeenCalled();
+  try {
+    await device.takeScreenshot();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ActionError);
+    expect(err).toHaveProperty("message", "Failed to take screenshot.");
+  }
+
+  expect(appiumService.takeScreenshot).toHaveBeenCalledTimes(1);
 });
 
-// TODO: Until we figure out what makes the most sense.
-// - Should we infer a directory?
-// - Should we return the base64 string?
-it("throws if no filePath is given", () => {
-  return expect(device.takeScreenshot())
-    .rejects.toThrow(NotImplementedError);
+it("throws an ActionError if it is unable to store on disk when a 'filePath' is configured", async () => {
+  const error = new Error("File system error.");
+
+  jest.spyOn(appiumService, "takeScreenshot").mockResolvedValue("dGVzdA==");
+  jest.spyOn(fs, "writeFile").mockImplementation((path, data, cb) => cb(error));
+  expect.assertions(4);
+
+  try {
+    await device.takeScreenshot({ filePath: "some/path" });
+  } catch (err) {
+    expect(err).toBeInstanceOf(ActionError);
+    expect(err).toHaveProperty("message", "Failed to store screenshot on disk.");
+  }
+
+  expect(appiumService.takeScreenshot).toHaveBeenCalledTimes(1);
+  expect(fs.writeFile).toHaveBeenCalledTimes(1);
+});
+
+it("propagates other types of errors", async () => {
+  const error = new Error("Something went wrong.");
+
+  jest.spyOn(appiumService, "takeScreenshot").mockRejectedValue(error);
+  expect.assertions(3);
+
+  try {
+    await device.takeScreenshot();
+  } catch (err) {
+    expect(err).toBeInstanceOf(error.constructor);
+    expect(err).toHaveProperty("message", error.message);
+  }
+
+  expect(appiumService.takeScreenshot).toHaveBeenCalledTimes(1);
 });

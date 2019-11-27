@@ -4,6 +4,7 @@ const development = true;
 
 const simulators = {
   iPhone8: {
+    bundleId: "org.reactjs.native.example.NativeDemoApp",
     app: getAppPath("iOS", development),
     platformName: "iOS",
     platformVersion: "12.4",
@@ -14,6 +15,7 @@ const simulators = {
     noReset: true
   },
   iPhoneX: {
+    bundleId: "org.reactjs.native.example.NativeDemoApp",
     app: getAppPath("iOS", development),
     platformName: "iOS",
     platformVersion: "12.4",
@@ -27,6 +29,7 @@ const simulators = {
 
 const emulators = {
   pixel2: {
+    appPackage: "com.nativedemoapp",
     app: getAppPath("Android", development),
     platformName: "Android",
     platformVersion: "8.1",
@@ -40,16 +43,16 @@ const emulators = {
 };
 
 module.exports = {
-  maxInstances: 2,
+  maxDevices: 2,
   specs: [
-    // "../tests/button-screen.e2e.js",
-    // "../tests/carousel-screen.e2e.js"
-    "../tests/form-screen.e2e.js"
-    // "../tests/swipeable-screen.e2e.js"
+    "../tests/button-screen.e2e.js",
+    "../tests/carousel-screen.e2e.js",
+    "../tests/form-screen.e2e.js",
+    "../tests/swipeable-screen.e2e.js"
   ],
-  capabilities: [
-    simulators.iPhone8,
-    simulators.iPhoneX,
-    emulators.pixel2,
+  devices: [
+    { capabilities: simulators.iPhone8 },
+    { capabilities: simulators.iPhoneX },
+    { capabilities: emulators.pixel2 }
   ]
 };

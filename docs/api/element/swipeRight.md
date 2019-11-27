@@ -31,7 +31,7 @@ Swipe right 75% of the element width. Given the element has a width of 120, this
 ```javascript
 (async () => {
   await element(by.label("list-item"))
-    .swipeRight({ percentage: 1 });
+    .swipeRight({ percentage: 0.75 });
 })();
 ```
 

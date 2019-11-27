@@ -1,27 +1,59 @@
-const appiumServer = require("../helpers/appiumServer");
+jest.mock("../../src/worker/services/appiumService");
 
-const { by, element, expect: assert } = require("../../");
+const { appiumService } = require("../../src/worker/services/appiumService");
+const { createFindElementMock } = require("../appiumServiceMocks");
+const { ElementActionError, AppiumError } = require("../../src/worker/errors");
+const { element, by, expect: assert } = require("../../");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
 it("doesn't throw if expectation is met", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeOther"});
+  const ref = createFindElementMock();
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementExists").mockResolvedValue(true);
 
   const $element = await element(by.label("button"));
 
   await expect(assert($element).toExist())
-    .resolves.toBe(undefined);
+    .resolves.toEqual(undefined);
 });
 
 it("throws if expectation is not met", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementType({status: 3, elementId: "elementId"});
+  const ref = createFindElementMock();
 
-  const $element = await element(by.label("button"));
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementExists").mockResolvedValue(false);
+  expect.assertions(2);
 
-  await expect(assert($element).toExist())
-    .rejects.toThrow(new Error("Expected element to exist."));
+  try {
+    const $element = await element(by.label("button"));
+
+    await assert($element).toExist();
+  } catch (err) {
+    expect(err).toBeInstanceOf(Error);
+    expect(err).toHaveProperty("message", "Expected element to exist.");
+  }
+});
+
+// TODO: Could maybe wrap the error?
+it("correctly propagates errors", async () => {
+  const ref = createFindElementMock();
+  const error = new AppiumError("Request error.", 3);
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementExists").mockRejectedValue(error);
+  expect.assertions(2);
+
+  try {
+    const $element = await element(by.label("button"));
+
+    await assert($element).toExist();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to retrieve existence status of element.");
+  }
 });

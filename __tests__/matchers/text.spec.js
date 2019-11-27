@@ -1,192 +1,64 @@
-const appiumServer = require("../helpers/appiumServer");
-const fetch = require("node-fetch");
+jest.mock("../../src/worker/stores/sessionStore");
+jest.mock("../../src/worker/services/appiumService");
 
-jest.mock("../../src/session");
-const mockSession = require("../helpers/mockSession");
-
+const { sessionStore } = require("../../src/worker/stores/sessionStore");
 const { by } = require("../../");
 
 afterEach(() => {
-  appiumServer.resetMocks();
   jest.resetAllMocks();
-});
-
-it("returns an object containing a resolve method to execute the query", () => {
-  const result = by.text("Press Me!");
-
-  expect(result).toHaveProperty("resolve");
-});
-
-describe("iOS", () => {
-  beforeEach(() => {
-    mockSession({
-      sessionId: "sessionId",
-      platformName: "iOS"
-    });
-  });
-
-  it("supports fetching a single matching element", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-    const text = "Press Me!";
-
-    const matcher = by.text(text);
-    await matcher.resolve();
-
-    expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.objectContaining({
-        method: "POST",
-        body: JSON.stringify({
-          using: "-ios predicate string",
-          value: `label = '${text}'`,
-        })
-      })
-    );
-  });
-
-  it("supports fetching multiple matching elements", async () => {
-    appiumServer.mockFindElements({elements: ["element-0", "element-1"]});
-    const text = "Press Me!";
-
-    const matcher = by.text(text);
-    await matcher.resolve(true);
-
-    expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.objectContaining({
-        method: "POST",
-        body: JSON.stringify({
-          using: "-ios predicate string",
-          value: `label = '${text}'`,
-        })
-      })
-    );
-  });
-
-  it("supports fetching elements starting with the given text", async () => {
-    appiumServer.mockFindElements({elements: ["element-0", "element-1"]});
-
-    const matcher = by.text("Test*");
-    await matcher.resolve(true);
-
-    expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.objectContaining({
-        method: "POST",
-        body: JSON.stringify({
-          using: "-ios predicate string",
-          value: `label BEGINSWITH 'Test'`,
-        })
-      })
-    );
-  });
-
-  it("supports fetching elements containing the given text", async () => {
-    appiumServer.mockFindElements({elements: ["element-0", "element-1"]});
-
-    const matcher = by.text("*Test*");
-    await matcher.resolve(true);
-
-    expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.objectContaining({
-        method: "POST",
-        body: JSON.stringify({
-          using: "-ios predicate string",
-          value: `label CONTAINS 'Test'`,
-        })
-      })
-    );
-  });
+  jest.restoreAllMocks();
 });
 
 describe("Android", () => {
-  beforeEach(() => {
-    mockSession({
-      sessionId: "sessionId",
-      platformName: "Android"
+  beforeEach(() => jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("Android"));
+
+  it("supports simple queries", () => {
+    const text = "button";
+
+    expect(by.text(text)).toEqual({
+      using: "-android uiautomator",
+      value: `new UiSelector().text("${text}")`
     });
   });
 
-  it("supports fetching a single matching element", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-    const text = "Press Me!";
-
-    const matcher = by.text(text);
-    await matcher.resolve();
-
-    expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.objectContaining({
-        method: "POST",
-        body: JSON.stringify({
-          using: "-android uiautomator",
-          value: `new UiSelector().text("${text}")`,
-        })
-      })
-    );
+  it("supports 'ends with' queries", () => {
+    expect(by.text("button-*")).toEqual({
+      using: "-android uiautomator",
+      value: `new UiSelector().textStartsWith("button-")`
+    });
   });
 
-  it("supports fetching multiple matching elements", async () => {
-    appiumServer.mockFindElements({elements: ["element-0", "element-1"]});
-    const text = "Press Me!";
+  it("supports 'contains' queries", () => {
+    expect(by.text("*button*")).toEqual({
+      using: "-android uiautomator",
+      value: `new UiSelector().textContains("button")`
+    });
+  });
+});
 
-    const matcher = by.text(text);
-    await matcher.resolve(true);
+describe("iOS", () => {
+  beforeEach(() => jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("iOS"));
 
-    expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.objectContaining({
-        method: "POST",
-        body: JSON.stringify({
-          using: "-android uiautomator",
-          value: `new UiSelector().text("${text}")`,
-        })
-      })
-    );
+  it("supports simple queries", () => {
+    const text = "button";
+
+    expect(by.text(text)).toEqual({
+      using: "-ios predicate string",
+      value: `label = '${text}'`
+    });
   });
 
-  it("supports fetching elements starting with the given text", async () => {
-    appiumServer.mockFindElements({elements: ["element-0", "element-1"]});
-
-    const matcher = by.text("Test*");
-    await matcher.resolve(true);
-
-    expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.objectContaining({
-        method: "POST",
-        body: JSON.stringify({
-          using: "-android uiautomator",
-          value: `new UiSelector().textStartsWith("Test")`,
-        })
-      })
-    );
+  it("supports 'ends with' queries", () => {
+    expect(by.text("button-*")).toEqual({
+      using: "-ios predicate string",
+      value: `label BEGINSWITH 'button-'`
+    });
   });
 
-  it("supports fetching elements containing the given text", async () => {
-    appiumServer.mockFindElements({elements: ["element-0", "element-1"]});
-
-    const matcher = by.text("*Test*");
-    await matcher.resolve(true);
-
-    expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.objectContaining({
-        method: "POST",
-        body: JSON.stringify({
-          using: "-android uiautomator",
-          value: `new UiSelector().textContains("Test")`,
-        })
-      })
-    );
+  it("supports 'contains' queries", () => {
+    expect(by.text("*button*")).toEqual({
+      using: "-ios predicate string",
+      value: `label CONTAINS 'button'`
+    });
   });
 });

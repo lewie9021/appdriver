@@ -1,6 +1,6 @@
 {
   "name": "appdriver",
-  "version": "1.0.0-alpha.10",
+  "version": "1.0.0-alpha.12",
   "main": "index.js",
   "bin": "./bin/appdriver",
   "scripts": {
@@ -33,9 +33,6 @@
   "jest": {
     "testMatch": [
       "<rootDir>/__tests__/**/*.spec.js"
-    ],
-    "setupFiles": [
-      "<rootDir>/setupJest.js"
     ]
   }
 }

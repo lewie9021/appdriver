@@ -1,64 +1,121 @@
-const appiumServer = require("../helpers/appiumServer");
-const fetch = require("node-fetch");
+jest.mock("../../src/worker/services/appiumService");
 
+const { appiumService } = require("../../src/worker/services/appiumService");
+const { createFindElementMock } = require("../appiumServiceMocks");
+const { ElementNotFoundError, ElementActionError, AppiumError } = require("../../src/worker/errors");
 const { element, by } = require("../../");
-const { ElementNotFoundError, ElementActionError } = require("../../src/errors");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
-it("returns the element's x and y coordinates", async () => {
-  const x = 150;
-  const y = 400;
+it("returns the element's location", async () => {
+  const ref = createFindElementMock();
+  const location = { x: 200, y: 150 };
 
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementLocation({elementId: "elementId", x, y});
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementLocation").mockResolvedValue(location);
 
   const result = await element(by.label("box")).getLocation();
 
-  expect(fetch).toHaveBeenCalledTimes(2);
-  expect(result).toEqual({x, y});
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementLocation).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementLocation).toHaveBeenCalledWith(expect.objectContaining({ element: ref }));
+  expect(result).toEqual(location);
 });
 
-it("accepts a 'relative' parameter to return the element's x and y coordinates relative to the viewport", async () => {
-  const x = 150;
-  const y = 100;
+it("supports passing a 'relative' parameter", async () => {
+  const ref = createFindElementMock();
+  const location = { x: 50, y: 300 };
+  const relative = true;
 
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementLocationInView({elementId: "elementId", x, y});
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementLocation").mockResolvedValue(location);
 
-  const result = await element(by.label("box")).getLocation({relative: true});
+  const result = await element(by.label("box")).getLocation({ relative });
 
-  expect(fetch).toHaveBeenCalledTimes(2);
-  expect(result).toEqual({x, y});
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementLocation).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementLocation).toHaveBeenCalledWith(expect.objectContaining({ element: ref, relative }));
+  expect(result).toEqual(location);
 });
 
-it("correctly propagates errors", async () => {
-  appiumServer.mockFindElement({status: 7, elementId: "elementId"});
+it("throws an ElementNotFoundError if the element isn't found", async () => {
+  const error = new AppiumError("Request error.", 7);
 
-  await expect(element(by.label("box")).getLocation())
-    .rejects.toThrow(ElementNotFoundError);
+  jest.spyOn(appiumService, "findElement").mockRejectedValue(error);
+  jest.spyOn(appiumService, "getElementLocation").mockResolvedValue({ x: 100, y: 200 });
+  expect.assertions(4);
 
-  expect(fetch).toHaveBeenCalledTimes(1);
+  try {
+    await element(by.label("box")).getLocation();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementNotFoundError);
+    expect(err).toHaveProperty("message", "Failed to find element.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementLocation).toHaveBeenCalledTimes(0);
 });
 
-it("correctly handles location attribute request errors", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementLocation({status: 3, elementId: "elementId"});
+it("throws an ElementActionError for Appium request errors", async () => {
+  const ref = createFindElementMock();
+  const error = new AppiumError("Request error.", 3);
 
-  await expect(element(by.label("box")).getLocation())
-    .rejects.toThrow(new ElementActionError("Failed to get element location."));
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementLocation").mockRejectedValue(error);
+  expect.assertions(4);
 
-  expect(fetch).toHaveBeenCalledTimes(2);
+  try {
+    await element(by.label("box")).getLocation();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to get element location.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementLocation).toHaveBeenCalledTimes(1);
 });
 
-it("correctly handles relative location attribute request errors", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementLocationInView({status: 3, elementId: "elementId"});
+it("propagates errors from further up the chain", async () => {
+  const ref = createFindElementMock();
+  const tapError = new AppiumError("Request error.", 3);
 
-  await expect(element(by.label("box")).getLocation({relative: true}))
-    .rejects.toThrow(new ElementActionError("Failed to get element relative location."));
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "tapElement").mockRejectedValue(tapError);
+  jest.spyOn(appiumService, "getElementLocation").mockResolvedValue({ x: 300, y: 50 });
+  expect.assertions(5);
 
-  expect(fetch).toHaveBeenCalledTimes(2);
+  try {
+    await element(by.label("input"))
+      .tap()
+      .getLocation();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to tap element.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.tapElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementLocation).toHaveBeenCalledTimes(0);
+});
+
+it("propagates other types of errors", async () => {
+  const ref = createFindElementMock();
+  const error = new Error("Something went wrong.");
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementLocation").mockRejectedValue(error);
+  expect.assertions(4);
+
+  try {
+    await element(by.label("box")).getLocation();
+  } catch (err) {
+    expect(err).toBeInstanceOf(error.constructor);
+    expect(err).toHaveProperty("message", error.message);
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementLocation).toHaveBeenCalledTimes(1);
 });

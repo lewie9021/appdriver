@@ -1,29 +1,52 @@
-const appiumServer = require("../helpers/appiumServer");
-const fetch = require("node-fetch");
+jest.mock("../../src/worker/services/appiumService");
 
+const { appiumService } = require("../../src/worker/services/appiumService");
+const { AppiumError, ActionError } = require("../../src/worker/errors");
 const { device } = require("../../");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
-it("returns the device viewport width and height", async () => {
-  const width = 640;
-  const height = 480;
-
-  appiumServer.mockWindowRect({width, height});
+it("returns the result of 'getViewport' on the Appium Service", async () => {
+  const viewport = { width: 640, height: 480 };
+  jest.spyOn(appiumService, "getViewport").mockResolvedValue(viewport);
 
   const result = await device.getViewport();
 
-  expect(result).toEqual({width, height});
-  expect(fetch).toHaveBeenCalledTimes(1);
+  expect(result).toEqual(viewport);
+  expect(appiumService.getViewport).toHaveBeenCalledTimes(1);
 });
 
-it("correctly handles session window rect request errors", async () => {
-  appiumServer.mockWindowRect({status: 3});
+it("throws an ActionError for Appium request errors", async () => {
+  const error = new AppiumError("Request error.", 3);
 
-  await expect(device.getViewport())
-    .rejects.toThrow(new Error("Failed to get device viewport."));
+  jest.spyOn(appiumService, "getViewport").mockRejectedValue(error);
+  expect.assertions(3);
 
-  expect(fetch).toHaveBeenCalledTimes(1);
+  try {
+    await device.getViewport();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ActionError);
+    expect(err).toHaveProperty("message", "Failed to get device viewport.");
+  }
+
+  expect(appiumService.getViewport).toHaveBeenCalledTimes(1);
+});
+
+it("propagates other types of errors", async () => {
+  const error = new Error("Something went wrong.");
+
+  jest.spyOn(appiumService, "getViewport").mockRejectedValue(error);
+  expect.assertions(3);
+
+  try {
+    await device.getViewport();
+  } catch (err) {
+    expect(err).toBeInstanceOf(error.constructor);
+    expect(err).toHaveProperty("message", error.message);
+  }
+
+  expect(appiumService.getViewport).toHaveBeenCalledTimes(1);
 });

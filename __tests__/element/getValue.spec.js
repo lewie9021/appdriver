@@ -1,172 +1,121 @@
-const appiumServer = require("../helpers/appiumServer");
-const fetch = require("node-fetch");
+jest.mock("../../src/worker/services/appiumService");
 
-jest.mock("../../src/session");
-const mockSession = require("../helpers/mockSession");
-
+const { appiumService } = require("../../src/worker/services/appiumService");
+const { createFindElementMock } = require("../appiumServiceMocks");
+const { ElementNotFoundError, ElementActionError, AppiumError } = require("../../src/worker/errors");
 const { element, by } = require("../../");
-const { ElementNotFoundError, ElementActionError } = require("../../src/errors");
-
-const testPlatform = (platformName) => {
-  const inputElementType = platformName === "iOS"
-    ? "XCUIElementTypeTextField"
-    : "android.widget.EditText";
-
-  it("returns the element's value", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({platformName, elementId: "elementId", type: inputElementType});
-    appiumServer.mockElementValue({elementId: "elementId", value: "Hello World!"});
-    appiumServer.mockElementText({elementId: "elementId", text: "Hello World!"});
-
-    const result = await element(by.label("text-input")).getValue();
-
-    expect(fetch).toHaveBeenCalledTimes(3);
-    expect(result).toEqual("Hello World!");
-  });
-
-  it("correctly propagates errors", async () => {
-    appiumServer.mockFindElement({status: 7, elementId: "elementId"});
-
-    await expect(element(by.label("text-input")).getValue())
-      .rejects.toThrow(ElementNotFoundError);
-
-    expect(fetch).toHaveBeenCalledTimes(1);
-  });
-
-  it("correctly handles value attribute request errors", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({platformName, elementId: "elementId", type: inputElementType});
-    appiumServer.mockElementValue({elementId: "elementId", status: 3});
-    appiumServer.mockElementText({elementId: "elementId", status: 3});
-
-    await expect(element(by.label("text-input")).getValue())
-      .rejects.toThrow(new ElementActionError("Failed to get value for element."));
-
-    expect(fetch).toHaveBeenCalledTimes(3);
-  });
-};
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
-describe("iOS", () => {
-  beforeEach(() => {
-    mockSession({
-      sessionId: "sessionId",
-      platformName: "iOS"
-    });
-  });
+it("returns the element's value", async () => {
+  const ref = createFindElementMock();
+  const value = "Hello World!";
 
-  testPlatform("iOS");
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementValue").mockResolvedValue(value);
 
-  it("returns true for native switch elements with a value of '1'", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeSwitch"});
-    appiumServer.mockElementValue({elementId: "elementId", value: "1"});
+  const result = await element(by.label("input")).getValue();
 
-    const result = await element(by.label("switch")).getValue();
-
-    expect(fetch).toHaveBeenCalledTimes(3);
-    expect(result).toEqual(true);
-  });
-
-  it("returns false for native switch elements with a value of '0'", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeSwitch"});
-    appiumServer.mockElementValue({elementId: "elementId", value: "0"});
-
-    const result = await element(by.label("switch")).getValue();
-
-    expect(fetch).toHaveBeenCalledTimes(3);
-    expect(result).toEqual(false);
-  });
-
-  it("returns true for native buttons with a value of '1'", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeButton"});
-    appiumServer.mockElementValue({elementId: "elementId", value: "1"});
-
-    const result = await element(by.label("slider")).getValue();
-
-    expect(fetch).toHaveBeenCalledTimes(3);
-    expect(result).toEqual(true);
-  });
-
-  it("returns false for native buttons with a value of '0'", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeButton"});
-    appiumServer.mockElementValue({elementId: "elementId", value: "0"});
-
-    const result = await element(by.label("slider")).getValue();
-
-    expect(fetch).toHaveBeenCalledTimes(3);
-    expect(result).toEqual(false);
-  });
-
-  it("correctly handles native slider element value", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeSlider"});
-    appiumServer.mockElementValue({elementId: "elementId", value: "50%"});
-
-    const result = await element(by.label("slider")).getValue({sliderRange: [0, 5]});
-
-    expect(fetch).toHaveBeenCalledTimes(3);
-    expect(result).toEqual(2.5);
-  });
-
-  it("throws if 'sliderRange' is not provided for native slider elements", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeSlider"});
-    appiumServer.mockElementValue({elementId: "elementId", value: "50%"});
-
-    await expect(element(by.label("slider")).getValue())
-      .rejects.toThrow(new Error("You must provide a 'sliderRange' option when dealing with slider elements."));
-
-    expect(fetch).toHaveBeenCalledTimes(3);
-  });
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementValue).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementValue).toHaveBeenCalledWith({ element: ref });
+  expect(result).toEqual(value);
 });
 
-describe("Android", () => {
-  beforeEach(() => {
-    mockSession({
-      sessionId: "sessionId",
-      platformName: "Android"
-    });
-  });
+it("supports passing an 'sliderRange' parameter", async () => {
+  const ref = createFindElementMock();
+  const sliderRange = [0, 5];
+  const value = 2.5;
 
-  testPlatform("Android");
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementValue").mockResolvedValue(value);
 
-  it("correctly handles native switch element value (ON)", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({platformName: "Android", elementId: "elementId", type: "android.widget.Switch"});
-    appiumServer.mockElementText({elementId: "elementId", text: "ON"});
+  const result = await element(by.label("slider")).getValue({ sliderRange });
 
-    const result = await element(by.label("switch")).getValue();
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementValue).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementValue).toHaveBeenCalledWith(expect.objectContaining({ options: { sliderRange } }));
+  expect(result).toEqual(value);
+});
 
-    expect(fetch).toHaveBeenCalledTimes(3);
-    expect(result).toEqual(true);
-  });
+it("throws an ElementNotFoundError if the element isn't found", async () => {
+  const error = new AppiumError("Request error.", 7);
 
-  it("correctly handles native switch element value (OFF)", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({platformName: "Android", elementId: "elementId", type: "android.widget.Switch"});
-    appiumServer.mockElementText({elementId: "elementId", text: "OFF"});
+  jest.spyOn(appiumService, "findElement").mockRejectedValue(error);
+  jest.spyOn(appiumService, "getElementValue").mockResolvedValue("Hello World!");
+  expect.assertions(4);
 
-    const result = await element(by.label("switch")).getValue();
+  try {
+    await element(by.label("input")).getValue();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementNotFoundError);
+    expect(err).toHaveProperty("message", "Failed to find element.");
+  }
 
-    expect(fetch).toHaveBeenCalledTimes(3);
-    expect(result).toEqual(false);
-  });
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementValue).toHaveBeenCalledTimes(0);
+});
 
-  it("correctly handles native slider element value", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({platformName: "Android", elementId: "elementId", type: "android.widget.SeekBar"});
-    appiumServer.mockElementText({elementId: "elementId", text: "2.5"});
+it("throws an ElementActionError for Appium request errors", async () => {
+  const ref = createFindElementMock();
+  const error = new AppiumError("Request error.", 3);
 
-    const result = await element(by.label("slider")).getValue({sliderRange: [0, 5]});
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementValue").mockRejectedValue(error);
+  expect.assertions(4);
 
-    expect(fetch).toHaveBeenCalledTimes(3);
-    expect(result).toEqual(2.5);
-  });
+  try {
+    await element(by.label("input")).getValue();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to get element value.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementValue).toHaveBeenCalledTimes(1);
+});
+
+it("propagates errors from further up the chain", async () => {
+  const ref = createFindElementMock();
+  const tapError = new AppiumError("Request error.", 3);
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "tapElement").mockRejectedValue(tapError);
+  jest.spyOn(appiumService, "getElementValue").mockResolvedValue("Hello World!");
+  expect.assertions(5);
+
+  try {
+    await element(by.label("input"))
+      .tap()
+      .getValue();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to tap element.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.tapElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementValue).toHaveBeenCalledTimes(0);
+});
+
+it("propagates other types of errors", async () => {
+  const ref = createFindElementMock();
+  const error = new Error("Something went wrong.");
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementValue").mockRejectedValue(error);
+  expect.assertions(4);
+
+  try {
+    await element(by.label("input")).getValue();
+  } catch (err) {
+    expect(err).toBeInstanceOf(error.constructor);
+    expect(err).toHaveProperty("message", error.message);
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementValue).toHaveBeenCalledTimes(1);
 });

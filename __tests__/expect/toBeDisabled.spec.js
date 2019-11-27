@@ -1,39 +1,59 @@
-const appiumServer = require("../helpers/appiumServer");
+jest.mock("../../src/worker/services/appiumService");
 
-const { by, element, expect: assert } = require("../../");
-const { ElementActionError } = require("../../src/errors");
+const { appiumService } = require("../../src/worker/services/appiumService");
+const { createFindElementMock } = require("../appiumServiceMocks");
+const { ElementActionError, AppiumError } = require("../../src/worker/errors");
+const { element, by, expect: assert } = require("../../");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
 it("doesn't throw if expectation is met", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementEnabled({elementId: "elementId", enabled: false});
+  const ref = createFindElementMock();
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementEnabledAttribute").mockResolvedValue(false);
 
   const $element = await element(by.label("button"));
 
   await expect(assert($element).toBeDisabled())
-    .resolves.toBe(undefined);
+    .resolves.toEqual(undefined);
 });
 
 it("throws if expectation is not met", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementEnabled({elementId: "elementId", enabled: true});
+  const ref = createFindElementMock();
 
-  const $element = await element(by.label("button"));
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementEnabledAttribute").mockResolvedValue(true);
+  expect.assertions(2);
 
-  await expect(assert($element).toBeDisabled())
-    .rejects.toThrow(new Error("Expected element to be disabled but instead it was enabled."));
+  try {
+    const $element = await element(by.label("button"));
+
+    await assert($element).toBeDisabled();
+  } catch (err) {
+    expect(err).toBeInstanceOf(Error);
+    expect(err).toHaveProperty("message", "Expected element to be disabled but instead it was enabled.");
+  }
 });
 
 // TODO: Could maybe wrap the error?
 it("correctly propagates errors", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementEnabled({status: 3, elementId: "elementId"});
+  const ref = createFindElementMock();
+  const error = new AppiumError("Request error.", 3);
 
-  const $element = await element(by.label("button"));
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementEnabledAttribute").mockRejectedValue(error);
+  expect.assertions(2);
 
-  await expect(assert($element).toBeDisabled())
-    .rejects.toThrow(new ElementActionError("Failed to retrieve disabled status of element."));
+  try {
+    const $element = await element(by.label("button"));
+
+    await assert($element).toBeDisabled();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to retrieve disabled status of element.");
+  }
 });

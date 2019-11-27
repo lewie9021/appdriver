@@ -1,55 +1,62 @@
-const appiumServer = require("../helpers/appiumServer");
+jest.mock("../../src/worker/services/appiumService");
 
-jest.mock("../../src/session");
-const mockSession = require("../helpers/mockSession");
-
-const { by, element, expect: assert } = require("../../");
-const { ElementActionError } = require("../../src/errors");
-
-beforeEach(() => {
-  mockSession({
-    sessionId: "sessionId",
-    platformName: "iOS"
-  });
-});
+const { appiumService } = require("../../src/worker/services/appiumService");
+const { createFindElementMock } = require("../appiumServiceMocks");
+const { ElementActionError, AppiumError } = require("../../src/worker/errors");
+const { element, by, expect: assert } = require("../../");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
 it("doesn't throw if expectation is met", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeStaticText"});
-  appiumServer.mockElementValue({elementId: "elementId", value: "Hello World!"});
+  const ref = createFindElementMock();
+  const value = "Hello World!";
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementValue").mockResolvedValue(value);
 
   const $element = await element(by.label("text-input"));
 
-  await expect(assert($element).toHaveValue("Hello World!"))
-    .resolves.toBe(undefined);
+  await expect(assert($element).toHaveValue(value))
+    .resolves.toEqual(undefined);
 });
 
 it("throws if expectation is not met", async () => {
+  const ref = createFindElementMock();
   const actualValue = "Hello!";
   const expectedValue = "Hello World!";
 
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeStaticText"});
-  appiumServer.mockElementValue({elementId: "elementId", value: actualValue});
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementValue").mockResolvedValue(actualValue);
+  expect.assertions(2);
 
-  const $element = await element(by.label("text-input"));
+  try {
+    const $element = await element(by.label("text-input"));
 
-  await expect(assert($element).toHaveValue(expectedValue))
-    .rejects.toThrow(new Error(`Expected element to have value '${expectedValue}' but instead got '${actualValue}'.`));
+    await assert($element).toHaveValue(expectedValue);
+  } catch (err) {
+    expect(err).toBeInstanceOf(Error);
+    expect(err).toHaveProperty("message", `Expected element to have value '${expectedValue}' but instead got '${actualValue}'.`);
+  }
 });
 
 // TODO: Could maybe wrap the error?
 it("correctly propagates errors", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
-  appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeStaticText"});
-  appiumServer.mockElementValue({status: 3, elementId: "elementId"});
+  const ref = createFindElementMock();
+  const error = new AppiumError("Request error.", 3);
 
-  const $element = await element(by.label("text-input"));
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementValue").mockRejectedValue(error);
+  expect.assertions(2);
 
-  await expect(assert($element).toHaveValue("My Product"))
-    .rejects.toThrow(new ElementActionError("Failed to get value for element."));
+  try {
+    const $element = await element(by.label("text-input"));
+
+    await assert($element).toHaveValue("Hello World!");
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to get element value.");
+  }
 });

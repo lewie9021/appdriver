@@ -1,100 +1,104 @@
-const appiumServer = require("../helpers/appiumServer");
-const fetch = require("node-fetch");
+jest.mock("../../src/worker/services/appiumService");
 
-jest.mock("../../src/session");
-const mockSession = require("../helpers/mockSession");
-
+const { appiumService } = require("../../src/worker/services/appiumService");
+const { createFindElementMock } = require("../appiumServiceMocks");
+const { ElementNotFoundError, ElementActionError, AppiumError } = require("../../src/worker/errors");
 const { element, by } = require("../../");
-const { ElementNotFoundError, ElementActionError } = require("../../src/errors");
-
-const testPlatform = (platformName) => {
-  const textElementType = platformName === "iOS"
-    ? "XCUIElementTypeStaticText"
-    : "android.widget.TextView";
-
-  it("returns the element's text value", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({platformName, elementId: "elementId", type: textElementType});
-    appiumServer.mockElementText({elementId: "elementId", text: "Title Text"});
-
-    const result = await element(by.label("product-title")).getText();
-
-    expect(fetch).toHaveBeenCalledTimes(3);
-    expect(result).toEqual("Title Text");
-  });
-
-  it("correctly propagates errors", async () => {
-    appiumServer.mockFindElement({status: 7, elementId: "elementId"});
-    appiumServer.mockElementType({platformName, elementId: "elementId", type: textElementType});
-    appiumServer.mockElementText({elementId: "elementId", text: "Title Text"});
-
-    await expect(element(by.label("product-title")).getText())
-      .rejects.toThrow(ElementNotFoundError);
-
-    expect(fetch).toHaveBeenCalledTimes(1);
-  });
-
-  it("correctly handles text attribute request errors", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({platformName, elementId: "elementId", type: textElementType});
-    appiumServer.mockElementText({elementId: "elementId", status: 3});
-
-    await expect(element(by.label("product-title")).getText())
-      .rejects.toThrow(new ElementActionError("Failed to get text for element."));
-
-    expect(fetch).toHaveBeenCalledTimes(3);
-  });
-};
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
-describe("iOS", () => {
-  beforeEach(() => {
-    mockSession({
-      sessionId: "sessionId",
-      platformName: "iOS"
-    });
-  });
+it("returns the element's text", async () => {
+  const ref = createFindElementMock();
+  const text = "Hello World!";
 
-  testPlatform("iOS");
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementText").mockResolvedValue(text);
 
-  it("returns inner text if element isn't directly text", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeOther"});
-    appiumServer.mockFindElementsFromElement({elementId: "elementId", elements: ["elementId2", "elementId3"]});
-    appiumServer.mockElementText({elementId: "elementId", text: ""});
-    appiumServer.mockElementText({elementId: "elementId2", text: "Hello"});
-    appiumServer.mockElementText({elementId: "elementId3", text: "World!"});
+  const result = await element(by.label("text")).getText();
 
-    const result = await element(by.label("product-title")).getText();
-
-    expect(fetch).toHaveBeenCalledTimes(6);
-    expect(result).toEqual("Hello World!");
-  });
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementText).toHaveBeenCalledTimes(1);
+  expect(result).toEqual(text);
 });
 
-describe("Android", () => {
-  beforeEach(() => {
-    mockSession({
-      sessionId: "sessionId",
-      platformName: "Android"
-    });
-  });
+it("throws an ElementNotFoundError if the element isn't found", async () => {
+  const error = new AppiumError("Request error.", 7);
 
-  testPlatform("Android");
+  jest.spyOn(appiumService, "findElement").mockRejectedValue(error);
+  jest.spyOn(appiumService, "getElementText").mockResolvedValue("Hello World!");
+  expect.assertions(4);
 
-  it("returns inner text if element isn't directly text", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({platformName: "Android", elementId: "elementId", type: "android.view.ViewGroup"});
-    appiumServer.mockFindElementsFromElement({elementId: "elementId", elements: ["elementId2", "elementId3"]});
-    appiumServer.mockElementText({elementId: "elementId2", text: "Hello"});
-    appiumServer.mockElementText({elementId: "elementId3", text: "World!"});
+  try {
+    await element(by.label("box")).getText();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementNotFoundError);
+    expect(err).toHaveProperty("message", "Failed to find element.");
+  }
 
-    const result = await element(by.label("product-title")).getText();
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementText).toHaveBeenCalledTimes(0);
+});
 
-    expect(fetch).toHaveBeenCalledTimes(5);
-    expect(result).toEqual("Hello World!");
-  });
+it("throws an ElementActionError for Appium request errors", async () => {
+  const ref = createFindElementMock();
+  const error = new AppiumError("Request error.", 3);
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementText").mockRejectedValue(error);
+  expect.assertions(4);
+
+  try {
+    await element(by.label("box")).getText();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to get element text.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementText).toHaveBeenCalledTimes(1);
+});
+
+it("propagates errors from further up the chain", async () => {
+  const ref = createFindElementMock();
+  const tapError = new AppiumError("Request error.", 3);
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "tapElement").mockRejectedValue(tapError);
+  jest.spyOn(appiumService, "getElementText").mockResolvedValue("Hello World!");
+  expect.assertions(5);
+
+  try {
+    await element(by.label("input"))
+      .tap()
+      .getText();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to tap element.");
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.tapElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementText).toHaveBeenCalledTimes(0);
+});
+
+it("propagates other types of errors", async () => {
+  const ref = createFindElementMock();
+  const error = new Error("Something went wrong.");
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementText").mockRejectedValue(error);
+  expect.assertions(4);
+
+  try {
+    await element(by.label("box")).getText();
+  } catch (err) {
+    expect(err).toBeInstanceOf(error.constructor);
+    expect(err).toHaveProperty("message", error.message);
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.getElementText).toHaveBeenCalledTimes(1);
 });

@@ -1,261 +1,156 @@
-const appiumServer = require("../helpers/appiumServer");
-const fetch = require("node-fetch");
+jest.mock("../../src/stores/configStore");
+jest.mock("../../src/worker/services/appiumService");
 
-const { element, by, expect: assert } = require("../../");
-const { Element } = require("../../src/element");
-const { ElementActionError } = require("../../src/errors");
-
-jest.setTimeout(6000);
+const { configStore } = require("../../src/stores/configStore");
+const { appiumService } = require("../../src/worker/services/appiumService");
+const { createFindElementMock } = require("../appiumServiceMocks");
+const { ElementActionError, ElementWaitError, AppiumError } = require("../../src/worker/errors");
+const { Element } = require("../../src/worker/Element");
+const { element, by } = require("../../");
 
 afterEach(() => {
-  appiumServer.resetMocks();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
+
+const createConditionFn = (maxPollCount, error) => {
+  let pollCount = 0;
+
+  return jest.fn(() => {
+    pollCount +=1;
+
+    return pollCount >= maxPollCount
+      ? Promise.resolve()
+      : Promise.reject(error);
+  });
+};
 
 it("returns an instance of Element to enable function chaining", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
+  const ref = createFindElementMock();
 
-  const $element = await element(by.label("button")).waitFor(() => Promise.resolve());
+  jest.spyOn(configStore, "getWaitForTimeout").mockReturnValue(2000);
+  jest.spyOn(configStore, "getWaitForInterval").mockReturnValue(50);
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+
+  const $element = await element(by.label("input")).waitFor(() => Promise.resolve());
 
   expect($element).toBeInstanceOf(Element);
-  expect(fetch).toHaveBeenCalledTimes(1);
-  await expect($element.value).resolves.toEqual("elementId");
 });
 
-it("returns a new element to avoid unwanted mutation", async () => {
-  appiumServer.mockFindElement({elementId: "elementId"});
+it("polls 'conditionFn' until it resolves when there's an element reference", async () => {
+  const totalPollCount = 5;
+  const conditionFn = createConditionFn(totalPollCount, new Error("Test"));
+  const ref = createFindElementMock();
 
-  const $element = await element(by.label("button"));
-  const $newElement = await $element.waitFor(() => Promise.resolve());
+  jest.spyOn(configStore, "getWaitForTimeout").mockReturnValue(2000);
+  jest.spyOn(configStore, "getWaitForInterval").mockReturnValue(50);
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
 
-  expect($newElement).not.toBe($element);
+  await element(by.label("input")).waitFor(conditionFn);
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(conditionFn).toHaveBeenCalledTimes(totalPollCount);
 });
 
-it("correctly propagates errors", async () => {
-  appiumServer.mockFindElement({ elementId: "elementId" });
-  appiumServer.mockActions({ status: 3 });
+it("polls 'conditionFn' until it resolves when there isn't an element reference", async () => {
+  const totalPollCount = 5;
+  const conditionFn = createConditionFn(totalPollCount, new Error("Test"));
+  const error = new AppiumError("Request error.", 3);
 
-  const result = element(by.label("button"))
-    .tap()
-    .waitFor(() => Promise.resolve());
+  jest.spyOn(configStore, "getWaitForTimeout").mockReturnValue(2000);
+  jest.spyOn(configStore, "getWaitForInterval").mockReturnValue(50);
+  jest.spyOn(appiumService, "findElement").mockRejectedValue(error);
 
-  await expect(result).rejects.toThrow(ElementActionError);
+  await element(by.label("input")).waitFor(conditionFn);
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(conditionFn).toHaveBeenCalledTimes(totalPollCount);
 });
 
-describe("Element found initially", () => {
-  it("polls until 'conditionFn' resolves", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
+it("throws an ElementWaitError if the polling times out", async () => {
+  const conditionFn = createConditionFn(Infinity, new Error("Test"));
+  const ref = createFindElementMock();
+  const timeout = 2000;
+  const interval = 50;
 
-    const conditionFn = jest.fn(() => Promise.resolve());
-    await element(by.label("button"))
+  jest.spyOn(configStore, "getWaitForTimeout").mockReturnValue(timeout);
+  jest.spyOn(configStore, "getWaitForInterval").mockReturnValue(interval);
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  expect.assertions(3);
+
+  try {
+    await element(by.label("input")).waitFor(conditionFn);
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementWaitError);
+    expect(err).toHaveProperty("message", `Wait condition exceeded ${timeout}ms timeout (interval: ${interval}ms).`);
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+});
+
+it("supports passing a 'maxDuration' parameter", async () => {
+  const maxDuration = 1000;
+  const interval = 50;
+  const conditionFn = createConditionFn(Infinity, new Error("Test"));
+  const ref = createFindElementMock();
+
+  jest.spyOn(configStore, "getWaitForTimeout").mockReturnValue(2000);
+  jest.spyOn(configStore, "getWaitForInterval").mockReturnValue(interval);
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  expect.assertions(3);
+
+  try {
+    await element(by.label("input")).waitFor(conditionFn, { maxDuration });
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementWaitError);
+    expect(err).toHaveProperty("message", `Wait condition exceeded ${maxDuration}ms timeout (interval: ${interval}ms).`);
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+});
+
+it("supports passing a 'interval' parameter", async () => {
+  const interval = 100;
+  const timeout = 2000;
+  const conditionFn = createConditionFn(Infinity, new Error("Test"));
+  const ref = createFindElementMock();
+
+  jest.spyOn(configStore, "getWaitForTimeout").mockReturnValue(timeout);
+  jest.spyOn(configStore, "getWaitForInterval").mockReturnValue(50);
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  expect.assertions(3);
+
+  try {
+    await element(by.label("input")).waitFor(conditionFn, { interval });
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementWaitError);
+    expect(err).toHaveProperty("message", `Wait condition exceeded ${timeout}ms timeout (interval: ${interval}ms).`);
+  }
+
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+});
+
+it("propagates errors from further up the chain", async () => {
+  const conditionFn = createConditionFn(5, new Error("Test"));
+  const ref = createFindElementMock();
+  const tapError = new AppiumError("Request error.", 3);
+
+  jest.spyOn(configStore, "getWaitForTimeout").mockReturnValue(2000);
+  jest.spyOn(configStore, "getWaitForInterval").mockReturnValue(50);
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "tapElement").mockRejectedValue(tapError);
+  expect.assertions(5);
+
+  try {
+    await element(by.label("input"))
+      .tap()
       .waitFor(conditionFn);
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty("message", "Failed to tap element.");
+  }
 
-    expect(conditionFn).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledTimes(1);
-  });
-
-  it("calls 'conditionFn' with element", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-
-    const conditionFn = jest.fn(() => Promise.resolve());
-    await element(by.label("button"))
-      .waitFor(conditionFn);
-
-    expect(conditionFn).toHaveBeenCalledTimes(1);
-    expect(conditionFn).toHaveBeenCalledWith(expect.any(Element));
-    expect(fetch).toHaveBeenCalledTimes(1);
-  });
-
-  it("polls until default maxDuration (5000ms) is exceeded if 'conditionFn' rejects", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-
-    const conditionFn = jest.fn(() => Promise.reject());
-    const result = element(by.label("button"))
-      .waitFor(conditionFn);
-
-    await expect(result).rejects.toThrow(new ElementActionError("Wait condition exceeded 5000ms timeout (interval: 200ms)."));
-    expect(conditionFn).toHaveBeenCalledTimes(26);  // 5000 / 200 = 25.
-    expect(fetch).toHaveBeenCalledTimes(1);
-  });
-
-  it("supports re-implementing .waitToExist", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeOther"});
-    appiumServer.mockElementType({status: 3, elementId: "elementId"});
-
-    const result = element(by.label("button"))
-      .waitFor(($e) => assert($e.exists()).toEqual(true));
-
-    await expect(result).resolves.toBeInstanceOf(Element);
-    expect(fetch).toHaveBeenCalledTimes(2);
-  });
-
-  it("supports re-implementing .waitToNotExist", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockFindElement({status: 7, elementId: "elementId"});
-    appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeOther"});
-    appiumServer.mockElementType({status: 3, elementId: "elementId"});
-
-    const result = element(by.label("button"))
-      .waitFor(($e) => assert($e.exists()).toEqual(false));
-
-    await expect(result).resolves.toBeInstanceOf(Element);
-    expect(fetch).toHaveBeenCalledTimes(3);
-  });
-
-  it("supports re-implementing .waitToBeVisible", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementDisplayed({elementId: "elementId", displayed: false});
-    appiumServer.mockElementDisplayed({elementId: "elementId", displayed: true});
-
-    const result = element(by.label("button"))
-      .waitFor(($e) => assert($e.isVisible()).toEqual(true));
-
-    await expect(result).resolves.toBeInstanceOf(Element);
-    expect(fetch).toHaveBeenCalledTimes(3);
-  });
-
-  it("supports re-implementing .waitToBeInvisible", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementDisplayed({elementId: "elementId", displayed: true});
-    appiumServer.mockElementDisplayed({elementId: "elementId", displayed: false});
-
-    const result = element(by.label("button"))
-      .waitFor(($e) => assert($e.isVisible()).toEqual(false));
-
-    await expect(result).resolves.toBeInstanceOf(Element);
-    expect(fetch).toHaveBeenCalledTimes(3);
-  });
-});
-
-describe("Element isn't found initially", () => {
-  it("supports re-implementing .waitToExist", async () => {
-    appiumServer.mockFindElement({status: 7, elementId: "elementId"});
-    appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({status: 3, elementId: "elementId"});
-    appiumServer.mockElementType({elementId: "elementId", type: "XCUIElementTypeOther"});
-
-    const result = element(by.label("button"))
-      .waitFor(($e) => assert($e.exists()).toEqual(true));
-
-    await expect(result).resolves.toBeInstanceOf(Element);
-    expect(fetch).toHaveBeenCalledTimes(5);
-  });
-
-  it("supports re-implementing .waitToNotExist", async () => {
-    appiumServer.mockFindElement({status: 7, elementId: "elementId"});
-    appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementType({status: 3, elementId: "elementId"});
-
-    const result = element(by.label("button"))
-      .waitFor(($e) => assert($e.exists()).toEqual(false));
-
-    await expect(result).resolves.toBeInstanceOf(Element);
-    expect(fetch).toHaveBeenCalledTimes(3);
-  });
-
-  it("supports re-implementing .waitToBeVisible", async () => {
-    appiumServer.mockFindElement({status: 7, elementId: "elementId"});
-    appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementDisplayed({elementId: "elementId", displayed: true});
-
-    const result = element(by.label("button"))
-      .waitFor(($e) => assert($e.isVisible()).toEqual(true));
-
-    await expect(result).resolves.toBeInstanceOf(Element);
-    expect(fetch).toHaveBeenCalledTimes(3);
-  });
-
-  it("supports re-implementing .waitToBeInvisible", async () => {
-    appiumServer.mockFindElement({status: 7, elementId: "elementId"});
-    appiumServer.mockFindElement({elementId: "elementId"});
-    appiumServer.mockElementDisplayed({elementId: "elementId", displayed: false});
-
-    const result = element(by.label("button"))
-      .waitFor(($e) => assert($e.isVisible()).toEqual(false));
-
-    await expect(result).resolves.toBeInstanceOf(Element);
-    expect(fetch).toHaveBeenCalledTimes(3);
-  });
-});
-
-describe("Element is never found", () => {
-  it("polls until 'conditionFn' resolves", async () => {
-    appiumServer.mockFindElement({status: 7, elementId: "elementId"});
-
-    const conditionFn = jest.fn(() => Promise.resolve());
-    await element(by.label("button"))
-      .waitFor(conditionFn);
-
-    expect(conditionFn).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledTimes(1);
-  });
-
-  it("calls 'conditionFn' with element selector", async () => {
-    appiumServer.mockFindElement({status: 7, elementId: "elementId"});
-
-    const conditionFn = jest.fn(() => Promise.resolve());
-    await element(by.label("button"))
-      .waitFor(conditionFn);
-
-    expect(conditionFn).toHaveBeenCalledTimes(1);
-    expect(conditionFn).toHaveBeenCalledWith(expect.any(Element));
-    expect(fetch).toHaveBeenCalledTimes(1);
-  });
-
-  it("polls until default maxDuration (5000ms) is exceeded if 'conditionFn' rejects", async () => {
-    appiumServer.mockFindElement({status: 7, elementId: "elementId"});
-
-    const conditionFn = jest.fn(() => Promise.reject());
-    const result = element(by.label("button"))
-      .waitFor(conditionFn);
-
-    await expect(result).rejects.toThrow(new ElementActionError("Wait condition exceeded 5000ms timeout (interval: 200ms)."));
-    expect(conditionFn.mock.calls.length).toBeLessThanOrEqual(26); // 5000 / 200 = 25.
-    expect(fetch).toHaveBeenCalledTimes(1);
-  });
-
-  it("supports re-implementing .waitToNotExist", async () => {
-    appiumServer.mockFindElement({status: 7, elementId: "elementId"});
-
-    const result = element(by.label("button"))
-      .waitFor(($e) => assert($e.exists()).toEqual(false));
-
-    await expect(result).resolves.toBeInstanceOf(Element);
-    expect(fetch).toHaveBeenCalledTimes(3);
-  });
-
-  it("supports re-implementing .waitToBeInvisible", async () => {
-    appiumServer.mockFindElement({status: 7, elementId: "elementId"});
-
-    const result = element(by.label("button"))
-      .waitFor(($e) => assert($e.isVisible()).toEqual(false));
-
-    await expect(result).resolves.toBeInstanceOf(Element);
-  });
-});
-
-describe("maxDuration parameter", () => {
-  it("customises how long to poll before throwing", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-    const conditionFn = jest.fn(() => Promise.reject());
-    const maxDuration = 2000;
-
-    await expect(element(by.label("button")).waitFor(conditionFn, {maxDuration}))
-      .rejects.toThrow(new ElementActionError(`Wait condition exceeded ${maxDuration}ms timeout (interval: 200ms).`));
-
-    expect(conditionFn).toHaveBeenCalledTimes((maxDuration / 200) + 1);
-  });
-});
-
-describe("interval parameter", () => {
-  it("customises the time between requests when polling", async () => {
-    appiumServer.mockFindElement({elementId: "elementId"});
-    const conditionFn = jest.fn(() => Promise.reject());
-    const interval = 1000;
-
-    await expect(element(by.label("button")).waitFor(conditionFn, {interval}))
-      .rejects.toThrow(new ElementActionError(`Wait condition exceeded 5000ms timeout (interval: ${interval}ms).`));
-
-    expect(conditionFn).toHaveBeenCalledTimes((5000 / interval) + 1);
-  });
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.tapElement).toHaveBeenCalledTimes(1);
+  expect(conditionFn).toHaveBeenCalledTimes(0);
 });

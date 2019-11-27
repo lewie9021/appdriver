@@ -2,6 +2,7 @@ const path = require("path");
 
 const simulators = {
   iPhoneX: {
+    bundleId: "org.reactjs.native.example.MyFirstTestingApp",
     app: path.join(__dirname, "app", "MyFirstTestingApp.zip"),
     platformName: "iOS",
     platformVersion: "12.1",
@@ -17,7 +18,7 @@ module.exports = {
   specs: [
     "../tests/hello-world.e2e.js"
   ],
-  capabilities: [
-    simulators.iPhoneX
+  devices: [
+    { capabilities: simulators.iPhoneX }
   ]
 };
