@@ -361,7 +361,6 @@ function createAppiumService(sessionStore) {
   // ({ sessionId: String?, element: AppiumElement, options? Object }) => Promise<String>.
   const getElementText = ({ sessionId = sessionStore.getSessionId(), element, options = {} }) => {
     if (!options.recursive) {
-      console.log("simple get text");
       return getElementTextAttribute({ sessionId, element })
     }
 
