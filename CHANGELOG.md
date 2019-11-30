@@ -1,5 +1,11 @@
 # Change Log
 
+## [Unreleased]
+
+### Added
+
+- Support for `.not` on Expect.
+
 ## [v1.0.0-alpha.12] - 2019-11-27
 
 ### Added
