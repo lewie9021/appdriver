@@ -80,12 +80,6 @@ Assets the element has a value less than or equal to `value`.
 
 Assets the element has a value less than `value`.
 
-[```.toHaveTextContain(text: String) => Promise```](./expect/toHaveTextContain.md)
-
-<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-Assets the element has text containing `text`.
-
 [```.toHaveTextMatch(pattern: Regex) => Promise```](./expect/toHaveTextMatch.md)
 
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
