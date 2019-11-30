@@ -22,6 +22,18 @@ it("doesn't throw if expectation is met", async () => {
     .resolves.toEqual(undefined);
 });
 
+it("inverses the expectation when used with .not", async () => {
+  const ref = createFindElementMock();
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementVisibleAttribute").mockResolvedValue(false);
+
+  const $element = await element(by.label("button"));
+
+  await expect(assert($element).not.toBeVisible())
+    .resolves.toEqual(undefined);
+});
+
 it("throws if expectation is not met", async () => {
   const ref = createFindElementMock();
 
@@ -35,7 +47,24 @@ it("throws if expectation is not met", async () => {
     await assert($element).toBeVisible();
   } catch (err) {
     expect(err).toBeInstanceOf(Error);
-    expect(err).toHaveProperty("message", "Expected element to be visible but instead got 'false'.");
+    expect(err).toHaveProperty("message", "Expected element to be visible.");
+  }
+});
+
+it("throws if expectation is not met when used with .not", async () => {
+  const ref = createFindElementMock();
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementVisibleAttribute").mockResolvedValue(true);
+  expect.assertions(2);
+
+  try {
+    const $element = await element(by.label("button"));
+
+    await assert($element).not.toBeVisible();
+  } catch (err) {
+    expect(err).toBeInstanceOf(Error);
+    expect(err).toHaveProperty("message", "Expected element not to be visible.");
   }
 });
 

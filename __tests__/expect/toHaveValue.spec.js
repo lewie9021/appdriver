@@ -23,6 +23,18 @@ it("doesn't throw if expectation is met", async () => {
     .resolves.toEqual(undefined);
 });
 
+it("inverses the expectation when used with .not", async () => {
+  const ref = createFindElementMock();
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementValue").mockResolvedValue(5);
+
+  const $element = await element(by.label("button"));
+
+  await expect(assert($element).not.toHaveValue(10))
+    .resolves.toEqual(undefined);
+});
+
 it("throws if expectation is not met", async () => {
   const ref = createFindElementMock();
   const actualValue = "Hello!";
@@ -39,6 +51,23 @@ it("throws if expectation is not met", async () => {
   } catch (err) {
     expect(err).toBeInstanceOf(Error);
     expect(err).toHaveProperty("message", `Expected element to have value '${expectedValue}' but instead got '${actualValue}'.`);
+  }
+});
+
+it("throws if expectation is not met", async () => {
+  const ref = createFindElementMock();
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementValue").mockResolvedValue(3);
+  expect.assertions(2);
+
+  try {
+    const $element = await element(by.label("button"));
+
+    await assert($element).not.toHaveValue(3);
+  } catch (err) {
+    expect(err).toBeInstanceOf(Error);
+    expect(err).toHaveProperty("message", "Expected element not to have value '3'.");
   }
 });
 

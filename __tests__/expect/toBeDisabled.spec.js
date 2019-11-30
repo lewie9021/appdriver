@@ -22,6 +22,18 @@ it("doesn't throw if expectation is met", async () => {
     .resolves.toEqual(undefined);
 });
 
+it("inverses the expectation when used with .not", async () => {
+  const ref = createFindElementMock();
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementEnabledAttribute").mockResolvedValue(true);
+
+  const $element = await element(by.label("button"));
+
+  await expect(assert($element).not.toBeDisabled())
+    .resolves.toEqual(undefined);
+});
+
 it("throws if expectation is not met", async () => {
   const ref = createFindElementMock();
 
@@ -35,7 +47,24 @@ it("throws if expectation is not met", async () => {
     await assert($element).toBeDisabled();
   } catch (err) {
     expect(err).toBeInstanceOf(Error);
-    expect(err).toHaveProperty("message", "Expected element to be disabled but instead it was enabled.");
+    expect(err).toHaveProperty("message", "Expected element to be disabled.");
+  }
+});
+
+it("throws if expectation is not met when used with .not", async () => {
+  const ref = createFindElementMock();
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementEnabledAttribute").mockResolvedValue(false);
+  expect.assertions(2);
+
+  try {
+    const $element = await element(by.label("button"));
+
+    await assert($element).not.toBeDisabled();
+  } catch (err) {
+    expect(err).toBeInstanceOf(Error);
+    expect(err).toHaveProperty("message", "Expected element not to be disabled.");
   }
 });
 
