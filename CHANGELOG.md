@@ -5,6 +5,7 @@
 ### Added
 
 - Support for `.not` on Expect.
+- Support for `.toHaveTextMatch` on Expect.
 
 ## [v1.0.0-alpha.12] - 2019-11-27
 
