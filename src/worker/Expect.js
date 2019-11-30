@@ -164,6 +164,19 @@ class Expect {
       )
     });
   }
+
+  async toHaveTextMatch(pattern, options) {
+    const elementText = await this.value.getText(options);
+
+    return this._assert({
+      pass: pattern.test(elementText),
+      message: (inverted) => (
+        inverted
+          ? `Expected element not to have text match '${pattern}'.`
+          : `Expected element to have text match '${pattern}'.`
+      )
+    });
+  }
 }
 
 module.exports = {

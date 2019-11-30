@@ -54,7 +54,7 @@ it("throws if expectation is not met", async () => {
   }
 });
 
-it("throws if expectation is not met", async () => {
+it("throws if expectation is not met when used with .not", async () => {
   const ref = createFindElementMock();
 
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);

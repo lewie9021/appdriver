@@ -12,14 +12,13 @@ afterEach(() => {
 
 it("doesn't throw if expectation is met", async () => {
   const ref = createFindElementMock();
-  const value = "Hello World!";
 
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
-  jest.spyOn(appiumService, "getElementValue").mockResolvedValue(value);
+  jest.spyOn(appiumService, "getElementText").mockResolvedValue("Hello World!");
 
-  const $element = await element(by.label("text-input"));
+  const $element = await element(by.label("button"));
 
-  await expect(assert($element).toHaveValue(value))
+  await expect(assert($element).toHaveTextMatch(/^Hello World!$/i))
     .resolves.toEqual(undefined);
 });
 
@@ -27,30 +26,29 @@ it("inverses the expectation when used with .not", async () => {
   const ref = createFindElementMock();
 
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
-  jest.spyOn(appiumService, "getElementValue").mockResolvedValue(5);
+  jest.spyOn(appiumService, "getElementText").mockResolvedValue("Hello World!");
 
   const $element = await element(by.label("button"));
 
-  await expect(assert($element).not.toHaveValue(10))
+  await expect(assert($element).not.toHaveTextMatch(/Test/))
     .resolves.toEqual(undefined);
 });
 
 it("throws if expectation is not met", async () => {
   const ref = createFindElementMock();
-  const actualValue = "Hello!";
-  const expectedValue = "Hello World!";
+  const actualText = "Hello World!";
 
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
-  jest.spyOn(appiumService, "getElementValue").mockResolvedValue(actualValue);
+  jest.spyOn(appiumService, "getElementText").mockResolvedValue("Hello World!");
   expect.assertions(2);
 
   try {
-    const $element = await element(by.label("text-input"));
+    const $element = await element(by.label("button"));
 
-    await assert($element).toHaveValue(expectedValue);
+    await assert($element).toHaveTextMatch(/Test/i);
   } catch (err) {
     expect(err).toBeInstanceOf(Error);
-    expect(err).toHaveProperty("message", `Expected element to have value '${expectedValue}' but instead got '${actualValue}'.`);
+    expect(err).toHaveProperty("message", `Expected element to have text match '/Test/i'.`);
   }
 });
 
@@ -58,16 +56,16 @@ it("throws if expectation is not met when used with .not", async () => {
   const ref = createFindElementMock();
 
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
-  jest.spyOn(appiumService, "getElementValue").mockResolvedValue(3);
+  jest.spyOn(appiumService, "getElementText").mockResolvedValue("Hello World!");
   expect.assertions(2);
 
   try {
     const $element = await element(by.label("button"));
 
-    await assert($element).not.toHaveValue(3);
+    await assert($element).not.toHaveTextMatch(/^Hello World!$/);
   } catch (err) {
     expect(err).toBeInstanceOf(Error);
-    expect(err).toHaveProperty("message", "Expected element not to have value '3'.");
+    expect(err).toHaveProperty("message", "Expected element not to have text match '/^Hello World!$/'.");
   }
 });
 
@@ -77,15 +75,15 @@ it("correctly propagates errors", async () => {
   const error = new AppiumError("Request error.", 3);
 
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
-  jest.spyOn(appiumService, "getElementValue").mockRejectedValue(error);
+  jest.spyOn(appiumService, "getElementText").mockRejectedValue(error);
   expect.assertions(2);
 
   try {
-    const $element = await element(by.label("text-input"));
+    const $element = await element(by.label("button"));
 
-    await assert($element).toHaveValue("Hello World!");
+    await assert($element).toHaveTextMatch(/^Hello World!$/);
   } catch (err) {
     expect(err).toBeInstanceOf(ElementActionError);
-    expect(err).toHaveProperty("message", "Failed to get element value.");
+    expect(err).toHaveProperty("message", "Failed to get element text.");
   }
 });
