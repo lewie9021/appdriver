@@ -150,6 +150,8 @@ const transformArgs = (args) => {
     }, []);
 };
 
+const last = (arr) => arr[arr.length - 1];
+
 const platform = {
   select: ({ ios, android }) => {
     switch (sessionStore.getCapabilities("platformName")) {
@@ -180,5 +182,6 @@ module.exports = {
   getValueType,
   getRelativePoint,
   transformArgs,
+  last,
   platform
 };
