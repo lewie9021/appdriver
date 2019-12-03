@@ -5,7 +5,10 @@
 ### Added
 
 - Support for `.not` on Expect.
-- Support for `.toHaveTextMatch` on Expect.
+
+### Changed
+
+- `.toHaveText` on Expect now accepts a regex value to assert against.
 
 ## [v1.0.0-alpha.12] - 2019-11-27
 
