@@ -1,4 +1,4 @@
-# `.waitFor(fn: Function<Promise>, options?: Object) => Element`
+# `.waitFor(conditionFn: Function<Promise>, options?: Object) => Element`
 
 Polls `conditionFn` every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
 

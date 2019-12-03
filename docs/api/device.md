@@ -79,7 +79,7 @@ Returns the device name of the current session.
 
 Explicitly wait `duration` milliseconds.
 
-[```.waitFor(fn: Function<Promise>, options?: Object) => Promise```](./device/waitFor.md)
+[```.waitFor(conditionFn: Function<Promise>, options?: Object) => Promise```](./device/waitFor.md)
 
 <img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 

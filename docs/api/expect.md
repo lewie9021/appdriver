@@ -36,8 +36,6 @@ The `expect` utility is the out-of-the-box solution for asserting within tests. 
 
 Inverts the chained assertion to test the opposite.
 
-##### Element
-
 [```.toHaveValue(value: Any, options?: Object) => Promise```](./expect/toHaveValue.md)
 
 <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
@@ -79,8 +77,6 @@ Asserts the element exists.
 <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
 Asserts the element is visible.
-
-##### Value
 
 [```.toEqual(value: Any) => Promise```](./expect/toEqual.md)
 

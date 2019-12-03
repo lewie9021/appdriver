@@ -91,7 +91,7 @@ Retrieves x and y coordinates of element.
 
 Retrieves width and height dimensions of element.
 
-[```.waitFor(fn: Function<Promise>, options?: Object) => Element```](./element/waitFor.md)
+[```.waitFor(conditionFn: Function<Promise>, options?: Object) => Element```](./element/waitFor.md)
 
 <img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
