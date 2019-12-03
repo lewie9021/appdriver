@@ -9,6 +9,7 @@
 ### Changed
 
 - `.toHaveText` on Expect now accepts a regex value to assert against.
+- Wait errors to include most recent error and matcher to improve debugging experience.
 
 ## [v1.0.0-alpha.12] - 2019-11-27
 
