@@ -50,41 +50,17 @@ Asserts the element has a value strictly equal to `value`.
 
 Asserts the element has text exactly matching `text`.
 
-[```.toBeDisabled() => Promise```](./expect/toBeDisabled.md)
-
-<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
-
-Asserts the element is disabled.
-
-[```.toHaveValueGreaterThanOrEqual(value: Number) => Promise```](./expect/toHaveValueGreaterThanOrEqual.md)
-
-<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-Assets the element has a value greater than or equal to `value`.
-
-[```.toHaveValueGreaterThan(value: Number) => Promise```](./expect/toHaveValueGreaterThan.md)
-
-<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-Assets the element has a value greater than `value`.
-
-[```.toHaveValueLessThanOrEqual(value: Number) => Promise```](./expect/toHaveValueGreaterThanOrEqual.md)
-
-<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-Assets the element has a value less than or equal to `value`.
-
-[```.toHaveValueLessThan(value: Number) => Promise```](./expect/toHaveValueLessThan.md)
-
-<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-Assets the element has a value less than `value`.
-
 [```.toHaveTextMatch(pattern: Regex) => Promise```](./expect/toHaveTextMatch.md)
 
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 Asserts the element contains text that matches `pattern`.
+
+[```.toBeDisabled() => Promise```](./expect/toBeDisabled.md)
+
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
+
+Asserts the element is disabled.
 
 [```.toHaveAttribute(attribute: String, value: Any) => Promise```](./expect/toHaveAttribute.md)
 

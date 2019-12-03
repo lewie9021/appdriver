@@ -162,6 +162,28 @@ TODO: Description here.
 
 TODO: Description here.
 
+### Expect
+
+:warning: [```.toHaveText(pattern: String | Regex, options?: Object) => Promise```](./expect/toHaveText.md)
+
+Asserts the element has text matching `pattern`.
+
+:warning: [```.toHaveValueGreaterThanOrEqual(value: Number) => Promise```](./expect/toHaveValueGreaterThanOrEqual.md)
+
+Assets the element has a value greater than or equal to `value`.
+
+:warning: [```.toHaveValueGreaterThan(value: Number) => Promise```](./expect/toHaveValueGreaterThan.md)
+
+Assets the element has a value greater than `value`.
+
+:warning: [```.toHaveValueLessThanOrEqual(value: Number) => Promise```](./expect/toHaveValueGreaterThanOrEqual.md)
+
+Assets the element has a value less than or equal to `value`.
+
+:warning: [```.toHaveValueLessThan(value: Number) => Promise```](./expect/toHaveValueLessThan.md)
+
+Assets the element has a value less than `value`.
+
 ### Configuration
 
 :warning: `appium.username: String?`
