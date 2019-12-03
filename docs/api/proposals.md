@@ -164,10 +164,6 @@ TODO: Description here.
 
 ### Expect
 
-:warning: [```.toHaveText(pattern: String | Regex, options?: Object) => Promise```](./expect/toHaveText.md)
-
-Asserts the element has text matching `pattern`.
-
 :warning: [```.toHaveValueGreaterThanOrEqual(value: Number) => Promise```](./expect/toHaveValueGreaterThanOrEqual.md)
 
 Assets the element has a value greater than or equal to `value`.

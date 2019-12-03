@@ -42,17 +42,11 @@ Inverts the chained assertion to test the opposite.
 
 Asserts the element has a value strictly equal to `value`.
 
-[```.toHaveText(text: String, options?: Object) => Promise```](./expect/toHaveText.md)
+[```.toHaveText(text: String | Regex, options?: Object) => Promise```](./expect/toHaveText.md)
 
-<img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
+<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
-Asserts the element has text exactly matching `text`.
-
-[```.toHaveTextMatch(pattern: Regex) => Promise```](./expect/toHaveTextMatch.md)
-
-<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
-
-Asserts the element contains text that matches `pattern`.
+Asserts the element has text matching `text`.
 
 [```.toBeDisabled() => Promise```](./expect/toBeDisabled.md)
 

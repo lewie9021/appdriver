@@ -71,6 +71,10 @@ const toNumber = (x) => {
   return x;
 };
 
+const isInstanceOf = (x, instance) => {
+  return x instanceof instance;
+};
+
 const isBoolean = (x) => {
   return typeof x === "boolean";
 };
@@ -82,6 +86,8 @@ const isString = (x) => {
 const isNumber = (x) => {
   return typeof x === "number";
 };
+
+const isRegex = (x) => isInstanceOf(x, RegExp);
 
 const isPromise = (x) => {
   return x === Promise.resolve(x);
@@ -97,10 +103,6 @@ const isNull = (x) => {
 
 const isUndefined = (x) => {
   return typeof x === "undefined";
-};
-
-const isInstanceOf = (x, instance) => {
-  return x instanceof instance;
 };
 
 const getValueType = (value) => {
@@ -172,6 +174,7 @@ module.exports = {
   isBoolean,
   isString,
   isNumber,
+  isRegex,
   isPromise,
   isArray,
   isNull,

@@ -1,5 +1,5 @@
 const { NotImplementedError } = require("./errors");
-const { getValueType, isPromise } = require("../utils");
+const { getValueType, isPromise, isRegex } = require("../utils");
 
 const displayValue = (value) => {
   const valueType = getValueType(value);
@@ -38,6 +38,17 @@ class Expect {
 
   async toHaveText(text, options) {
     const elementText = await this.value.getText(options);
+
+    if (isRegex(text)) {
+      return this._assert({
+        pass: text.test(elementText),
+        message: (inverted) => (
+          inverted
+            ? `Expected element not to have text match '${text}'.`
+            : `Expected element to have text match '${text}'.`
+        )
+      });
+    }
 
     return this._assert({
       pass: elementText === text,
@@ -161,19 +172,6 @@ class Expect {
         inverted
           ? `Expected ${displayValueText} not to match '${pattern}'.`
           : `Expected ${displayValueText} to match '${pattern}'.`
-      )
-    });
-  }
-
-  async toHaveTextMatch(pattern, options) {
-    const elementText = await this.value.getText(options);
-
-    return this._assert({
-      pass: pattern.test(elementText),
-      message: (inverted) => (
-        inverted
-          ? `Expected element not to have text match '${pattern}'.`
-          : `Expected element to have text match '${pattern}'.`
       )
     });
   }
