@@ -5,17 +5,13 @@ const displayValue = (value) => {
   const valueType = getValueType(value);
 
   switch (valueType) {
-    case "string":
-      return `'${value}'`;
-    // case "object":
-    //   return JSON.stringify(value);
-    default:
-      return value;
+    case "string": return `'${value}'`;
+    case "array": return JSON.stringify(value);
+    // Avoids potentially unreadable messages.
+    // Maybe write a parser that displays a truncated version?
+    case "object": return "object";
+    default: return value;
   }
-
-  return valueType === "string"
-    ? `'${value}'`
-    : value;
 };
 
 class Expect {
@@ -172,6 +168,19 @@ class Expect {
         inverted
           ? `Expected ${displayValueText} not to match '${pattern}'.`
           : `Expected ${displayValueText} to match '${pattern}'.`
+      )
+    });
+  }
+
+  async toBeTruthy() {
+    const displayValueText = displayValue(this.value);
+
+    return this._assert({
+      pass: Boolean(this.value),
+      message: (inverted) => (
+        inverted
+          ? `Expected ${displayValueText} not to be truthy.`
+          : `Expected ${displayValueText} to be truthy.`
       )
     });
   }
