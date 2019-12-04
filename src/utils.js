@@ -6,7 +6,7 @@ const delay = (ms) => {
   });
 };
 
-const pollFor = (promiseFn, {maxDuration, interval}) => {
+const pollFor = (promiseFn, { maxDuration, interval }) => {
   return new Promise((resolve, reject) => {
     let timedOut = false;
     let errors = [];

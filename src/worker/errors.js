@@ -49,6 +49,16 @@ class ElementWaitError extends Error {
   }
 }
 
+class WaitError extends Error {
+  constructor(message, errors) {
+    super(message);
+
+    Error.captureStackTrace(this, ElementWaitError);
+    this.name = this.constructor.name;
+    this.conditionError = last(errors);
+  }
+}
+
 class NotImplementedError extends Error {
   constructor() {
     super("Functionality not implemented.");
@@ -73,6 +83,7 @@ module.exports = {
   ElementsNotFoundError,
   ElementActionError,
   ElementWaitError,
+  WaitError,
   ActionError,
   NotImplementedError,
   AppiumError

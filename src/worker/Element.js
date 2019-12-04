@@ -3,15 +3,7 @@ const { sessionStore } = require("./stores/sessionStore");
 const { appiumService } = require("./services/appiumService");
 const { Expect } = require("./Expect");
 const { ElementNotFoundError, ElementActionError, ElementWaitError, AppiumError } = require("./errors");
-const { isUndefined, isInstanceOf, isNull, pollFor, delay } = require("../utils");
-
-const poll = (func, opts) => {
-  return func()
-    .catch(() => {
-      return delay(opts.interval)
-        .then(() => poll(func, opts));
-    });
-};
+const { isUndefined, isInstanceOf, isNull, pollFor } = require("../utils");
 
 const getCurrentValue = (elementValue) => {
   return elementValue
