@@ -5,6 +5,7 @@
 ### Added
 
 - Support for `.not` on Expect.
+- Support for `.waitFor` on Device.
 
 ### Changed
 
