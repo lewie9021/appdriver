@@ -96,12 +96,6 @@ Asserts the value is truthy.
 
 Asserts the value is falsy.
 
-[```.toContain(value: Any) => Promise```](./expect/toContain.md)
-
-<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-TODO: Description here.
-
 [```.toMatch(pattern: Regex) => Promise```](./expect/toMatch.md)
 
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
