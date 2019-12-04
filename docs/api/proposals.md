@@ -156,8 +156,6 @@ To be used on scrollable elements, ensuring `element` is fully visible so that i
 
 :warning: [```.toHaveAttribute(attribute: String, value: Any) => Promise```](./expect/toHaveAttribute.md)
 
-<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
 Asserts the element has `attribute` strictly equal to `value`.
 
 ### Gestures
