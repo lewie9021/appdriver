@@ -54,12 +54,6 @@ Asserts the element has text matching `text`.
 
 Asserts the element is disabled.
 
-[```.toHaveAttribute(attribute: String, value: Any) => Promise```](./expect/toHaveAttribute.md)
-
-<img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
-
-Asserts the element has `attribute` strictly equal to `value`.
-
 [```.toExist() => Promise```](./expect/toExist.md)
 
 <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
