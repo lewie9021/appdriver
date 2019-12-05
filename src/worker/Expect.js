@@ -197,6 +197,46 @@ class Expect {
       )
     });
   }
+
+  async toBeLessThan(value) {
+    const supportedTypes = ["number"];
+    const valueType = getValueType(this.value);
+
+    if (!supportedTypes.includes(valueType)) {
+      throw new NotImplementedError();
+    }
+
+    const displayValueText = displayValue(this.value);
+
+    return this._assert({
+      pass: this.value < value,
+      message: (inverted) => (
+        inverted
+          ? `Expected ${displayValueText} not to be less than ${value}.`
+          : `Expected ${displayValueText} to be less than ${value}.`
+      )
+    });
+  }
+
+  async toBeGreaterThan(value) {
+    const supportedTypes = ["number"];
+    const valueType = getValueType(this.value);
+
+    if (!supportedTypes.includes(valueType)) {
+      throw new NotImplementedError();
+    }
+
+    const displayValueText = displayValue(this.value);
+
+    return this._assert({
+      pass: this.value > value,
+      message: (inverted) => (
+        inverted
+          ? `Expected ${displayValueText} not to be greater than ${value}.`
+          : `Expected ${displayValueText} to be greater than ${value}.`
+      )
+    });
+  }
 }
 
 module.exports = {

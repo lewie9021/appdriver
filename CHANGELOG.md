@@ -4,7 +4,7 @@
 
 ### Added
 
-- Support for `.not`, `.toBeTruthy` and `toBeFalsy` on Expect.
+- Support for `.not`, `.toBeTruthy`, `toBeFalsy`, `toBeLessThan`, and `toBeGreaterThan` on Expect.
 - Support for `.waitFor` on Device.
 
 ### Changed
