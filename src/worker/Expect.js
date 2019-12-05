@@ -184,6 +184,19 @@ class Expect {
       )
     });
   }
+
+  async toBeFalsy() {
+    const displayValueText = displayValue(this.value);
+
+    return this._assert({
+      pass: !Boolean(this.value),
+      message: (inverted) => (
+        inverted
+          ? `Expected ${displayValueText} not to be falsy.`
+          : `Expected ${displayValueText} to be falsy.`
+      )
+    });
+  }
 }
 
 module.exports = {
