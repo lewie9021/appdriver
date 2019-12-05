@@ -13,7 +13,7 @@ it("inverses the expectation when used with .not", async () => {
 
 it("throws if expectation is not met", async () => {
   await expect(assert(0).toBeGreaterThan(5))
-  .rejects.toThrow(new Error("Expected 0 to be greater than 5."));
+    .rejects.toThrow(new Error("Expected 0 to be greater than 5."));
 });
 
 it("throws if expectation is not met when used with .not", async () => {

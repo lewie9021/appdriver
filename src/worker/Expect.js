@@ -218,6 +218,26 @@ class Expect {
     });
   }
 
+  async toBeLessThanOrEqual(value) {
+    const supportedTypes = ["number"];
+    const valueType = getValueType(this.value);
+
+    if (!supportedTypes.includes(valueType)) {
+      throw new NotImplementedError();
+    }
+
+    const displayValueText = displayValue(this.value);
+
+    return this._assert({
+      pass: this.value <= value,
+      message: (inverted) => (
+        inverted
+          ? `Expected ${displayValueText} not to be less than or equal to ${value}.`
+          : `Expected ${displayValueText} to be less than or equal to ${value}.`
+      )
+    });
+  }
+
   async toBeGreaterThan(value) {
     const supportedTypes = ["number"];
     const valueType = getValueType(this.value);
@@ -234,6 +254,26 @@ class Expect {
         inverted
           ? `Expected ${displayValueText} not to be greater than ${value}.`
           : `Expected ${displayValueText} to be greater than ${value}.`
+      )
+    });
+  }
+
+  async toBeGreaterThanOrEqual(value) {
+    const supportedTypes = ["number"];
+    const valueType = getValueType(this.value);
+
+    if (!supportedTypes.includes(valueType)) {
+      throw new NotImplementedError();
+    }
+
+    const displayValueText = displayValue(this.value);
+
+    return this._assert({
+      pass: this.value >= value,
+      message: (inverted) => (
+        inverted
+          ? `Expected ${displayValueText} not to be greater than or equal to ${value}.`
+          : `Expected ${displayValueText} to be greater than or equal to ${value}.`
       )
     });
   }
