@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased]
+## [v1.0.0-alpha.13] - 2019-12-06
 
 ### Added
 
