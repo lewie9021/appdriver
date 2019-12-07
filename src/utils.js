@@ -6,7 +6,7 @@ const delay = (ms) => {
   });
 };
 
-const pollFor = (promiseFn, {maxDuration, interval}) => {
+const pollFor = (promiseFn, { maxDuration, interval }) => {
   return new Promise((resolve, reject) => {
     let timedOut = false;
     let errors = [];
@@ -71,6 +71,10 @@ const toNumber = (x) => {
   return x;
 };
 
+const isInstanceOf = (x, instance) => {
+  return x instanceof instance;
+};
+
 const isBoolean = (x) => {
   return typeof x === "boolean";
 };
@@ -82,6 +86,8 @@ const isString = (x) => {
 const isNumber = (x) => {
   return typeof x === "number";
 };
+
+const isRegex = (x) => isInstanceOf(x, RegExp);
 
 const isPromise = (x) => {
   return x === Promise.resolve(x);
@@ -97,10 +103,6 @@ const isNull = (x) => {
 
 const isUndefined = (x) => {
   return typeof x === "undefined";
-};
-
-const isInstanceOf = (x, instance) => {
-  return x instanceof instance;
 };
 
 const getValueType = (value) => {
@@ -150,6 +152,8 @@ const transformArgs = (args) => {
     }, []);
 };
 
+const last = (arr) => arr[arr.length - 1];
+
 const platform = {
   select: ({ ios, android }) => {
     switch (sessionStore.getCapabilities("platformName")) {
@@ -170,6 +174,7 @@ module.exports = {
   isBoolean,
   isString,
   isNumber,
+  isRegex,
   isPromise,
   isArray,
   isNull,
@@ -180,5 +185,6 @@ module.exports = {
   getValueType,
   getRelativePoint,
   transformArgs,
+  last,
   platform
 };

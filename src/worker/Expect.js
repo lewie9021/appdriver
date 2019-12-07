@@ -1,66 +1,111 @@
 const { NotImplementedError } = require("./errors");
-const { getValueType, isPromise } = require("../utils");
+const { getValueType, isPromise, isRegex } = require("../utils");
 
 const displayValue = (value) => {
   const valueType = getValueType(value);
 
   switch (valueType) {
-    case "string":
-      return `'${value}'`;
-    // case "object":
-    //   return JSON.stringify(value);
-    default:
-      return value;
+    case "string": return `'${value}'`;
+    case "array": return JSON.stringify(value);
+    // Avoids potentially unreadable messages.
+    // Maybe write a parser that displays a truncated version?
+    case "object": return "object";
+    default: return value;
   }
-
-  return valueType === "string"
-    ? `'${value}'`
-    : value;
 };
 
 class Expect {
-  constructor(value) {
+  constructor(value, invert = false) {
     this.value = value;
+    this._invert = invert;
   }
 
-  async toHaveText(value, options) {
+  _assert({ pass, message }) {
+    const passed = this._invert ? !pass : pass;
+
+    if (!passed) {
+      throw new Error(message(this._invert));
+    }
+  };
+
+  get not() {
+    return new Expect(this.value, !this._invert);
+  }
+
+  async toHaveText(text, options) {
     const elementText = await this.value.getText(options);
 
-    if (elementText !== value) {
-      throw new Error(`Expected element to have text '${value}' but instead got '${elementText}'.`);
+    if (isRegex(text)) {
+      return this._assert({
+        pass: text.test(elementText),
+        message: (inverted) => (
+          inverted
+            ? `Expected element not to have text match '${text}'.`
+            : `Expected element to have text match '${text}'.`
+        )
+      });
     }
+
+    return this._assert({
+      pass: elementText === text,
+      message: (inverted) => (
+        inverted
+          ? `Expected element not to have text '${text}'.`
+          : `Expected element to have text '${text}' but instead got '${elementText}'.`
+      )
+    });
   }
 
   async toHaveValue(value, options) {
-    const elementText = await this.value.getValue(options);
+    const elementValue = await this.value.getValue(options);
 
-    if (elementText !== value) {
-      throw new Error(`Expected element to have value '${value}' but instead got '${elementText}'.`);
-    }
+    return this._assert({
+      pass: elementValue === value,
+      message: (inverted) => (
+        inverted
+          ? `Expected element not to have value '${value}'.`
+          : `Expected element to have value '${value}' but instead got '${elementValue}'.`
+      )
+    });
   }
 
   async toBeVisible() {
     const elementIsVisible = await this.value.isVisible();
 
-    if (elementIsVisible !== true) {
-      throw new Error(`Expected element to be visible but instead got '${elementIsVisible}'.`);
-    }
+    return this._assert({
+      pass: elementIsVisible === true,
+      message: (inverted) => (
+        inverted
+          ? `Expected element not to be visible.`
+          : `Expected element to be visible.`
+      )
+    });
   }
 
   async toBeDisabled() {
     const elementIsDisabled = await this.value.isDisabled();
 
-    if (elementIsDisabled !== true) {
-      throw new Error(`Expected element to be disabled but instead it was enabled.`);
-    }
+    return this._assert({
+      pass: elementIsDisabled === true,
+      message: (inverted) => (
+        inverted
+          ? `Expected element not to be disabled.`
+          : `Expected element to be disabled.`
+      )
+    });
   }
 
   async toExist() {
     const elementExists = await this.value.exists();
 
-    if (elementExists !== true) {
-      throw new Error(`Expected element to exist.`);
-    }
+    return this._assert({
+      pass: elementExists === true,
+      message: (inverted) => (
+        inverted
+          ? `Expected element not to exist.`
+          : `Expected element to exist.`
+      )
+    });
   }
 
   async toEqual(value) {
@@ -73,21 +118,38 @@ class Expect {
       throw new NotImplementedError();
     }
 
-    if (actualValue !== value) {
-      throw new Error(`Expected ${isPromiseValue ? "promise" : valueType} to equal ${displayValue(value)} but instead got ${displayValue(actualValue)}.`);
-    }
+    const expectedValueText = displayValue(value);
+    const actualValueText = displayValue(actualValue);
+    const valueTypeText = isPromiseValue ? "promise" : valueType;
+
+    return this._assert({
+      pass: actualValue === value,
+      message: (inverted) => (
+        inverted
+          ? `Expected ${valueTypeText} not to equal ${expectedValueText}.`
+          : `Expected ${valueTypeText} to equal ${expectedValueText} but instead got ${actualValueText}.`
+      )
+    });
   }
 
   async toHaveLength(length) {
     const supportedTypes = ["array", "object", "string"];
     const valueType = getValueType(this.value);
-    const valueLength = supportedTypes.includes(valueType)
-      ? this.value.length
-      : 0;
 
-    if (valueLength !== length) {
-      throw new Error(`Expected ${valueType} to have length '${length}' but instead got '${valueLength}'.`);
+    if (!supportedTypes.includes(valueType)) {
+      throw new NotImplementedError();
     }
+
+    const actualLength = this.value.length || 0;
+
+    return this._assert({
+      pass: actualLength === length,
+      message: (inverted) => (
+        inverted
+          ? `Expected ${valueType} not to have length '${length}'.`
+          : `Expected ${valueType} to have length '${length}' but instead got '${actualLength}'.`
+      )
+    });
   }
 
   async toMatch(pattern) {
@@ -98,9 +160,122 @@ class Expect {
       throw new NotImplementedError();
     }
 
-    if (pattern.test(this.value) !== true) {
-      throw new Error(`Expected ${displayValue(this.value)} to match pattern '${pattern}'.`);
+    const displayValueText = displayValue(this.value);
+
+    return this._assert({
+      pass: pattern.test(this.value),
+      message: (inverted) => (
+        inverted
+          ? `Expected ${displayValueText} not to match '${pattern}'.`
+          : `Expected ${displayValueText} to match '${pattern}'.`
+      )
+    });
+  }
+
+  async toBeTruthy() {
+    const displayValueText = displayValue(this.value);
+
+    return this._assert({
+      pass: Boolean(this.value),
+      message: (inverted) => (
+        inverted
+          ? `Expected ${displayValueText} not to be truthy.`
+          : `Expected ${displayValueText} to be truthy.`
+      )
+    });
+  }
+
+  async toBeFalsy() {
+    const displayValueText = displayValue(this.value);
+
+    return this._assert({
+      pass: !Boolean(this.value),
+      message: (inverted) => (
+        inverted
+          ? `Expected ${displayValueText} not to be falsy.`
+          : `Expected ${displayValueText} to be falsy.`
+      )
+    });
+  }
+
+  async toBeLessThan(value) {
+    const supportedTypes = ["number"];
+    const valueType = getValueType(this.value);
+
+    if (!supportedTypes.includes(valueType)) {
+      throw new NotImplementedError();
     }
+
+    const displayValueText = displayValue(this.value);
+
+    return this._assert({
+      pass: this.value < value,
+      message: (inverted) => (
+        inverted
+          ? `Expected ${displayValueText} not to be less than ${value}.`
+          : `Expected ${displayValueText} to be less than ${value}.`
+      )
+    });
+  }
+
+  async toBeLessThanOrEqual(value) {
+    const supportedTypes = ["number"];
+    const valueType = getValueType(this.value);
+
+    if (!supportedTypes.includes(valueType)) {
+      throw new NotImplementedError();
+    }
+
+    const displayValueText = displayValue(this.value);
+
+    return this._assert({
+      pass: this.value <= value,
+      message: (inverted) => (
+        inverted
+          ? `Expected ${displayValueText} not to be less than or equal to ${value}.`
+          : `Expected ${displayValueText} to be less than or equal to ${value}.`
+      )
+    });
+  }
+
+  async toBeGreaterThan(value) {
+    const supportedTypes = ["number"];
+    const valueType = getValueType(this.value);
+
+    if (!supportedTypes.includes(valueType)) {
+      throw new NotImplementedError();
+    }
+
+    const displayValueText = displayValue(this.value);
+
+    return this._assert({
+      pass: this.value > value,
+      message: (inverted) => (
+        inverted
+          ? `Expected ${displayValueText} not to be greater than ${value}.`
+          : `Expected ${displayValueText} to be greater than ${value}.`
+      )
+    });
+  }
+
+  async toBeGreaterThanOrEqual(value) {
+    const supportedTypes = ["number"];
+    const valueType = getValueType(this.value);
+
+    if (!supportedTypes.includes(valueType)) {
+      throw new NotImplementedError();
+    }
+
+    const displayValueText = displayValue(this.value);
+
+    return this._assert({
+      pass: this.value >= value,
+      message: (inverted) => (
+        inverted
+          ? `Expected ${displayValueText} not to be greater than or equal to ${value}.`
+          : `Expected ${displayValueText} to be greater than or equal to ${value}.`
+      )
+    });
   }
 }
 

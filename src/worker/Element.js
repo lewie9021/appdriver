@@ -1,17 +1,10 @@
+const fs = require("fs");
 const { configStore } = require("../stores/configStore");
 const { sessionStore } = require("./stores/sessionStore");
 const { appiumService } = require("./services/appiumService");
 const { Expect } = require("./Expect");
 const { ElementNotFoundError, ElementActionError, ElementWaitError, AppiumError } = require("./errors");
-const { isUndefined, isInstanceOf, isNull, pollFor, delay } = require("../utils");
-
-const poll = (func, opts) => {
-  return func()
-    .catch(() => {
-      return delay(opts.interval)
-        .then(() => poll(func, opts));
-    });
-};
+const { isUndefined, isInstanceOf, isNull, pollFor } = require("../utils");
 
 const getCurrentValue = (elementValue) => {
   return elementValue
@@ -82,7 +75,7 @@ class Element {
     return new Element({ value: nextValue });
   }
 
-  _executeWait(conditionFn, maxDuration, interval, timeoutError) {
+  _executeWait(conditionFn, maxDuration, interval, timeoutMessage) {
     const currentValue = getCurrentValue(this.value);
 
     const nextValue = new Promise((resolve, reject) => {
@@ -95,7 +88,7 @@ class Element {
           }, { maxDuration, interval })
             .then(() => resolve(value))
             .catch((errors) => {
-              reject(new ElementWaitError(timeoutError));
+              reject(new ElementWaitError(timeoutMessage, value.matcher, errors));
             });
         },
         (err) => {
@@ -107,7 +100,7 @@ class Element {
             }, { maxDuration, interval })
               .then(() => resolve({ ref: null, matcher: err.matcher }))
               .catch((errors) => {
-                reject(new ElementWaitError(timeoutError));
+                reject(new ElementWaitError(timeoutMessage, err.matcher, errors));
               });
           }
 
@@ -253,45 +246,45 @@ class Element {
   waitFor(conditionFn, options = {}) {
     const maxDuration = options.maxDuration || configStore.getWaitForTimeout();
     const interval = options.interval || configStore.getWaitForInterval();
-    const timeoutError = `Wait condition exceeded ${maxDuration}ms timeout (interval: ${interval}ms).`;
+    const timeoutMessage = `Wait condition exceeded ${maxDuration}ms timeout (interval: ${interval}ms).`;
 
-    return this._executeWait(conditionFn, maxDuration, interval, timeoutError);
+    return this._executeWait(conditionFn, maxDuration, interval, timeoutMessage);
   }
 
   waitToBeVisible(options = {}) {
     const maxDuration = options.maxDuration || configStore.getWaitForTimeout();
     const interval = options.interval || configStore.getWaitForInterval();
-    const conditionFn = ($e) => new Expect($e.isVisible()).toEqual(true);
-    const timeoutError = `Element not visible after ${maxDuration}ms timeout (interval: ${interval}ms).`;
+    const conditionFn = ($e) => new Expect($e).toBeVisible();
+    const timeoutMessage = `Element not visible after ${maxDuration}ms timeout (interval: ${interval}ms).`;
 
-    return this._executeWait(conditionFn, maxDuration, interval, timeoutError);
+    return this._executeWait(conditionFn, maxDuration, interval, timeoutMessage);
   }
 
   waitToBeInvisible(options = {}) {
     const maxDuration = options.maxDuration || configStore.getWaitForTimeout();
     const interval = options.interval || configStore.getWaitForInterval();
-    const conditionFn = ($e) => new Expect($e.isVisible()).toEqual(false);
-    const timeoutError = `Element still visible after ${maxDuration}ms timeout (interval: ${interval}ms).`;
+    const conditionFn = ($e) => new Expect($e).not.toBeVisible();
+    const timeoutMessage = `Element still visible after ${maxDuration}ms timeout (interval: ${interval}ms).`;
 
-    return this._executeWait(conditionFn, maxDuration, interval, timeoutError);
+    return this._executeWait(conditionFn, maxDuration, interval, timeoutMessage);
   }
 
   waitToExist(options = {}) {
     const maxDuration = options.maxDuration || configStore.getWaitForTimeout();
     const interval = options.interval || configStore.getWaitForInterval();
-    const conditionFn = ($e) => new Expect($e.exists()).toEqual(true);
-    const timeoutError = `Element not found after ${maxDuration}ms timeout (interval: ${interval}ms).`;
+    const conditionFn = ($e) => new Expect($e).toExist();
+    const timeoutMessage = `Element not found after ${maxDuration}ms timeout (interval: ${interval}ms).`;
 
-    return this._executeWait(conditionFn, maxDuration, interval, timeoutError);
+    return this._executeWait(conditionFn, maxDuration, interval, timeoutMessage);
   }
 
   waitToNotExist(options = {}) {
     const maxDuration = options.maxDuration || configStore.getWaitForTimeout();
     const interval = options.interval || configStore.getWaitForInterval();
-    const conditionFn = ($e) => new Expect($e.exists()).toEqual(false);
-    const timeoutError = `Element still found after ${maxDuration}ms timeout (interval: ${interval}ms).`;
+    const conditionFn = ($e) => new Expect($e).not.toExist();
+    const timeoutMessage = `Element still found after ${maxDuration}ms timeout (interval: ${interval}ms).`;
 
-    return this._executeWait(conditionFn, maxDuration, interval, timeoutError);
+    return this._executeWait(conditionFn, maxDuration, interval, timeoutMessage);
   }
 
   getText(options) {
@@ -476,6 +469,31 @@ class Element {
           done(err);
         });
     });
+  }
+
+  takeScreenshot({ filePath } = {}) {
+    const currentValue = getCurrentValue(this.value);
+
+    return currentValue
+      .then((value) => appiumService.takeElementScreenshot({ element: value.ref }))
+      .then((value) => {
+        const buffer = Buffer.from(value, "base64");
+
+        if (!filePath) {
+          return Promise.resolve(buffer);
+        }
+
+        return new Promise((resolve, reject) => {
+          fs.writeFile(filePath, Buffer.from(value, "base64"), (err) => {
+            if (err) {
+              return reject(new ElementActionError("Failed to store element screenshot on disk."));
+            }
+
+            resolve(buffer);
+          });
+        });
+      })
+      .catch(handleActionError("Failed to take element screenshot."));
   }
 }
 

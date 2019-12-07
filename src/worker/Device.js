@@ -1,9 +1,10 @@
 const fs = require("fs");
+const { configStore } = require("../stores/configStore");
 const { sessionStore } = require("./stores/sessionStore");
 const { appiumService } = require("./services/appiumService");
 const gestures = require("./gestures");
-const { delay, isUndefined, isInstanceOf, platform } = require("../utils");
-const { ActionError, AppiumError } = require("./errors");
+const { delay, isUndefined, isInstanceOf, pollFor, platform } = require("../utils");
+const { ActionError, AppiumError, WaitError } = require("./errors");
 
 const handleActionError = (message) => (err) => {
   if (isInstanceOf(err, AppiumError)) {
@@ -134,6 +135,15 @@ class Device {
 
   wait(duration) {
     return delay(duration);
+  }
+
+  waitFor(conditionFn, options = {}) {
+    const maxDuration = options.maxDuration || configStore.getWaitForTimeout();
+    const interval = options.interval || configStore.getWaitForInterval();
+    const timeoutMessage = `Wait condition exceeded ${maxDuration}ms timeout (interval: ${interval}ms).`;
+
+    return pollFor(conditionFn, { maxDuration, interval })
+      .catch((errors) => { throw new WaitError(timeoutMessage, errors); });
   }
 
   // TODO: Needs to use .waitFor + .isKeyboardVisible before returning back instead of delay.

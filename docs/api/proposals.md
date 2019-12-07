@@ -152,6 +152,12 @@ TODO: Description here.
 
 To be used on scrollable elements, ensuring `element` is fully visible so that interactions are successful. Defaults `swipeGesture` to `gestures.swipeUp`.
 
+### Expect
+
+:warning: [```.toHaveAttribute(attribute: String, value: Any) => Promise```](./expect/toHaveAttribute.md)
+
+Asserts the element has `attribute` strictly equal to `value`.
+
 ### Gestures
 
 :warning: [```.series(Array<Gesture>) => Gesture```](./gestures/series.md)

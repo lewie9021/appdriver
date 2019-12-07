@@ -4,19 +4,19 @@ const { appiumService } = require("./services/appiumService");
 const mocha = require("./mocha");
 
 (async () => {
-  // Parse CLI options.
-  commandLineService.init();
-
-  const specPath = commandLineService.getSpecPath();
-  const device = configStore.getDevice();
-  const mochaOpts = {
-    ui: configStore.getUi(),
-    timeout: configStore.getTestTimeout(),
-    slow: configStore.getTestTimeout() * 0.75,
-    bail: true
-  };
-
   try {
+    // Parse CLI options.
+    commandLineService.init();
+
+    const specPath = commandLineService.getSpecPath();
+    const device = configStore.getDevice();
+    const mochaOpts = {
+      ui: configStore.getUi(),
+      timeout: configStore.getTestTimeout(),
+      slow: configStore.getTestTimeout() * 0.75,
+      bail: true
+    };
+
     const session = await appiumService.createSession({ desiredCapabilities: device.capabilities });
     const failures = await mocha.runTestSpec(specPath, mochaOpts);
     await appiumService.endSession({ sessionId: session.sessionId });

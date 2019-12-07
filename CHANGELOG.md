@@ -1,5 +1,23 @@
 # Change Log
 
+## [Unreleased]
+
+### Added
+
+- Support for `.takeScreenshot` on Element.
+
+## [v1.0.0-alpha.13] - 2019-12-06
+
+### Added
+
+- Support for `.not`, `.toBeTruthy`, `toBeFalsy`, `toBeLessThan`, `toBeLessThanOrEqual`, `toBeGreaterThan` and `toBeGreaterThanOrEqual` on Expect.
+- Support for `.waitFor` on Device.
+
+### Changed
+
+- `.toHaveText` on Expect now accepts a regex value to assert against.
+- Wait errors to include most recent error and matcher to improve debugging experience.
+
 ## [v1.0.0-alpha.12] - 2019-11-27
 
 ### Added

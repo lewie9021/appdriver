@@ -1,3 +1,5 @@
+const { last } = require("../utils");
+
 class ElementNotFoundError extends Error {
   constructor(message, matcher) {
     super(message);
@@ -37,11 +39,23 @@ class ActionError extends Error {
 }
 
 class ElementWaitError extends Error {
-  constructor(message) {
+  constructor(message, matcher, errors) {
     super(message);
 
     Error.captureStackTrace(this, ElementWaitError);
     this.name = this.constructor.name;
+    this.matcher = matcher;
+    this.conditionError = last(errors);
+  }
+}
+
+class WaitError extends Error {
+  constructor(message, errors) {
+    super(message);
+
+    Error.captureStackTrace(this, ElementWaitError);
+    this.name = this.constructor.name;
+    this.conditionError = last(errors);
   }
 }
 
@@ -69,6 +83,7 @@ module.exports = {
   ElementsNotFoundError,
   ElementActionError,
   ElementWaitError,
+  WaitError,
   ActionError,
   NotImplementedError,
   AppiumError
