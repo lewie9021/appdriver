@@ -486,7 +486,7 @@ class Element {
         return new Promise((resolve, reject) => {
           fs.writeFile(filePath, Buffer.from(value, "base64"), (err) => {
             if (err) {
-              return reject(new ActionError("Failed to store element screenshot on disk."));
+              return reject(new ElementActionError("Failed to store element screenshot on disk."));
             }
 
             resolve(buffer);

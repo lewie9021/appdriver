@@ -93,7 +93,7 @@ Retrieves width and height dimensions of element.
 
 [```.takeScreenshot(options?: Object) => Promise```](./element/takeScreenshot.md)
 
-<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 Takes a screenshot (PNG) of the element within the viewport and saves the result on disk at the given `filePath` location.
 
