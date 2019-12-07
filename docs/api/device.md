@@ -121,9 +121,9 @@ Modify the orientation of the device.
 
 Retrieves the width and height of the device viewport.
 
-[```.takeScreenshot(options?: Object) => Promise```](./device/takeScreenshot.md)
+[```.takeScreenshot(options?: Object) => Promise<Buffer>```](./device/takeScreenshot.md)
 
-<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
+<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-Done-green.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 Takes a screenshot (PNG) of the entire screen and saves the result on disk at the given `filePath` location.
 

@@ -1,4 +1,4 @@
-# `.takeScreenshot(options: Object) => Promise`
+# `.takeScreenshot(options: Object) => Promise<Buffer>`
 
 Takes a screenshot (PNG) of the entire screen and saves the result on disk at the given `filePath` location.
 
@@ -9,7 +9,7 @@ Takes a screenshot (PNG) of the entire screen and saves the result on disk at th
 
 #### Returns
 
-`Promise`: A promise that resolves after the screenshot has been taken and successfully stored on disk.
+`Promise<Buffer>`: A promise containing a base64 buffer that resolves after the screenshot has been taken and successfully stored on disk.
 
 #### Examples
 
