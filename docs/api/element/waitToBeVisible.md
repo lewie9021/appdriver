@@ -19,7 +19,7 @@ Screen Loading:
 ```jsx
 // Application Code (React Native).
 import { useState, useEffect } from "react";
-import { View, Button } from "react-native";
+import { View, Button, ActivityIndicator } from "react-native";
 import { setTestId } from "appdriver";
 
 const App = () => {
@@ -41,7 +41,9 @@ const App = () => {
             onPress={() => alert("Hello World!")}
           />
         )
-        : null
+        : (
+          <ActivityIndicator />
+        )
       }
     </View>
   );
@@ -56,8 +58,6 @@ const { element, by } = require("appdriver");
     .tap();
 })();
 ```
-
-TODO: More examples here.
 
 #### Related methods
 

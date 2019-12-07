@@ -105,7 +105,7 @@ Polls `conditionFn` every `options.interval` until it resolves or `options.maxDu
 
 [```.waitToBeVisible(options?: Object) => Element```](./element/waitToBeVisible.md)
 
-<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
+<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-Done-green.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 Polls for element to be visible every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
 
