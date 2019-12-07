@@ -1,5 +1,11 @@
 # Change Log
 
+## [Unreleased]
+
+### Added
+
+- Support for `.takeScreenshot` on Element.
+
 ## [v1.0.0-alpha.13] - 2019-12-06
 
 ### Added
