@@ -526,6 +526,14 @@ function createAppiumService(sessionStore) {
     });
   };
 
+  // ({ sessionId: String?, element: AppiumElement }) => Promise<String>.
+  const takeElementScreenshot = ({ sessionId = sessionStore.getSessionId(), element }) => {
+    return request({
+      method: "GET",
+      path: `/session/${sessionId}/element/${element.ELEMENT}/screenshot`
+    });
+  };
+
   return {
     getStatus,
     createSession,
@@ -562,7 +570,8 @@ function createAppiumService(sessionStore) {
     longPressElement,
     swipeElement,
     sendElementKeys,
-    clearElementText
+    clearElementText,
+    takeElementScreenshot
   };
 }
 

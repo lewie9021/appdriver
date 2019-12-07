@@ -1,3 +1,4 @@
+const fs = require("fs");
 const { configStore } = require("../stores/configStore");
 const { sessionStore } = require("./stores/sessionStore");
 const { appiumService } = require("./services/appiumService");
@@ -468,6 +469,31 @@ class Element {
           done(err);
         });
     });
+  }
+
+  takeScreenshot({ filePath } = {}) {
+    const currentValue = getCurrentValue(this.value);
+
+    return currentValue
+      .then((value) => appiumService.takeElementScreenshot({ element: value.ref }))
+      .then((value) => {
+        const buffer = Buffer.from(value, "base64");
+
+        if (!filePath) {
+          return Promise.resolve(buffer);
+        }
+
+        return new Promise((resolve, reject) => {
+          fs.writeFile(filePath, Buffer.from(value, "base64"), (err) => {
+            if (err) {
+              return reject(new ActionError("Failed to store element screenshot on disk."));
+            }
+
+            resolve(buffer);
+          });
+        });
+      })
+      .catch(handleActionError("Failed to take element screenshot."));
   }
 }
 

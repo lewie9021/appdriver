@@ -91,6 +91,12 @@ Retrieves x and y coordinates of element.
 
 Retrieves width and height dimensions of element.
 
+[```.takeScreenshot(options?: Object) => Promise```](./element/takeScreenshot.md)
+
+<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+
+Takes a screenshot (PNG) of the element within the viewport and saves the result on disk at the given `filePath` location.
+
 [```.waitFor(conditionFn: Function<Promise>, options?: Object) => Element```](./element/waitFor.md)
 
 <img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-Done-green.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
