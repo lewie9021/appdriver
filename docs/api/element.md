@@ -91,7 +91,7 @@ Retrieves x and y coordinates of element.
 
 Retrieves width and height dimensions of element.
 
-[```.takeScreenshot(options?: Object) => Promise```](./element/takeScreenshot.md)
+[```.takeScreenshot(options?: Object) => Promise<Buffer>```](./element/takeScreenshot.md)
 
 <img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-Done-green.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
