@@ -75,7 +75,7 @@ Returns the device name of the current session.
 
 [```.wait(duration: Number) => Promise```](./device/wait.md)
 
-<img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-Done-green.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
+<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-Done-green.svg" /> <img src="https://img.shields.io/badge/Docs-Done-green.svg" /> <img src="https://img.shields.io/badge/Tests-Done-green.svg" />
 
 Explicitly wait `duration` milliseconds.
 
