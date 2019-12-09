@@ -32,6 +32,7 @@ Swipe left 100 pixels. This will swipe left from the coordinate (200, 200) to (1
 - [`.swipeLeft(options: Object) => Promise`](./swipeLeft.md)
 - [`.swipeRight(options: Object) => Promise`](./swipeRight.md)
 
-### Related Appium Docs
+### Related Docs
 
-- [W3C Actions](http://appium.io/docs/en/commands/interactions/actions/)
+- [W3C Actions (Appium)](http://appium.io/docs/en/commands/interactions/actions/)
+- [Actions (W3C)](https://www.w3.org/TR/webdriver/#actions)
