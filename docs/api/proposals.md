@@ -16,6 +16,12 @@ TODO: Description here.
 
 TODO: Description here.
 
+:warning: [```.isPortrait() => Promise<Boolean>```](./element/isPortrait.md)
+
+<img src="https://img.shields.io/badge/Platforms-Android-blue.svg" />
+
+TODO: Description here.
+
 :warning: [```.setPortrait() => Promise```](./device/setPortrait.md)
 
 <img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />
