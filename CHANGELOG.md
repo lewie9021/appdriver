@@ -4,7 +4,7 @@
 
 ### Added
 
-- Support for `.takeScreenshot` on Element.
+- Support for `.takeScreenshot` and `.tapReturnKey` on Element.
 
 ## [v1.0.0-alpha.13] - 2019-12-06
 
