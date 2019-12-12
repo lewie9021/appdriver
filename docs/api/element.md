@@ -51,7 +51,7 @@ Wipes the contents of a text element.
 
 [```.tapReturnKey() => Element```](./element/tapReturnKey.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
 TODO: Description here.
 
