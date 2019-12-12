@@ -1,4 +1,4 @@
-const { platform } = require("../utils");
+const { platform, isRegex } = require("../utils");
 
 const isContainsQuery = (query) => {
   return query.startsWith("*") && query.endsWith("*");
@@ -13,35 +13,32 @@ const getByIdMatcher = (id) => ({
   value: id
 });
 
-// Very crude implementation that supports simple fuzzy matching, e.g. "list-item-*" and "*item*"
+const getNativeRegex = (regex) => {
+  const pattern = regex.toString();
+  const flags = regex.flags.split("");
+
+  return {
+    pattern: pattern.slice(1, pattern.lastIndexOf("/")),
+    modifiers: platform.select({
+      ios: () => flags.includes("i")  ? "[c]" : "",
+      android: () => flags.includes("i") ? "(?i)" : ""
+    })
+  }
+};
+
 // TODO: Needs to escape value to avoid unexpected behaviour.
 const getByAccessibilityLabelMatcher = (accessibilityLabel) => {
-  if (isContainsQuery(accessibilityLabel)) {
-    const query = accessibilityLabel.substr(1, accessibilityLabel.length - 2);
+  if (isRegex(accessibilityLabel)) {
+    const regex = getNativeRegex(accessibilityLabel);
 
     return platform.select({
       ios: () => ({
         using: "-ios predicate string",
-        value: `name CONTAINS '${query}'`
+        value: `name MATCHES${regex.modifiers} '${regex.pattern}'`
       }),
       android: () => ({
         using: "-android uiautomator",
-        value: `new UiSelector().descriptionContains("${query}")`
-      })
-    });
-  }
-
-  if (isEndsWithQuery(accessibilityLabel)) {
-    const query = accessibilityLabel.substr(0, accessibilityLabel.length - 1);
-
-    return platform.select({
-      ios: () => ({
-        using: "-ios predicate string",
-        value: `name BEGINSWITH '${query}'`
-      }),
-      android: () => ({
-        using: "-android uiautomator",
-        value: `new UiSelector().descriptionStartsWith("${query}")`
+        value: `new UiSelector().descriptionMatches("${regex.modifiers}${regex.pattern}")`
       })
     });
   }
