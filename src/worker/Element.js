@@ -219,6 +219,20 @@ class Element {
     });
   }
 
+  tapReturnKey() {
+    return this._executeAction((value, done) => {
+      return appiumService.tapElementReturnKey({ element: value.ref })
+        .then(() => done(null))
+        .catch((err) => {
+          if (isInstanceOf(err, AppiumError)) {
+            return done(new ElementActionError("Failed to tap return key on element."))
+          }
+
+          return done(err);
+        });
+    });
+  }
+
   getSize() {
     const currentValue = getCurrentValue(this.value);
 

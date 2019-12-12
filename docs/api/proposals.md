@@ -139,12 +139,6 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.tapReturnKey() => Element```](./element/tapReturnKey.md)
-
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
-
-TODO: Description here.
-
 :warning: [```.getAttribute(attribute: String) => Promise<Any>```](./element/getAttribute.md)
 
 <img src="https://img.shields.io/badge/Platform-Both-blue.svg" />

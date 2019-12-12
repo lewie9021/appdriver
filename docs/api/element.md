@@ -49,6 +49,12 @@ Using the virtual keyboard, types the given text into a text element.
 
 Wipes the contents of a text element.
 
+[```.tapReturnKey() => Element```](./element/tapReturnKey.md)
+
+<img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+
+TODO: Description here.
+
 [```.getText(options?: Object) => Promise<String>```](./element/getText.md)
 
 <img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" />

@@ -179,6 +179,15 @@ function createAppiumService(sessionStore) {
     });
   };
 
+  // ({ sessionId: String?, keyCode: Number }) => Promise.
+  const sendKeyCode = ({ sessionId = sessionStore.getSessionId(), keycode }) => {
+    return request({
+      method: "POST",
+      path: `/session/${sessionId}/appium/device/press_keycode`,
+      payload: { keycode }
+    });
+  };
+
   // ({ sessionId: String? }) => Promise.
   const goBack = ({ sessionId = sessionStore.getSessionId() } = {}) => {
     return platform.select({
@@ -526,6 +535,14 @@ function createAppiumService(sessionStore) {
     });
   };
 
+  // ({ sessionId: String?, element: AppiumElement }) => Promise.
+  const tapElementReturnKey = ({ sessionId = sessionStore.getSessionId(), element }) => {
+    return platform.select({
+      ios: () => sendElementKeys({ sessionId, element, keys: ["\n"] }),
+      android: () => sendKeyCode({ sessionId, keycode: 66 })
+    });
+  };
+
   // ({ sessionId: String?, element: AppiumElement }) => Promise<String>.
   const takeElementScreenshot = ({ sessionId = sessionStore.getSessionId(), element }) => {
     return request({
@@ -550,6 +567,7 @@ function createAppiumService(sessionStore) {
     stopScreenRecording,
     getKeyboardVisible,
     hideKeyboard,
+    sendKeyCode,
     goBack,
     performActions,
     findElement,
@@ -571,6 +589,7 @@ function createAppiumService(sessionStore) {
     swipeElement,
     sendElementKeys,
     clearElementText,
+    tapElementReturnKey,
     takeElementScreenshot
   };
 }
