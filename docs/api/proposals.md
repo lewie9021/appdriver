@@ -133,12 +133,6 @@ TODO: Description here.
 Note: Not supported on iOS yet. See https://github.com/appium/appium/issues/13441
 TODO: Description here.
 
-:warning: [```.tapBackspaceKey() => Element```](./element/tapBackspaceKey.md)
-
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
-
-TODO: Description here.
-
 :warning: [```.getAttribute(attribute: String) => Promise<Any>```](./element/getAttribute.md)
 
 <img src="https://img.shields.io/badge/Platform-Both-blue.svg" />

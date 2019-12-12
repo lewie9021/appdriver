@@ -55,6 +55,12 @@ Wipes the contents of a text element.
 
 TODO: Description here.
 
+[```.tapBackspaceKey() => Element```](./element/tapBackspaceKey.md)
+
+<img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+
+TODO: Description here.
+
 [```.getText(options?: Object) => Promise<String>```](./element/getText.md)
 
 <img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" />

@@ -543,6 +543,14 @@ function createAppiumService(sessionStore) {
     });
   };
 
+  // ({ sessionId: String?, element: AppiumElement }) => Promise.
+  const tapElementBackspaceKey = ({ sessionId = sessionStore.getSessionId(), element }) => {
+    return platform.select({
+      ios: () => sendElementKeys({ sessionId, element, keys: ["\b"] }),
+      android: () => sendKeyCode({ sessionId, keycode: 67 })
+    });
+  };
+
   // ({ sessionId: String?, element: AppiumElement }) => Promise<String>.
   const takeElementScreenshot = ({ sessionId = sessionStore.getSessionId(), element }) => {
     return request({
@@ -590,6 +598,7 @@ function createAppiumService(sessionStore) {
     sendElementKeys,
     clearElementText,
     tapElementReturnKey,
+    tapElementBackspaceKey,
     takeElementScreenshot
   };
 }

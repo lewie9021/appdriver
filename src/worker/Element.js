@@ -233,6 +233,20 @@ class Element {
     });
   }
 
+  tapBackspaceKey() {
+    return this._executeAction((value, done) => {
+      return appiumService.tapElementBackspaceKey({ element: value.ref })
+        .then(() => done(null))
+        .catch((err) => {
+          if (isInstanceOf(err, AppiumError)) {
+            return done(new ElementActionError("Failed to tap backspace key on element."))
+          }
+
+          return done(err);
+        });
+    });
+  }
+
   getSize() {
     const currentValue = getCurrentValue(this.value);
 
