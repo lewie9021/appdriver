@@ -52,9 +52,9 @@ Find element(s) by their ID. For Android this is the `resource-id` attribute, wh
 
 Find element(s) by their accessibility label. For Android this is the `content-desc` attribute, whereas for iOS it's the `accessibility-id` attribute.
 
-[```by.text(text: String) => Matcher```](./matchers/byText.md)
+[```by.text(text: String | Regex) => Matcher```](./matchers/byText.md)
 
-<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
+<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
 Find element(s) by their text value.
 
