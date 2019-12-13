@@ -13,25 +13,25 @@ describe("Android", () => {
   beforeEach(() => jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("Android"));
 
   it("supports simple queries", () => {
-    const text = "button";
+    const label = "list-item-0";
 
-    expect(by.text(text)).toEqual({
-      using: "-android uiautomator",
-      value: `new UiSelector().text("${text}")`
+    expect(by.text(label)).toEqual({
+      using: `-android uiautomator`,
+      value: `new UiSelector().text("${label}")`
     });
   });
 
-  it("supports 'ends with' queries", () => {
-    expect(by.text("button-*")).toEqual({
+  it("supports regex queries", () => {
+    expect(by.text(/list-item-*/)).toEqual({
       using: "-android uiautomator",
-      value: `new UiSelector().textStartsWith("button-")`
+      value: `new UiSelector().textMatches("list-item-*")`
     });
   });
 
-  it("supports 'contains' queries", () => {
-    expect(by.text("*button*")).toEqual({
+  it("supports case-insensitive regex queries", () => {
+    expect(by.text(/LIST-ITEM-*/i)).toEqual({
       using: "-android uiautomator",
-      value: `new UiSelector().textContains("button")`
+      value: `new UiSelector().textMatches("(?i)LIST-ITEM-*")`
     });
   });
 });
@@ -40,25 +40,25 @@ describe("iOS", () => {
   beforeEach(() => jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("iOS"));
 
   it("supports simple queries", () => {
-    const text = "button";
+    const label = "list-item-0";
 
-    expect(by.text(text)).toEqual({
+    expect(by.text(label)).toEqual({
       using: "-ios predicate string",
-      value: `label = '${text}'`
+      value: `label = '${label}'`
     });
   });
 
-  it("supports 'ends with' queries", () => {
-    expect(by.text("button-*")).toEqual({
+  it("supports regex queries", () => {
+    expect(by.text(/list-item-*/)).toEqual({
       using: "-ios predicate string",
-      value: `label BEGINSWITH 'button-'`
+      value: `label MATCHES 'list-item-*'`
     });
   });
 
-  it("supports 'contains' queries", () => {
-    expect(by.text("*button*")).toEqual({
+  it("supports case-insensitive regex queries", () => {
+    expect(by.text(/LIST-ITEM-*/i)).toEqual({
       using: "-ios predicate string",
-      value: `label CONTAINS 'button'`
+      value: `label MATCHES[c] 'LIST-ITEM-*'`
     });
   });
 });

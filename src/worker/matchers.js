@@ -1,20 +1,11 @@
 const { platform, isRegex } = require("../utils");
 const getNativeRegex = require("./helpers/getNativeRegex");
 
-const isContainsQuery = (query) => {
-  return query.startsWith("*") && query.endsWith("*");
-};
-
-const isEndsWithQuery = (query) => {
-  return query.endsWith("*");
-};
-
 const getByIdMatcher = (id) => ({
   using: "id",
   value: id
 });
 
-// TODO: Needs to escape value to avoid unexpected behaviour.
 const getByAccessibilityLabelMatcher = (accessibilityLabel) => {
   if (isRegex(accessibilityLabel)) {
     const regex = getNativeRegex(accessibilityLabel);
@@ -38,32 +29,17 @@ const getByAccessibilityLabelMatcher = (accessibilityLabel) => {
 };
 
 const getByTextMatcher = (text) => {
-  if (isContainsQuery(text)) {
-    const query = text.substr(1, text.length - 2);
+  if (isRegex(text)) {
+    const regex = getNativeRegex(text);
 
     return platform.select({
       ios: () => ({
         using: "-ios predicate string",
-        value: `label CONTAINS '${query}'`
+        value: `label MATCHES${regex.modifiers} '${regex.pattern}'`
       }),
       android: () => ({
         using: "-android uiautomator",
-        value: `new UiSelector().textContains("${query}")`
-      })
-    });
-  }
-
-  if (isEndsWithQuery(text)) {
-    const query = text.substr(0, text.length - 1);
-
-    return platform.select({
-      ios: () => ({
-        using: "-ios predicate string",
-        value: `label BEGINSWITH '${query}'`
-      }),
-      android: () => ({
-        using: "-android uiautomator",
-        value: `new UiSelector().textStartsWith("${query}")`
+        value: `new UiSelector().textMatches("${regex.modifiers}${regex.pattern}")`
       })
     });
   }
