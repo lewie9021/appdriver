@@ -6,6 +6,10 @@
 
 - Support for `.takeScreenshot`, `.tapReturnKey` and `.tapBackspaceKey` on Element.
 
+### Changed
+
+- `by.label` Matcher to instead accept regex instead of a custom fuzzy matching syntax.
+
 ## [v1.0.0-alpha.13] - 2019-12-06
 
 ### Added
