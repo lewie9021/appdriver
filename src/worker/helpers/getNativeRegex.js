@@ -1,7 +1,6 @@
 const { platform } = require("../../utils");
 
 // Converts JS regex to 'native' (iOS predicate & UiSelector) regex.
-// TODO: Add tests.
 const getNativeRegex = (regex) => {
   const pattern = regex.toString();
   const flags = regex.flags.split("");

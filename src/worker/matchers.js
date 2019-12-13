@@ -1,4 +1,5 @@
 const { platform, isRegex } = require("../utils");
+const getNativeRegex = require("./helpers/getNativeRegex");
 
 const isContainsQuery = (query) => {
   return query.startsWith("*") && query.endsWith("*");
@@ -12,19 +13,6 @@ const getByIdMatcher = (id) => ({
   using: "id",
   value: id
 });
-
-const getNativeRegex = (regex) => {
-  const pattern = regex.toString();
-  const flags = regex.flags.split("");
-
-  return {
-    pattern: pattern.slice(1, pattern.lastIndexOf("/")),
-    modifiers: platform.select({
-      ios: () => flags.includes("i")  ? "[c]" : "",
-      android: () => flags.includes("i") ? "(?i)" : ""
-    })
-  }
-};
 
 // TODO: Needs to escape value to avoid unexpected behaviour.
 const getByAccessibilityLabelMatcher = (accessibilityLabel) => {
