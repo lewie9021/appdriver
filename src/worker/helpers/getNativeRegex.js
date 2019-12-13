@@ -5,13 +5,18 @@ const getNativeRegex = (regex) => {
   const pattern = regex.toString();
   const flags = regex.flags.split("");
 
-  return {
-    pattern: pattern.slice(1, pattern.lastIndexOf("/")),
-    modifiers: platform.select({
-      ios: () => flags.includes("i")  ? "[c]" : "",
-      android: () => flags.includes("i") ? "(?i)" : ""
+  return platform.select({
+    ios: () => ({
+      pattern: pattern
+        .slice(1, pattern.lastIndexOf("/"))
+        .replace(/\\/g, "\\\\"),
+      modifiers: flags.includes("i")  ? "[c]" : ""
+    }),
+    android: () => ({
+      pattern: pattern.slice(1, pattern.lastIndexOf("/")),
+      modifiers: flags.includes("i") ? "(?i)" : ""
     })
-  }
+  });
 };
 
 module.exports = getNativeRegex;

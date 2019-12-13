@@ -24,6 +24,13 @@ describe("iOS", () => {
       modifiers: "[c]"
     });
   });
+
+  it("escapes backslashes", () => {
+    expect(getNativeRegex(/list-item-\d+/)).toEqual({
+      pattern: "list-item-\\\\d+",
+      modifiers: ""
+    });
+  });
 });
 
 describe("Android", () => {
