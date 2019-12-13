@@ -71,6 +71,22 @@ it("throws if expectation is not met when used with .not", async () => {
   }
 });
 
+it("supports passing .getValue options", async () => {
+  const ref = createFindElementMock();
+  const value = 2.5;
+  const options = { sliderRange: [0, 5] };
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementValue").mockResolvedValue(value);
+
+  const $element = await element(by.label("text-input"));
+
+  await expect(assert($element).toHaveValue(value, options))
+    .resolves.toEqual(undefined);
+
+  expect(appiumService.getElementValue).toHaveBeenCalledWith(expect.objectContaining({ options }));
+});
+
 // TODO: Could maybe wrap the error?
 it("correctly propagates errors", async () => {
   const ref = createFindElementMock();
