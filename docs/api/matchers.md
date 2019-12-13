@@ -40,9 +40,9 @@ Find element with text 'Click Me!''.
 
 ### Matchers API
 
-[```by.id(id: String) => Matcher```](./matchers/byId.md)
+[```by.id(id: String | Regex) => Matcher```](./matchers/byId.md)
 
-<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
+<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
 Find element(s) by their ID. For Android this is the `resource-id` attribute, whereas for iOS it's the `name` attribute.
 
@@ -50,7 +50,7 @@ Find element(s) by their ID. For Android this is the `resource-id` attribute, wh
 
 <img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
-Find element(s) by their accessibility label. For Android this is the `content-desc` attribute, whereas for iOS it's the `accessibility-id` attribute.
+Find element(s) by their accessibility label. For Android this is the `content-desc` attribute, whereas for iOS it's the `name` attribute.
 
 [```by.text(text: String | Regex) => Matcher```](./matchers/byText.md)
 

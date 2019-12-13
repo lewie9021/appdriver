@@ -8,7 +8,7 @@
 
 ### Changed
 
-- `by.label` and `by.text` Matchers to instead accept regex instead of a custom fuzzy matching syntax.
+- `by.id`, `by.label` and `by.text` Matchers to instead accept regex instead of a custom fuzzy matching syntax.
 
 ## [v1.0.0-alpha.13] - 2019-12-06
 

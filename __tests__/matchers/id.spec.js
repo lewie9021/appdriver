@@ -13,7 +13,7 @@ describe("Android", () => {
   beforeEach(() => jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("Android"));
 
   it("supports simple queries", () => {
-    const id = "button";
+    const id = "list-item-0";
 
     expect(by.id(id)).toEqual({
       using: "id",
@@ -21,16 +21,26 @@ describe("Android", () => {
     });
   });
 
-  it.todo("supports 'ends with' queries");
+  it("supports regex queries", () => {
+    expect(by.id(/list-item-*/)).toEqual({
+      using: "-android uiautomator",
+      value: `new UiSelector().resourceIdMatches("list-item-*")`
+    });
+  });
 
-  it.todo("supports 'contains' queries");
+  it("supports case-insensitive regex queries", () => {
+    expect(by.id(/LIST-ITEM-*/i)).toEqual({
+      using: "-android uiautomator",
+      value: `new UiSelector().resourceIdMatches("(?i)LIST-ITEM-*")`
+    });
+  });
 });
 
 describe("iOS", () => {
   beforeEach(() => jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("iOS"));
 
   it("supports simple queries", () => {
-    const id = "button";
+    const id = "list-item-0";
 
     expect(by.id(id)).toEqual({
       using: "id",
@@ -38,7 +48,17 @@ describe("iOS", () => {
     });
   });
 
-  it.todo("supports 'ends with' queries");
+  it("supports regex queries", () => {
+    expect(by.id(/list-item-*/)).toEqual({
+      using: "-ios predicate string",
+      value: `name MATCHES 'list-item-*'`
+    });
+  });
 
-  it.todo("supports 'contains' queries");
+  it("supports case-insensitive regex queries", () => {
+    expect(by.id(/LIST-ITEM-*/i)).toEqual({
+      using: "-ios predicate string",
+      value: `name MATCHES[c] 'LIST-ITEM-*'`
+    });
+  });
 });

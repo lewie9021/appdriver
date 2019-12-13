@@ -1,10 +1,27 @@
 const { platform, isRegex } = require("../utils");
 const getNativeRegex = require("./helpers/getNativeRegex");
 
-const getByIdMatcher = (id) => ({
-  using: "id",
-  value: id
-});
+const getByIdMatcher = (id) => {
+  if (isRegex(id)) {
+    const regex = getNativeRegex(id);
+
+    return platform.select({
+      ios: () => ({
+        using: "-ios predicate string",
+        value: `name MATCHES${regex.modifiers} '${regex.pattern}'`
+      }),
+      android: () => ({
+        using: "-android uiautomator",
+        value: `new UiSelector().resourceIdMatches("${regex.modifiers}${regex.pattern}")`
+      })
+    });
+  }
+
+  return {
+    using: "id",
+    value: id
+  };
+};
 
 const getByAccessibilityLabelMatcher = (accessibilityLabel) => {
   if (isRegex(accessibilityLabel)) {
