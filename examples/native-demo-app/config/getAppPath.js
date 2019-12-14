@@ -10,7 +10,7 @@ const getAppPath = (platformName, dev = false) => {
     case "Android":
       return dev
         ? path.join(__dirname, "..", "..", "..", "..", "appdriver-native-demo-app", "android", "app", "build", "outputs", "apk", "debug", "app-debug.apk")
-        : path.join(__dirname, "app", "native-app-demo.apk"); // TODO.
+        : path.join(__dirname, "app", "native-app-demo.apk");
     default:
       return null;
   }
