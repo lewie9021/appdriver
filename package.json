@@ -4,6 +4,7 @@
   "main": "index.js",
   "bin": "./bin/appdriver",
   "scripts": {
+    "prepublish": "yarn test",
     "test": "jest",
     "test:native-demo-app": "./bin/appdriver --config examples/native-demo-app/config/local.config.js",
     "test:my-first-testing-app": "./bin/appdriver --config examples/my-first-testing-app/config/local.config.js"
