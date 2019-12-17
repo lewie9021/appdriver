@@ -179,12 +179,17 @@ function createAppiumService(sessionStore) {
     });
   };
 
-  // ({ sessionId: String?, keyCode: Number }) => Promise.
+  // ({ sessionId: String?, keycode: Number }) => Promise.
   const sendKeyCode = ({ sessionId = sessionStore.getSessionId(), keycode }) => {
-    return request({
-      method: "POST",
-      path: `/session/${sessionId}/appium/device/press_keycode`,
-      payload: { keycode }
+    return platform.select({
+      ios: () => Promise.reject(new NotImplementedError()),
+      android: () => {
+        return request({
+          method: "POST",
+          path: `/session/${sessionId}/appium/device/press_keycode`,
+          payload: { keycode }
+        });
+      }
     });
   };
 
