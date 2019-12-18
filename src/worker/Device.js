@@ -3,6 +3,7 @@ const { configStore } = require("../stores/configStore");
 const { sessionStore } = require("./stores/sessionStore");
 const { appiumService } = require("./services/appiumService");
 const gestures = require("./gestures");
+const { Expect } = require("./Expect");
 const { delay, isUndefined, isInstanceOf, pollFor, platform } = require("../utils");
 const { ActionError, AppiumError, WaitError } = require("./errors");
 
@@ -146,11 +147,16 @@ class Device {
       .catch((errors) => { throw new WaitError(timeoutMessage, errors); });
   }
 
-  // TODO: Needs to use .waitFor + .isKeyboardVisible before returning back instead of delay.
-  // Seems to fire and forget...
   hideKeyboard() {
+    const maxDuration = 5000;
+    const interval = 200;
+    const timeoutMessage = `Failed to hide keyboard. Keyboard still visible after ${maxDuration}ms.`;
+
     return appiumService.hideKeyboard()
-      .then(() => delay(500))
+      .then(() => {
+        return pollFor(async () => new Expect(await this.isKeyboardVisible()).toBeFalsy(), { maxDuration, interval })
+          .catch(() => { throw new ActionError(timeoutMessage); });
+      })
       .catch(handleActionError("Failed to hide keyboard."));
   }
 
