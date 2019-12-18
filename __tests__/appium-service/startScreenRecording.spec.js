@@ -49,7 +49,7 @@ it("optionally accepts a sessionId", async () => {
   jest.spyOn(requestHelpers, "request").mockResolvedValue();
 
   await expect(appiumService.startScreenRecording({ sessionId, options: {} }))
-    .resolves.toEqual();
+    .resolves.toEqual(undefined);
 
   expect(requestHelpers.request).toHaveBeenCalledTimes(1);
   expect(requestHelpers.request).toHaveBeenCalledWith({
