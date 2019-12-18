@@ -10,7 +10,7 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-it("makes a GET request to the correct Appium endpoint", async () => {
+it("makes a POST request to the correct Appium endpoint", async () => {
   const sessionId = "sessionId";
   jest.spyOn(sessionStore, "getSessionId").mockReturnValue(sessionId);
   jest.spyOn(requestHelpers, "request").mockResolvedValue();
