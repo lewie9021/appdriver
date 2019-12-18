@@ -4,7 +4,7 @@
 
 ### Changed
 
-- `.hideKeyboard` now polls the visibility status of the keyboard to ensure it's hidden once the command has resolves. 
+- `.hideKeyboard` now polls the visibility status of the keyboard to ensure it's hidden once the command has resolved. 
 
 ## [v1.0.0-alpha.14] - 2019-12-14
 
