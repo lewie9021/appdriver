@@ -48,7 +48,7 @@ Find element(s) by their ID. For Android this is the `resource-id` attribute, wh
 
 [```by.label(label: String | Regex) => Matcher```](./matchers/byLabel.md)
 
-<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />
 
 Find element(s) by their accessibility label. For Android this is the `content-desc` attribute, whereas for iOS it's the `name` attribute.
 
