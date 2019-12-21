@@ -54,7 +54,7 @@ Find element(s) by their accessibility label. For Android this is the `content-d
 
 [```by.text(text: String | Regex) => Matcher```](./matchers/byText.md)
 
-<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />
 
 Find element(s) by their text value.
 
