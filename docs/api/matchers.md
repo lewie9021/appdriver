@@ -16,7 +16,7 @@ Find all elements that have an accessibility label starting with "list-item-".
 
 ```javascript
  (async () => {
-   const $listItems = await elements(by.label("list-item-*"));
+   const $listItems = await elements(by.label(/^list-item-.*$/));
  })();
 ```
 
@@ -24,7 +24,7 @@ Find all elements that have an accessibility label containing "item".
 
 ```javascript
  (async () => {
-   const $listItems = await elements(by.label("*item*"));
+   const $listItems = await elements(by.label(/item/));
  })();
 ```
 

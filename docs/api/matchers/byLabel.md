@@ -20,7 +20,7 @@ Find multiple elements with a label starting with "list-item-".
 
 ```javascript
 (async () => {
-  const $listItems = await elements(by.label(/list-item-.*/));
+  const $listItems = await elements(by.label(/^list-item-.*$/));
 })();
 ```
 
