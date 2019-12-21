@@ -42,7 +42,7 @@ Find element with text 'Click Me!''.
 
 [```by.id(id: String | Regex) => Matcher```](./matchers/byId.md)
 
-<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />
 
 Find element(s) by their ID. For Android this is the `resource-id` attribute, whereas for iOS it's the `name` attribute.
 
