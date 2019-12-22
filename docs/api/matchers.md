@@ -1,14 +1,14 @@
 # Matchers
 
-Matchers define how elements should be found. There are several ways of searching for elements in the tree such as `by.label` and `by.text` What's important is that you use a strategy that is reliable in your application and won't change often. 
+Matchers define how elements are found. There are several ways of searching for elements in the tree such as `by.label` and `by.text`. What's important is that you use a strategy that is reliable in your application and won't change often.
 
 ### Examples
  
-Find element with an ID of "input": 
+Find element with an accessibility label of "input": 
 
 ```javascript
  (async () => {
-   const $input = await element(by.id("input"));
+   const $input = await element(by.label("input"));
  })();
 ```
 
@@ -17,14 +17,6 @@ Find all elements that have an accessibility label starting with "list-item-".
 ```javascript
  (async () => {
    const $listItems = await elements(by.label(/^list-item-.*$/));
- })();
-```
-
-Find all elements that have an accessibility label containing "item".
-
-```javascript
- (async () => {
-   const $listItems = await elements(by.label(/item/));
  })();
 ```
 
