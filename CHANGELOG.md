@@ -4,7 +4,7 @@
 
 ### Added
 
-- Support for `by.type` Matcher.
+- Support for `by.type` and `by.iosPredicate` Matchers.
 
 ### Changed
 

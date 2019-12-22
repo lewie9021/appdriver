@@ -58,7 +58,7 @@ Find element(s) by their type.
 
 [```by.iosPredicate(predicate: String) => Matcher```](./matchers/byIosPredicate.md)
 
-<img src="https://img.shields.io/badge/Platforms-iOS-blue.svg" /> <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platforms-iOS-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
 Find element(s) using a iOS predicate selector.
 

@@ -1,4 +1,5 @@
 const { platform, isRegex } = require("../utils");
+const { NotImplementedError } = require("./errors");
 const getNativeRegex = require("./helpers/getNativeRegex");
 
 const getByIdMatcher = (id) => {
@@ -78,9 +79,20 @@ const getByTypeMatcher = (type) => ({
   value: type
 });
 
+const getIosPredicateMatcher = (predicate) => {
+  return platform.select({
+    ios: () => ({
+      using: "-ios predicate string",
+      value: predicate
+    }),
+    android: () => { throw new NotImplementedError(); }
+  });
+};
+
 module.exports = {
   id: getByIdMatcher,
   label: getByAccessibilityLabelMatcher,
   text: getByTextMatcher,
-  type: getByTypeMatcher
+  type: getByTypeMatcher,
+  iosPredicate: getIosPredicateMatcher
 };
