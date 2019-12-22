@@ -16,7 +16,7 @@ describe("Android", () => {
     const type = "android.widget.EditText";
 
     expect(by.type(type)).toEqual({
-      using: "class",
+      using: "class name",
       value: type
     });
   });
@@ -29,7 +29,7 @@ describe("iOS", () => {
     const type = "XCUIElementTypeTextField";
 
     expect(by.type(type)).toEqual({
-      using: "class",
+      using: "class name",
       value: type
     });
   });

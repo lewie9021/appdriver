@@ -74,7 +74,7 @@ const getByTextMatcher = (text) => {
 };
 
 const getByTypeMatcher = (type) => ({
-  using: "class",
+  using: "class name",
   value: type
 });
 
