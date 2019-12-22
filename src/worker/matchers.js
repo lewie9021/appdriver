@@ -73,8 +73,14 @@ const getByTextMatcher = (text) => {
   });
 };
 
+const getByTypeMatcher = (type) => ({
+  using: "class",
+  value: type
+});
+
 module.exports = {
   id: getByIdMatcher,
   label: getByAccessibilityLabelMatcher,
-  text: getByTextMatcher
+  text: getByTextMatcher,
+  type: getByTypeMatcher
 };

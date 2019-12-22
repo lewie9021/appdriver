@@ -60,7 +60,7 @@ Find element(s) by their text value.
 
 [```by.type(type: String) => Matcher```](./matchers/byType.md)
 
-<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />
 
 Find element(s) by their type.
 

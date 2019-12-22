@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Support for `by.type` Matcher.
+
 ### Changed
 
 - `.hideKeyboard` now polls the visibility status of the keyboard to ensure it's hidden once the command has resolved. 
