@@ -4,7 +4,7 @@
 
 ### Added
 
-- Support for `by.type` and `by.iosPredicate` Matchers.
+- Support for `by.type`, `by.iosPredicate` and `by.uiAutomator` Matchers.
 
 ### Changed
 

@@ -64,6 +64,6 @@ Find element(s) using a iOS predicate selector.
 
 [```by.uiAutomator(selector: String) => Matcher```](./matchers/ByUiAutomator.md)
 
-<img src="https://img.shields.io/badge/Platforms-Android-blue.svg" /> <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platforms-Android-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
 Find element(s) using a Ui Automator selector.

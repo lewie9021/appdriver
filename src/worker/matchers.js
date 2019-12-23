@@ -89,10 +89,21 @@ const getIosPredicateMatcher = (predicate) => {
   });
 };
 
+const getUiAutomatorMatcher = (selector) => {
+  return platform.select({
+    ios: () => { throw new NotImplementedError(); },
+    android: () => ({
+      using: "-android uiautomator",
+      value: selector
+    })
+  });
+};
+
 module.exports = {
   id: getByIdMatcher,
   label: getByAccessibilityLabelMatcher,
   text: getByTextMatcher,
   type: getByTypeMatcher,
-  iosPredicate: getIosPredicateMatcher
+  iosPredicate: getIosPredicateMatcher,
+  uiAutomator: getUiAutomatorMatcher
 };
