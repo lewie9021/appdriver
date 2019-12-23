@@ -1,5 +1,11 @@
 # Change Log
 
+## [Unreleased]
+
+### Added
+
+- Support for `.isPortrait` on Device.
+
 ## [v1.0.0-alpha.15] - 2019-12-23
 
 ### Added

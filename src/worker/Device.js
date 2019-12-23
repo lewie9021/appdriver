@@ -65,6 +65,12 @@ class Device {
       .catch(handleActionError(`Failed to set device orientation to '${orientation}'.`));
   }
 
+  isPortrait() {
+    return appiumService.getOrientation()
+      .then((orientation) => orientation === "PORTRAIT")
+      .catch(handleActionError("Failed to get device orientation."));
+  }
+
   async swipe({ x = 0, y = 0, distance, direction, duration = 50 }) {
     const swipeGesture = gestures.swipe({ x, y, distance, direction, duration });
 

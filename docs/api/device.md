@@ -103,6 +103,12 @@ TODO: Description here.
 
 Taps the hardware back button on Android.
 
+[```.isPortrait() => Promise<Boolean>```](./device/isPortrait.md)
+
+<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+
+Returns whether the device is in a portrait or landscape orientation.
+
 [```.getOrientation() => Promise<String>```](./device/getOrientation.md)
 
 <img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
