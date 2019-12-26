@@ -109,6 +109,12 @@ Taps the hardware back button on Android.
 
 Returns whether the device is in a portrait or landscape orientation.
 
+[```.setPortrait() => Promise```](./device/setPortrait.md)
+
+<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+
+Sets the device orientation to portrait.
+
 [```.getOrientation() => Promise<String>```](./device/getOrientation.md)
 
 <img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
