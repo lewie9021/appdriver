@@ -18,7 +18,7 @@ The `device` object provides a way of performing interactions within the applica
 
 ```javascript
 (async () => {
-  await device.setOrientation("PORTRAIT");
+  await device.setPortrait();
 })();
 ```
 
@@ -126,12 +126,6 @@ Sets the device orientation to landscape.
 <img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
 
 Retrieves the current orientation of the device.
-
-[```.setOrientation(orientation: String) => Promise```](./device/setOrientation.md)
-
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
-
-Modify the orientation of the device.
 
 [```.getViewport() => Promise<Object>```](./device/getViewport.md)
 

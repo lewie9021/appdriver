@@ -60,11 +60,6 @@ class Device {
       .catch(handleActionError("Failed to get device orientation."));
   }
 
-  setOrientation(orientation) {
-    return appiumService.setOrientation({ orientation })
-      .catch(handleActionError(`Failed to set device orientation to '${orientation}'.`));
-  }
-
   isPortrait() {
     return appiumService.getOrientation()
       .then((orientation) => orientation === "PORTRAIT")
