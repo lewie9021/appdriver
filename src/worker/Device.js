@@ -55,11 +55,6 @@ class Device {
       .catch(handleActionError("Failed to perform gesture."));
   }
 
-  getOrientation() {
-    return appiumService.getOrientation()
-      .catch(handleActionError("Failed to get device orientation."));
-  }
-
   isPortrait() {
     return appiumService.getOrientation()
       .then((orientation) => orientation === "PORTRAIT")

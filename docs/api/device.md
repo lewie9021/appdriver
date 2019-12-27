@@ -121,12 +121,6 @@ Sets the device orientation to portrait.
 
 Sets the device orientation to landscape.
 
-[```.getOrientation() => Promise<String>```](./device/getOrientation.md)
-
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
-
-Retrieves the current orientation of the device.
-
 [```.getViewport() => Promise<Object>```](./device/getViewport.md)
 
 <img src="https://img.shields.io/badge/Platform-Both-blue.svg" />

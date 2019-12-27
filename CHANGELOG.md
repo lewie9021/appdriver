@@ -8,7 +8,7 @@
 
 ### Removed
 
-- Support for `.setOrientation` on Device.
+- Support for `getOrientation` and `.setOrientation` on Device.
 
 ## [v1.0.0-alpha.15] - 2019-12-23
 
