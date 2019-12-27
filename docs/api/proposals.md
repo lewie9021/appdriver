@@ -15,12 +15,6 @@ TODO: Description here.
 <img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
 
 TODO: Description here.
-
-:warning: [```.setLandscape() => Promise```](./device/setLandscape.md)
-
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
-
-TODO: Description here.
  
 :warning: [```.getGeoLocation() => Promise```](./device/getGeoLocation.md)
 

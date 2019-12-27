@@ -4,7 +4,7 @@
 
 ### Added
 
-- Support for `.isPortrait` on Device.
+- Support for `.isPortrait`, `.setPortrait` and `setLandscape` on Device.
 
 ## [v1.0.0-alpha.15] - 2019-12-23
 

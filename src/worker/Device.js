@@ -76,6 +76,11 @@ class Device {
       .catch(handleActionError(`Failed to set device orientation to portrait.`));
   }
 
+  setLandscape() {
+    return appiumService.setOrientation({ orientation: "LANDSCAPE" })
+      .catch(handleActionError(`Failed to set device orientation to landscape.`));
+  }
+
   async swipe({ x = 0, y = 0, distance, direction, duration = 50 }) {
     const swipeGesture = gestures.swipe({ x, y, distance, direction, duration });
 

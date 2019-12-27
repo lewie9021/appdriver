@@ -115,6 +115,12 @@ Returns whether the device is in a portrait or landscape orientation.
 
 Sets the device orientation to portrait.
 
+[```.setLandscape() => Promise```](./device/setLandscape.md)
+
+<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+
+Sets the device orientation to landscape.
+
 [```.getOrientation() => Promise<String>```](./device/getOrientation.md)
 
 <img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
