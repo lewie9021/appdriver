@@ -147,15 +147,15 @@ Stops a screen recording currently in progress.
 
 [```.isKeyboardVisible() => Promise<Boolean>```](./device/isKeyboardVisible.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
 
-TODO: Description here.
+Returns whether the keyboard is visible or not.
 
 [```.hideKeyboard() => Promise```](./device/hideKeyboard.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
 
-TODO: Description here.
+Hides the on-screen keyboard.
 
 [```.swipe(options: Object) => Promise```](./device/swipe.md)
 
