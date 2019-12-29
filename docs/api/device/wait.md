@@ -19,3 +19,7 @@ Explicitly wait 200 milliseconds:
   await device.wait(200);
 })();
 ```
+
+#### Related methods
+
+- [`.waitFor(conditionFn: Function<Promise>, options?: Object) => Promise`](./waitFor.md)

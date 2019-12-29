@@ -81,7 +81,7 @@ Explicitly wait `duration` milliseconds.
 
 [```.waitFor(conditionFn: Function<Promise>, options?: Object) => Promise```](./device/waitFor.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
 
 Polls `conditionFn` every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
 
