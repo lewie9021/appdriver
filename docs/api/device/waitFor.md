@@ -21,7 +21,7 @@ This is useful when your tests need to wait until a particular condition is met.
 Countdown timer:
 
 ```javascript
-const { element, by, expect } = require("appdriver");
+const { device, element, by, expect } = require("appdriver");
 
 (async () => {
   await device.waitFor(() => {
