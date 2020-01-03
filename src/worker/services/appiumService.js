@@ -58,7 +58,8 @@ function createAppiumService(sessionStore) {
       .then((data) => {
         sessionStore.setState({
           sessionId: data.sessionId,
-          capabilities: data.capabilities
+          capabilities: data.capabilities,
+          webContext: Boolean(data.capabilities.autoWebview)
         });
 
         return data;
@@ -175,7 +176,8 @@ function createAppiumService(sessionStore) {
       method: "POST",
       path: `/session/${sessionId}/context`,
       payload: { name: contextId }
-    });
+    })
+      .then(() => sessionStore.setState({ webContext: contextId !== "NATIVE_APP" }));
   };
 
   // ({ sessionId: String? }) => Promise<{ width: Number, height: Number }>.
