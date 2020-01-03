@@ -282,8 +282,8 @@ class Device {
     return appiumService.getContexts();
   }
 
-  switchContext(context) {
-    return appiumService.setContext({ contextId: context.id });
+  switchContext(contextId) {
+    return appiumService.setContext({ contextId });
   }
 
   async switchToWebContext() {

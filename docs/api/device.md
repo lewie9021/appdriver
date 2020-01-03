@@ -159,7 +159,6 @@ Hides the on-screen keyboard.
 
 [```.getContext() => Promise<Object>```](./device/getContext.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
@@ -169,7 +168,19 @@ TODO: Description here.
 
 TODO: Description here.
 
-[```.setContext(contextId: String) => Promise```](./device/setContext.md)
+[```.switchContext(contextId: String) => Promise```](./device/switchContext.md)
+
+<img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+
+TODO: Description here.
+
+[```.switchToWebContext() => Promise```](./device/switchToWebContext.md)
+
+<img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+
+TODO: Description here.
+
+[```.switchToNativeContext() => Promise```](./device/switchToNativeContext.md)
 
 <img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
