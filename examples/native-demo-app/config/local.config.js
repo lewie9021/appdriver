@@ -1,3 +1,4 @@
+const path = require("path");
 const getAppPath = require("./getAppPath");
 
 const development = true;
@@ -38,7 +39,8 @@ const emulators = {
     automationName: "UiAutomator2",
     appActivity: "com.nativedemoapp.MainActivity",
     systemPort: 8200,
-    noReset: true
+    noReset: true,
+    chromedriverExecutableDir: path.join(__dirname, "chromedriver")
   }
 };
 
