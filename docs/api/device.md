@@ -157,6 +157,24 @@ Returns whether the keyboard is visible or not.
 
 Hides the on-screen keyboard.
 
+[```.getContext() => Promise<Object>```](./device/getContext.md)
+
+<img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+
+TODO: Description here.
+
+[```.getContexts() => Promise<Array<Object>>```](./device/getContexts.md)
+
+<img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+
+TODO: Description here.
+
+[```.setContext(contextId: String) => Promise```](./device/setContext.md)
+
+<img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+
+TODO: Description here.
+
 [```.swipe(options: Object) => Promise```](./device/swipe.md)
 
 <img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
