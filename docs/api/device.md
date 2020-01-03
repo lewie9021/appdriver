@@ -7,9 +7,9 @@ The `device` object provides a way of performing interactions within the applica
 ```javascript
 (async () => {
   const swipeUp = gestures.create()
-    .press({x: 160, y: 200})
+    .press({ x: 160, y: 200 })
     .wait(250)
-    .moveTo({y: 100})
+    .moveTo({ y: 100 })
     .release();
   
   await device.performGesture(swipeUp);
@@ -30,8 +30,8 @@ The `device` object provides a way of performing interactions within the applica
 
 ```javascript
 (async () => {
-  await device.performTouchId({successful: true});
-  await device.performFingerPrint({id: 1});
+  await device.performTouchId({ successful: true });
+  await device.performFingerPrint({ id: 1 });
 })();
 ```
 

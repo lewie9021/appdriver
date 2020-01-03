@@ -16,7 +16,7 @@ Swipe Gesture:
       y: size.height / 2
     })
     .wait(250)
-    .moveTo({y: (size.height / 2) - 100})
+    .moveTo({ y: (size.height / 2) - 100 })
     .release();
   
   await device.performGesture(swipeUp);
@@ -30,9 +30,9 @@ Drop 'n' Drag Gesture:
   const $box = await element(by.label("box"));
   const $destination = await element(by.label("destination"));
   const dragAndDrop = gestures.create()
-    .press({element: $box})
+    .press({ element: $box })
     .wait(250)
-    .moveTo({element: $destination})
+    .moveTo({ element: $destination })
     .release();
   
   await device.performGesture(dragAndDrop);
@@ -96,14 +96,14 @@ Pinch Gesture:
       x: size.width / 2,
       y: size.height / 2
     })
-    .moveTo({x: size.width / 4})
+    .moveTo({ x: size.width / 4 })
     .release();
   const swipeRight = gestures.create()
     .press({
       x: size.width - (size.width / 4),
       y: size.height / 2
     })
-    .moveTo({x: size.width / 2})
+    .moveTo({ x: size.width / 2 })
     .release();
   const pinch = gestures.parallel([swipeLeft, swipeRight]);
   

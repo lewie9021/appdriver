@@ -15,7 +15,7 @@ Rotate Gesture:
     x: viewport.width / 2,
     y: viewport.height / 2,
     radius: 25,
-    degrees: [90, 180]
+    degrees: [ 90, 180 ]
   });
   
   await device.performGesture(rotate90);
