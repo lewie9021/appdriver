@@ -155,7 +155,11 @@ const transformArgs = (args) => {
 const last = (arr) => arr[arr.length - 1];
 
 const platform = {
-  select: ({ ios, android }) => {
+  select: ({ ios, android, web }) => {
+    if (sessionStore.getWebContext()) {
+      return web();
+    }
+
     switch (sessionStore.getCapabilities("platformName")) {
       case "iOS":
         return ios();
