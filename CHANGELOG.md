@@ -2,13 +2,10 @@
 
 ## [v1.0.0-alpha.16] - 2020-01-02
 
-### Added
+### Changed
 
-- Support for `.isPortrait`, `.setPortrait` and `setLandscape` on Device.
-
-### Removed
-
-- Support for `getOrientation` and `.setOrientation` on Device.
+- Replaced `.getOrientation` on Device with `isPortrait`.
+- Replaced `.setOrientation` on Device with `setPortrait` and `setLandscape`.
 
 ## [v1.0.0-alpha.15] - 2019-12-23
 
