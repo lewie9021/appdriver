@@ -283,26 +283,26 @@ class Device {
   }
 
   switchContext(context) {
-    return appiumService.setContext({ context });
+    return appiumService.setContext({ contextId: context.id });
   }
 
   async switchToWebContext() {
     const contexts = await appiumService.getContexts();
-    const [ webContext, ...moreWebContexts ] = contexts.filter((context) => context.includes("WEBVIEW"));
+    const [ webContext, ...moreWebContexts ] = contexts.filter((context) => context.id.includes("WEBVIEW"));
 
     if (!webContext) {
       throw new ActionError("No Web context found.");
     }
 
     if (moreWebContexts.length) {
-      throw new ActionError("Multiple Web contexts found. Consider using .switchContext");
+      throw new ActionError("Multiple Web contexts found. Consider using the .switchContext method.");
     }
 
-    await appiumService.setContext({ context: webContext });
+    await appiumService.setContext({ contextId: webContext.id });
   }
 
   switchToNativeContext() {
-    return appiumService.setContext({ context: "NATIVE_APP" });
+    return appiumService.setContext({ contextId: "NATIVE_APP" });
   }
 }
 

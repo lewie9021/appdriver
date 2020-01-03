@@ -1,7 +1,7 @@
 const { sessionStore } = require("../stores/sessionStore");
 const { AppiumError } = require("../errors");
 const { NotImplementedError } = require("../errors");
-const { platform, isInstanceOf, getRelativePoint, toBoolean, toNumber } = require("../../utils");
+const { platform, isInstanceOf, isString, getRelativePoint, toBoolean, toNumber } = require("../../utils");
 const { transformBounds } = require("../attributeTransforms");
 const { request } = require("./request");
 
@@ -114,28 +114,67 @@ function createAppiumService(sessionStore) {
   };
 
   // ({ sessionId: String? }) => Promise<String>.
-  // TODO: Different return type when capabilities.fullContextList is true (iOS only).
-  const getContext = ({ sessionId = sessionStore.getSessionId() } = {}) => {
+  const getContextId = ({ sessionId = sessionStore.getSessionId() } = {}) => {
     return request({
       method: "GET",
       path: `/session/${sessionId}/context`
     });
   };
 
-  // ({ sessionId: String? }) => Promise<Array<String>>.
-  // TODO: Different return type when capabilities.fullContextList is true (iOS only).
+  // ({ sessionId: String? }) => Promise<{ id: String, title: String | null, url: String | null }>.
+  const getContext = ({ sessionId = sessionStore.getSessionId() } = {}) => {
+    return Promise.all([
+      getContextId({ sessionId }),
+      getContexts({ sessionId })
+    ])
+      .then(([ contextId, contexts ]) => {
+        const context = contexts.find((x) => x.id === contextId);
+
+        if (!context) {
+          return {
+            id: contextId,
+            title: null,
+            url: null
+          };
+        }
+
+        return context;
+      });
+  };
+
+  // ({ sessionId: String? }) => Promise<Array<{ id: String, title: String | null, url: String | null }>>.
+  // Note: Contexts are objects when capabilities.fullContextList is true (iOS only), otherwise they're strings.
   const getContexts = ({ sessionId = sessionStore.getSessionId() } = {}) => {
     return request({
       method: "GET",
       path: `/session/${sessionId}/contexts`
-    });
+    })
+      .then((contexts) => contexts.map((context) => {
+        const iOS = sessionStore.getCapabilities("platformName") === "iOS";
+        const fullContextList = sessionStore.getCapabilities("fullContextList");
+
+        if (iOS && fullContextList) {
+          return {
+            id: context.id,
+            title: isString(context.title) ? context.title : null,
+            url: isString(context.url) ? context.url : null
+          };
+        }
+
+        return {
+          id: context,
+          title: null,
+          url: null
+        };
+      }));
   };
 
-  const setContext = ({ sessionId = sessionStore.getSessionId(), context }) => {
+  // ({ sessionId: String?, contextId: String? }) => Promise.
+  const setContext = ({ sessionId = sessionStore.getSessionId(), contextId }) => {
     return request({
       method: "POST",
       path: `/session/${sessionId}/context`,
-      payload: { name: context }
+      payload: { name: contextId }
     });
   };
 

@@ -1,4 +1,4 @@
-const { by, element, device } = require("../../../index");
+const { by, element, device, expect } = require("../../../index");
 
 describe("WebView Screen", () => {
   before(async () => {
@@ -9,7 +9,16 @@ describe("WebView Screen", () => {
 
   it("works", async () => {
     console.log("Context:", await device.getContext());
-    console.log("Available Contexts:", await device.getContexts());
+    console.log("Available Contexts (Before):", await device.getContexts());
+
+    await device.waitFor(async () => {
+      const contexts = await device.getContexts();
+      const google = contexts.find((x) => x.url === "https://www.google.com/");
+
+      return expect(google).toBeTruthy();
+    });
+
+    console.log("Available Contexts (After):", await device.getContexts());
 
     await device.switchToWebContext();
 
