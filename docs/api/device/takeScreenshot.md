@@ -1,4 +1,4 @@
-# `.takeScreenshot(options: Object) => Promise`
+# `.takeScreenshot(options: Object) => Promise<Buffer>`
 
 Takes a screenshot (PNG) of the entire screen and saves the result on disk at the given `filePath` location.
 
@@ -9,7 +9,7 @@ Takes a screenshot (PNG) of the entire screen and saves the result on disk at th
 
 #### Returns
 
-`Promise`: A promise that resolves after the screenshot has been taken and successfully stored on disk.
+`Promise<Buffer>`: A promise containing a base64 buffer that resolves after the screenshot has been taken and successfully stored on disk.
 
 #### Examples
 
@@ -27,8 +27,9 @@ const path = require("path");
 #### Related methods
 
 - [`.startScreenRecording(options: Object) => Promise`](./startScreenRecording.md)
-- [`.stopScreenRecording() => Promise`](./stopScreenRecording.md)
+- [`.stopScreenRecording() => Promise<Buffer>`](./stopScreenRecording.md)
 
-### Related Appium Docs
+### Related Docs
 
-- [Take Screenshot](http://appium.io/docs/en/commands/session/screenshot/)
+- [Take Screenshot (Appium)](http://appium.io/docs/en/commands/session/screenshot/)
+- [Take Screenshot (W3C)](https://www.w3.org/TR/webdriver/#dfn-take-screenshot)

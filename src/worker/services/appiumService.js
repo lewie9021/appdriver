@@ -205,6 +205,20 @@ function createAppiumService(sessionStore) {
     });
   };
 
+  // ({ sessionId: String?, keycode: Number }) => Promise.
+  const sendKeyCode = ({ sessionId = sessionStore.getSessionId(), keycode }) => {
+    return platform.select({
+      ios: () => Promise.reject(new NotImplementedError()),
+      android: () => {
+        return request({
+          method: "POST",
+          path: `/session/${sessionId}/appium/device/press_keycode`,
+          payload: { keycode }
+        });
+      }
+    });
+  };
+
   // ({ sessionId: String? }) => Promise.
   const goBack = ({ sessionId = sessionStore.getSessionId() } = {}) => {
     return platform.select({
@@ -552,6 +566,22 @@ function createAppiumService(sessionStore) {
     });
   };
 
+  // ({ sessionId: String?, element: AppiumElement }) => Promise.
+  const tapElementReturnKey = ({ sessionId = sessionStore.getSessionId(), element }) => {
+    return platform.select({
+      ios: () => sendElementKeys({ sessionId, element, keys: ["\n"] }),
+      android: () => sendKeyCode({ sessionId, keycode: 66 })
+    });
+  };
+
+  // ({ sessionId: String?, element: AppiumElement }) => Promise.
+  const tapElementBackspaceKey = ({ sessionId = sessionStore.getSessionId(), element }) => {
+    return platform.select({
+      ios: () => sendElementKeys({ sessionId, element, keys: ["\b"] }),
+      android: () => sendKeyCode({ sessionId, keycode: 67 })
+    });
+  };
+
   // ({ sessionId: String?, element: AppiumElement }) => Promise<String>.
   const takeElementScreenshot = ({ sessionId = sessionStore.getSessionId(), element }) => {
     return request({
@@ -579,6 +609,7 @@ function createAppiumService(sessionStore) {
     stopScreenRecording,
     getKeyboardVisible,
     hideKeyboard,
+    sendKeyCode,
     goBack,
     performActions,
     findElement,
@@ -600,6 +631,8 @@ function createAppiumService(sessionStore) {
     swipeElement,
     sendElementKeys,
     clearElementText,
+    tapElementReturnKey,
+    tapElementBackspaceKey,
     takeElementScreenshot
   };
 }

@@ -1,6 +1,6 @@
 # `.getViewport() => Promise<Object>`
 
-TODO: Description here.
+Retrieves the width and height of the device viewport.
 
 #### Returns
 
@@ -10,4 +10,11 @@ TODO: Description here.
 
 #### Examples
 
-TODO: Examples here.
+Get viewport size of device (e.g. iPhone X).
+
+```javascript
+(async () => {
+  const viewport = await device.getViewport();
+  console.log(viewport); // { "width": 375, "height": 812 }
+})();
+```

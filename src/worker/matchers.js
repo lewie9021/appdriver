@@ -1,53 +1,41 @@
-const { platform } = require("../utils");
+const { platform, isRegex } = require("../utils");
+const { NotImplementedError } = require("./errors");
+const getNativeRegex = require("./helpers/getNativeRegex");
 
-const isContainsQuery = (query) => {
-  return query.startsWith("*") && query.endsWith("*");
-};
-
-const isEndsWithQuery = (query) => {
-  return query.endsWith("*");
-};
-
-const getByIdMatcher = (id) => ({
-  using: "id",
-  value: id
-});
-
-// Note: only works in a Web context.
-const getByCssMatcher = (css) => ({
-  using: "css selector",
-  value: css
-});
-
-// Very crude implementation that supports simple fuzzy matching, e.g. "list-item-*" and "*item*"
-// TODO: Needs to escape value to avoid unexpected behaviour.
-const getByAccessibilityLabelMatcher = (accessibilityLabel) => {
-  if (isContainsQuery(accessibilityLabel)) {
-    const query = accessibilityLabel.substr(1, accessibilityLabel.length - 2);
+const getByIdMatcher = (id) => {
+  if (isRegex(id)) {
+    const regex = getNativeRegex(id);
 
     return platform.select({
       ios: () => ({
         using: "-ios predicate string",
-        value: `name CONTAINS '${query}'`
+        value: `name MATCHES${regex.modifiers} '${regex.pattern}'`
       }),
       android: () => ({
         using: "-android uiautomator",
-        value: `new UiSelector().descriptionContains("${query}")`
+        value: `new UiSelector().resourceIdMatches("${regex.modifiers}${regex.pattern}")`
       })
     });
   }
 
-  if (isEndsWithQuery(accessibilityLabel)) {
-    const query = accessibilityLabel.substr(0, accessibilityLabel.length - 1);
+  return {
+    using: "id",
+    value: id
+  };
+};
+
+const getByAccessibilityLabelMatcher = (accessibilityLabel) => {
+  if (isRegex(accessibilityLabel)) {
+    const regex = getNativeRegex(accessibilityLabel);
 
     return platform.select({
       ios: () => ({
         using: "-ios predicate string",
-        value: `name BEGINSWITH '${query}'`
+        value: `name MATCHES${regex.modifiers} '${regex.pattern}'`
       }),
       android: () => ({
         using: "-android uiautomator",
-        value: `new UiSelector().descriptionStartsWith("${query}")`
+        value: `new UiSelector().descriptionMatches("${regex.modifiers}${regex.pattern}")`
       })
     });
   }
@@ -59,32 +47,17 @@ const getByAccessibilityLabelMatcher = (accessibilityLabel) => {
 };
 
 const getByTextMatcher = (text) => {
-  if (isContainsQuery(text)) {
-    const query = text.substr(1, text.length - 2);
+  if (isRegex(text)) {
+    const regex = getNativeRegex(text);
 
     return platform.select({
       ios: () => ({
         using: "-ios predicate string",
-        value: `label CONTAINS '${query}'`
+        value: `label MATCHES${regex.modifiers} '${regex.pattern}'`
       }),
       android: () => ({
         using: "-android uiautomator",
-        value: `new UiSelector().textContains("${query}")`
-      })
-    });
-  }
-
-  if (isEndsWithQuery(text)) {
-    const query = text.substr(0, text.length - 1);
-
-    return platform.select({
-      ios: () => ({
-        using: "-ios predicate string",
-        value: `label BEGINSWITH '${query}'`
-      }),
-      android: () => ({
-        using: "-android uiautomator",
-        value: `new UiSelector().textStartsWith("${query}")`
+        value: `new UiSelector().textMatches("${regex.modifiers}${regex.pattern}")`
       })
     });
   }
@@ -101,9 +74,43 @@ const getByTextMatcher = (text) => {
   });
 };
 
+const getByTypeMatcher = (type) => ({
+  using: "class name",
+  value: type
+});
+
+const getIosPredicateMatcher = (predicate) => {
+  return platform.select({
+    ios: () => ({
+      using: "-ios predicate string",
+      value: predicate
+    }),
+    android: () => { throw new NotImplementedError(); }
+  });
+};
+
+const getUiAutomatorMatcher = (selector) => {
+  return platform.select({
+    ios: () => { throw new NotImplementedError(); },
+    android: () => ({
+      using: "-android uiautomator",
+      value: selector
+    })
+  });
+};
+
+// Note: Only works in a Web context.
+const getByCssMatcher = (css) => ({
+  using: "css selector",
+  value: css
+});
+
 module.exports = {
   id: getByIdMatcher,
-  css: getByCssMatcher,
   label: getByAccessibilityLabelMatcher,
-  text: getByTextMatcher
+  text: getByTextMatcher,
+  type: getByTypeMatcher,
+  iosPredicate: getIosPredicateMatcher,
+  uiAutomator: getUiAutomatorMatcher,
+  css: getByCssMatcher
 };

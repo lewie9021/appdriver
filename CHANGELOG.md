@@ -1,10 +1,34 @@
 # Change Log
 
-## [Unreleased]
+## [v1.0.0-alpha.16] - 2020-01-02
 
 ### Added
 
-- Support for `.takeScreenshot` on Element.
+- Support for `.isPortrait`, `.setPortrait` and `setLandscape` on Device.
+
+### Removed
+
+- Support for `getOrientation` and `.setOrientation` on Device.
+
+## [v1.0.0-alpha.15] - 2019-12-23
+
+### Added
+
+- Support for `by.type`, `by.iosPredicate` and `by.uiAutomator` Matchers.
+
+### Changed
+
+- `.hideKeyboard` now polls the visibility status of the keyboard to ensure it's hidden once the command has resolved. 
+
+## [v1.0.0-alpha.14] - 2019-12-14
+
+### Added
+
+- Support for `.takeScreenshot`, `.tapReturnKey` and `.tapBackspaceKey` on Element.
+
+### Changed
+
+- `by.id`, `by.label` and `by.text` Matchers to instead accept regex instead of a custom fuzzy matching syntax.
 
 ## [v1.0.0-alpha.13] - 2019-12-06
 

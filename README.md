@@ -55,17 +55,17 @@ Unlike Appium based clients, [Detox](https://github.com/wix/Detox) is yet to sup
 ```javascript
 (async () => {
   await element(by.label("carousel-container"))
-    .swipeLeft({percentage: 0.75});
+    .swipeLeft({ percentage: 0.75 });
   
   await expect(element(by.label("carousel-page-2"))).toBeVisible();
 })();
 ```
 
-##### Fuzzy match elements
+##### Regex element matching
 
 ```javascript
 (async () => {
-  const $items = await elements(by.label("list-item-*"));
+  const $items = await elements(by.label(/list-item-.*/));
   
   await expect($items).toHaveLength(3);
 })();
@@ -78,9 +78,9 @@ Unlike Appium based clients, [Detox](https://github.com/wix/Detox) is yet to sup
   const $box = await element(by.label("box"));
   const $destination = await element(by.label("destination"));
   const dragAndDrop = gestures.create()
-    .press({element: $box})
+    .press({ element: $box })
     .wait(250)
-    .moveTo({element: $destination})
+    .moveTo({ element: $destination })
     .release();
   
   await device.performGesture(dragAndDrop);
@@ -91,11 +91,11 @@ Unlike Appium based clients, [Detox](https://github.com/wix/Detox) is yet to sup
 
 - [Introduction](./docs)
 - [Installation](./docs/installation)
-  - [Appium](./docs/installation/installing-appium.md)
+  - [Appium](./docs/installation/installing-appium.md) :hammer:
   - [AppDriver](./docs/installation/installing-appdriver.md)
 - [Guides](docs/installation)
   - [Writing Your First Test](docs/guides/writing-your-first-test.md)
-  - [Finding Elements](docs/guides/finding-elements.md)
+  - [Finding Elements](docs/guides/finding-elements.md) :hammer:
 - [API Reference](./docs/api)
   - [Configuration](./docs/api/configuration.md)
   - [Matchers](./docs/api/matchers.md)

@@ -13,7 +13,7 @@ describe("Android", () => {
   beforeEach(() => jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("Android"));
 
   it("supports simple queries", () => {
-    const label = "button";
+    const label = "list-item-0";
 
     expect(by.label(label)).toEqual({
       using: "accessibility id",
@@ -21,17 +21,17 @@ describe("Android", () => {
     });
   });
 
-  it("supports 'ends with' queries", () => {
-    expect(by.label("button-*")).toEqual({
+  it("supports regex queries", () => {
+    expect(by.label(/list-item-*/)).toEqual({
       using: "-android uiautomator",
-      value: `new UiSelector().descriptionStartsWith("button-")`
+      value: `new UiSelector().descriptionMatches("list-item-*")`
     });
   });
 
-  it("supports 'contains' queries", () => {
-    expect(by.label("*button*")).toEqual({
+  it("supports case-insensitive regex queries", () => {
+    expect(by.label(/LIST-ITEM-*/i)).toEqual({
       using: "-android uiautomator",
-      value: `new UiSelector().descriptionContains("button")`
+      value: `new UiSelector().descriptionMatches("(?i)LIST-ITEM-*")`
     });
   });
 });
@@ -40,7 +40,7 @@ describe("iOS", () => {
   beforeEach(() => jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("iOS"));
 
   it("supports simple queries", () => {
-    const label = "button";
+    const label = "list-item-0";
 
     expect(by.label(label)).toEqual({
       using: "accessibility id",
@@ -48,17 +48,17 @@ describe("iOS", () => {
     });
   });
 
-  it("supports 'ends with' queries", () => {
-    expect(by.label("button-*")).toEqual({
+  it("supports regex queries", () => {
+    expect(by.label(/list-item-*/)).toEqual({
       using: "-ios predicate string",
-      value: `name BEGINSWITH 'button-'`
+      value: `name MATCHES 'list-item-*'`
     });
   });
 
-  it("supports 'contains' queries", () => {
-    expect(by.label("*button*")).toEqual({
+  it("supports case-insensitive regex queries", () => {
+    expect(by.label(/LIST-ITEM-*/i)).toEqual({
       using: "-ios predicate string",
-      value: `name CONTAINS 'button'`
+      value: `name MATCHES[c] 'LIST-ITEM-*'`
     });
   });
 });
