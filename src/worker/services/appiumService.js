@@ -568,15 +568,15 @@ function createAppiumService(sessionStore) {
       },
       web: () => {
         if (!isUndefined(x)) {
-          return Promise.reject(new NotSupportedError("'x' parameter is not supported in the Web context."));
+          return Promise.reject(new NotSupportedError("'x' parameter is not supported in a Web context."));
         }
 
         if (!isUndefined(y)) {
-          return Promise.reject(new NotSupportedError("'y' parameter is not supported in the Web context."));
+          return Promise.reject(new NotSupportedError("'y' parameter is not supported in a Web context."));
         }
 
         if (!isUndefined(duration)) {
-          return Promise.reject(new NotSupportedError("'duration' parameter is not supported in the Web context."));
+          return Promise.reject(new NotSupportedError("'duration' parameter is not supported in a Web context."));
         }
 
         return request({
@@ -589,20 +589,30 @@ function createAppiumService(sessionStore) {
 
   // ({ sessionId: String?, element: AppiumElement, x: Number?, y: Number?, duration: Number? }) => Promise.
   const longPressElement = ({ sessionId = sessionStore.getSessionId(), element, x, y, duration = 750 }) => {
-    return performActions({
-      sessionId, actions: [{
-        id: "finger1",
-        type: "pointer",
-        parameters: {
-          pointerType: "touch"
-        },
-        actions: [
-          { type: "pointerMove", duration: 0, origin: { element: element.ELEMENT }, x, y },
-          { type: "pointerDown", button: 0 },
-          { type: "pause", duration },
-          { type: "pointerUp", button: 0 }
-        ]
-      }]
+    return platform.select({
+      native: () => {
+        return resolveElementCenterPoint({ sessionId, element, x, y })
+          .then((coordinates) => {
+            return performActions({
+              sessionId, actions: [ {
+                id: "finger1",
+                type: "pointer",
+                parameters: {
+                  pointerType: "touch"
+                },
+                actions: [
+                  { type: "pointerMove", duration: 0, origin: { element: element.ELEMENT }, x, y },
+                  { type: "pointerDown", button: 0 },
+                  { type: "pause", duration },
+                  { type: "pointerUp", button: 0 }
+                ]
+              } ]
+            });
+          });
+      },
+      web: () => {
+        return Promise.reject(new NotSupportedError("Long press is not supported in a Web context."));
+      }
     });
   };
 
