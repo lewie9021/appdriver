@@ -159,7 +159,7 @@ class Element {
       });
   }
 
-  tap({ x = 0, y = 0 } = {}) {
+  tap({ x, y } = {}) {
     return this._executeAction((value, done) => {
       return appiumService.tapElement({ element: value.ref, x, y })
         .then(() => done(null))

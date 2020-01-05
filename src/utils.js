@@ -155,16 +155,16 @@ const transformArgs = (args) => {
 const last = (arr) => arr[arr.length - 1];
 
 const platform = {
-  select: ({ ios, android, web }) => {
+  select: ({ ios, android, web, native }) => {
     if (sessionStore.getWebContext()) {
       return web();
     }
 
     switch (sessionStore.getCapabilities("platformName")) {
       case "iOS":
-        return ios();
+        return native ? native() : ios();
       case "Android":
-        return android();
+        return native ? native() : android();
       default:
         throw new Error("Platform not supported");
     }
