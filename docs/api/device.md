@@ -186,6 +186,12 @@ TODO: Description here.
 
 TODO: Description here.
 
+[```.scroll(options: { distance: Number, direction: Number }) => Promise```](./device/scroll.md)
+
+<img src="https://img.shields.io/badge/Platform-Web-blue.svg" /> <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+
+Performs a scroll gesture.
+
 [```.swipe(options: Object) => Promise```](./device/swipe.md)
 
 <img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
