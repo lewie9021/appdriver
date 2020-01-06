@@ -679,6 +679,14 @@ function createAppiumService(sessionStore) {
     });
   };
 
+  const execute = ({ sessionId = sessionStore.getSessionId(), script } = {}) => {
+    return request({
+      method: "POST",
+      path: `/session/${sessionId}/execute`,
+      payload: { script, args: [] }
+    })
+  };
+
   return {
     getStatus,
     createSession,
@@ -722,7 +730,8 @@ function createAppiumService(sessionStore) {
     clearElementText,
     tapElementReturnKey,
     tapElementBackspaceKey,
-    takeElementScreenshot
+    takeElementScreenshot,
+    execute
   };
 }
 
