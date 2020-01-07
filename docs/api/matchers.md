@@ -67,3 +67,9 @@ Find element(s) using a iOS predicate selector.
 <img src="https://img.shields.io/badge/Platforms-Android-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
 Find element(s) using a Ui Automator selector.
+
+[```by.xPath(query: String) => Matcher```](./matchers/ByXPath.md)
+
+<img src="https://img.shields.io/badge/Platforms-All-blue.svg" /> <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+
+Find element(s) using an XPath query.
