@@ -48,19 +48,6 @@ it("defaults 'x' and 'y' parameters to 0", async () => {
   expect(appiumService.longPressElement).toHaveBeenCalledWith(expect.objectContaining({ x: 0, y: 0 }));
 });
 
-it("defaults the 'duration' parameter to 750", async () => {
-  const ref = createFindElementMock();
-
-  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
-  jest.spyOn(appiumService, "longPressElement").mockResolvedValue(null);
-
-  await element(by.label("button")).longPress();
-
-  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
-  expect(appiumService.longPressElement).toHaveBeenCalledTimes(1);
-  expect(appiumService.longPressElement).toHaveBeenCalledWith(expect.objectContaining({ duration: 750 }));
-});
-
 it("supports passing 'x' and 'y' parameters to offset from the top left of the element", async () => {
   const ref = createFindElementMock();
   const x = 100;
