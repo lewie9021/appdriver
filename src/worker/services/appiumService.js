@@ -657,12 +657,13 @@ function createAppiumService(sessionStore) {
     });
   };
 
-  const execute = ({ sessionId = sessionStore.getSessionId(), script } = {}) => {
+  // ({ sessionId: String?, script: String, args?: Array<String> }) => Promise.
+  const execute = ({ sessionId = sessionStore.getSessionId(), script, args = [] }) => {
     return request({
       method: "POST",
       path: `/session/${sessionId}/execute`,
-      payload: { script, args: [] }
-    })
+      payload: { script, args }
+    });
   };
 
   return {
