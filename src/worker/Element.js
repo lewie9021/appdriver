@@ -159,7 +159,7 @@ class Element {
       });
   }
 
-  tap({ x, y } = {}) {
+  tap({ x = 0, y = 0 } = {}) {
     return this._executeAction((value, done) => {
       return appiumService.tapElement({ element: value.ref, x, y })
         .then(() => done(null))
@@ -173,7 +173,7 @@ class Element {
     });
   }
 
-  longPress({ x, y, duration } = {}) {
+  longPress({ x = 0, y = 0, duration = 750 } = {}) {
     return this._executeAction((value, done) => {
       return appiumService.longPressElement({ element: value.ref, x, y, duration })
         .then(() => done(null))

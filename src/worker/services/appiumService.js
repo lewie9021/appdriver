@@ -1,7 +1,7 @@
 const { sessionStore } = require("../stores/sessionStore");
 const { AppiumError } = require("../errors");
 const { NotImplementedError, NotSupportedError } = require("../errors");
-const { platform, isInstanceOf, isString, isUndefined, getRelativePoint, toBoolean, toNumber } = require("../../utils");
+const { platform, isInstanceOf, isString, getRelativePoint, toBoolean, toNumber } = require("../../utils");
 const { transformBounds } = require("../attributeTransforms");
 const { request } = require("./request");
 
@@ -530,85 +530,63 @@ function createAppiumService(sessionStore) {
     });
   };
 
-  const resolveElementCenterPoint = ({ sessionId, element, x, y }) => {
-    if (isUndefined(x) && isUndefined(y)) {
-      return getElementSize({ sessionId, element })
-        .then((size) => ({ x: Math.floor(size.width / 2), y: Math.floor(size.height / 2) }));
-    }
-
-    return Promise.resolve({
-      x: isUndefined(x) ? 0 : x,
-      y: isUndefined(y) ? 0: y
+  // ({ sessionId: String?, element: AppiumElement }) => Promise.
+  const clickElement = ({ sessionId = sessionStore.getSessionId(), element }) => {
+    return request({
+      method: "POST",
+      path: `/session/${sessionId}/element/${element.ELEMENT}/click`
     });
   };
 
-  // ({ sessionId: String?, element: AppiumElement, x: Number?, y: Number?, duration: Number? }) => Promise.
-  // Note: To align Native and Web behaviour, we tap at the center point by default.
-  const tapElement = ({ sessionId = sessionStore.getSessionId(), element, x, y, duration = 0 }) => {
+  // ({ sessionId: String?, element: AppiumElement, x: Number, y: Number }) => Promise.
+  const tapElement = ({ sessionId = sessionStore.getSessionId(), element, x, y }) => {
+    if (x === 0 && y === 0) {
+      return clickElement({ sessionId, element });
+    }
+
     return platform.select({
       native: () => {
-        return resolveElementCenterPoint({ sessionId, element, x, y })
-          .then((coordinates) => {
-            return performActions({
-              sessionId, actions: [{
-                id: "finger1",
-                type: "pointer",
-                parameters: {
-                  pointerType: "touch"
-                },
-                actions: [
-                  { type: "pointerMove", duration: 0, origin: { element: element.ELEMENT }, ...coordinates },
-                  { type: "pointerDown", button: 0 },
-                  { type: "pause", duration },
-                  { type: "pointerUp", button: 0 }
-                ]
-              }]
-            });
-          });
+        return performActions({
+          sessionId, actions: [{
+            id: "finger1",
+            type: "pointer",
+            parameters: {
+              pointerType: "touch"
+            },
+            actions: [
+              { type: "pointerMove", duration: 0, origin: element, x, y },
+              { type: "pointerDown", button: 0 },
+              { type: "pause", duration: 0 },
+              { type: "pointerUp", button: 0 }
+            ]
+          }]
+        });
       },
       web: () => {
-        if (!isUndefined(x)) {
-          return Promise.reject(new NotSupportedError("'x' parameter is not supported in a Web context."));
-        }
-
-        if (!isUndefined(y)) {
-          return Promise.reject(new NotSupportedError("'y' parameter is not supported in a Web context."));
-        }
-
-        if (!isUndefined(duration)) {
-          return Promise.reject(new NotSupportedError("'duration' parameter is not supported in a Web context."));
-        }
-
-        return request({
-          method: "POST",
-          path: `/session/${sessionId}/element/${element.ELEMENT}/click`
-        });
+        return Promise.reject(new NotSupportedError("Tap with 'x' and 'y' parameters is not supported in a Web context."));
       }
     });
   };
 
-  // ({ sessionId: String?, element: AppiumElement, x: Number?, y: Number?, duration: Number? }) => Promise.
+  // ({ sessionId: String?, element: AppiumElement, x: Number, y: Number, duration: Number? }) => Promise.
   const longPressElement = ({ sessionId = sessionStore.getSessionId(), element, x, y, duration = 750 }) => {
     return platform.select({
       native: () => {
-        return resolveElementCenterPoint({ sessionId, element, x, y })
-          .then((coordinates) => {
-            return performActions({
-              sessionId, actions: [ {
-                id: "finger1",
-                type: "pointer",
-                parameters: {
-                  pointerType: "touch"
-                },
-                actions: [
-                  { type: "pointerMove", duration: 0, origin: { element: element.ELEMENT }, x, y },
-                  { type: "pointerDown", button: 0 },
-                  { type: "pause", duration },
-                  { type: "pointerUp", button: 0 }
-                ]
-              } ]
-            });
-          });
+        return performActions({
+          sessionId, actions: [ {
+            id: "finger1",
+            type: "pointer",
+            parameters: {
+              pointerType: "touch"
+            },
+            actions: [
+              { type: "pointerMove", duration: 0, origin: { element: element.ELEMENT }, x, y },
+              { type: "pointerDown", button: 0 },
+              { type: "pause", duration },
+              { type: "pointerUp", button: 0 }
+            ]
+          } ]
+        });
       },
       web: () => {
         return Promise.reject(new NotSupportedError("Long press is not supported in a Web context."));
