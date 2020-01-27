@@ -173,7 +173,7 @@ class Element {
     });
   }
 
-  longPress({ x = 0, y = 0, duration = 750 } = {}) {
+  longPress({ x = 0, y = 0, duration } = {}) {
     return this._executeAction((value, done) => {
       return appiumService.longPressElement({ element: value.ref, x, y, duration })
         .then(() => done(null))
