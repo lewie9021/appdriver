@@ -272,7 +272,7 @@ function createAppiumService(sessionStore) {
   // ({ sessionId: String? }) => Promise.
   const goBack = ({ sessionId = sessionStore.getSessionId() } = {}) => {
     return platform.select({
-      ios: () => Promise.reject(new NotImplementedError()),
+      ios: () => Promise.reject(new NotSupportedError()),
       android: () => {
         return request({
           method: "POST",
