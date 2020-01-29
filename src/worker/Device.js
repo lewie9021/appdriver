@@ -45,7 +45,7 @@ class Device {
 
   getViewport() {
     return appiumService.getViewport()
-      .catch(handleActionError("Failed to get device viewport."));
+      .catch(handleActionError("Failed to get viewport."));
   }
 
   async performGesture(gesture) {

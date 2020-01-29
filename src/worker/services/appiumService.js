@@ -679,8 +679,7 @@ function createAppiumService(sessionStore) {
       web: () => {
         return Promise.reject(new NotSupportedError("Swipe gestures are not supported in a Web context."));
       }
-    })
-
+    });
   };
 
   // ({ sessionId: String?, element: AppiumElement, keys: Array<String> }) => Promise.
