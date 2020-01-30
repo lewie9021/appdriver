@@ -283,7 +283,8 @@ class Device {
   }
 
   switchContext(contextId) {
-    return appiumService.setContext({ contextId });
+    return appiumService.setContext({ contextId })
+      .catch(handleActionError(`Failed to set context to '${contextId}'.`));
   }
 
   async switchToWebContext() {
