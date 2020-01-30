@@ -150,21 +150,18 @@ function createAppiumService(sessionStore) {
       path: `/session/${sessionId}/contexts`
     })
       .then((contexts) => contexts.map((context) => {
-        const iOS = sessionStore.getCapabilities("platformName") === "iOS";
-        const fullContextList = sessionStore.getCapabilities("fullContextList");
-
-        if (iOS && fullContextList) {
+        if (typeof context === "string") {
           return {
-            id: context.id,
-            title: isString(context.title) ? context.title : null,
-            url: isString(context.url) ? context.url : null
+            id: context,
+            title: null,
+            url: null
           };
         }
 
         return {
-          id: context,
-          title: null,
-          url: null
+          id: context.id,
+          title: isString(context.title) ? context.title : null,
+          url: isString(context.url) ? context.url : null
         };
       }));
   };
