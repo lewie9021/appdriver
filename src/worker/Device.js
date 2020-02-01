@@ -308,7 +308,8 @@ class Device {
   }
 
   switchToNativeContext() {
-    return appiumService.setContext({ contextId: "NATIVE_APP" });
+    return appiumService.setContext({ contextId: "NATIVE_APP" })
+      .catch(handleActionError("Failed to switch to the native context."));
   }
 }
 
