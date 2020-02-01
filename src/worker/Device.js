@@ -275,11 +275,13 @@ class Device {
   }
 
   getContext() {
-    return appiumService.getContext();
+    return appiumService.getContext()
+      .catch(handleActionError("Failed to get context."));
   }
 
   getContexts() {
-    return appiumService.getContexts();
+    return appiumService.getContexts()
+      .catch(handleActionError("Failed to get contexts."));
   }
 
   switchContext(contextId) {
@@ -287,19 +289,22 @@ class Device {
       .catch(handleActionError(`Failed to set context to '${contextId}'.`));
   }
 
-  async switchToWebContext() {
-    const contexts = await appiumService.getContexts();
-    const [ webContext, ...moreWebContexts ] = contexts.filter((context) => context.id.includes("WEBVIEW"));
+  switchToWebContext() {
+    return appiumService.getContexts()
+      .then((contexts) => {
+        const [ webContext, ...moreWebContexts ] = contexts.filter((context) => context.id.includes("WEBVIEW"));
 
-    if (!webContext) {
-      throw new ActionError("No Web context found.");
-    }
+        if (!webContext) {
+          throw new ActionError("No Web context found.");
+        }
 
-    if (moreWebContexts.length) {
-      throw new ActionError("Multiple Web contexts found. Consider using the .switchContext method.");
-    }
+        if (moreWebContexts.length) {
+          throw new ActionError("Multiple Web contexts found. Consider using the .switchContext method.");
+        }
 
-    await appiumService.setContext({ contextId: webContext.id });
+        return appiumService.setContext({ contextId: webContext.id });
+      })
+      .catch(handleActionError("Failed to switch to the Web context."));
   }
 
   switchToNativeContext() {
