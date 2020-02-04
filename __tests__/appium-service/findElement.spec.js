@@ -5,7 +5,10 @@ const requestHelpers = require("../../src/worker/services/request");
 const { sessionStore } = require("../../src/worker/stores/sessionStore");
 const { appiumService } = require("../../src/worker/services/appiumService");
 const { createFindElementMock } = require("../appiumServiceMocks");
+const { setPlatform } = require("../helpers");
 const { by } = require("../../");
+
+beforeEach(() => setPlatform("iOS"));
 
 afterEach(() => {
   jest.resetAllMocks();

@@ -1,7 +1,6 @@
 jest.mock("../../src/worker/stores/sessionStore");
-jest.mock("../../src/worker/services/appiumService");
 
-const { sessionStore } = require("../../src/worker/stores/sessionStore");
+const { setPlatform } = require("../helpers");
 const { NotImplementedError } = require("../../src/worker/errors");
 const { by } = require("../../");
 
@@ -11,7 +10,7 @@ afterEach(() => {
 });
 
 describe("Android", () => {
-  beforeEach(() => jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("Android"));
+  beforeEach(() => setPlatform("Android"));
 
   it("throws a NotImplementedError", async () => {
     expect.assertions(2);
@@ -26,7 +25,7 @@ describe("Android", () => {
 });
 
 describe("iOS", () => {
-  beforeEach(() => jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("iOS"));
+  beforeEach(() => setPlatform("iOS"));
 
   it("supports simple queries", () => {
     const predicate = "type = 'XCUIElementTypeTextField'";
@@ -35,5 +34,20 @@ describe("iOS", () => {
       using: "-ios predicate string",
       value: predicate
     });
+  });
+});
+
+describe("Web", () => {
+  beforeEach(() => setPlatform("Web"));
+
+  it("throws a NotImplementedError", async () => {
+    expect.assertions(2);
+
+    try {
+      by.iosPredicate("type = 'div'");
+    } catch (err) {
+      expect(err).toBeInstanceOf(NotImplementedError);
+      expect(err).toHaveProperty("message", "Functionality not implemented.");
+    }
   });
 });

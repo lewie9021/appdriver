@@ -12,13 +12,15 @@ afterEach(() => {
 describe("Android", () => {
   beforeEach(() => setPlatform("Android"));
 
-  it("supports simple queries", () => {
-    const selector = `new UiSelector().className("android.widget.EditText")`;
+  it("throws a NotImplementedError", async () => {
+    expect.assertions(2);
 
-    expect(by.uiAutomator(selector)).toEqual({
-      using: "-android uiautomator",
-      value: selector
-    });
+    try {
+      by.css("#text-input");
+    } catch (err) {
+      expect(err).toBeInstanceOf(NotImplementedError);
+      expect(err).toHaveProperty("message", "Functionality not implemented.");
+    }
   });
 });
 
@@ -29,7 +31,7 @@ describe("iOS", () => {
     expect.assertions(2);
 
     try {
-      by.uiAutomator(`new UiSelector().className("XCUIElementTypeTextField")`);
+      by.css("#text-input");
     } catch (err) {
       expect(err).toBeInstanceOf(NotImplementedError);
       expect(err).toHaveProperty("message", "Functionality not implemented.");
@@ -40,14 +42,12 @@ describe("iOS", () => {
 describe("Web", () => {
   beforeEach(() => setPlatform("Web"));
 
-  it("throws a NotImplementedError", async () => {
-    expect.assertions(2);
+  it("supports simple queries", () => {
+    const css = "#text-input";
 
-    try {
-      by.uiAutomator(`new UiSelector().className("input")`);
-    } catch (err) {
-      expect(err).toBeInstanceOf(NotImplementedError);
-      expect(err).toHaveProperty("message", "Functionality not implemented.");
-    }
+    expect(by.css(css)).toEqual({
+      using: "css selector",
+      value: css
+    });
   });
 });

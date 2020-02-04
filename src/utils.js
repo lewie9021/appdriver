@@ -154,13 +154,33 @@ const transformArgs = (args) => {
 
 const last = (arr) => arr[arr.length - 1];
 
+const getPlatform = () => {
+  if (sessionStore.getWebContext()) {
+    return "Web";
+  }
+
+  const platform = sessionStore.getCapabilities("platformName");
+
+  switch (platform) {
+    case "iOS":
+    case "Android":
+      return platform;
+    default:
+      throw new Error("Platform not supported");
+  }
+};
+
+const isPlatform = (platform) => {
+  return getPlatform() === platform;
+};
+
 const platform = {
   select: ({ ios, android, web, native }) => {
-    if (sessionStore.getWebContext()) {
-      return web();
-    }
+    const platform = getPlatform();
 
-    switch (sessionStore.getCapabilities("platformName")) {
+    switch (platform) {
+      case "Web":
+        return web();
       case "iOS":
         return native ? native() : ios();
       case "Android":
@@ -190,5 +210,7 @@ module.exports = {
   getRelativePoint,
   transformArgs,
   last,
-  platform
+  platform,
+  getPlatform,
+  isPlatform
 };
