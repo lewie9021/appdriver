@@ -34,25 +34,25 @@ Find element with text 'Click Me!''.
 
 [```by.id(id: String | Regex) => Matcher```](./matchers/byId.md)
 
-<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platforms-Native-blue.svg" />
 
 Find element(s) by their ID. For Android this is the `resource-id` attribute, whereas for iOS it's the `name` attribute.
 
 [```by.label(label: String | Regex) => Matcher```](./matchers/byLabel.md)
 
-<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platforms-Native-blue.svg" />
 
 Find element(s) by their accessibility label. For Android this is the `content-desc` attribute, whereas for iOS it's the `name` attribute.
 
 [```by.text(text: String | Regex) => Matcher```](./matchers/byText.md)
 
-<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platforms-Native-blue.svg" />
 
 Find element(s) by their text value.
 
 [```by.type(type: String) => Matcher```](./matchers/byType.md)
 
-<img src="https://img.shields.io/badge/Platforms-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platforms-Native-blue.svg" />
 
 Find element(s) by their type.
 
@@ -73,3 +73,9 @@ Find element(s) using a Ui Automator selector.
 <img src="https://img.shields.io/badge/Platforms-All-blue.svg" /> <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 Find element(s) using an XPath query.
+
+[```by.css(css: String) => Matcher```](./matchers/ByCss.md)
+
+<img src="https://img.shields.io/badge/Platforms-Web-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+
+Find element(s) using a CSS selector.

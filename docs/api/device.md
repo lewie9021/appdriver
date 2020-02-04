@@ -57,133 +57,133 @@ The `device` object provides a way of performing interactions within the applica
 
 [```.platformName: String```](./device/platformName.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
 Returns the platform name of the current session.
 
 [```.platformVersion: String```](./device/platformVersion.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
 Returns the platform version of the current session.
 
 [```.name: String```](./device/name.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
 Returns the device name of the current session.
 
 [```.wait(duration: Number) => Promise```](./device/wait.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
 Explicitly wait `duration` milliseconds.
 
 [```.waitFor(conditionFn: Function<Promise>, options?: Object) => Promise```](./device/waitFor.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
 Polls `conditionFn` every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
 
 [```.restartApp() => Promise```](./device/restartApp.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
 [```.resetApp() => Promise```](./device/resetApp.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
 [```.goBack() => Promise```](./device/goBack.md)
 
-<img src="https://img.shields.io/badge/Platform-Android-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-Android | Web-blue.svg" />
 
 Taps the hardware back button on Android.
 
 [```.isPortrait() => Promise<Boolean>```](./device/isPortrait.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
 Returns whether the device is in a portrait or landscape orientation.
 
 [```.setPortrait() => Promise```](./device/setPortrait.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
 Sets the device orientation to portrait.
 
 [```.setLandscape() => Promise```](./device/setLandscape.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
 Sets the device orientation to landscape.
 
 [```.getViewport() => Promise<Object>```](./device/getViewport.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
 Retrieves the width and height of the device viewport.
 
 [```.takeScreenshot(options?: Object) => Promise<Buffer>```](./device/takeScreenshot.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
 Takes a screenshot (PNG) of the entire screen and saves the result on disk at the given `filePath` location.
 
 [```.startScreenRecording(options?: Object) => Promise```](./device/startScreenRecording.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
 Starts recording the entire screen.
 
 [```.stopScreenRecording() => Promise<Buffer>```](./device/stopScreenRecording.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
 Stops a screen recording currently in progress.
 
 [```.isKeyboardVisible() => Promise<Boolean>```](./device/isKeyboardVisible.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
 Returns whether the keyboard is visible or not.
 
 [```.hideKeyboard() => Promise```](./device/hideKeyboard.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-Native-blue.svg" />
 
 Hides the on-screen keyboard.
 
 [```.getContext() => Promise<Object>```](./device/getContext.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
 TODO: Description here.
 
 [```.getContexts() => Promise<Array<Object>>```](./device/getContexts.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
 TODO: Description here.
 
 [```.switchContext(contextId: String) => Promise```](./device/switchContext.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
 TODO: Description here.
 
 [```.switchToWebContext() => Promise```](./device/switchToWebContext.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
 TODO: Description here.
 
 [```.switchToNativeContext() => Promise```](./device/switchToNativeContext.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
 TODO: Description here.
 
@@ -195,36 +195,36 @@ Performs a scroll gesture.
 
 [```.swipe(options: Object) => Promise```](./device/swipe.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-Native-blue.svg" />
 
 Performs a swipe gesture in the context of the device viewport.
 
 [```.swipeUp(options: Object) => Promise```](./device/swipeUp.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-Native-blue.svg" />
 
 Performs a swipe up gesture in the context of the device viewport.
 
 [```.swipeDown(options: Object) => Promise```](./device/swipeDown.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-Native-blue.svg" />
 
 Performs a swipe down gesture in the context of the device viewport.
 
 [```.swipeLeft(options; Object) => Promise```](./device/swipeLeft.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-Native-blue.svg" />
 
 Performs a swipe left gesture in the context of the device viewport.
 
 [```.swipeRight(options: Object) => Promise```](./device/swipeRight.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-Native-blue.svg" />
 
 TODO: Description here.
 
 [```.performGesture(gesture: Gesture) => Promise```](./device/performGesture.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" /> <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
+<img src="https://img.shields.io/badge/Platform-Native-blue.svg" /> <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
 
 TODO: Description here.
