@@ -1,6 +1,6 @@
 {
   "name": "appdriver",
-  "version": "1.0.0-alpha.16",
+  "version": "1.0.0-alpha.17",
   "main": "index.js",
   "bin": "./bin/appdriver",
   "scripts": {
