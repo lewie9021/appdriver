@@ -1,7 +1,6 @@
 jest.mock("../../src/worker/stores/sessionStore");
-jest.mock("../../src/worker/services/appiumService");
 
-const { sessionStore } = require("../../src/worker/stores/sessionStore");
+const { setPlatform } = require("../helpers");
 const { by } = require("../../");
 
 afterEach(() => {
@@ -10,7 +9,7 @@ afterEach(() => {
 });
 
 describe("Android", () => {
-  beforeEach(() => jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("Android"));
+  beforeEach(() => setPlatform("Android"));
 
   it("supports simple queries", () => {
     const type = "android.widget.EditText";
@@ -23,7 +22,7 @@ describe("Android", () => {
 });
 
 describe("iOS", () => {
-  beforeEach(() => jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("iOS"));
+  beforeEach(() => setPlatform("iOS"));
 
   it("supports simple queries", () => {
     const type = "XCUIElementTypeTextField";

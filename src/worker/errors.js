@@ -60,10 +60,19 @@ class WaitError extends Error {
 }
 
 class NotImplementedError extends Error {
-  constructor() {
-    super("Functionality not implemented.");
+  constructor(message) {
+    super(message || "Functionality not implemented.");
 
     Error.captureStackTrace(this, NotImplementedError);
+    this.name = this.constructor.name;
+  }
+}
+
+class NotSupportedError extends Error {
+  constructor(message) {
+    super(message || "Functionality not supported.");
+
+    Error.captureStackTrace(this, NotSupportedError);
     this.name = this.constructor.name;
   }
 }
@@ -86,5 +95,6 @@ module.exports = {
   WaitError,
   ActionError,
   NotImplementedError,
+  NotSupportedError,
   AppiumError
 };

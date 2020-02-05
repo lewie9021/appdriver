@@ -4,18 +4,15 @@ jest.mock("../../src/worker/stores/sessionStore");
 const requestHelpers = require("../../src/worker/services/request");
 const { sessionStore } = require("../../src/worker/stores/sessionStore");
 const { appiumService } = require("../../src/worker/services/appiumService");
-const { NotImplementedError } = require("../../src/worker/errors");
+const { setPlatform } = require("../helpers");
+const { NotSupportedError } = require("../../src/worker/errors");
 
 afterEach(() => {
   jest.resetAllMocks();
   jest.restoreAllMocks();
 });
 
-describe("Android", () => {
-  beforeEach(() => {
-    jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("Android");
-  });
-
+const runTests = () => {
   it("makes a POST request to the correct Appium endpoint", async () => {
     const sessionId = "sessionId";
     jest.spyOn(sessionStore, "getSessionId").mockReturnValue(sessionId);
@@ -45,14 +42,12 @@ describe("Android", () => {
       path: `/session/${sessionId}/back`
     });
   });
-});
+};
 
 describe("iOS", () => {
-  beforeEach(() => {
-    jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("iOS");
-  });
+  beforeEach(() => setPlatform("iOS"));
 
-  it("throws a NotImplementedError", async () => {
+  it("throws a NotSupportedError", async () => {
     const sessionId = "sessionId";
     jest.spyOn(sessionStore, "getSessionId").mockReturnValue(sessionId);
     jest.spyOn(requestHelpers, "request").mockResolvedValue();
@@ -61,10 +56,20 @@ describe("iOS", () => {
     try {
       await appiumService.goBack();
     } catch (err) {
-      expect(err).toBeInstanceOf(NotImplementedError);
-      expect(err).toHaveProperty("message", "Functionality not implemented.");
+      expect(err).toBeInstanceOf(NotSupportedError);
+      expect(err).toHaveProperty("message", "Functionality not supported.");
     }
 
     expect(requestHelpers.request).not.toHaveBeenCalled();
   });
+});
+
+describe("Android", () => {
+  beforeEach(() => setPlatform("Android"));
+  runTests();
+});
+
+describe("Web", () => {
+  beforeEach(() => setPlatform("Web"));
+  runTests();
 });

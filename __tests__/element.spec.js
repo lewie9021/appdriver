@@ -2,8 +2,11 @@ jest.mock("../src/worker/services/appiumService");
 
 const { appiumService } = require("../src/worker/services/appiumService");
 const { createFindElementMock } = require("./appiumServiceMocks");
+const { setPlatform } = require("./helpers");
 const { Element } = require("../src/worker/Element");
 const { element, by } = require("../");
+
+beforeEach(() => setPlatform("iOS"));
 
 afterEach(() => {
   jest.resetAllMocks();

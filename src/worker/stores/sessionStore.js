@@ -2,7 +2,8 @@ function createSessionStore() {
   let state = {
     sessionId: null,
     capabilities: null,
-    screenRecording: null
+    screenRecording: null,
+    webContext: false
   };
 
   return {
@@ -41,6 +42,9 @@ function createSessionStore() {
       }
 
       return state.screenRecording;
+    },
+    getWebContext: () => {
+      return state.webContext;
     }
   };
 }

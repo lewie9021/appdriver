@@ -1,7 +1,6 @@
 jest.mock("../../src/worker/stores/sessionStore");
-jest.mock("../../src/worker/services/appiumService");
 
-const { sessionStore } = require("../../src/worker/stores/sessionStore");
+const { setPlatform } = require("../helpers");
 const { NotImplementedError } = require("../../src/worker/errors");
 const { by } = require("../../");
 
@@ -11,7 +10,7 @@ afterEach(() => {
 });
 
 describe("Android", () => {
-  beforeEach(() => jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("Android"));
+  beforeEach(() => setPlatform("Android"));
 
   it("supports simple queries", () => {
     const selector = `new UiSelector().className("android.widget.EditText")`;
@@ -24,13 +23,28 @@ describe("Android", () => {
 });
 
 describe("iOS", () => {
-  beforeEach(() => jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("iOS"));
+  beforeEach(() => setPlatform("iOS"));
 
   it("throws a NotImplementedError", async () => {
     expect.assertions(2);
 
     try {
       by.uiAutomator(`new UiSelector().className("XCUIElementTypeTextField")`);
+    } catch (err) {
+      expect(err).toBeInstanceOf(NotImplementedError);
+      expect(err).toHaveProperty("message", "Functionality not implemented.");
+    }
+  });
+});
+
+describe("Web", () => {
+  beforeEach(() => setPlatform("Web"));
+
+  it("throws a NotImplementedError", async () => {
+    expect.assertions(2);
+
+    try {
+      by.uiAutomator(`new UiSelector().className("input")`);
     } catch (err) {
       expect(err).toBeInstanceOf(NotImplementedError);
       expect(err).toHaveProperty("message", "Functionality not implemented.");

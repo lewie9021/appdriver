@@ -29,7 +29,7 @@ it("throws an ActionError for Appium request errors", async () => {
     await device.getViewport();
   } catch (err) {
     expect(err).toBeInstanceOf(ActionError);
-    expect(err).toHaveProperty("message", "Failed to get device viewport.");
+    expect(err).toHaveProperty("message", "Failed to get viewport.");
   }
 
   expect(appiumService.getViewport).toHaveBeenCalledTimes(1);

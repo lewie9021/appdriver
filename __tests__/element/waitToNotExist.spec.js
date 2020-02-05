@@ -4,9 +4,12 @@ jest.mock("../../src/worker/services/appiumService");
 const { configStore } = require("../../src/stores/configStore");
 const { appiumService } = require("../../src/worker/services/appiumService");
 const { createFindElementMock } = require("../appiumServiceMocks");
+const { setPlatform } = require("../helpers");
 const { ElementActionError, ElementWaitError, AppiumError } = require("../../src/worker/errors");
 const { Element } = require("../../src/worker/Element");
 const { element, by } = require("../../");
+
+beforeEach(() => setPlatform("iOS"));
 
 afterEach(() => {
   jest.resetAllMocks();

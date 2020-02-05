@@ -2,9 +2,12 @@ jest.mock("../../src/worker/services/appiumService");
 
 const { appiumService } = require("../../src/worker/services/appiumService");
 const { createFindElementMock } = require("../appiumServiceMocks");
+const { setPlatform } = require("../helpers");
 const { ElementNotFoundError, ElementActionError, AppiumError } = require("../../src/worker/errors");
 const { Element } = require("../../src/worker/Element");
 const { element, by } = require("../../");
+
+beforeEach(() => setPlatform("iOS"));
 
 afterEach(() => {
   jest.resetAllMocks();
@@ -46,19 +49,6 @@ it("defaults 'x' and 'y' parameters to 0", async () => {
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
   expect(appiumService.longPressElement).toHaveBeenCalledTimes(1);
   expect(appiumService.longPressElement).toHaveBeenCalledWith(expect.objectContaining({ x: 0, y: 0 }));
-});
-
-it("defaults the 'duration' parameter to 750", async () => {
-  const ref = createFindElementMock();
-
-  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
-  jest.spyOn(appiumService, "longPressElement").mockResolvedValue(null);
-
-  await element(by.label("button")).longPress();
-
-  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
-  expect(appiumService.longPressElement).toHaveBeenCalledTimes(1);
-  expect(appiumService.longPressElement).toHaveBeenCalledWith(expect.objectContaining({ duration: 750 }));
 });
 
 it("supports passing 'x' and 'y' parameters to offset from the top left of the element", async () => {

@@ -1,8 +1,12 @@
-const { platform, isRegex } = require("../utils");
+const { platform, isPlatform, isRegex } = require("../utils");
 const { NotImplementedError } = require("./errors");
 const getNativeRegex = require("./helpers/getNativeRegex");
 
 const getByIdMatcher = (id) => {
+  if (isPlatform("Web")) {
+    throw new NotImplementedError();
+  }
+
   if (isRegex(id)) {
     const regex = getNativeRegex(id);
 
@@ -25,6 +29,10 @@ const getByIdMatcher = (id) => {
 };
 
 const getByAccessibilityLabelMatcher = (accessibilityLabel) => {
+  if (isPlatform("Web")) {
+    throw new NotImplementedError();
+  }
+
   if (isRegex(accessibilityLabel)) {
     const regex = getNativeRegex(accessibilityLabel);
 
@@ -47,6 +55,10 @@ const getByAccessibilityLabelMatcher = (accessibilityLabel) => {
 };
 
 const getByTextMatcher = (text) => {
+  if (isPlatform("Web")) {
+    throw new NotImplementedError();
+  }
+
   if (isRegex(text)) {
     const regex = getNativeRegex(text);
 
@@ -85,7 +97,8 @@ const getIosPredicateMatcher = (predicate) => {
       using: "-ios predicate string",
       value: predicate
     }),
-    android: () => { throw new NotImplementedError(); }
+    android: () => { throw new NotImplementedError(); },
+    web: () => { throw new NotImplementedError(); }
   });
 };
 
@@ -95,6 +108,18 @@ const getUiAutomatorMatcher = (selector) => {
     android: () => ({
       using: "-android uiautomator",
       value: selector
+    }),
+    web: () => { throw new NotImplementedError(); }
+  });
+};
+
+// Note: Only works in a Web context.
+const getByCssMatcher = (css) => {
+  return platform.select({
+    native: () => { throw new NotImplementedError(); },
+    web: () => ({
+      using: "css selector",
+      value: css
     })
   });
 };
@@ -105,5 +130,6 @@ module.exports = {
   text: getByTextMatcher,
   type: getByTypeMatcher,
   iosPredicate: getIosPredicateMatcher,
-  uiAutomator: getUiAutomatorMatcher
+  uiAutomator: getUiAutomatorMatcher,
+  css: getByCssMatcher
 };
