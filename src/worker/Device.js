@@ -45,7 +45,7 @@ class Device {
 
   getViewport() {
     return appiumService.getViewport()
-      .catch(handleActionError("Failed to get device viewport."));
+      .catch(handleActionError("Failed to get viewport."));
   }
 
   async performGesture(gesture) {
@@ -272,6 +272,44 @@ class Device {
         });
       })
       .catch(handleActionError("Failed to stop screen recording."));
+  }
+
+  getContext() {
+    return appiumService.getContext()
+      .catch(handleActionError("Failed to get context."));
+  }
+
+  getContexts() {
+    return appiumService.getContexts()
+      .catch(handleActionError("Failed to get contexts."));
+  }
+
+  switchContext(contextId) {
+    return appiumService.setContext({ contextId })
+      .catch(handleActionError(`Failed to set context to '${contextId}'.`));
+  }
+
+  switchToWebContext() {
+    return appiumService.getContexts()
+      .then((contexts) => {
+        const [ webContext, ...moreWebContexts ] = contexts.filter((context) => context.id.includes("WEBVIEW"));
+
+        if (!webContext) {
+          throw new ActionError("No Web context found.");
+        }
+
+        if (moreWebContexts.length) {
+          throw new ActionError("Multiple Web contexts found. Consider using the .switchContext method.");
+        }
+
+        return appiumService.setContext({ contextId: webContext.id });
+      })
+      .catch(handleActionError("Failed to switch to the Web context."));
+  }
+
+  switchToNativeContext() {
+    return appiumService.setContext({ contextId: "NATIVE_APP" })
+      .catch(handleActionError("Failed to switch to the native context."));
   }
 }
 

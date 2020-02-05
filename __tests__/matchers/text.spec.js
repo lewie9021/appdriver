@@ -1,7 +1,7 @@
 jest.mock("../../src/worker/stores/sessionStore");
-jest.mock("../../src/worker/services/appiumService");
 
-const { sessionStore } = require("../../src/worker/stores/sessionStore");
+const { setPlatform } = require("../helpers");
+const { NotImplementedError } = require("../../src/worker/errors");
 const { by } = require("../../");
 
 afterEach(() => {
@@ -10,7 +10,7 @@ afterEach(() => {
 });
 
 describe("Android", () => {
-  beforeEach(() => jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("Android"));
+  beforeEach(() => setPlatform("Android"));
 
   it("supports simple queries", () => {
     const label = "list-item-0";
@@ -37,7 +37,7 @@ describe("Android", () => {
 });
 
 describe("iOS", () => {
-  beforeEach(() => jest.spyOn(sessionStore, "getCapabilities").mockReturnValue("iOS"));
+  beforeEach(() => setPlatform("iOS"));
 
   it("supports simple queries", () => {
     const label = "list-item-0";
@@ -60,5 +60,20 @@ describe("iOS", () => {
       using: "-ios predicate string",
       value: `label MATCHES[c] 'LIST-ITEM-*'`
     });
+  });
+});
+
+describe("Web", () => {
+  beforeEach(() => setPlatform("Web"));
+
+  it("throws a NotImplementedError", async () => {
+    expect.assertions(2);
+
+    try {
+      by.text("Hello World!");
+    } catch (err) {
+      expect(err).toBeInstanceOf(NotImplementedError);
+      expect(err).toHaveProperty("message", "Functionality not implemented.");
+    }
   });
 });

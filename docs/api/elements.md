@@ -16,8 +16,8 @@ The `elements` function provides a way to select multiple elements on the screen
 (async () => {
   const [ $listItemOne, $listItemTwo ] = await elements(by.label("list-item"));
   
-  await $listItemOne.swipeLeft({distance: 250});
-  await $listItemTwo.swipeLeft({distance: 250});
+  await $listItemOne.swipeLeft({ distance: 250 });
+  await $listItemTwo.swipeLeft({ distance: 250 });
   
   await expect($listItemOne).not.toExist();
   await expect($listItemTwo).not.toExist();

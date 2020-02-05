@@ -1,7 +1,7 @@
 const { sessionStore } = require("../stores/sessionStore");
 const { AppiumError } = require("../errors");
-const { NotImplementedError } = require("../errors");
-const { platform, isInstanceOf, getRelativePoint, toBoolean, toNumber } = require("../../utils");
+const { NotImplementedError, NotSupportedError } = require("../errors");
+const { platform, isInstanceOf, isString, getRelativePoint, toBoolean, toNumber } = require("../../utils");
 const { transformBounds } = require("../attributeTransforms");
 const { request } = require("./request");
 
@@ -58,7 +58,8 @@ function createAppiumService(sessionStore) {
       .then((data) => {
         sessionStore.setState({
           sessionId: data.sessionId,
-          capabilities: data.capabilities
+          capabilities: data.capabilities,
+          webContext: Boolean(data.capabilities.autoWebview)
         });
 
         return data;
@@ -95,7 +96,6 @@ function createAppiumService(sessionStore) {
   };
 
   // ({ sessionId: String? }) => Promise.
-  // TODO: Throw if capabilities.noReset is true.
   const resetApp = ({ sessionId = sessionStore.getSessionId() } = {}) => {
     if (sessionStore.getCapabilities("noReset")) {
       return Promise.reject(new Error("Unable to reset app when capabilities.noReset is enabled.'"));
@@ -111,6 +111,69 @@ function createAppiumService(sessionStore) {
   const restartApp = ({ sessionId = sessionStore.getSessionId(), appId = sessionStore.getAppId() } = {}) => {
     return closeApp({ sessionId, appId })
       .then(() => launchApp({ sessionId, appId }));
+  };
+
+  // ({ sessionId: String? }) => Promise<String>.
+  const getContextId = ({ sessionId = sessionStore.getSessionId() } = {}) => {
+    return request({
+      method: "GET",
+      path: `/session/${sessionId}/context`
+    });
+  };
+
+  // ({ sessionId: String? }) => Promise<{ id: String, title: String | null, url: String | null }>.
+  const getContext = ({ sessionId = sessionStore.getSessionId() } = {}) => {
+    return Promise.all([
+      getContextId({ sessionId }),
+      getContexts({ sessionId })
+    ])
+      .then(([ contextId, contexts ]) => {
+        const context = contexts.find((x) => x.id === contextId);
+
+        if (!context) {
+          return {
+            id: contextId,
+            title: null,
+            url: null
+          };
+        }
+
+        return context;
+      });
+  };
+
+  // ({ sessionId: String? }) => Promise<Array<{ id: String, title: String | null, url: String | null }>>.
+  // Note: Contexts are objects when capabilities.fullContextList is true (iOS only), otherwise they're strings.
+  const getContexts = ({ sessionId = sessionStore.getSessionId() } = {}) => {
+    return request({
+      method: "GET",
+      path: `/session/${sessionId}/contexts`
+    })
+      .then((contexts) => contexts.map((context) => {
+        if (typeof context === "string") {
+          return {
+            id: context,
+            title: null,
+            url: null
+          };
+        }
+
+        return {
+          id: context.id,
+          title: isString(context.title) ? context.title : null,
+          url: isString(context.url) ? context.url : null
+        };
+      }));
+  };
+
+  // ({ sessionId: String?, contextId: String? }) => Promise.
+  const setContext = ({ sessionId = sessionStore.getSessionId(), contextId }) => {
+    return request({
+      method: "POST",
+      path: `/session/${sessionId}/context`,
+      payload: { name: contextId }
+    })
+      .then(() => sessionStore.setState({ webContext: contextId !== "NATIVE_APP" }));
   };
 
   // ({ sessionId: String? }) => Promise<{ width: Number, height: Number }>.
@@ -173,9 +236,17 @@ function createAppiumService(sessionStore) {
 
   // ({ sessionId: String? }) => Promise.
   const hideKeyboard = ({ sessionId = sessionStore.getSessionId() } = {}) => {
-    return request({
-      method: "POST",
-      path: `/session/${sessionId}/appium/device/hide_keyboard`
+    return platform.select({
+      native: () => {
+        return request({
+          method: "POST",
+          path: `/session/${sessionId}/appium/device/hide_keyboard`
+        });
+      },
+      web: () => {
+        // TODO. Seems to press the enter button on iOS...
+        return Promise.reject(new NotSupportedError());
+      }
     });
   };
 
@@ -189,15 +260,23 @@ function createAppiumService(sessionStore) {
           path: `/session/${sessionId}/appium/device/press_keycode`,
           payload: { keycode }
         });
-      }
+      },
+      // TODO: Investigate on Android.
+      web: () => Promise.reject(new NotSupportedError())
     });
   };
 
   // ({ sessionId: String? }) => Promise.
   const goBack = ({ sessionId = sessionStore.getSessionId() } = {}) => {
     return platform.select({
-      ios: () => Promise.reject(new NotImplementedError()),
+      ios: () => Promise.reject(new NotSupportedError()),
       android: () => {
+        return request({
+          method: "POST",
+          path: `/session/${sessionId}/back`
+        });
+      },
+      web: () => {
         return request({
           method: "POST",
           path: `/session/${sessionId}/back`
@@ -208,10 +287,15 @@ function createAppiumService(sessionStore) {
 
   // ({ sessionId: String?, actions: W3CActions }) => Promise.
   const performActions = ({ sessionId = sessionStore.getSessionId(), actions }) => {
-    return request({
-      method: "POST",
-      path: `/session/${sessionId}/actions`,
-      payload: { actions }
+    return platform.select({
+      native: () => {
+        return request({
+          method: "POST",
+          path: `/session/${sessionId}/actions`,
+          payload: { actions }
+        });
+      },
+      web: () => Promise.reject(new NotSupportedError())
     });
   };
 
@@ -286,7 +370,11 @@ function createAppiumService(sessionStore) {
         { name: "bounds", transform: transformBounds },
         { name: "displayed", transform: toBoolean },
         { name: "contentSize", transform: JSON.parse } // Only works on ScrollViews
-      ]
+      ],
+      web: () => {
+        // TODO: Investigate valid attributes.
+        return Promise.reject(new NotSupportedError());
+      }
     });
     const attributeMatch = validAttributes.find((x) => x.name === attribute);
 
@@ -304,25 +392,43 @@ function createAppiumService(sessionStore) {
   // ({ sessionId: String?, element: AppiumElement }) => Promise<Boolean>.
   // Note: doesn't work on iOS yet. See https://github.com/appium/appium/issues/13441.
   const getElementSelectedAttribute = ({ sessionId = sessionStore.getSessionId(), element }) => {
-    return request({
-      method: "GET",
-      path: `/session/${sessionId}/element/${element.ELEMENT}/selected`
+    return platform.select({
+      native: () => {
+        return request({
+          method: "GET",
+          path: `/session/${sessionId}/element/${element.ELEMENT}/selected`
+        });
+      },
+      // TODO: Needs investigation.
+      web: () => Promise.reject(new NotSupportedError())
     });
   };
 
   // ({ sessionId: String?, element: AppiumElement }) => Promise<Boolean>.
   const getElementEnabledAttribute = ({ sessionId = sessionStore.getSessionId(), element }) => {
-    return request({
-      method: "GET",
-      path: `/session/${sessionId}/element/${element.ELEMENT}/enabled`
+    return platform.select({
+      native: () => {
+        return request({
+          method: "GET",
+          path: `/session/${sessionId}/element/${element.ELEMENT}/enabled`
+        });
+      },
+      // TODO: Needs investigation.
+      web: () => Promise.reject(new NotSupportedError())
     });
   };
 
   // ({ sessionId: String?, element: AppiumElement }) => Promise<Boolean>.
   const getElementVisibleAttribute = ({ sessionId = sessionStore.getSessionId(), element }) => {
-    return request({
-      method: "GET",
-      path: `/session/${sessionId}/element/${element.ELEMENT}/displayed`
+    return platform.select({
+      native: () => {
+        return request({
+          method: "GET",
+          path: `/session/${sessionId}/element/${element.ELEMENT}/displayed`
+        });
+      },
+      // TODO: Needs investigation.
+      web: () => Promise.reject(new NotSupportedError())
     });
   };
 
@@ -336,9 +442,15 @@ function createAppiumService(sessionStore) {
 
   // ({ sessionId: String?, element: AppiumElement }) => Promise<String>.
   const getElementNameAttribute = ({ sessionId = sessionStore.getSessionId(), element }) => {
-    return request({
-      method: "GET",
-      path: `/session/${sessionId}/element/${element.ELEMENT}/name`
+    return platform.select({
+      native: () => {
+        return request({
+          method: "GET",
+          path: `/session/${sessionId}/element/${element.ELEMENT}/name`
+        });
+      },
+      // TODO: Needs investigation.
+      web: () => Promise.reject(new NotSupportedError())
     });
   };
 
@@ -346,7 +458,9 @@ function createAppiumService(sessionStore) {
   const getElementTypeAttribute = ({ sessionId = sessionStore.getSessionId(), element }) => {
     return platform.select({
       ios: () => getElementNameAttribute({ sessionId, element }),
-      android: () => getElementAttribute({ sessionId, element, attribute: "className" })
+      android: () => getElementAttribute({ sessionId, element, attribute: "className" }),
+      // TODO: Needs investigation.
+      web: () => Promise.reject(new NotSupportedError())
     });
   };
 
@@ -378,10 +492,10 @@ function createAppiumService(sessionStore) {
       return getElementTextAttribute({ sessionId, element })
     }
 
-    return getElementTypeAttribute({ sessionId, element })
-      .then((type) => {
-        return platform.select({
-          ios: () => {
+    return platform.select({
+      ios: () => {
+        return getElementTypeAttribute({ sessionId, element })
+          .then((type) => {
             return getElementTextAttribute({ sessionId, element })
               .then((text) => {
                 if (text || type === "XCUIElementTypeStaticText") {
@@ -401,8 +515,11 @@ function createAppiumService(sessionStore) {
                       .then((textFragments) => textFragments.join(" "));
                   });
               });
-          },
-          android: () => {
+          });
+      },
+      android: () => {
+        return getElementTypeAttribute({ sessionId, element })
+          .then((type) => {
             if (type === "android.widget.TextView") {
               return getElementTextAttribute({ sessionId, element });
             }
@@ -419,9 +536,13 @@ function createAppiumService(sessionStore) {
                 return Promise.all(tasks)
                   .then((textFragments) => textFragments.join(" "));
               });
-          }
-        });
-      });
+          });
+      },
+      web: () => {
+        // TODO.
+        return Promise.reject(new NotSupportedError());
+      }
+    });
   };
 
   // ({ sessionId: String?, element: AppiumElement, options? Object }) => Promise<Number | Boolean | String>.
@@ -444,82 +565,117 @@ function createAppiumService(sessionStore) {
 
         return Promise.all(tasks)
           .then(([ type, value ]) => parseValue(value, type, options));
+      },
+      web: () => {
+        // TODO.
+        return Promise.reject(new NotSupportedError());
       }
     });
   };
 
   // ({ sessionId: String?, element: AppiumElement, relative: Boolean }) => Promise<{ x: Number, y: Number }>.
-  const getElementLocation = ({ sessionId = sessionStore.getSessionId(), element, relative }) => {
-    if (relative) {
-      return request({
-        method: "GET",
-        path: `/session/${sessionId}/element/${element.ELEMENT}/location_in_view`
-      });
+  const getElementLocation = async ({ sessionId = sessionStore.getSessionId(), element, relative }) => {
+    const location = await request({
+      method: "GET",
+      path: `/session/${sessionId}/element/${element.ELEMENT}/${relative ? "location_in_view" : "location"}`
+    });
+
+    return {
+      x: location.x,
+      y: location.y
+    };
+  };
+
+  // ({ sessionId: String?, element: AppiumElement }) => Promise.
+  const clickElement = ({ sessionId = sessionStore.getSessionId(), element }) => {
+    return request({
+      method: "POST",
+      path: `/session/${sessionId}/element/${element.ELEMENT}/click`
+    });
+  };
+
+  // ({ sessionId: String?, element: AppiumElement, x: Number, y: Number }) => Promise.
+  const tapElement = ({ sessionId = sessionStore.getSessionId(), element, x, y }) => {
+    if (x === 0 && y === 0) {
+      return clickElement({ sessionId, element });
     }
 
-    return request({
-      method: "GET",
-      path: `/session/${sessionId}/element/${element.ELEMENT}/location`
+    return platform.select({
+      native: () => {
+        return performActions({
+          sessionId, actions: [{
+            id: "finger1",
+            type: "pointer",
+            parameters: {
+              pointerType: "touch"
+            },
+            actions: [
+              { type: "pointerMove", duration: 0, origin: element, x, y },
+              { type: "pointerDown", button: 0 },
+              { type: "pause", duration: 0 },
+              { type: "pointerUp", button: 0 }
+            ]
+          }]
+        });
+      },
+      web: () => {
+        return Promise.reject(new NotSupportedError("Tap with 'x' and 'y' parameters is not supported in a Web context."));
+      }
     });
   };
 
-  // ({ sessionId: String?, element: AppiumElement, x: Number?, y: Number?, duration: Number? }) => Promise.
-  const tapElement = ({ sessionId = sessionStore.getSessionId(), element, x = 0, y = 0, duration = 0 }) => {
-    return performActions({
-      sessionId, actions: [{
-        id: "finger1",
-        type: "pointer",
-        parameters: {
-          pointerType: "touch"
-        },
-        actions: [
-          { type: "pointerMove", duration: 0, origin: { element: element.ELEMENT }, x, y },
-          { type: "pointerDown", button: 0 },
-          { type: "pause", duration },
-          { type: "pointerUp", button: 0 }
-        ]
-      }]
-    });
-  };
-
-  // ({ sessionId: String?, element: AppiumElement, x: Number?, y: Number?, duration: Number? }) => Promise.
+  // ({ sessionId: String?, element: AppiumElement, x: Number, y: Number, duration: Number? }) => Promise.
   const longPressElement = ({ sessionId = sessionStore.getSessionId(), element, x, y, duration = 750 }) => {
-    return performActions({
-      sessionId, actions: [{
-        id: "finger1",
-        type: "pointer",
-        parameters: {
-          pointerType: "touch"
-        },
-        actions: [
-          { type: "pointerMove", duration: 0, origin: { element: element.ELEMENT }, x, y },
-          { type: "pointerDown", button: 0 },
-          { type: "pause", duration },
-          { type: "pointerUp", button: 0 }
-        ]
-      }]
+    return platform.select({
+      native: () => {
+        return performActions({
+          sessionId, actions: [ {
+            id: "finger1",
+            type: "pointer",
+            parameters: {
+              pointerType: "touch"
+            },
+            actions: [
+              { type: "pointerMove", duration: 0, origin: { element: element.ELEMENT }, x, y },
+              { type: "pointerDown", button: 0 },
+              { type: "pause", duration },
+              { type: "pointerUp", button: 0 }
+            ]
+          } ]
+        });
+      },
+      web: () => {
+        return Promise.reject(new NotSupportedError("Long press is not supported in a Web context."));
+      }
     });
   };
 
   // ({ sessionId: String?, element: AppiumElement, x: Number, y: Number, distance: Number, direction: Number, duration: Number }) => Promise.
   const swipeElement = ({ sessionId = sessionStore.getSessionId(), element, x, y, distance, direction, duration }) => {
-    const relativePoint = getRelativePoint({ direction, distance });
+    return platform.select({
+      native: () => {
+        const relativePoint = getRelativePoint({ direction, distance });
 
-    return performActions({
-      sessionId, actions: [{
-        id: "finger1",
-        type: "pointer",
-        parameters: {
-          pointerType: "touch"
-        },
-        actions: [
-          { type: "pointerMove", duration: 0, origin: { element: element.ELEMENT }, x, y },
-          { type: "pointerDown", button: 0 },
-          { type: "pause", duration: 250 },
-          { type: "pointerMove", duration, origin: "pointer", x: relativePoint.x, y: relativePoint.y },
-          { type: "pointerUp", button: 0 }
-        ]
-      }]
+        return performActions({
+          sessionId, actions: [{
+            id: "finger1",
+            type: "pointer",
+            parameters: {
+              pointerType: "touch"
+            },
+            actions: [
+              { type: "pointerMove", duration: 0, origin: { element: element.ELEMENT }, x, y },
+              { type: "pointerDown", button: 0 },
+              { type: "pause", duration: 250 },
+              { type: "pointerMove", duration, origin: "pointer", x: relativePoint.x, y: relativePoint.y },
+              { type: "pointerUp", button: 0 }
+            ]
+          }]
+        });
+      },
+      web: () => {
+        return Promise.reject(new NotSupportedError("Swipe gestures are not supported in a Web context."));
+      }
     });
   };
 
@@ -544,7 +700,11 @@ function createAppiumService(sessionStore) {
   const tapElementReturnKey = ({ sessionId = sessionStore.getSessionId(), element }) => {
     return platform.select({
       ios: () => sendElementKeys({ sessionId, element, keys: ["\n"] }),
-      android: () => sendKeyCode({ sessionId, keycode: 66 })
+      android: () => sendKeyCode({ sessionId, keycode: 66 }),
+      web: () => {
+        // TODO. Doesn't seem to do anything.
+        return Promise.reject(new NotSupportedError());
+      }
     });
   };
 
@@ -552,7 +712,8 @@ function createAppiumService(sessionStore) {
   const tapElementBackspaceKey = ({ sessionId = sessionStore.getSessionId(), element }) => {
     return platform.select({
       ios: () => sendElementKeys({ sessionId, element, keys: ["\b"] }),
-      android: () => sendKeyCode({ sessionId, keycode: 67 })
+      android: () => sendKeyCode({ sessionId, keycode: 67 }),
+      web: () => sendElementKeys({ sessionId, element, keys: ["\b"] }),
     });
   };
 
@@ -564,6 +725,15 @@ function createAppiumService(sessionStore) {
     });
   };
 
+  // ({ sessionId: String?, script: String, args?: Array<String> }) => Promise.
+  const execute = ({ sessionId = sessionStore.getSessionId(), script, args = [] }) => {
+    return request({
+      method: "POST",
+      path: `/session/${sessionId}/execute`,
+      payload: { script, args }
+    });
+  };
+
   return {
     getStatus,
     createSession,
@@ -572,6 +742,9 @@ function createAppiumService(sessionStore) {
     closeApp,
     restartApp,
     resetApp,
+    getContext,
+    getContexts,
+    setContext,
     getViewport,
     getOrientation,
     setOrientation,
@@ -604,7 +777,8 @@ function createAppiumService(sessionStore) {
     clearElementText,
     tapElementReturnKey,
     tapElementBackspaceKey,
-    takeElementScreenshot
+    takeElementScreenshot,
+    execute
   };
 }
 
