@@ -108,13 +108,6 @@ TODO: Description here.
 
 ### Element
 
-:warning: [```.isSelected() => Promise<Boolean>```](./element/isSelected.md)
-
-<img src="https://img.shields.io/badge/Platform-Android-blue.svg" />
-
-Note: Not supported on iOS yet. See https://github.com/appium/appium/issues/13441
-TODO: Description here.
-
 :warning: [```.getAttribute(attribute: String) => Promise<Any>```](./element/getAttribute.md)
 
 <img src="https://img.shields.io/badge/Platform-Both-blue.svg" />

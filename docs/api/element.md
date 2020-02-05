@@ -91,6 +91,12 @@ Retrieves visibility status of element.
 
 Retrieves disabled status of element.
 
+[```.isSelected() => Promise<Boolean>```](./element/isSelected.md)
+
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+
+Retrieves selected status of element.
+
 [```.getLocation(options?: Object) => Promise<Object>```](./element/getLocation.md)
 
 <img src="https://img.shields.io/badge/Platform-All-blue.svg" />

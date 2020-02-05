@@ -66,6 +66,12 @@ Asserts the element exists.
 
 Asserts the element is visible.
 
+[```.toBeSelected() => Promise```](./expect/toBeSelected.md)
+
+<img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+
+Asserts the element is selected.
+
 [```.toEqual(value: Any) => Promise```](./expect/toEqual.md)
 
 <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
