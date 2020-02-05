@@ -20,12 +20,13 @@ class Device {
     return sessionStore.getCapabilities("deviceName");
   }
 
-  get platformName() {
-    return sessionStore.getCapabilities("platformName");
-  }
+  get platform() {
+    const capabilities = sessionStore.getCapabilities();
 
-  get platformVersion() {
-    return sessionStore.getCapabilities("platformVersion");
+    return {
+      name: capabilities.platformName,
+      version: capabilities.platformVersion
+    };
   }
 
   restartApp() {

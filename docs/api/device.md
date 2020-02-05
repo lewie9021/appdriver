@@ -55,23 +55,17 @@ The `device` object provides a way of performing interactions within the applica
 
 ### Device API
 
-[```.platformName: String```](./device/platformName.md)
-
-<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
-
-Returns the platform name of the current session.
-
-[```.platformVersion: String```](./device/platformVersion.md)
-
-<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
-
-Returns the platform version of the current session.
-
 [```.name: String```](./device/name.md)
 
 <img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
 Returns the device name of the current session.
+
+[```.platform: Object```](./device/platform.md)
+
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+
+Returns the platform name and version of the current session.
 
 [```.wait(duration: Number) => Promise```](./device/wait.md)
 
