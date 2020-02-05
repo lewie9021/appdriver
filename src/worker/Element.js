@@ -362,6 +362,14 @@ class Element {
       });
   }
 
+  isSelected() {
+    const currentValue = getCurrentValue(this.value);
+
+    return currentValue
+      .then((value) => appiumService.getElementSelectedAttribute({ element: value.ref }))
+      .catch(handleActionError("Failed to retrieve selected status of element."));
+  }
+
   isDisabled() {
     const currentValue = getCurrentValue(this.value);
 
