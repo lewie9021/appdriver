@@ -1,11 +1,18 @@
 # Change Log
 
+## [Unreleased]
+
+### Added
+
+- Support for `.getContext`, `.getContexts`, `.switchContext`, `.switchToWebContext` and `switchToNativeContext` on Device.
+- Support for `by.xPath` and `by.css` Matchers.
+
 ## [v1.0.0-alpha.16] - 2020-01-02
 
 ### Changed
 
-- Replaced `.getOrientation` on Device with `isPortrait`.
-- Replaced `.setOrientation` on Device with `setPortrait` and `setLandscape`.
+- Replaced `.getOrientation` on Device with `.isPortrait`.
+- Replaced `.setOrientation` on Device with `.setPortrait` and `.setLandscape`.
 
 ## [v1.0.0-alpha.15] - 2019-12-23
 
