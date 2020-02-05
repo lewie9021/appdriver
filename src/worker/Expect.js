@@ -95,6 +95,19 @@ class Expect {
     });
   }
 
+  async toBeSelected() {
+    const elementIsSelected = await this.value.isSelected();
+
+    return this._assert({
+      pass: elementIsSelected === true,
+      message: (inverted) => (
+        inverted
+          ? `Expected element not to be selected.`
+          : `Expected element to be selected.`
+      )
+    });
+  }
+
   async toExist() {
     const elementExists = await this.value.exists();
 
