@@ -1,11 +1,13 @@
 # Change Log
 
-## [Unreleased]
+## [v1.0.0-alpha.17] - 2020-02-05
 
 ### Added
 
 - Support for `.getContext`, `.getContexts`, `.switchContext`, `.switchToWebContext` and `switchToNativeContext` on Device.
 - Support for `by.xPath` and `by.css` Matchers.
+- Support for `.isSelected` on Element.
+- Support for `.toBeSelected` on Expect.
 
 ## [v1.0.0-alpha.16] - 2020-01-02
 
