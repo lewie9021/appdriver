@@ -1,7 +1,8 @@
 const { sessionStore } = require("../stores/sessionStore");
 const { AppiumError } = require("../errors");
 const { NotImplementedError, NotSupportedError } = require("../errors");
-const { platform, isInstanceOf, isString, getRelativePoint, toBoolean, toNumber } = require("../../utils");
+const gestures = require("../gestures");
+const { platform, isInstanceOf, isString, toBoolean, toNumber } = require("../../utils");
 const { transformBounds } = require("../attributeTransforms");
 const { request } = require("./request");
 
@@ -653,24 +654,20 @@ function createAppiumService(sessionStore) {
   // ({ sessionId: String?, element: AppiumElement, x: Number, y: Number, distance: Number, direction: Number, duration: Number }) => Promise.
   const swipeElement = ({ sessionId = sessionStore.getSessionId(), element, x, y, distance, direction, duration }) => {
     return platform.select({
-      native: () => {
-        const relativePoint = getRelativePoint({ direction, distance });
+      native: async () => {
+        const location = await getElementLocation({ sessionId, element, relative: true });
+        const size = await getElementSize({ sessionId, element });
+        const gesture = gestures.swipe({
+          x: location.x + x,
+          y: location.y + y,
+          distance,
+          direction,
+          duration
+        });
 
         return performActions({
-          sessionId, actions: [{
-            id: "finger1",
-            type: "pointer",
-            parameters: {
-              pointerType: "touch"
-            },
-            actions: [
-              { type: "pointerMove", duration: 0, origin: { element: element.ELEMENT }, x, y },
-              { type: "pointerDown", button: 0 },
-              { type: "pause", duration: 250 },
-              { type: "pointerMove", duration, origin: "pointer", x: relativePoint.x, y: relativePoint.y },
-              { type: "pointerUp", button: 0 }
-            ]
-          }]
+          sessionId,
+          actions: await gesture.resolve()
         });
       },
       web: () => {

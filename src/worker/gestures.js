@@ -26,36 +26,36 @@ const tap = ({ x, y, element }) => {
 
 const longPress = ({ x, y, duration = 750, element }) => {
   return create()
-    .press({x, y, element})
+    .press({ x, y, element })
     .wait(duration)
     .release();
 };
 
 // Note: Having type: "pointerMove", origin: "pointer", and duration: <= 10 doesn't work on Android.
-const swipe = ({ x, y, direction, distance, element, duration = 50 }) => {
+const swipe = ({ x, y, direction, distance, duration = 50 }) => {
   const relativePoint = getRelativePoint({ direction, distance });
 
   return create()
-    .press({ x, y, element })
+    .press({ x, y })
     .wait(250)
     .moveTo({ x: relativePoint.x, y: relativePoint.y, relative: true, duration })
     .release();
 };
 
-const swipeLeft = ({ x, y, distance, element, duration = 50 }) => {
-  return swipe({ x, y, distance, duration, element, direction: 270 });
+const swipeLeft = ({ x, y, distance, duration = 50 }) => {
+  return swipe({ x, y, distance, duration, direction: 270 });
 };
 
-const swipeRight = ({ x, y, distance, element, duration = 50 }) => {
-  return swipe({ x, y, distance, duration, element, direction: 90 });
+const swipeRight = ({ x, y, distance, duration = 50 }) => {
+  return swipe({ x, y, distance, duration, direction: 90 });
 };
 
-const swipeUp = ({ x, y, distance, element, duration = 50 }) => {
-  return swipe({ x, y, distance, duration, element, direction: 0 });
+const swipeUp = ({ x, y, distance, duration = 50 }) => {
+  return swipe({ x, y, distance, duration, direction: 0 });
 };
 
-const swipeDown = ({ x, y, distance, element, duration = 50 }) => {
-  return swipe({ x, y, distance, duration, element, direction: 180 });
+const swipeDown = ({ x, y, distance, duration = 50 }) => {
+  return swipe({ x, y, distance, duration, direction: 180 });
 };
 
 module.exports = {

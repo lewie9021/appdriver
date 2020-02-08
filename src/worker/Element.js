@@ -465,7 +465,7 @@ class Element {
         .then((swipeDistance) => {
           return appiumService.swipeElement({
             element: value.ref,
-            x: isUndefined(x) ? swipeDistance : x,
+            x: isUndefined(x) ? (swipeDistance - 1) : x, // Note: Doesn't seem to work unless you fudge the distance by 1 -.-
             y,
             distance: swipeDistance,
             direction: 270,
