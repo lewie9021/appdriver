@@ -26,18 +26,12 @@ describe("Form Screen", () => {
 
   it("supports sliders", async () => {
     const $slider = await element(by.label("slider-input"));
-    const size = await $slider.getSize();
-    const location = await $slider.getLocation({relative: true});
 
-    await device.performGesture(
-      gestures.swipeRight({
-        x: location.x,
-        y: location.y,
-        distance: size.width / 2
-      })
-    );
+    await $slider.swipeRight({ percentage: 1 });
+    await expect($slider).toHaveValue(10, { sliderRange: [ 0, 10 ] });
 
-    await expect(element(by.label("slider-input"))).toHaveValue(5, {sliderRange: [0, 10]});
+    await $slider.swipeLeft({ percentage: 1 });
+    await expect($slider).toHaveValue(0, { sliderRange: [ 0, 10 ] });
   });
 
   it("supports switches", async () => {
