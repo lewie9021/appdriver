@@ -108,12 +108,19 @@ TODO: Description here.
 
 ### Element
 
+:warning: [```.setValue(value: Any) => Element```](./element/setValue.md)
+
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
+
+Note: Partial support.
+TODO: Description here.
+
 :warning: [```.getAttribute(attribute: String) => Promise<Any>```](./element/getAttribute.md)
 
 <img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
 
-Note: Partial support.
 TODO: Description here.
+Note: Essentially `.typeText` without the string type constraint. Useful when automating sliders.
 
 :warning: [```.swipeIntoView(options: {element: Element, swipeGesture?: Gesture, safeArea?: {top?: Number, right?: Number, bottom?: Number, left?: Number}}) => Element```](./element/swipeIntoView.md)
 
