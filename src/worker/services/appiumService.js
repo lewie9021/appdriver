@@ -656,7 +656,6 @@ function createAppiumService(sessionStore) {
     return platform.select({
       native: async () => {
         const location = await getElementLocation({ sessionId, element, relative: true });
-        const size = await getElementSize({ sessionId, element });
         const gesture = gestures.swipe({
           x: location.x + x,
           y: location.y + y,
