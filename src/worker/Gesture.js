@@ -10,10 +10,13 @@ class Gesture {
       this.actions.map(async (action) => {
         if (action.element) {
           const ref = await action.element._getRef();
+          const location = await action.element.getLocation();
 
           return {
             ...action,
-            element: ref.ELEMENT
+            element: ref,
+            x: location.x + (action.x || 0),
+            y: location.y + (action.y || 0)
           };
         }
 
@@ -45,9 +48,7 @@ class Gesture {
               duration: action.duration,
               origin: action.relative
                 ? "pointer"
-                : action.element
-                  ? { element: action.element }
-                  : "viewport",
+                : "viewport",
               x: action.x,
               y: action.y
             }]);
@@ -63,15 +64,13 @@ class Gesture {
     }];
   }
 
-  // TODO: What about options.element without x and y?
-  press(options = {}) {
-    // TODO: What if only x or y is passed. The user wouldn't know that their coordinate is ignored.
-    if (isNumber(options.x) && isNumber(options.y)) {
+  press({ x, y, relative = false, element = null } = {}) {
+    if (isNumber(x) || isNumber(y)) {
       this.moveTo({
-        x: options.x,
-        y: options.y,
-        relative: options.relative,
-        element: options.element
+        relative,
+        element,
+        x: x || 0,
+        y: y || 0
       });
     }
 
@@ -91,20 +90,14 @@ class Gesture {
     return this;
   }
 
-  moveTo(options) {
-    const relative = options.relative || false;
-    const duration = options.duration || 0;
-    const element = options.element || null;
-    const x = options.x;
-    const y = options.y;
-
+  moveTo({ x, y, relative = false, duration = 0, element = null }) {
     this.actions.push({
       type: "move",
       relative,
       duration,
       element,
-      x,
-      y
+      x: x || 0,
+      y: y || 0
     });
 
     return this;
