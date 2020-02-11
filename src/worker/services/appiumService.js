@@ -602,21 +602,16 @@ function createAppiumService(sessionStore) {
     }
 
     return platform.select({
-      native: () => {
+      native: async () => {
+        const location = await getElementLocation({ sessionId, element, relative: true });
+        const gesture = gestures.tap({
+          x: location.x + x,
+          y: location.y + y
+        });
+
         return performActions({
-          sessionId, actions: [{
-            id: "finger1",
-            type: "pointer",
-            parameters: {
-              pointerType: "touch"
-            },
-            actions: [
-              { type: "pointerMove", duration: 0, origin: element, x, y },
-              { type: "pointerDown", button: 0 },
-              { type: "pause", duration: 0 },
-              { type: "pointerUp", button: 0 }
-            ]
-          }]
+          sessionId,
+          actions: await gesture.resolve()
         });
       },
       web: () => {
@@ -625,24 +620,44 @@ function createAppiumService(sessionStore) {
     });
   };
 
+  // ({ sessionId: String?, element: AppiumElement }) => Promise.
+  const longClickElement = ({ sessionId = sessionStore.getSessionId(), element, duration = 750 }) => {
+    return performActions({
+      sessionId,
+      actions: [{
+        id: "finger1",
+        type: "pointer",
+        parameters: {
+          pointerType: "touch"
+        },
+        actions: [
+          { type: "pointerMove", duration: 0, origin: { element: element.ELEMENT }, x: 0, y: 0 },
+          { type: "pointerDown", button: 0 },
+          { type: "pause", duration },
+          { type: "pointerUp", button: 0 }
+        ]
+      }]
+    });
+  };
+
   // ({ sessionId: String?, element: AppiumElement, x: Number, y: Number, duration: Number? }) => Promise.
   const longPressElement = ({ sessionId = sessionStore.getSessionId(), element, x, y, duration = 750 }) => {
     return platform.select({
-      native: () => {
+      native: async () => {
+        if (x === 0 && y === 0) {
+          return longClickElement({ sessionId, element, duration });
+        }
+
+        const location = await getElementLocation({ sessionId, element, relative: true });
+        const gesture = gestures.longPress({
+          x: location.x + x,
+          y: location.y + y,
+          duration
+        });
+
         return performActions({
-          sessionId, actions: [ {
-            id: "finger1",
-            type: "pointer",
-            parameters: {
-              pointerType: "touch"
-            },
-            actions: [
-              { type: "pointerMove", duration: 0, origin: { element: element.ELEMENT }, x, y },
-              { type: "pointerDown", button: 0 },
-              { type: "pause", duration },
-              { type: "pointerUp", button: 0 }
-            ]
-          } ]
+          sessionId,
+          actions: await gesture.resolve()
         });
       },
       web: () => {
