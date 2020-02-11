@@ -1,22 +1,22 @@
 const { last } = require("../utils");
 
 class ElementNotFoundError extends Error {
-  constructor(message, matcher) {
-    super(message);
+  constructor(matcher) {
+    super(`Failed to find element by ${matcher.type} matching "${matcher.value}"`);
 
     Error.captureStackTrace(this, ElementNotFoundError);
     this.name = this.constructor.name;
-    this.matcher = matcher;
+    this.locator = matcher.getLocator();
   }
 }
 
 class ElementsNotFoundError extends Error {
-  constructor(message, matcher) {
-    super(message);
+  constructor(matcher) {
+    super(`Failed to find elements by ${matcher.type} matching "${matcher.value}"`);
 
     Error.captureStackTrace(this, ElementsNotFoundError);
     this.name = this.constructor.name;
-    this.matcher = matcher;
+    this.locator = matcher.getLocator();
   }
 }
 
