@@ -6,38 +6,38 @@ This document contains API proposals that may eventually be implemented in the f
  
 :warning: [```.isReal: Boolean```](./device/isReal.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
 TODO: Description here.
 
 :warning: [```.getSource() => Promise<String>```](./device/getSource.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-~Native-blue.svg" />
 
 TODO: Description here.
  
 :warning: [```.getGeoLocation() => Promise```](./device/getGeoLocation.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-~Native-blue.svg" />
 
 TODO: Description here.
 
 :warning: [```.setGeoLocation(options: {latitude: Number, longitude: Number, altitude?: Number}) => Promise```](./device/setGeoLocation.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-~Native-blue.svg" />
 
 TODO: Description here.
 
 :warning: [```.getClipboard(options? {contentType?: String}) => Promise<String>```](./device/getClipboard.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
 
 Note: Partial support on Android.
 TODO: Description here.
 
 :warning: [```.setClipboard(value: String, options?: {contentType?: String, label?: String}) => Promise```](./device/setClipboard.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
 
 Note: Partial support on Android.
 TODO: Description here.
@@ -83,26 +83,26 @@ TODO: Description here.
 
 :warning: [```.getSettings() => Promise<Object>```](./device/getSettings.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-~Native-blue.svg" />
 
 TODO: Description here.
 
 :warning: [```.setSettings(settings: Object) => Promise```](./device/setSettings.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-~Native-blue.svg" />
 
 Note: Partial support.
 TODO: Description here.
 
 :warning: [```.readFile(filePath: String) => Promise<String>```](./device/readFile.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-~Native-blue.svg" />
 
 TODO: Description here.
 
 :warning: [```.writeFile(filePath: String, data: String) => Promise```](./device/writeFile.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-~Native-blue.svg" />
 
 TODO: Description here.
 
@@ -117,14 +117,14 @@ TODO: Description here.
 
 :warning: [```.getAttribute(attribute: String) => Promise<Any>```](./element/getAttribute.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
 
 TODO: Description here.
 Note: Essentially `.typeText` without the string type constraint. Useful when automating sliders.
 
 :warning: [```.swipeIntoView(options: {element: Element, swipeGesture?: Gesture, safeArea?: {top?: Number, right?: Number, bottom?: Number, left?: Number}}) => Element```](./element/swipeIntoView.md)
 
-<img src="https://img.shields.io/badge/Platform-Both-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
 
 To be used on scrollable elements, ensuring `element` is fully visible so that interactions are successful. Defaults `swipeGesture` to `gestures.swipeUp`.
 
@@ -148,17 +148,25 @@ TODO: Description here.
 
 :warning: [```.accept() => Promise```](./alert/accept.md)
 
+<img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
+
 TODO: Description here.
 
 :warning: [```.dismiss() => Promise```](./alert/dismiss.md)
+
+<img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
 
 TODO: Description here.
 
 :warning: [```.getText() => Promise<String>```](./alert/getText.md)
 
+<img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
+
 TODO: Description here.
 
 :warning: [```.typeText(text: String) => Promise```](./alert/typeText.md)
+
+<img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
 
 TODO: Description here.
 
