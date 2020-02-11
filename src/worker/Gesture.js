@@ -10,7 +10,7 @@ class Gesture {
       this.actions.map(async (action) => {
         if (action.element) {
           const ref = await action.element._getRef();
-          const location = await action.element.getLocation();
+          const location = await action.element.getLocation({ relative: true });
 
           return {
             ...action,
