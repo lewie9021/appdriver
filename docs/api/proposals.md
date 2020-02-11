@@ -144,6 +144,24 @@ TODO: Description here.
 
 TODO: Description here.
 
+### Alert
+
+:warning: [```.accept() => Promise```](./alert/accept.md)
+
+TODO: Description here.
+
+:warning: [```.dismiss() => Promise```](./alert/dismiss.md)
+
+TODO: Description here.
+
+:warning: [```.getText() => Promise<String>```](./alert/getText.md)
+
+TODO: Description here.
+
+:warning: [```.typeText(text: String) => Promise```](./alert/typeText.md)
+
+TODO: Description here.
+
 ### Configuration
 
 :warning: `appium.username: String?`
