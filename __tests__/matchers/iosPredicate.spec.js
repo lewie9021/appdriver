@@ -1,12 +1,22 @@
 jest.mock("../../src/worker/stores/sessionStore");
 
 const { setPlatform } = require("../helpers");
-const { NotImplementedError } = require("../../src/worker/errors");
+const { NotSupportedError } = require("../../src/worker/errors");
+const Matcher = require("../../src/worker/Matcher");
 const { by } = require("../../");
 
 afterEach(() => {
   jest.resetAllMocks();
   jest.restoreAllMocks();
+});
+
+it("returns a Matcher instance", () => {
+  const predicate = "type = 'XCUIElementTypeTextField'";
+  const matcher = by.iosPredicate(predicate);
+
+  expect(matcher).toBeInstanceOf(Matcher);
+  expect(matcher.type).toEqual("ios predicate");
+  expect(matcher.value).toEqual(predicate);
 });
 
 describe("Android", () => {
@@ -16,10 +26,10 @@ describe("Android", () => {
     expect.assertions(2);
 
     try {
-      by.iosPredicate("type = 'android.widget.EditText'");
+      by.iosPredicate("type = 'android.widget.EditText'").resolve();
     } catch (err) {
-      expect(err).toBeInstanceOf(NotImplementedError);
-      expect(err).toHaveProperty("message", "Functionality not implemented.");
+      expect(err).toBeInstanceOf(NotSupportedError);
+      expect(err).toHaveProperty("message", "Functionality not supported.");
     }
   });
 });
@@ -30,7 +40,7 @@ describe("iOS", () => {
   it("supports simple queries", () => {
     const predicate = "type = 'XCUIElementTypeTextField'";
 
-    expect(by.iosPredicate(predicate)).toEqual({
+    expect(by.iosPredicate(predicate).resolve()).toEqual({
       using: "-ios predicate string",
       value: predicate
     });
@@ -44,10 +54,10 @@ describe("Web", () => {
     expect.assertions(2);
 
     try {
-      by.iosPredicate("type = 'div'");
+      by.iosPredicate("type = 'div'").resolve();
     } catch (err) {
-      expect(err).toBeInstanceOf(NotImplementedError);
-      expect(err).toHaveProperty("message", "Functionality not implemented.");
+      expect(err).toBeInstanceOf(NotSupportedError);
+      expect(err).toHaveProperty("message", "Functionality not supported.");
     }
   });
 });

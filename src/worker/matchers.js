@@ -1,5 +1,5 @@
 const { platform, isPlatform, isRegex } = require("../utils");
-const { NotImplementedError } = require("./errors");
+const { NotImplementedError, NotSupportedError } = require("./errors");
 const Matcher = require("./Matcher");
 const getNativeRegex = require("./helpers/getNativeRegex");
 
@@ -129,7 +129,7 @@ const createIosPredicateMatcher = (predicate) => {
         };
       }
 
-      throw new NotImplementedError();
+      throw new NotSupportedError();
     }
   });
 };
@@ -146,7 +146,7 @@ const createUiAutomatorMatcher = (selector) => {
         };
       }
 
-      throw new NotImplementedError();
+      throw new NotSupportedError();
     }
   });
 };
