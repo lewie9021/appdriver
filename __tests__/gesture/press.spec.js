@@ -113,6 +113,6 @@ it("throws if the element is not found", async () => {
     await gesture.resolve();
   } catch (err) {
     expect(err).toBeInstanceOf(ElementNotFoundError);
-    expect(err).toHaveProperty("message", "Failed to find element.");
+    expect(err).toHaveProperty("message", `Failed to find element by label matching "button".`);
   }
 });

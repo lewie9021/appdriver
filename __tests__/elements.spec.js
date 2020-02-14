@@ -34,7 +34,7 @@ it("throws an ElementNotFoundError for Appium request errors", async () => {
     await elements(by.label("list-item"));
   } catch (err) {
     expect(err).toBeInstanceOf(ElementsNotFoundError);
-    expect(err).toHaveProperty("message", "Failed to find elements.");
+    expect(err).toHaveProperty("message", `Failed to find elements by label matching "list-item".`);
   }
 });
 

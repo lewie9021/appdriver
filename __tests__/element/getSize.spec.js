@@ -38,7 +38,7 @@ it("throws an ElementNotFoundError if the element isn't found", async () => {
     await element(by.label("box")).getSize();
   } catch (err) {
     expect(err).toBeInstanceOf(ElementNotFoundError);
-    expect(err).toHaveProperty("message", "Failed to find element.");
+    expect(err).toHaveProperty("message", `Failed to find element by label matching "box".`);
   }
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);

@@ -154,7 +154,7 @@ it("throws an ElementNotFoundError if the element isn't found", async () => {
     await element(by.label("list-item")).swipeUp({ distance: 100 });
   } catch (err) {
     expect(err).toBeInstanceOf(ElementNotFoundError);
-    expect(err).toHaveProperty("message", "Failed to find element.");
+    expect(err).toHaveProperty("message", `Failed to find element by label matching "list-item".`);
   }
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);

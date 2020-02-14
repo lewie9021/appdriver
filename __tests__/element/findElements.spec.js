@@ -40,7 +40,7 @@ it("throws an ElementNotFoundError if the element isn't found", async () => {
     await element(by.label("screen")).findElements(by.label("button"));
   } catch (err) {
     expect(err).toBeInstanceOf(ElementNotFoundError);
-    expect(err).toHaveProperty("message", "Failed to find element.");
+    expect(err).toHaveProperty("message", `Failed to find element by label matching "screen".`);
   }
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
