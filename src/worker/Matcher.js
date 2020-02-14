@@ -4,14 +4,6 @@ class Matcher {
     this.value = value;
     this.resolve = resolve;
   }
-
-  getLocator() {
-    try {
-      return this.resolve();
-    } catch(e) {
-      return null;
-    }
-  }
 }
 
 module.exports = Matcher;
