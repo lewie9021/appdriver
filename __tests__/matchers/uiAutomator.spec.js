@@ -1,12 +1,22 @@
 jest.mock("../../src/worker/stores/sessionStore");
 
 const { setPlatform } = require("../helpers");
-const { NotImplementedError } = require("../../src/worker/errors");
+const { NotSupportedError } = require("../../src/worker/errors");
+const Matcher = require("../../src/worker/Matcher");
 const { by } = require("../../");
 
 afterEach(() => {
   jest.resetAllMocks();
   jest.restoreAllMocks();
+});
+
+it("returns a Matcher instance", () => {
+  const selector = "new UiSelector().className(\"android.widget.EditText\")";
+  const matcher = by.uiAutomator(selector);
+
+  expect(matcher).toBeInstanceOf(Matcher);
+  expect(matcher.type).toEqual("ui automator");
+  expect(matcher.value).toEqual(selector);
 });
 
 describe("Android", () => {
@@ -15,7 +25,7 @@ describe("Android", () => {
   it("supports simple queries", () => {
     const selector = `new UiSelector().className("android.widget.EditText")`;
 
-    expect(by.uiAutomator(selector)).toEqual({
+    expect(by.uiAutomator(selector).resolve()).toEqual({
       using: "-android uiautomator",
       value: selector
     });
@@ -29,10 +39,10 @@ describe("iOS", () => {
     expect.assertions(2);
 
     try {
-      by.uiAutomator(`new UiSelector().className("XCUIElementTypeTextField")`);
+      by.uiAutomator(`new UiSelector().className("XCUIElementTypeTextField")`).resolve();
     } catch (err) {
-      expect(err).toBeInstanceOf(NotImplementedError);
-      expect(err).toHaveProperty("message", "Functionality not implemented.");
+      expect(err).toBeInstanceOf(NotSupportedError);
+      expect(err).toHaveProperty("message", "Functionality not supported.");
     }
   });
 });
@@ -44,10 +54,10 @@ describe("Web", () => {
     expect.assertions(2);
 
     try {
-      by.uiAutomator(`new UiSelector().className("input")`);
+      by.uiAutomator(`new UiSelector().className("input")`).resolve();
     } catch (err) {
-      expect(err).toBeInstanceOf(NotImplementedError);
-      expect(err).toHaveProperty("message", "Functionality not implemented.");
+      expect(err).toBeInstanceOf(NotSupportedError);
+      expect(err).toHaveProperty("message", "Functionality not supported.");
     }
   });
 });

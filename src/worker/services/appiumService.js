@@ -2,6 +2,7 @@ const { sessionStore } = require("../stores/sessionStore");
 const { AppiumError } = require("../errors");
 const { NotImplementedError, NotSupportedError } = require("../errors");
 const gestures = require("../gestures");
+const matchers = require("../matchers");
 const { platform, isInstanceOf, isString, toBoolean, toNumber } = require("../../utils");
 const { transformBounds } = require("../attributeTransforms");
 const { request } = require("./request");
@@ -300,37 +301,37 @@ function createAppiumService(sessionStore) {
     });
   };
 
-  // ({ sessionId: String?, matcher: AppiumMatcher, element?: AppiumElement }) => Promise<AppiumElement>.
+  // ({ sessionId: String?, matcher: Matcher, element?: AppiumElement }) => Promise<AppiumElement>.
   const findElement = ({ sessionId = sessionStore.getSessionId(), matcher, element }) => {
     if (element) {
       return request({
         method: "POST",
         path: `/session/${sessionId}/element/${element.ELEMENT}/element`,
-        payload: matcher
+        payload: matcher.resolve()
       });
     }
 
     return request({
       method: "POST",
       path: `/session/${sessionId}/element`,
-      payload: matcher
+      payload: matcher.resolve()
     });
   };
 
-  // ({ sessionId: String?, matcher: AppiumMatcher, element?: AppiumElement }) => Promise<Array<AppiumElement>>.
+  // ({ sessionId: String?, matcher: Matcher, element?: AppiumElement }) => Promise<Array<AppiumElement>>.
   const findElements = ({ sessionId = sessionStore.getSessionId(), matcher, element }) => {
     if (element) {
       return request({
         method: "POST",
         path: `/session/${sessionId}/element/${element.ELEMENT}/elements`,
-        payload: matcher
+        payload: matcher.resolve()
       });
     }
 
     return request({
       method: "POST",
       path: `/session/${sessionId}/elements`,
-      payload: matcher
+      payload: matcher.resolve()
     });
   };
 
@@ -465,7 +466,7 @@ function createAppiumService(sessionStore) {
     });
   };
 
-  // ({ sessionId: String?, matcher: AppiumMatcher })
+  // ({ sessionId: String?, matcher: Matcher })
   const getElementExists = ({ sessionId = sessionStore.getSessionId(), matcher }) => {
     return findElement({ sessionId, matcher })
       .then(() => true)
@@ -503,10 +504,7 @@ function createAppiumService(sessionStore) {
                   return text;
                 }
 
-                const matcher = {
-                  using: "-ios predicate string",
-                  value: `type == "XCUIElementTypeStaticText"`
-                };
+                const matcher = matchers.iosPredicate(`type == "XCUIElementTypeStaticText"`);
 
                 return findElements({ sessionId, element, matcher })
                   .then((refs) => {
@@ -525,10 +523,7 @@ function createAppiumService(sessionStore) {
               return getElementTextAttribute({ sessionId, element });
             }
 
-            const matcher = {
-              using: "class name",
-              value: "android.widget.TextView"
-            };
+            const matcher = matchers.type("android.widget.TextView");
 
             return findElements({ sessionId, element, matcher })
               .then((refs) => {

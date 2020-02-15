@@ -18,7 +18,7 @@ module.exports = {
       .then((refs) => refs.map((ref) => new Element({ value: Promise.resolve({ ref, matcher: null }) })))
       .catch((err) => {
         if (isInstanceOf(err, AppiumError)) {
-          throw new ElementsNotFoundError("Failed to find elements.", matcher);
+          throw new ElementsNotFoundError(matcher);
         }
 
         throw err;

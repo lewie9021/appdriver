@@ -12,9 +12,7 @@ const getCurrentValue = (elementValue) => {
       if (isInstanceOf(err, ElementNotFoundError) && err.matcher) {
         return appiumService.findElement({ matcher: err.matcher })
           .then((ref) => ({ ref, matcher: err.matcher }))
-          .catch(() => {
-            throw new ElementNotFoundError("Failed to find element.", err.matcher);
-          });
+          .catch(() => { throw new ElementNotFoundError(err.matcher); });
       }
 
       throw err;
@@ -23,9 +21,7 @@ const getCurrentValue = (elementValue) => {
       if (isNull(value.ref) && value.matcher) {
         return appiumService.findElement({ matcher: value.matcher })
           .then((ref) => ({ ref, matcher: value.matcher }))
-          .catch(() => {
-            throw new ElementNotFoundError("Failed to find element.", value.matcher);
-          });
+          .catch(() => { throw new ElementNotFoundError(value.matcher); });
       }
 
       return value;

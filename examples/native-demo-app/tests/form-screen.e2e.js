@@ -1,10 +1,9 @@
-const { by, element, device, gestures, expect } = require("../../../index");
+const { by, element, device, expect } = require("../../../index");
 
 describe("Form Screen", () => {
   before(async () => {
     await element(by.label("menu-screen")).waitToBeVisible();
     await element(by.label("list-item-form-screen")).tap();
-    await element(by.label("menu-screen")).waitToBeInvisible();
     await element(by.label("form-screen")).waitToBeVisible();
   });
 

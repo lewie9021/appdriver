@@ -29,7 +29,7 @@ it("makes a POST request to the 'Find Element' Appium endpoint", async () => {
   expect(requestHelpers.request).toHaveBeenCalledWith({
     method: "POST",
     path: `/session/${sessionId}/element`,
-    payload: matcher
+    payload: matcher.resolve()
   });
 });
 
@@ -48,7 +48,7 @@ it("makes a POST request to the 'Find Element From Element' Appium endpoint when
   expect(requestHelpers.request).toHaveBeenCalledWith({
     method: "POST",
     path: `/session/${sessionId}/element/${ref.ELEMENT}/element`,
-    payload: matcher
+    payload: matcher.resolve()
   });
 });
 
@@ -66,6 +66,6 @@ it("optionally accepts a sessionId", async () => {
   expect(requestHelpers.request).toHaveBeenCalledWith({
     method: "POST",
     path: `/session/${sessionId}/element`,
-    payload: matcher
+    payload: matcher.resolve()
   });
 });
