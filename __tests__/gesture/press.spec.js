@@ -77,13 +77,17 @@ it("supports passing relative x and y coordinates", () => {
 
 it("supports passing an element, making x and y coordinates relative to it", () => {
   const ref = createFindElementMock();
+  const location = { x: 200, y: 150 };
+  const x = 100;
+  const y = 300;
 
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementLocation").mockResolvedValue(location);
 
   const gesture = new Gesture();
   const $element = element(by.label("button"));
 
-  gesture.press({ element: $element, x: 100, y: 100 });
+  gesture.press({ element: $element, x, y });
 
   return expect(gesture.resolve()).resolves.toEqual([{
     id: "finger1",
@@ -92,7 +96,7 @@ it("supports passing an element, making x and y coordinates relative to it", () 
       pointerType: "touch"
     },
     actions: [
-      { type: "pointerMove", duration: 0, origin: { element: ref.ELEMENT }, x: 100, y: 100 },
+      { type: "pointerMove", duration: 0, origin: "viewport", x: location.x + x, y: location.y + y },
       { type: "pointerDown", button: 0 }
     ]
   }]);

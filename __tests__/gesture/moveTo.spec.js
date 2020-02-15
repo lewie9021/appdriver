@@ -75,13 +75,17 @@ it("supports defining a duration", () => {
 
 it("supports moving to a coordinate relative to the given element", () => {
   const ref = createFindElementMock();
+  const location = { x: 100, y: 400 };
+  const x = 50;
+  const y = 32;
 
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "getElementLocation").mockResolvedValue(location);
 
   const gesture = new Gesture();
   const $element = element(by.label("button"));
 
-  gesture.moveTo({ x: 100, y: 32, duration: 75, element: $element });
+  gesture.moveTo({ x, y, duration: 75, element: $element });
 
   return expect(gesture.resolve()).resolves.toEqual([{
     id: "finger1",
@@ -90,7 +94,7 @@ it("supports moving to a coordinate relative to the given element", () => {
       pointerType: "touch"
     },
     actions: [
-      { type: "pointerMove", duration: 75, origin: { element: ref.ELEMENT }, x: 100, y: 32 }
+      { type: "pointerMove", duration: 75, origin: "viewport", x: location.x + x, y: location.y + y }
     ]
   }]);
 });
