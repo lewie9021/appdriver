@@ -1,5 +1,17 @@
 # Change Log
 
+## [v1.0.0-alpha.18] - 2020-02-15
+
+### Changed
+
+- Replaced `.platformName` and `platformVersion` on Device with `.platform`.
+- Improved error messages when finding elements fail.
+- Modified matchers to defer transformation until required to avoid throwing on creation.
+
+### Fixed
+
+- Gestures now correctly calculate relative `x` and `y` params from the top left of the element instead of the center point. 
+
 ## [v1.0.0-alpha.17] - 2020-02-05
 
 ### Added
