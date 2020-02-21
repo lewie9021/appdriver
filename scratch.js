@@ -1,6 +1,6 @@
 const gestures = {
-  series: () => gestures,
-  parallel: () => gestures,
+  series: () => {},
+  parallel: () => {},
   press: () => {},
   wait: (duration) => {},
   release: () => {},
@@ -26,20 +26,21 @@ const pinch = gestures.parallel([
   gestures.swipeLeft()
 ]);
 
-const exampleGesture = gestures
-  .series([
+const exampleGesture = gestures.series([
+  gestures.series([
     gestures.press(),
     gestures.wait(200),
     gestures.release()
-  ])
-  .series([
+  ]),
+  gestures.series([
     gestures.tap(),
     gestures.longPress()
-  ])
-  .parallel([
+  ]),
+  gestures.parallel([
     gestures.swipeLeft(),
     gestures.swipeRight()
-  ]);
+  ])
+]);
 
 const exampleOutput = [
   {
