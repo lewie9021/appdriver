@@ -25,23 +25,47 @@ Rotate Gesture:
 ### Common Gestures
 
 - **Tap**: Briefly touch surface with fingertip.
+- **Long Press**: Touch surface for extended period of time.
 - **Double Tap**: Rapid touch surface twice with fingertip.
 - **Swipe**: Move fingertip over surface without losing contact.
 - **Flick**: Quickly brush surface with fingertip.
 - **Pinch**: Touch surface with two fingers and bring them closer together.
 - **Spread**: Touch surface with two fingers and move them apart.
-- **Press**: Touch surface for extended period of time.
 - **Rotate**: Touch surface with two fingers and move them in a clockwise or counterclockwise direction.
 
 ### Gestures API
 
-[```.create() => Gesture```](./gestures/create.md)
+[```.series(Array<Gesture>) => Gesture```](./gestures/series.md)
 
-<img src="https://img.shields.io/badge/Platform-Native-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platform-Native-blue.svg" /> <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
 TODO: Description here.
 
 [```.parallel(Array<Gesture>) => Gesture```](./gestures/parallel.md)
+
+<img src="https://img.shields.io/badge/Platform-Native-blue.svg" /> <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+
+TODO: Description here.
+
+[```.moveTo(options?: {x?: Number, y?: Number, duration?: Number, relative?: Boolean, element?: Element}) => Gesture```](./gestures/moveTo.md)
+
+<img src="https://img.shields.io/badge/Platform-Native-blue.svg" /> <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+
+TODO: Description here.
+
+[```.press(options?: {x?: Number, y?: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/press.md)
+
+<img src="https://img.shields.io/badge/Platform-Native-blue.svg" /> <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+
+TODO: Description here.
+
+[```.release() => Gesture```](./gestures/release.md)
+
+<img src="https://img.shields.io/badge/Platform-Native-blue.svg" /> <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+
+TODO: Description here.
+
+[```.wait(duration: Number) => Gesture```](./gestures/wait.md)
 
 <img src="https://img.shields.io/badge/Platform-Native-blue.svg" /> <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
