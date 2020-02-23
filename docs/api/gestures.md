@@ -8,7 +8,7 @@ Rotate Gesture:
 
 ```javascript
 (async () => {
-  const viewport = await device.getViewportSize();
+  const viewport = await device.getViewport();
   const rotate90 = gestures.rotate({
     x: viewport.width / 2,
     y: viewport.height / 2,
@@ -69,13 +69,13 @@ TODO: Description here.
 
 TODO: Description here.
 
-[```.tap(options?: {x?: Number, y?: Number, duration?: Number}) => Gesture```](./gestures/tap.md)
+[```.tap(options?: {x?: Number, y?: Number}) => Gesture```](./gestures/tap.md)
 
 <img src="https://img.shields.io/badge/Platform-Native-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
 TODO: Description here.
 
-[```.doubleTap(options?: {x?: Number, y?: Number, duration?: Number}) => Gesture```](./gestures/doubleTap.md)
+[```.doubleTap(options?: {x?: Number, y?: Number}) => Gesture```](./gestures/doubleTap.md)
 
 <img src="https://img.shields.io/badge/Platform-Native-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 

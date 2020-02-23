@@ -31,6 +31,12 @@ The `element` instance provides a way to interact with elements on the screen. Y
 
 Performs tap gesture on element.
 
+[```.doubleTap(options?: Object) => Element```](./element/doubleTap.md)
+
+<img src="https://img.shields.io/badge/Platform-Native-blue.svg" />
+
+Performs double tap gesture on element.
+
 [```.longPress(options?: Object) => Element```](./element/longPress.md)
 
 <img src="https://img.shields.io/badge/Platform-Native-blue.svg" />

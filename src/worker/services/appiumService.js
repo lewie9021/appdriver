@@ -616,6 +616,56 @@ function createAppiumService(sessionStore) {
   };
 
   // ({ sessionId: String?, element: AppiumElement }) => Promise.
+  const doubleClickElement = ({ sessionId = sessionStore.getSessionId(), element }) => {
+    return performActions({
+      sessionId,
+      actions: [{
+        id: "finger1",
+        type: "pointer",
+        parameters: {
+          pointerType: "touch"
+        },
+        actions: [
+          { type: "pointerMove", duration: 0, origin: { element: element.ELEMENT }, x: 0, y: 0 },
+          { type: "pointerDown", button: 0 },
+          { type: "pause", duration: 100 },
+          { type: "pointerUp", button: 0 },
+          { type: "pause", duration: 100 },
+          { type: "pointerMove", duration: 0, origin: { element: element.ELEMENT }, x: 0, y: 0 },
+          { type: "pointerDown", button: 0 },
+          { type: "pause", duration: 100 },
+          { type: "pointerUp", button: 0 }
+        ]
+      }]
+    });
+  };
+
+  // ({ sessionId: String?, element: AppiumElement, x: Number, y: Number }) => Promise.
+  const doubleTapElement = ({ sessionId = sessionStore.getSessionId(), element, x, y }) => {
+    return platform.select({
+      native: async () => {
+        if (x === 0 && y === 0) {
+          return doubleClickElement({ sessionId, element });
+        }
+
+        const location = await getElementLocation({ sessionId, element, relative: true });
+        const gesture = gestures.doubleTap({
+          x: location.x + x,
+          y: location.y + y
+        });
+
+        return performActions({
+          sessionId,
+          actions: await gesture.resolve()
+        });
+      },
+      web: () => {
+        return Promise.reject(new NotSupportedError("Double tap is not supported in a Web context."));
+      }
+    });
+  };
+
+  // ({ sessionId: String?, element: AppiumElement }) => Promise.
   const longClickElement = ({ sessionId = sessionStore.getSessionId(), element, duration = 750 }) => {
     return performActions({
       sessionId,
@@ -777,6 +827,7 @@ function createAppiumService(sessionStore) {
     getElementValue,
     getElementLocation,
     tapElement,
+    doubleTapElement,
     longPressElement,
     swipeElement,
     sendElementKeys,

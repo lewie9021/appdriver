@@ -99,6 +99,15 @@ const tap = ({ x, y }) => {
 };
 
 // (options: Object) => Gesture
+const doubleTap = ({ x, y }) => {
+  return series([
+    tap({ x, y }),
+    wait(100),
+    tap({ x, y }),
+  ]);
+};
+
+// (options: Object) => Gesture
 const longPress = ({ x, y, duration = 750 }) => {
   return series([
     moveTo({ x, y }),
@@ -178,6 +187,7 @@ module.exports = {
   parallel,
 
   tap,
+  doubleTap,
   longPress,
 
   swipe,
