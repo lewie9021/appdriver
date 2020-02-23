@@ -142,6 +142,7 @@ const swipeDown = ({ x, y, distance, duration = 50 }) => {
   return swipe({ x, y, distance, duration, direction: 180 });
 };
 
+// (options: Object) => Gesture
 const spread = ({ x, y, distance, direction = 90, duration = 200 }) => {
   return parallel([
     swipe({ x, y, distance, direction: (direction + 180) % 360, duration }),
@@ -149,6 +150,7 @@ const spread = ({ x, y, distance, direction = 90, duration = 200 }) => {
   ]);
 };
 
+// (options: Object) => Gesture
 const pinch = ({ x, y, distance, direction = 90, duration = 200 }) => {
   return parallel([
     swipe({
