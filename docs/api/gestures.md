@@ -13,7 +13,7 @@ Rotate Gesture:
     x: viewport.width / 2,
     y: viewport.height / 2,
     radius: 25,
-    degrees: [ 90, 180 ]
+    direction: [ 90, 180 ]
   });
   
   await device.performGesture(rotate90);
@@ -129,7 +129,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-[```.rotate(options: {x?: Number, y?: Number, radius: Number: degrees: [start: Number, end: Number], duration?: Number, step?: Number}) => Gesture```](./gestures/rotate.md)
+[```.rotate(options: {x?: Number, y?: Number, radius: Number: direction: [start: Number, end: Number], duration?: Number, step?: Number}) => Gesture```](./gestures/rotate.md)
 
 <img src="https://img.shields.io/badge/Platform-Native-blue.svg" /> <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
