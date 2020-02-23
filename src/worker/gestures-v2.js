@@ -1,15 +1,13 @@
 const Gesture = require("./Gesture-v2");
 
-const getRelativePoint = ({ direction, distance }) => {
+const getRelativePoint = ({ x = 0, y = 0, direction, distance }) => {
   const radians = direction * (Math.PI / 180);
-  const x = Math.round(Math.sin(radians) * distance);
-  const y = Math.round(Math.cos(radians) * distance);
+  const x2 = Math.round(Math.sin(radians) * distance);
+  const y2 = Math.round(Math.cos(radians) * distance);
 
   return {
-    x: x,
-    y: y === -0
-      ? 0
-      : y * -1
+    x: x + x2,
+    y: y + (y2 === -0 ? 0 : y2 * -1)
   };
 };
 
@@ -146,8 +144,25 @@ const swipeDown = ({ x, y, distance, duration = 50 }) => {
 
 const spread = ({ x, y, distance, direction = 90, duration = 200 }) => {
   return parallel([
+    swipe({ x, y, distance, direction: (direction + 180) % 360, duration }),
     swipe({ x, y, distance, direction: direction % 360, duration }),
-    swipe({ x, y, distance, direction: (direction + 180) % 360, duration })
+  ]);
+};
+
+const pinch = ({ x, y, distance, direction = 90, duration = 200 }) => {
+  return parallel([
+    swipe({
+      ...getRelativePoint({ x, y, distance, direction: (direction + 180) % 360 }),
+      distance,
+      direction: direction % 360,
+      duration
+    }),
+    swipe({
+      ...getRelativePoint({ x, y, distance, direction: direction % 360 }),
+      distance,
+      direction: (direction + 180) % 360,
+      duration
+    })
   ]);
 };
 
@@ -169,5 +184,6 @@ module.exports = {
   swipeUp,
   swipeDown,
 
-  spread
+  spread,
+  pinch
 };
