@@ -23,10 +23,9 @@ Rotate Gesture:
 ### Common Gestures
 
 - **Tap**: Briefly touch surface with fingertip.
-- **Long Press**: Touch surface for extended period of time.
 - **Double Tap**: Rapid touch surface twice with fingertip.
+- **Long Press**: Touch surface for extended period of time.
 - **Swipe**: Move fingertip over surface without losing contact.
-- **Flick**: Quickly brush surface with fingertip.
 - **Pinch**: Touch surface with two fingers and bring them closer together.
 - **Spread**: Touch surface with two fingers and move them apart.
 - **Rotate**: Touch surface with two fingers and move them in a clockwise or counterclockwise direction.
