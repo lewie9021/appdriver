@@ -33,9 +33,49 @@ const moveTo = ({ x, y, duration = 0, relative = false }) => {
   }]]);
 };
 
+const series = (gestures) => {
+  if (!gestures.length) {
+    throw new Error("You must pass at least one gesture.");
+  }
+
+  if (gestures.length === 1) {
+    return gestures[0];
+  }
+
+  return new Gesture(gestures.reduce((result, gesture) => {
+    result.push(...gesture.inputs);
+
+    return result;
+  }, []));
+};
+
+const parallel = (gestures) => {
+  if (!gestures.length) {
+    throw new Error("You must pass at least one gesture.");
+  }
+
+  // gesture one -> [[moveTo], [press], [wait], [release]]
+  // gesture two -> [[moveTo], [press], [wait[, [release[]
+  // output -> [[moveTo, moveTo], [press, press], [wait, wait], [release, release]]
+
+  return new Gesture(  gestures.reduce((result, gesture) => {
+    gesture.inputs.forEach((actions, index) => {
+      if (!result[index]) {
+        result[index] = [];
+      }
+
+      result[index].push(...actions);
+    });
+
+    return result;
+  }, []));
+};
+
 module.exports = {
   press,
   release,
   wait,
-  moveTo
+  moveTo,
+  series,
+  parallel
 };
