@@ -117,13 +117,13 @@ TODO: Description here.
 
 TODO: Description here.
 
-[```.pinch(options: {x?: Number, y?: Number, distance: Number, angle?: Number, duration?: Number}) => Gesture```](./gestures/pinch.md)
+[```.pinch(options: {x?: Number, y?: Number, distance: Number, direction?: Number, duration?: Number}) => Gesture```](./gestures/pinch.md)
 
 <img src="https://img.shields.io/badge/Platform-Native-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
 TODO: Description here.
 
-[```.spread(options: {x?: Number, y?: Number, distance: Number, angle?: Number, duration?: Number}) => Gesture```](./gestures/spread.md)
+[```.spread(options: {x?: Number, y?: Number, distance: Number, direction?: Number, duration?: Number}) => Gesture```](./gestures/spread.md)
 
 <img src="https://img.shields.io/badge/Platform-Native-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
