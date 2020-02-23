@@ -1,5 +1,5 @@
-const Gesture = require("../../src/worker/Gesture-v2");
-const gestures = require("../../src/worker/gestures-v2");
+const Gesture = require("../../src/worker/Gesture");
+const gestures = require("../../src/worker/gestures");
 
 it("returns a Gesture instance", () => {
   expect(gestures.wait(200)).toBeInstanceOf(Gesture);

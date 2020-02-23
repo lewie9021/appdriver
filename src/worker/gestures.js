@@ -1,56 +1,111 @@
 const Gesture = require("./Gesture");
 
-const getRelativePoint = ({ direction, distance }) => {
+const getRelativePoint = ({ x = 0, y = 0, direction, distance }) => {
   const radians = direction * (Math.PI / 180);
-  const x = Math.round(Math.sin(radians) * distance);
-  const y = Math.round(Math.cos(radians) * distance);
+  const x2 = Math.round(Math.sin(radians) * distance);
+  const y2 = Math.round(Math.cos(radians) * distance);
 
   return {
-    x: x,
-    y: y === -0
-      ? 0
-      : y * -1
+    x: x + x2,
+    y: y + (y2 === -0 ? 0 : y2 * -1)
   };
 };
 
-// (options: Object) => Gesture
-const moveTo = (options) => {
-  return new Gesture()
-    .moveTo(options);
-};
-
-// (options: Object) => Gesture
-const press = (options) => {
-  return new Gesture()
-    .press(options);
+// () => Gesture
+const press = () => {
+  return new Gesture([[{
+    type: "pointerDown",
+    button: 0
+  }]]);
 };
 
 // () => Gesture
 const release = () => {
-  return new Gesture()
-    .release();
+  return new Gesture([[{
+    type: "pointerUp",
+    button: 0
+  }]]);
 };
 
 // (duration: Number) => Gesture
 const wait = (duration) => {
-  return new Gesture()
-    .wait(duration);
+  return new Gesture([[{
+    type: "pause",
+    duration
+  }]]);
 };
 
 // (options: Object) => Gesture
-const tap = ({ x, y, element }) => {
-  return new Gesture()
-    .press({ x, y, element })
-    .wait(100)
-    .release();
+const moveTo = ({ x, y, duration = 0, relative = false }) => {
+  return new Gesture([[{
+    type: "pointerMove",
+    origin: relative
+      ? "pointer"
+      : "viewport",
+    duration,
+    x,
+    y
+  }]]);
+};
+
+// (gestures: Array<Gesture>) => Gesture
+const series = (gestures) => {
+  if (!gestures.length) {
+    throw new Error("You must pass at least one gesture.");
+  }
+
+  if (gestures.length === 1) {
+    return gestures[0];
+  }
+
+  return new Gesture(gestures.reduce((result, gesture) => {
+    result.push(...gesture.inputs);
+
+    return result;
+  }, []));
+};
+
+// (gestures: Array<Gesture>) => Gesture
+const parallel = (gestures) => {
+  if (!gestures.length) {
+    throw new Error("You must pass at least one gesture.");
+  }
+
+  // gesture one -> [[moveTo], [press], [wait], [release]]
+  // gesture two -> [[moveTo], [press], [wait[, [release[]
+  // output -> [[moveTo, moveTo], [press, press], [wait, wait], [release, release]]
+
+  return new Gesture(  gestures.reduce((result, gesture) => {
+    gesture.inputs.forEach((actions, index) => {
+      if (!result[index]) {
+        result[index] = [];
+      }
+
+      result[index].push(...actions);
+    });
+
+    return result;
+  }, []));
 };
 
 // (options: Object) => Gesture
-const longPress = ({ x, y, duration = 750, element }) => {
-  return new Gesture()
-    .press({ x, y, element })
-    .wait(duration)
-    .release();
+const tap = ({ x, y }) => {
+  return series([
+    moveTo({ x, y }),
+    press(),
+    wait(100),
+    release()
+  ]);
+};
+
+// (options: Object) => Gesture
+const longPress = ({ x, y, duration = 750 }) => {
+  return series([
+    moveTo({ x, y }),
+    press(),
+    wait(duration),
+    release()
+  ]);
 };
 
 // (options: Object) => Gesture
@@ -58,11 +113,13 @@ const longPress = ({ x, y, duration = 750, element }) => {
 const swipe = ({ x, y, direction, distance, duration = 50 }) => {
   const relativePoint = getRelativePoint({ direction, distance });
 
-  return new Gesture()
-    .press({ x, y })
-    .wait(250)
-    .moveTo({ x: relativePoint.x, y: relativePoint.y, relative: true, duration })
-    .release();
+  return series([
+    moveTo({ x, y, }),
+    press(),
+    wait(250),
+    moveTo({ x: relativePoint.x, y: relativePoint.y, relative: true, duration }),
+    release()
+  ]);
 };
 
 // (options: Object) => Gesture
@@ -85,22 +142,37 @@ const swipeDown = ({ x, y, distance, duration = 50 }) => {
   return swipe({ x, y, distance, duration, direction: 180 });
 };
 
-
-// (actions: Array<Gesture>) => Gesture
-const series = (gestures) => {
-  // TODO.
+// (options: Object) => Gesture
+const spread = ({ x, y, distance, direction = 90, duration = 200 }) => {
+  return parallel([
+    swipe({ x, y, distance, direction: (direction + 180) % 360, duration }),
+    swipe({ x, y, distance, direction: direction % 360, duration }),
+  ]);
 };
 
-// (gestures: Array<Gesture>) => Gesture
-const parallel = (gestures) => {
-  // TODO.
+// (options: Object) => Gesture
+const pinch = ({ x, y, distance, direction = 90, duration = 200 }) => {
+  return parallel([
+    swipe({
+      ...getRelativePoint({ x, y, distance, direction: (direction + 180) % 360 }),
+      distance,
+      direction: direction % 360,
+      duration
+    }),
+    swipe({
+      ...getRelativePoint({ x, y, distance, direction: direction % 360 }),
+      distance,
+      direction: (direction + 180) % 360,
+      duration
+    })
+  ]);
 };
 
 module.exports = {
-  moveTo,
   press,
   release,
   wait,
+  moveTo,
 
   series,
   parallel,
@@ -112,5 +184,8 @@ module.exports = {
   swipeLeft,
   swipeRight,
   swipeUp,
-  swipeDown
+  swipeDown,
+
+  spread,
+  pinch
 };
