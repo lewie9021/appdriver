@@ -51,7 +51,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-[```.press(options?: {x?: Number, y?: Number, duration?: Number}) => Gesture```](./gestures/press.md)
+[```.press() => Gesture```](./gestures/press.md)
 
 <img src="https://img.shields.io/badge/Platform-Native-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
