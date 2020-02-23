@@ -76,14 +76,16 @@ Unlike Appium based clients, [Detox](https://github.com/wix/Detox) is yet to sup
 ```javascript
 (async () => {
   const $box = await element(by.label("box"));
-  const $destination = await element(by.label("destination"));
-  const dragAndDrop = gestures.create()
-    .press({ element: $box })
-    .wait(250)
-    .moveTo({ element: $destination })
-    .release();
+  const { x, y } = await $box.getLocation({ relative: true });
+ 
+  const tap = gestures.series([
+    gestures.moveTo({ x, y }),
+    gestures.press(),
+    gestures.wait(100),
+    gestures.release()
+  ]);
   
-  await device.performGesture(dragAndDrop);
+  await device.performGesture(tap);
 })();
 ```
 
@@ -102,7 +104,6 @@ Unlike Appium based clients, [Detox](https://github.com/wix/Detox) is yet to sup
   - [Element](./docs/api/element.md)
   - [Elements](./docs/api/elements.md)
   - [Device](./docs/api/device.md)
-  - [Gesture](./docs/api/gesture.md)
   - [Gestures](./docs/api/gestures.md)
   - [Expect](./docs/api/expect.md)
   - [Utilities](./docs/api/utilities.md)

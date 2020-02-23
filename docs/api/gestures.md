@@ -135,7 +135,7 @@ TODO: Description here.
 
 TODO: Description here
 
-[```.dragAndDrop(options: {x1: Number, y1: Number, x2: Number, y2: Number, duration?: Number}) => Gesture```](./gestures/rotate.md)
+[```.dragAndDrop(options: {x1: Number, y1: Number, x2: Number, y2: Number, duration?: Number}) => Gesture```](./gestures/dragAndDrop.md)
 
 <img src="https://img.shields.io/badge/Platform-Native-blue.svg" /> <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
 
