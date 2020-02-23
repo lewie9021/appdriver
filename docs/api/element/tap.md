@@ -5,8 +5,8 @@ Performs tap gesture on element.
 #### Parameters
 
 1. `options` (`Object?`):
-  - `options.x` (`Number?`): x offset from left of element. Defaults to 0.
-  - `options.y` (`Number?`): y offset from top of element. Defaults to 0.
+  - `options.x` (`Number?`): x offset from left of element. Defaults to center point.
+  - `options.y` (`Number?`): y offset from top of element. Defaults to center point.
 
 #### Returns
 
@@ -14,7 +14,7 @@ Performs tap gesture on element.
 
 #### Examples
 
-Perform simple tap gesture at coordinate (0, 0), relative to the element location:
+Perform tap gesture at element center point:
 
 ```javascript
 (async () => {
@@ -23,19 +23,18 @@ Perform simple tap gesture at coordinate (0, 0), relative to the element locatio
 })();
 ```
 
-Perform tap gesture at the center point (width / 2, height / 2), relative to the element location:
+Perform tap gesture at (0, 50), relative to the element location:
 
 ```javascript
 (async () => {
-  const $button = await element(by.label("button"));
-  const { width, height } = await $button.getSize();
-
-  await $button.tap({ x: width / 2, y: height / 2 });
+  await element(by.label("button"))
+    .tap({ y: 50 });
 })();
 ```
 
 #### Related methods
 
+- [`.doubleTap(options?: Object) => Element`](./doubleTap.md)
 - [`.longPress(options?: Object) => Element`](./longPress.md)
 
 ### Related Appium Docs

@@ -1,12 +1,12 @@
 # `.longPress(options?: Object) => Element`
 
-Performs a long press gesture on the element.
+Performs long press gesture on the element.
 
 #### Parameters
 
 1. `options` (`Object?`):
-  - `options.x` (`Number?`): x offset from left of element. Defaults to 0.
-  - `options.y` (`Number?`): y offset from top of element. Defaults to 0.
+  - `options.x` (`Number?`): x offset from left of element. Defaults to center point.
+  - `options.y` (`Number?`): y offset from top of element. Defaults to center point.
   - `options.duration` (`Number?`): Time in milliseconds to perform the press gesture. Defaults to 750.
 
 #### Returns
@@ -15,7 +15,7 @@ Performs a long press gesture on the element.
 
 #### Examples
 
-Basic long press. This will perform a long press gesture at the coordinate (0, 0), relative to the element position in the viewport:
+Perform long press gesture at element center point:
 
 ```javascript
 (async () => {
@@ -24,24 +24,19 @@ Basic long press. This will perform a long press gesture at the coordinate (0, 0
 })();
 ```
 
-Customised long press. This will first get the size of the button to calculate the center point and extend the duration of the press gesture to a second:
+Perform long press gesture at (100, 25), relative to the element location:
 
 ```javascript
 (async () => {
-  const $button = await element(by.label("button"));
-  const { width, height} = await $button.getSize();
-
-  await $button.longPress({
-    x: width / 2,
-    y: height / 2,
-    duration: 1000
-  });
+  await element(by.label("button"))
+    .longPress({ x: 100, y: 25 });
 })();
 ```
 
 #### Related methods
 
 - [`.tap(options?: Object) => Element`](./tap.md)
+- [`.doubleTap(options?: Object) => Element`](./doubleTap.md)
 
 ### Related Appium Docs
 
