@@ -144,6 +144,13 @@ const swipeDown = ({ x, y, distance, duration = 50 }) => {
   return swipe({ x, y, distance, duration, direction: 180 });
 };
 
+const spread = ({ x, y, distance, direction = 90, duration = 200 }) => {
+  return parallel([
+    swipe({ x, y, distance, direction: direction % 360, duration }),
+    swipe({ x, y, distance, direction: (direction + 180) % 360, duration })
+  ]);
+};
+
 module.exports = {
   press,
   release,
@@ -160,5 +167,7 @@ module.exports = {
   swipeLeft,
   swipeRight,
   swipeUp,
-  swipeDown
+  swipeDown,
+
+  spread
 };

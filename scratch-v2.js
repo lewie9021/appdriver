@@ -149,10 +149,10 @@ const swipeRight = ({ x, y, distance, duration = 50 }) => {
 };
 
 // (options: Object) => Gesture
-const spread = ({ x, y, distance, angle, duration = 200 }) => {
+const spread = ({ x, y, distance, direction, duration = 200 }) => {
   return parallel([
-    swipe({ x, y, distance, direction: angle % 360, duration }),
-    swipe({ x, y, distance, direction: (angle + 180) % 360, duration })
+    swipe({ x, y, distance, direction: direction % 360, duration }),
+    swipe({ x, y, distance, direction: (direction + 180) % 360, duration })
   ]);
 };
 
