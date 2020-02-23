@@ -20,9 +20,10 @@ The `element` instance provides a way to interact with elements on the screen. Y
 ```javascript
 (async () => {
   await element(by.label("scroll-view"))
-    .swipeUp({distance: 100});
+    .swipeUp({ distance: 100 });
 })();
 ```
+
 #### Element API
 
 [```.tap(options?: Object) => Element```](./element/tap.md)
