@@ -32,7 +32,12 @@ it("supports passing a duration parameter", () => {
 
   expect(gesture.resolve()).toEqual([
     expect.objectContaining({
-      actions: [expect.objectContaining({ duration })]
+      actions: [
+        expect.objectContaining({
+          type: "pointerMove",
+          duration
+        })
+      ]
     })
   ]);
 });

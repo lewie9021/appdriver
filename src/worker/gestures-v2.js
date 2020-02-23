@@ -1,5 +1,19 @@
 const Gesture = require("./Gesture-v2");
 
+const getRelativePoint = ({ direction, distance }) => {
+  const radians = direction * (Math.PI / 180);
+  const x = Math.round(Math.sin(radians) * distance);
+  const y = Math.round(Math.cos(radians) * distance);
+
+  return {
+    x: x,
+    y: y === -0
+      ? 0
+      : y * -1
+  };
+};
+
+// () => Gesture
 const press = () => {
   return new Gesture([[{
     type: "pointerDown",
@@ -7,6 +21,7 @@ const press = () => {
   }]]);
 };
 
+// () => Gesture
 const release = () => {
   return new Gesture([[{
     type: "pointerUp",
@@ -14,6 +29,7 @@ const release = () => {
   }]]);
 };
 
+// (duration: Number) => Gesture
 const wait = (duration) => {
   return new Gesture([[{
     type: "pause",
@@ -21,6 +37,7 @@ const wait = (duration) => {
   }]]);
 };
 
+// (options: Object) => Gesture
 const moveTo = ({ x, y, duration = 0, relative = false }) => {
   return new Gesture([[{
     type: "pointerMove",
@@ -33,6 +50,7 @@ const moveTo = ({ x, y, duration = 0, relative = false }) => {
   }]]);
 };
 
+// (gestures: Array<Gesture>) => Gesture
 const series = (gestures) => {
   if (!gestures.length) {
     throw new Error("You must pass at least one gesture.");
@@ -49,6 +67,7 @@ const series = (gestures) => {
   }, []));
 };
 
+// (gestures: Array<Gesture>) => Gesture
 const parallel = (gestures) => {
   if (!gestures.length) {
     throw new Error("You must pass at least one gesture.");
@@ -71,11 +90,75 @@ const parallel = (gestures) => {
   }, []));
 };
 
+// (options: Object) => Gesture
+const tap = ({ x, y }) => {
+  return series([
+    moveTo({ x, y }),
+    press(),
+    wait(100),
+    release()
+  ]);
+};
+
+// (options: Object) => Gesture
+const longPress = ({ x, y, duration = 750 }) => {
+  return series([
+    moveTo({ x, y }),
+    press(),
+    wait(duration),
+    release()
+  ]);
+};
+
+// (options: Object) => Gesture
+// Note: Having type: "pointerMove", origin: "pointer", and duration: <= 10 doesn't work on Android.
+const swipe = ({ x, y, direction, distance, duration = 50 }) => {
+  const relativePoint = getRelativePoint({ direction, distance });
+
+  return series([
+    moveTo({ x, y, }),
+    press(),
+    wait(250),
+    moveTo({ x: relativePoint.x, y: relativePoint.y, relative: true, duration }),
+    release()
+  ]);
+};
+
+// (options: Object) => Gesture
+const swipeLeft = ({ x, y, distance, duration = 50 }) => {
+  return swipe({ x, y, distance, duration, direction: 270 });
+};
+
+// (options: Object) => Gesture
+const swipeRight = ({ x, y, distance, duration = 50 }) => {
+  return swipe({ x, y, distance, duration, direction: 90 });
+};
+
+// (options: Object) => Gesture
+const swipeUp = ({ x, y, distance, duration = 50 }) => {
+  return swipe({ x, y, distance, duration, direction: 0 });
+};
+
+// (options: Object) => Gesture
+const swipeDown = ({ x, y, distance, duration = 50 }) => {
+  return swipe({ x, y, distance, duration, direction: 180 });
+};
+
 module.exports = {
   press,
   release,
   wait,
   moveTo,
+
   series,
-  parallel
+  parallel,
+
+  tap,
+  longPress,
+
+  swipe,
+  swipeLeft,
+  swipeRight,
+  swipeUp,
+  swipeDown
 };
