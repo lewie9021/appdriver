@@ -134,16 +134,6 @@ To be used on scrollable elements, ensuring `element` is fully visible so that i
 
 Asserts the element has `attribute` strictly equal to `value`.
 
-### Gestures
-
-:warning: [```.series(Array<Gesture>) => Gesture```](./gestures/series.md)
-
-TODO: Description here.
-
-:warning: [```.doubleTap(options?: {x?: Number, y?: Number, duration?: Number, element?: Element}) => Gesture```](./gestures/doubleTap.md)
-
-TODO: Description here.
-
 ### Alert
 
 :warning: [```.accept() => Promise```](./alert/accept.md)

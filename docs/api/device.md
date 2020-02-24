@@ -6,11 +6,12 @@ The `device` object provides a way of performing interactions within the applica
 
 ```javascript
 (async () => {
-  const swipeUp = gestures.create()
-    .press({ x: 160, y: 200 })
-    .wait(250)
-    .moveTo({ y: 100 })
-    .release();
+  const swipeUp = gestures.series([
+    press({ x: 160, y: 200 }),
+    wait(250),
+    moveTo({ y: -100, relative: true }),
+    release()
+  ]);
   
   await device.performGesture(swipeUp);
 })();

@@ -20,9 +20,10 @@ The `element` instance provides a way to interact with elements on the screen. Y
 ```javascript
 (async () => {
   await element(by.label("scroll-view"))
-    .swipeUp({distance: 100});
+    .swipeUp({ distance: 100 });
 })();
 ```
+
 #### Element API
 
 [```.tap(options?: Object) => Element```](./element/tap.md)
@@ -30,6 +31,12 @@ The `element` instance provides a way to interact with elements on the screen. Y
 <img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
 Performs tap gesture on element.
+
+[```.doubleTap(options?: Object) => Element```](./element/doubleTap.md)
+
+<img src="https://img.shields.io/badge/Platform-Native-blue.svg" />
+
+Performs double tap gesture on element.
 
 [```.longPress(options?: Object) => Element```](./element/longPress.md)
 

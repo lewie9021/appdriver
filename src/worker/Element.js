@@ -169,6 +169,20 @@ class Element {
     });
   }
 
+  doubleTap({ x = 0, y = 0 } = {}) {
+    return this._executeAction((value, done) => {
+      return appiumService.doubleTapElement({ element: value.ref, x, y })
+        .then(() => done(null))
+        .catch((err) => {
+          if (isInstanceOf(err, AppiumError)) {
+            return done(new ElementActionError("Failed to double tap element."));
+          }
+
+          done(err);
+        });
+    });
+  }
+
   longPress({ x = 0, y = 0, duration } = {}) {
     return this._executeAction((value, done) => {
       return appiumService.longPressElement({ element: value.ref, x, y, duration })

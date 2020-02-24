@@ -1,5 +1,18 @@
 # Change Log
 
+## [Unreleased]
+
+### Added
+
+- Support for `.doubleTap` on Element.
+- Support for `.doubleTap`, `.spread` and `.pinch` gestures.
+- Support for composing gesture via `.series` and `.parallel`.
+- Documented `.dragAndDrop` gesture.
+
+### Changed
+
+- Converted `.moveTo`, `.press`, `.release` and `.wait` into gestures.
+
 ## [v1.0.0-alpha.18] - 2020-02-15
 
 ### Changed

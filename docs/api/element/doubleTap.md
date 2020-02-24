@@ -1,6 +1,6 @@
-# `.tap(options?: Object) => Element`
+# `.doubleTap(options?: Object) => Element`
 
-Performs tap gesture on element.
+Performs double tap gesture on element.
 
 #### Parameters
 
@@ -14,27 +14,27 @@ Performs tap gesture on element.
 
 #### Examples
 
-Perform tap gesture at element center point:
+Perform double tap gesture at element center point:
 
 ```javascript
 (async () => {
   await element(by.label("button"))
-    .tap();
+    .doubleTap();
 })();
 ```
 
-Perform tap gesture at (0, 50), relative to the element location:
+Perform double tap gesture at (200, 0), relative to the element location:
 
 ```javascript
 (async () => {
   await element(by.label("button"))
-    .tap({ y: 50 });
+    .doubleTap({ x: 200 });
 })();
 ```
 
 #### Related methods
 
-- [`.doubleTap(options?: Object) => Element`](./doubleTap.md)
+- [`.tap(options?: Object) => Element`](./tap.md)
 - [`.longPress(options?: Object) => Element`](./longPress.md)
 
 ### Related Appium Docs
