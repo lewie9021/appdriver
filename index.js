@@ -27,6 +27,5 @@ module.exports = {
   expect: (value) => {
     return new Expect(value);
   },
-  gestures,
-  appiumService
+  gestures
 };
