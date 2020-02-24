@@ -5,8 +5,8 @@
 ### Added
 
 - Support for `.doubleTap` on Element.
-- Support for `.doubleTap`, `.spread` and `.pinch` gestures.
-- Support for composing gesture via `.series` and `.parallel`.
+- Support for composing gestures via `.series` and `.parallel`.
+- Support for `.spread`, `.pinch` and `.doubleTap` gestures.
 - Documented `.dragAndDrop` gesture.
 
 ### Changed
