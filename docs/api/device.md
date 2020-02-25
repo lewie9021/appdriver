@@ -82,7 +82,7 @@ Polls `conditionFn` every `options.interval` until it resolves or `options.maxDu
 
 [```.restartApp() => Promise```](./device/restartApp.md)
 
-<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
 TODO: Description here.
 
