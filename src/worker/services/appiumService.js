@@ -100,7 +100,7 @@ function createAppiumService(sessionStore) {
   // ({ sessionId: String? }) => Promise.
   const resetApp = ({ sessionId = sessionStore.getSessionId() } = {}) => {
     if (sessionStore.getCapabilities("noReset")) {
-      return Promise.reject(new Error("Unable to reset app when capabilities.noReset is enabled.'"));
+      return Promise.reject(new Error("Unable to reset app when capabilities.noReset is enabled."));
     }
 
     return request({

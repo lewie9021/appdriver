@@ -36,10 +36,7 @@ class Device {
 
   resetApp() {
     return appiumService.resetApp()
-      .catch((e) => {
-        console.log(e);
-        throw new ActionError("Failed to reset the application.");
-      });
+      .catch(handleActionError("Failed to reset the application."));
   }
 
   getViewport() {
