@@ -31,9 +31,7 @@ class Device {
 
   restartApp() {
     return appiumService.restartApp()
-      .catch(() => {
-        throw new ActionError("Failed to restart the application.");
-      });
+      .catch(handleActionError("Failed to restart the application."));
   }
 
   resetApp() {
