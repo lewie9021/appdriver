@@ -136,19 +136,19 @@ Polls for element to be visible every `options.interval` until it resolves or `o
 
 [```.waitToBeInvisible(options?: Object) => Element```](./element/waitToBeInvisible.md)
 
-<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
 Polls for element to be invisible every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
 
 [```.waitToExist(options?: Object) => Element```](./element/waitToExist.md)
 
-<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
 Polls for element to exist every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
 
 [```.waitToNotExist(options?: Object) => Element```](./element/waitToExist.md)
 
-<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
 Polls for element to not exist every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
 
