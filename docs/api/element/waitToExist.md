@@ -14,7 +14,14 @@ Polls for element to exist every `options.interval` until it resolves or `option
 
 #### Examples
 
-TODO: Examples here.
+```javascript
+const { element, by } = require("appdriver");
+
+(async () => {
+  element(by.label("button"))
+    .waitToExist();
+})();
+```
 
 #### Related methods
 

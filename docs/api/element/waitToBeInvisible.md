@@ -14,7 +14,14 @@ Polls for element to be invisible every `options.interval` until it resolves or 
 
 #### Examples
 
-TODO: Examples here.
+```javascript
+const { element, by } = require("appdriver");
+
+(async () => {
+  element(by.label("button"))
+    .waitToBeInvisible();
+})();
+```
 
 #### Related methods
 

@@ -24,9 +24,9 @@ This is useful when your tests need to wait until a particular condition is met.
 ```javascript
 const { element, by, expect } = require("appdriver");
 
-(async() {
-  const $button = element(by.label("button"))
-   .waitFor(($e) => expect($e).not.toBeVisible());
+(async () => {
+  element(by.label("button"))
+    .waitFor(($e) => expect($e).not.toBeVisible());
 })();
 ```
 
@@ -35,9 +35,9 @@ const { element, by, expect } = require("appdriver");
 ```javascript
 const { element, by, expect } = require("appdriver");
 
-(async() {
-  const $button = element(by.label("button"))
-   .waitFor(($e) => expect($e).toExist());
+(async () => {
+  element(by.label("button"))
+    .waitFor(($e) => expect($e).toExist());
 })();
 ```
 
@@ -46,9 +46,9 @@ Countdown timer:
 ```javascript
 const { element, by, expect } = require("appdriver");
 
-(async() {
-  const $timerText = element(by.label("timer-text"))
-   .waitFor(($e) => expect($e).toHaveText("0"));
+(async () => {
+  element(by.label("timer"))
+    .waitFor(($e) => expect($e).toHaveText("0"));
 })();
 ```
 
