@@ -13,18 +13,11 @@ const parseValue = (rawValue, elementType, options) => {
       return rawValue || "";
     case "XCUIElementTypeSwitch":
       return rawValue === "1";
-    case "XCUIElementTypeButton":
-      // Possibly a switch?
-      if (rawValue === "1" || rawValue === "0") {
-        return Boolean(parseInt(rawValue));
-      }
-
-      return rawValue;
     case "android.widget.Switch":
       return rawValue === "ON";
     case "XCUIElementTypeSlider":
       if (!options || !options.sliderRange) {
-        throw new Error("You must provide a 'sliderRange' option when dealing with slider elements.");
+        throw new Error("You must provide a 'sliderRange' option to retrieve slider values.");
       }
 
       return ((options.sliderRange[1] - options.sliderRange[0]) * parseFloat(rawValue.replace("%", ""))) / 100;
