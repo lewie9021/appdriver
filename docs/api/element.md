@@ -74,9 +74,9 @@ TODO: Description here.
 
 Retrieves inner text content of element.
 
-[```.getValue(options?: Object) => Promise<Any>```](./element/getValue.md)
+[```.getValue(options?: Object) => Promise<Number | String | Boolean>```](./element/getValue.md)
 
-<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" />
 
 Retrieves value property of element.
 
