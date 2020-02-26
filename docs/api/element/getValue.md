@@ -1,4 +1,4 @@
-# `.getValue(options?: Object) => Promise<Any>`
+# `.getValue(options?: Object) => Promise<Number | String | Boolean>`
 
 Retrieves value property of element.
 
@@ -9,11 +9,42 @@ Retrieves value property of element.
 
 #### Returns
 
-`Promise` (`Any`): Element value property.
+`Promise` (`Number | String | Boolean`): Element value property.
 
 #### Examples
 
-TODO: Examples here.
+Text input:
+
+```javascript
+(async () => {
+  const value = await element(by.label("text-input"))
+    .getValue();
+
+  await expect(value).toEqual("Hello World!");
+})();
+```
+
+Switch:
+
+```javascript
+(async () => {
+  const value = await element(by.label("switch"))
+    .getValue();
+
+  await expect(value).toEqual(true);
+})();
+```
+
+Slider:
+
+```javascript
+(async () => {
+  const value = await element(by.label("slider"))
+    .getValue({ sliderRange: [0, 5] });
+
+  await expect(value).toEqual(2.5);
+})();
+```
 
 #### Related methods
 
