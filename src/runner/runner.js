@@ -17,6 +17,8 @@ const retry = (func, maxRetries, retries = 0) => {
 };
 
 (async () => {
+  const events = new EventEmitter();
+
   try {
     // Parse CLI options.
     commandLineService.init();
@@ -25,7 +27,6 @@ const retry = (func, maxRetries, retries = 0) => {
     const maxDevices = configStore.getMaxDevices();
     const maxSpecRetries = configStore.getMaxSpecRetries();
     const devices = configStore.getDevices();
-    const events = new EventEmitter();
     let totalSpawned = 0;
     let currentlySpawned = 0;
     let failures = 0;
@@ -109,7 +110,7 @@ const retry = (func, maxRetries, retries = 0) => {
       currentlySpawned += 1;
       totalSpawned += 1;
 
-      runDeviceSpecs(deviceIndex, specPaths)
+      return runDeviceSpecs(deviceIndex, specPaths)
         .then(() => {
           events.emit("device:finished", { device });
 
@@ -127,9 +128,16 @@ const retry = (func, maxRetries, retries = 0) => {
 
     reporters.forEach((reporter) => reporter(events));
 
+    events.emit("runner:started");
+
+    let instances = [];
     for (let i = 0; i < Math.min(maxDevices, devices.length); i += 1) {
-      runDevice(i);
+      instances.push(runDevice(i));
     }
+
+    await Promise.all(instances);
+
+    events.emit("runner:finished");
   } catch (err) {
     console.error(err);
 
