@@ -1,0 +1,16 @@
+{
+  "extends": "airbnb-base",
+  "rules": {
+    "arrow-body-style": 0,
+    "object-curly-newline": 0,
+    "no-underscore-dangle": 0,
+    "eol-last": 0,
+    "class-methods-use-this": 0,
+    "quotes": ["error", "double"],
+    "comma-dangle": ["error", "never"],
+    "max-len": ["error", {
+      "code": 120
+    }]
+
+  }
+}
