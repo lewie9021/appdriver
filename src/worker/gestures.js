@@ -74,8 +74,7 @@ const parallel = (gestures) => {
   // gesture one -> [[moveTo], [press], [wait], [release]]
   // gesture two -> [[moveTo], [press], [wait[, [release[]
   // output -> [[moveTo, moveTo], [press, press], [wait, wait], [release, release]]
-
-  return new Gesture(  gestures.reduce((result, gesture) => {
+  return new Gesture(gestures.reduce((result, gesture) => {
     gesture.inputs.forEach((actions, index) => {
       if (!result[index]) {
         result[index] = [];

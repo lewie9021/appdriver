@@ -122,7 +122,7 @@ class Expect {
   }
 
   async toEqual(value) {
-    const supportedTypes = ["number", "string", "boolean", "null", "undefined", "promise"];
+    const supportedTypes = [ "number", "string", "boolean", "null", "undefined", "promise" ];
     const isPromiseValue = isPromise(this.value);
     const actualValue = await this.value;
     const valueType = getValueType(actualValue);
@@ -146,7 +146,7 @@ class Expect {
   }
 
   async toHaveLength(length) {
-    const supportedTypes = ["array", "object", "string"];
+    const supportedTypes = [ "array", "object", "string" ];
     const valueType = getValueType(this.value);
 
     if (!supportedTypes.includes(valueType)) {
