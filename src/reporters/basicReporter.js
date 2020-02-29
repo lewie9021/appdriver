@@ -1,14 +1,14 @@
 const colors = {
-  red: "\x1b[31m",
-  green: "\x1b[32m",
-  blue: "\x1b[34m",
-  cyan: "\x1b[36m",
-  end: "\x1b[0m"
+  red: `\x1b[31m`,
+  green: `\x1b[32m`,
+  blue: `\x1b[34m`,
+  cyan: `\x1b[36m`,
+  end: `\x1b[0m`
 };
 
 const weights = {
-  bold: "\033[1m",
-  end: "\033[0m"
+  bold: `\033[1m`,
+  end: `\033[0m`
 };
 
 const getCapabilityName = (capabilities) => {
