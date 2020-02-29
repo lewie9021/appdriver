@@ -34,6 +34,7 @@ function createSessionStore() {
       switch (platformName) {
         case "iOS": return bundleId;
         case "Android": return appPackage;
+        default: return null;
       }
     },
     getScreenRecording: (key) => {

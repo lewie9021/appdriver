@@ -28,7 +28,7 @@ const parseValue = (rawValue, elementType, options) => {
   }
 };
 
-function createAppiumService(sessionStore) {
+function createAppiumService() {
   // () => Promise<Object>.
   const getStatus = () => {
     return request({
@@ -116,27 +116,6 @@ function createAppiumService(sessionStore) {
     });
   };
 
-  // ({ sessionId: String? }) => Promise<{ id: String, title: String | null, url: String | null }>.
-  const getContext = ({ sessionId = sessionStore.getSessionId() } = {}) => {
-    return Promise.all([
-      getContextId({ sessionId }),
-      getContexts({ sessionId })
-    ])
-      .then(([ contextId, contexts ]) => {
-        const context = contexts.find((x) => x.id === contextId);
-
-        if (!context) {
-          return {
-            id: contextId,
-            title: null,
-            url: null
-          };
-        }
-
-        return context;
-      });
-  };
-
   // ({ sessionId: String? }) => Promise<Array<{ id: String, title: String | null, url: String | null }>>.
   // Note: Contexts are objects when capabilities.fullContextList is true (iOS only), otherwise they're strings.
   const getContexts = ({ sessionId = sessionStore.getSessionId() } = {}) => {
@@ -159,6 +138,27 @@ function createAppiumService(sessionStore) {
           url: isString(context.url) ? context.url : null
         };
       }));
+  };
+
+  // ({ sessionId: String? }) => Promise<{ id: String, title: String | null, url: String | null }>.
+  const getContext = ({ sessionId = sessionStore.getSessionId() } = {}) => {
+    return Promise.all([
+      getContextId({ sessionId }),
+      getContexts({ sessionId })
+    ])
+      .then(([ contextId, contexts ]) => {
+        const context = contexts.find((x) => x.id === contextId);
+
+        if (!context) {
+          return {
+            id: contextId,
+            title: null,
+            url: null
+          };
+        }
+
+        return context;
+      });
   };
 
   // ({ sessionId: String?, contextId: String? }) => Promise.
@@ -374,12 +374,16 @@ function createAppiumService(sessionStore) {
     const attributeMatch = validAttributes.find((x) => x.name === attribute);
 
     if (!attributeMatch) {
-      throw new Error(`Invalid attribute.\n\nValid attributes are:\n\n${validAttributes.map((x) => `- ${x.name}`).join("\n")}`);
+      const attributesText = validAttributes.map((x) => `- ${x.name}`).join("\n");
+
+      throw new Error(`Invalid attribute.\n\nValid attributes are:\n\n${attributesText}`);
     }
+
+    const attributeName = attributeMatch.internalName || attributeMatch.name;
 
     return request({
       method: "GET",
-      path: `/session/${sessionId}/element/${element.ELEMENT}/attribute/${attributeMatch.internalName || attributeMatch.name}`
+      path: `/session/${sessionId}/element/${element.ELEMENT}/attribute/${attributeName}`
     })
       .then(attribute.transform);
   };
@@ -603,7 +607,9 @@ function createAppiumService(sessionStore) {
         });
       },
       web: () => {
-        return Promise.reject(new NotSupportedError("Tap with 'x' and 'y' parameters is not supported in a Web context."));
+        return Promise.reject(
+          new NotSupportedError("Tap with 'x' and 'y' parameters is not supported in a Web context.")
+        );
       }
     });
   };
@@ -834,5 +840,5 @@ function createAppiumService(sessionStore) {
 
 module.exports = {
   createAppiumService,
-  appiumService: createAppiumService(sessionStore)
+  appiumService: createAppiumService()
 };

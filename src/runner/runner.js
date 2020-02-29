@@ -60,6 +60,7 @@ const retry = (func, maxRetries, retries = 0) => {
             case "SPEC_FINISHED":
               events.emit("spec:finished", { ...payload, device, specPath: relativeSpecPath });
               break;
+            default: break;
           }
         });
 
