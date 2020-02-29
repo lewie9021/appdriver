@@ -102,7 +102,7 @@ const doubleTap = ({ x, y }) => {
   return series([
     tap({ x, y }),
     wait(100),
-    tap({ x, y }),
+    tap({ x, y })
   ]);
 };
 
@@ -122,7 +122,7 @@ const swipe = ({ x, y, direction, distance, duration = 50 }) => {
   const relativePoint = getRelativePoint({ direction, distance });
 
   return series([
-    moveTo({ x, y, }),
+    moveTo({ x, y }),
     press(),
     wait(250),
     moveTo({ x: relativePoint.x, y: relativePoint.y, relative: true, duration }),
@@ -154,7 +154,7 @@ const swipeDown = ({ x, y, distance, duration = 50 }) => {
 const spread = ({ x, y, distance, direction = 90, duration = 200 }) => {
   return parallel([
     swipe({ x, y, distance, direction: (direction + 180) % 360, duration }),
-    swipe({ x, y, distance, direction: direction % 360, duration }),
+    swipe({ x, y, distance, direction: direction % 360, duration })
   ]);
 };
 

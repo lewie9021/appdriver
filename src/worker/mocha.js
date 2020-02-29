@@ -19,7 +19,7 @@ function runTestSpec(specPath, opts) {
           process.send({
             type: "TEST_STARTED",
             payload: {
-              name: test.fullTitle(),
+              name: test.fullTitle()
             }
           });
         });

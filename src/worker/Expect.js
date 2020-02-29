@@ -26,7 +26,7 @@ class Expect {
     if (!passed) {
       throw new Error(message(this._invert));
     }
-  };
+  }
 
   get not() {
     return new Expect(this.value, !this._invert);

@@ -200,15 +200,15 @@ class Device {
 
     if (size) {
       if (!size.width && !size.height) {
-        return Promise.reject(new ActionError("You must provide a 'size.width' and 'size.height' when passing a 'size'."))
+        return Promise.reject(new ActionError("You must provide a 'size.width' and 'size.height' when passing a 'size'."));
       }
 
       if (size.width && !size.height) {
-        return Promise.reject(new ActionError("You must provide a 'size.height' when passing a 'size.width'."))
+        return Promise.reject(new ActionError("You must provide a 'size.height' when passing a 'size.width'."));
       }
 
       if (size.height && !size.width) {
-        return Promise.reject(new ActionError("You must provide a 'size.width' when passing a 'size.height'."))
+        return Promise.reject(new ActionError("You must provide a 'size.width' when passing a 'size.height'."));
       }
     }
 

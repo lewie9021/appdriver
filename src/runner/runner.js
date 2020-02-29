@@ -13,7 +13,7 @@ const retry = (func, maxRetries, retries = 0) => {
       }
 
       throw new Error(`Failed after ${retries} retries`);
-    })
+    });
 };
 
 (async () => {

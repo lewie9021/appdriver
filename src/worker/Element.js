@@ -41,7 +41,7 @@ class Element {
     this.value = value;
 
     if (thenable) {
-      this.then = function(onResolved, onRejected) {
+      this.then = function (onResolved, onRejected) {
         return this.value.then((value) => {
           onResolved(new Element({ value: Promise.resolve(value), thenable: false }));
         }, onRejected);
@@ -221,7 +221,7 @@ class Element {
         .then(() => done(null))
         .catch((err) => {
           if (isInstanceOf(err, AppiumError)) {
-            return done(new ElementActionError("Failed to clear text on element."))
+            return done(new ElementActionError("Failed to clear text on element."));
           }
 
           return done(err);
@@ -235,7 +235,7 @@ class Element {
         .then(() => done(null))
         .catch((err) => {
           if (isInstanceOf(err, AppiumError)) {
-            return done(new ElementActionError("Failed to tap return key on element."))
+            return done(new ElementActionError("Failed to tap return key on element."));
           }
 
           return done(err);
@@ -249,7 +249,7 @@ class Element {
         .then(() => done(null))
         .catch((err) => {
           if (isInstanceOf(err, AppiumError)) {
-            return done(new ElementActionError("Failed to tap backspace key on element."))
+            return done(new ElementActionError("Failed to tap backspace key on element."));
           }
 
           return done(err);

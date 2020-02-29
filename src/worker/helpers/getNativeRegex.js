@@ -10,7 +10,7 @@ const getNativeRegex = (regex) => {
       pattern: pattern
         .slice(1, pattern.lastIndexOf("/"))
         .replace(/\\/g, "\\\\"),
-      modifiers: flags.includes("i")  ? "[c]" : ""
+      modifiers: flags.includes("i") ? "[c]" : ""
     }),
     android: () => ({
       pattern: pattern.slice(1, pattern.lastIndexOf("/")),

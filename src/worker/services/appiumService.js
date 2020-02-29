@@ -381,7 +381,7 @@ function createAppiumService(sessionStore) {
       method: "GET",
       path: `/session/${sessionId}/element/${element.ELEMENT}/attribute/${attributeMatch.internalName || attributeMatch.name}`
     })
-      .then(attribute.transform)
+      .then(attribute.transform);
   };
 
   // ({ sessionId: String?, element: AppiumElement }) => Promise<Boolean>.
@@ -484,7 +484,7 @@ function createAppiumService(sessionStore) {
   // ({ sessionId: String?, element: AppiumElement, options? Object }) => Promise<String>.
   const getElementText = ({ sessionId = sessionStore.getSessionId(), element, options = {} }) => {
     if (!options.recursive) {
-      return getElementTextAttribute({ sessionId, element })
+      return getElementTextAttribute({ sessionId, element });
     }
 
     return platform.select({
@@ -762,7 +762,7 @@ function createAppiumService(sessionStore) {
     return platform.select({
       ios: () => sendElementKeys({ sessionId, element, keys: ["\b"] }),
       android: () => sendKeyCode({ sessionId, keycode: 67 }),
-      web: () => sendElementKeys({ sessionId, element, keys: ["\b"] }),
+      web: () => sendElementKeys({ sessionId, element, keys: ["\b"] })
     });
   };
 

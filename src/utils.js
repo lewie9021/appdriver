@@ -30,7 +30,7 @@ const pollFor = (promiseFn, { maxDuration, interval }) => {
             promiseFn()
               .then(() => next())
               .catch((err) => next(err || new Error("'conditionFn' threw with an undefined error.")));
-          })
+          });
       }
 
       clearTimeout(timeout);
@@ -127,7 +127,7 @@ const getRelativePoint = ({ direction, distance }) => {
   const y = Math.round(Math.cos(radians) * distance);
 
   return {
-    x: x,
+    x,
     y: y === -0
       ? 0
       : y * -1

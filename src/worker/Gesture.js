@@ -23,9 +23,9 @@ class Gesture {
         actions: this.inputs.map((actions) => {
           return actions[i]
             ? actions[i]
-            : { type: "pause" }
+            : { type: "pause" };
         })
-      }
+      };
     }
 
     return result;

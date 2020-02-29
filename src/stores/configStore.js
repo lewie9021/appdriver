@@ -53,7 +53,7 @@ function createConfigStore() {
     },
     getReporters: () => {
       if (!state.config.reporters || !state.config.reporters.length) {
-        return [ require("../reporters/basicReporter") ];
+        return [require("../reporters/basicReporter")];
       }
 
       return state.config.reporters;
