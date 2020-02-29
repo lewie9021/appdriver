@@ -86,7 +86,7 @@ it("handles gaps with no-op pauses", () => {
         {
           type: "pointerUp",
           button: 0
-        },
+        }
       ]
     },
     {
@@ -116,7 +116,7 @@ it("handles gaps with no-op pauses", () => {
 
 it("returns the same gesture when one gesture is passed", () => {
   const press = gestures.press();
-  const gesture = gestures.parallel([ press ]);
+  const gesture = gestures.parallel([press]);
 
   expect(gesture.resolve()).toEqual(press.resolve());
 });

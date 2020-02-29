@@ -45,14 +45,14 @@ it("joins together a list of gestures in series", () => {
       {
         type: "pointerUp",
         button: 0
-      },
+      }
     ]
   }]);
 });
 
 it("returns the same gesture when one gesture is passed", () => {
   const press = gestures.press();
-  const gesture = gestures.series([ press ]);
+  const gesture = gestures.series([press]);
 
   expect(gesture.resolve()).toEqual(press.resolve());
 });

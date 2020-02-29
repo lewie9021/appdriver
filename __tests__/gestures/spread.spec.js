@@ -99,7 +99,7 @@ it("supports passing a duration parameter", () => {
         expect.objectContaining({ type: "pointerDown" }),
         expect.objectContaining({ type: "pause" }),
         expect.objectContaining({ type: "pointerMove", duration }),
-        expect.objectContaining({ type: "pointerUp" }),
+        expect.objectContaining({ type: "pointerUp" })
       ]
     }),
     expect.objectContaining({
@@ -109,7 +109,7 @@ it("supports passing a duration parameter", () => {
         expect.objectContaining({ type: "pointerDown" }),
         expect.objectContaining({ type: "pause" }),
         expect.objectContaining({ type: "pointerMove", duration }),
-        expect.objectContaining({ type: "pointerUp" }),
+        expect.objectContaining({ type: "pointerUp" })
       ]
     })
   ]);
@@ -129,7 +129,7 @@ it("supports passing a direction parameter", () => {
         expect.objectContaining({ type: "pointerDown" }),
         expect.objectContaining({ type: "pause" }),
         expect.objectContaining({ type: "pointerMove", x: 0, y: distance * -1 }),
-        expect.objectContaining({ type: "pointerUp" }),
+        expect.objectContaining({ type: "pointerUp" })
       ]
     }),
     expect.objectContaining({
@@ -139,7 +139,7 @@ it("supports passing a direction parameter", () => {
         expect.objectContaining({ type: "pointerDown" }),
         expect.objectContaining({ type: "pause" }),
         expect.objectContaining({ type: "pointerMove", x: 0, y: distance }),
-        expect.objectContaining({ type: "pointerUp" }),
+        expect.objectContaining({ type: "pointerUp" })
       ]
     })
   ]);

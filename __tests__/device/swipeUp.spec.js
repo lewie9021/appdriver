@@ -78,7 +78,7 @@ it("defaults 'y' parameter to the percentage parameter", async () => {
   const percentage = 0.5;
   const viewport = { width: 640, height: 480 };
   const distance = viewport.height * percentage;
-  const swipeUpGesture = gestures.swipeUp({ x: 0, y: distance, distance: distance });
+  const swipeUpGesture = gestures.swipeUp({ x: 0, y: distance, distance });
 
   jest.spyOn(appiumService, "getViewport").mockResolvedValue(viewport);
   jest.spyOn(appiumService, "performActions").mockResolvedValue(null);

@@ -20,7 +20,7 @@ const createConditionFn = (maxPollCount, error) => {
   let pollCount = 0;
 
   return jest.fn(() => {
-    pollCount +=1;
+    pollCount += 1;
 
     return pollCount >= maxPollCount
       ? Promise.resolve()

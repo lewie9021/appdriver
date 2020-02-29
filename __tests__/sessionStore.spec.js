@@ -27,7 +27,7 @@ it("returns null if there's no capabilities", () => {
 });
 
 it("returns the capabilities if a session has been created", () => {
-  const capabilities = { platformName: "iOS", platformVersion: "12.4", deviceName: "iPhone X",  app: "path" };
+  const capabilities = { platformName: "iOS", platformVersion: "12.4", deviceName: "iPhone X", app: "path" };
   const sessionStore = createSessionStore();
   sessionStore.setState({ capabilities });
 
@@ -37,7 +37,7 @@ it("returns the capabilities if a session has been created", () => {
 });
 
 it("returns the capability when a key parameter is passed", () => {
-  const capabilities = { platformName: "iOS", platformVersion: "12.4", deviceName: "iPhone X",  app: "path" };
+  const capabilities = { platformName: "iOS", platformVersion: "12.4", deviceName: "iPhone X", app: "path" };
   const key = "deviceName";
   const sessionStore = createSessionStore();
   sessionStore.setState({ capabilities });

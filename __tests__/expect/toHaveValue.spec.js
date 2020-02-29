@@ -77,7 +77,7 @@ it("throws if expectation is not met when used with .not", async () => {
 it("supports passing .getValue options", async () => {
   const ref = createFindElementMock();
   const value = 2.5;
-  const options = { sliderRange: [0, 5] };
+  const options = { sliderRange: [ 0, 5 ] };
 
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
   jest.spyOn(appiumService, "getElementValue").mockResolvedValue(value);

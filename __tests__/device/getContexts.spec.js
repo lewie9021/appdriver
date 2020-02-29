@@ -10,7 +10,7 @@ afterEach(() => {
 });
 
 it("returns the result of 'getContexts' on the Appium Service", async () => {
-  const contexts = [ { id: "NATIVE_APP", title: null, url: null } ];
+  const contexts = [{ id: "NATIVE_APP", title: null, url: null }];
   jest.spyOn(appiumService, "getContexts").mockResolvedValue(contexts);
 
   const result = await device.getContexts();

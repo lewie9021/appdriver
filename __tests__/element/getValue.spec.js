@@ -30,7 +30,7 @@ it("returns the element's value", async () => {
 
 it("supports passing an 'sliderRange' parameter", async () => {
   const ref = createFindElementMock();
-  const sliderRange = [0, 5];
+  const sliderRange = [ 0, 5 ];
   const value = 2.5;
 
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);

@@ -12,11 +12,11 @@ afterEach(() => {
 });
 
 const defaultParameters = [
-  {name: "forceRestart", key: "forceRestart", value: false},
-  {name: "maxDuration", key: "timeLimit", value: 180},
-  {name: "format", key: "videoType", value: "mpeg4"},
-  {name: "quality", key: "videoQuality", value: "medium"},
-  {name: "fps", key: "videoFps", value: 10}
+  { name: "forceRestart", key: "forceRestart", value: false },
+  { name: "maxDuration", key: "timeLimit", value: 180 },
+  { name: "format", key: "videoType", value: "mpeg4" },
+  { name: "quality", key: "videoQuality", value: "medium" },
+  { name: "fps", key: "videoFps", value: 10 }
 ];
 
 it("executes the 'startScreenRecording' method on the Appium Service", async () => {

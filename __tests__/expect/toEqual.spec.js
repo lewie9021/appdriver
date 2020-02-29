@@ -76,15 +76,15 @@ it("throws if expectation is not met when used with .not", async () => {
 });
 
 it("throws if expectation is not supported", async () => {
-  await expect(assert([1, 2, 3]).toEqual([1, 2, 3]))
+  await expect(assert([ 1, 2, 3 ]).toEqual([ 1, 2, 3 ]))
     .rejects.toThrow(NotImplementedError);
 
-  await expect(assert({a: 1, b: 2}).toEqual({a: 1, b: 2}))
+  await expect(assert({ a: 1, b: 2 }).toEqual({ a: 1, b: 2 }))
     .rejects.toThrow(NotImplementedError);
 
-  await expect(assert(Promise.resolve([1, 2, 3])).toEqual([1, 2, 3]))
+  await expect(assert(Promise.resolve([ 1, 2, 3 ])).toEqual([ 1, 2, 3 ]))
     .rejects.toThrow(NotImplementedError);
 
-  await expect(assert(Promise.resolve({a: 1, b: 2})).toEqual({a: 1, b: 2}))
+  await expect(assert(Promise.resolve({ a: 1, b: 2 })).toEqual({ a: 1, b: 2 }))
     .rejects.toThrow(NotImplementedError);
 });

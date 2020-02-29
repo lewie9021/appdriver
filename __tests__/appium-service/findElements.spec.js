@@ -17,7 +17,7 @@ afterEach(() => {
 
 it("makes a POST request to the 'Find Elements' Appium endpoint", async () => {
   const sessionId = "sessionId";
-  const refs = createFindElementsMock({ elementIds: ["elementId", "elementId2", "elementId3"] });
+  const refs = createFindElementsMock({ elementIds: [ "elementId", "elementId2", "elementId3" ] });
   const matcher = by.label("list-item");
   jest.spyOn(sessionStore, "getSessionId").mockReturnValue(sessionId);
   jest.spyOn(requestHelpers, "request").mockResolvedValue(refs);
@@ -36,7 +36,7 @@ it("makes a POST request to the 'Find Elements' Appium endpoint", async () => {
 it("makes a POST request to the 'Find Elements From Element' Appium endpoint when 'element' is passed", async () => {
   const sessionId = "sessionId";
   const ref = createFindElementMock({ elementId: "elementId" });
-  const refs = createFindElementsMock({ elementIds: ["elementId2", "elementId3", "elementId4"] });
+  const refs = createFindElementsMock({ elementIds: [ "elementId2", "elementId3", "elementId4" ] });
   const matcher = by.label("list-item");
   jest.spyOn(sessionStore, "getSessionId").mockReturnValue(sessionId);
   jest.spyOn(requestHelpers, "request").mockResolvedValue(refs);
@@ -54,7 +54,7 @@ it("makes a POST request to the 'Find Elements From Element' Appium endpoint whe
 
 it("optionally accepts a sessionId", async () => {
   const sessionId = "newSessionId";
-  const refs = createFindElementsMock({ elementIds: ["elementId", "elementId2", "elementId3"] });
+  const refs = createFindElementsMock({ elementIds: [ "elementId", "elementId2", "elementId3" ] });
   const matcher = by.label("list-item");
   jest.spyOn(sessionStore, "getSessionId").mockReturnValue("sessionId");
   jest.spyOn(requestHelpers, "request").mockResolvedValue(refs);

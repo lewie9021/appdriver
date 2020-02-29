@@ -86,7 +86,7 @@ describe("iOS", () => {
   it("returns a number for sliders", async () => {
     const sessionId = "sessionId";
     const ref = createFindElementMock();
-    const sliderRange = [0, 5];
+    const sliderRange = [ 0, 5 ];
     jest.spyOn(sessionStore, "getSessionId").mockReturnValue(sessionId);
     jest.spyOn(requestHelpers, "request")
       .mockResolvedValueOnce("XCUIElementTypeSlider")
@@ -253,7 +253,7 @@ describe("Android", () => {
   it("returns a number for sliders", async () => {
     const sessionId = "sessionId";
     const ref = createFindElementMock();
-    const sliderRange = [0, 5];
+    const sliderRange = [ 0, 5 ];
     jest.spyOn(sessionStore, "getSessionId").mockReturnValue(sessionId);
     jest.spyOn(requestHelpers, "request")
       .mockResolvedValueOnce("android.widget.SeekBar")

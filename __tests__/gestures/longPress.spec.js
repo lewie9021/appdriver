@@ -52,7 +52,7 @@ it("supports passing a duration parameter", () => {
         expect.objectContaining({ type: "pointerMove" }),
         expect.objectContaining({ type: "pointerDown" }),
         expect.objectContaining({ type: "pause", duration }),
-        expect.objectContaining({ type: "pointerUp" }),
+        expect.objectContaining({ type: "pointerUp" })
       ]
     })
   ]);

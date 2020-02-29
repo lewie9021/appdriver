@@ -1,5 +1,9 @@
 {
   "extends": "airbnb-base",
+  "env": {
+    "node": true,
+    "jest": true
+  },
   "rules": {
     "arrow-body-style": 0,
     "object-curly-newline": 0,

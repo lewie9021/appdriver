@@ -15,7 +15,7 @@ afterEach(() => {
 
 it("returns a list of matching elements", async () => {
   const ref = createFindElementMock();
-  const refs = createFindElementsMock({ elementIds: ["innerElementId", "innerElementId2"] });
+  const refs = createFindElementsMock({ elementIds: [ "innerElementId", "innerElementId2" ] });
 
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
   jest.spyOn(appiumService, "findElements").mockResolvedValue(refs);
