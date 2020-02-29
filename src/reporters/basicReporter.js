@@ -25,10 +25,6 @@ function basicReporter(events) {
     specs: {
       total: 0,
       passed: 0
-    },
-    tests: {
-      total: 0,
-      passed: 0
     }
   };
 
@@ -51,15 +47,10 @@ function basicReporter(events) {
     }
   });
 
-  events.on("test:started", () => {
-    totals.tests.total += 1;
-  });
-
   events.on("test:passed", ({ device, specPath, name, duration }) => {
     const nameText = `${colors.green}${name}${colors.end}`;
     const specPathText = `${colors.blue}${specPath}${colors.end}`;
 
-    totals.tests.passed += 1;
     console.log(`${getCapabilityText(device.capabilities)}: ${specPathText} ${nameText} ${getDurationText(duration)}`);
   });
 
@@ -74,6 +65,7 @@ function basicReporter(events) {
     const specPathText = `${colors.blue}${specPath}${colors.end}`;
     const countText = `${colors.cyan}(${retries}/${maxRetries})${colors.end}`;
 
+    totals.specs.total -= 1;
     console.log(`${getCapabilityText(device.capabilities)}: ${specPathText} ${colors.red}Retrying...${colors.end} ${countText}`);
   });
 
@@ -89,17 +81,9 @@ function basicReporter(events) {
       ? `${colors.red}${specFailures} failed${colors.end}, ${totalSpecs} total`
       : `${totalSpecs} total`;
 
-    const totalTests = totals.tests.total;
-    const testFailures = totals.tests.total - totals.tests.passed;
-    const testsText = `${weights.bold}Tests:${weights.end}`;
-    const testTotalsText = testFailures > 0
-      ? `${colors.red}${testFailures} failed${colors.end}, ${totalTests} total`
-      : `${totalTests} total`;
-
     console.log();
     console.log(`${deviceText} ${deviceTotalsText}`);
     console.log(`${specsText} ${specTotalsText}`);
-    console.log(`${testsText} ${testTotalsText}`);
   });
 }
 
