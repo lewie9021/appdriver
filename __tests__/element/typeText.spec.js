@@ -72,7 +72,10 @@ it("throws an ElementActionError if the hardware keyboard is attached on iOS sim
     await element(by.label("input")).typeText("Hello world!");
   } catch (err) {
     expect(err).toBeInstanceOf(ElementActionError);
-    expect(err).toHaveProperty("message", "Failed to type text on element. Make sure hardware keyboard is disconnected from iOS simulator.");
+    expect(err).toHaveProperty(
+      "message",
+      "Failed to type text on element. Make sure hardware keyboard is disconnected from iOS simulator."
+    );
   }
 
   expect(sessionStore.getCapabilities).toHaveBeenCalledWith("platformName");

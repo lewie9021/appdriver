@@ -53,7 +53,10 @@ it("throws if expectation is not met", async () => {
     await assert($element).toHaveValue(expectedValue);
   } catch (err) {
     expect(err).toBeInstanceOf(Error);
-    expect(err).toHaveProperty("message", `Expected element to have value '${expectedValue}' but instead got '${actualValue}'.`);
+    expect(err).toHaveProperty(
+      "message",
+      `Expected element to have value '${expectedValue}' but instead got '${actualValue}'.`
+    );
   }
 });
 
@@ -70,7 +73,10 @@ it("throws if expectation is not met when used with .not", async () => {
     await assert($element).not.toHaveValue(3);
   } catch (err) {
     expect(err).toBeInstanceOf(Error);
-    expect(err).toHaveProperty("message", "Expected element not to have value '3'.");
+    expect(err).toHaveProperty(
+      "message",
+      "Expected element not to have value '3'."
+    );
   }
 });
 
@@ -105,6 +111,9 @@ it("correctly propagates errors", async () => {
     await assert($element).toHaveValue("Hello World!");
   } catch (err) {
     expect(err).toBeInstanceOf(ElementActionError);
-    expect(err).toHaveProperty("message", "Failed to get element value.");
+    expect(err).toHaveProperty(
+      "message",
+      "Failed to get element value."
+    );
   }
 });

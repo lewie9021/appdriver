@@ -25,7 +25,13 @@ it("executes the 'swipeElement' method on the Appium Service", async () => {
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
   expect(appiumService.swipeElement).toHaveBeenCalledTimes(1);
-  expect(appiumService.swipeElement).toHaveBeenCalledWith(expect.objectContaining({ element: ref, distance, direction: 90 }));
+  expect(appiumService.swipeElement).toHaveBeenCalledWith(
+    expect.objectContaining({
+      element: ref,
+      distance,
+      direction: 90
+    })
+  );
 });
 
 it("returns an instance of Element to enable function chaining", async () => {
@@ -94,7 +100,11 @@ it("support passing a 'percentage' parameter to calculate the swipe distance", a
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
   expect(appiumService.getElementSize).toHaveBeenCalledTimes(1);
   expect(appiumService.swipeElement).toHaveBeenCalledTimes(1);
-  expect(appiumService.swipeElement).toHaveBeenCalledWith(expect.objectContaining({ distance: size.width * percentage }));
+  expect(appiumService.swipeElement).toHaveBeenCalledWith(
+    expect.objectContaining({
+      distance: size.width * percentage
+    })
+  );
 });
 
 it("supports passing a 'duration' parameter to redefine the swipe duration", async () => {

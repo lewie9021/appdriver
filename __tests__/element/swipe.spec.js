@@ -26,7 +26,13 @@ it("executes the 'swipeElement' method on the Appium Service", async () => {
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
   expect(appiumService.swipeElement).toHaveBeenCalledTimes(1);
-  expect(appiumService.swipeElement).toHaveBeenCalledWith(expect.objectContaining({ element: ref, distance, direction }));
+  expect(appiumService.swipeElement).toHaveBeenCalledWith(
+    expect.objectContaining({
+      element: ref,
+      distance,
+      direction
+    })
+  );
 });
 
 it("returns an instance of Element to enable function chaining", async () => {

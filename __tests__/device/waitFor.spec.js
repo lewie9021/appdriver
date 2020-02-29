@@ -46,7 +46,10 @@ it("throws a WaitError if the polling times out", async () => {
     await device.waitFor(conditionFn);
   } catch (err) {
     expect(err).toBeInstanceOf(WaitError);
-    expect(err).toHaveProperty("message", `Wait condition exceeded ${timeout}ms timeout (interval: ${interval}ms).`);
+    expect(err).toHaveProperty(
+      "message",
+      `Wait condition exceeded ${timeout}ms timeout (interval: ${interval}ms).`
+    );
   }
 });
 
@@ -63,7 +66,10 @@ it("supports passing a 'maxDuration' parameter", async () => {
     await device.waitFor(conditionFn, { maxDuration });
   } catch (err) {
     expect(err).toBeInstanceOf(WaitError);
-    expect(err).toHaveProperty("message", `Wait condition exceeded ${maxDuration}ms timeout (interval: ${interval}ms).`);
+    expect(err).toHaveProperty(
+      "message",
+      `Wait condition exceeded ${maxDuration}ms timeout (interval: ${interval}ms).`
+    );
   }
 });
 
@@ -80,6 +86,9 @@ it("supports passing a 'interval' parameter", async () => {
     await device.waitFor(conditionFn, { interval });
   } catch (err) {
     expect(err).toBeInstanceOf(WaitError);
-    expect(err).toHaveProperty("message", `Wait condition exceeded ${timeout}ms timeout (interval: ${interval}ms).`);
+    expect(err).toHaveProperty(
+      "message",
+      `Wait condition exceeded ${timeout}ms timeout (interval: ${interval}ms).`
+    );
   }
 });

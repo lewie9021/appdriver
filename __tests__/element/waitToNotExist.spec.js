@@ -101,7 +101,10 @@ it("supports passing a 'maxDuration' parameter", async () => {
     await element(by.label("input")).waitToNotExist({ maxDuration });
   } catch (err) {
     expect(err).toBeInstanceOf(ElementWaitError);
-    expect(err).toHaveProperty("message", `Element still found after ${maxDuration}ms timeout (interval: ${interval}ms).`);
+    expect(err).toHaveProperty(
+      "message",
+      `Element still found after ${maxDuration}ms timeout (interval: ${interval}ms).`
+    );
   }
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);

@@ -25,7 +25,12 @@ it("returns the element's attribute value", async () => {
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
   expect(appiumService.getElementAttribute).toHaveBeenCalledTimes(1);
-  expect(appiumService.getElementAttribute).toHaveBeenCalledWith(expect.objectContaining({ element: ref, attribute: name }));
+  expect(appiumService.getElementAttribute).toHaveBeenCalledWith(
+    expect.objectContaining({
+      element: ref,
+      attribute: name
+    })
+  );
   expect(result).toEqual(value);
 });
 

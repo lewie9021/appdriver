@@ -80,7 +80,10 @@ it("throws an ElementWaitError if the polling times out", async () => {
     await element(by.label("input")).waitToBeInvisible();
   } catch (err) {
     expect(err).toBeInstanceOf(ElementWaitError);
-    expect(err).toHaveProperty("message", `Element still visible after ${timeout}ms timeout (interval: ${interval}ms).`);
+    expect(err).toHaveProperty(
+      "message",
+      `Element still visible after ${timeout}ms timeout (interval: ${interval}ms).`
+    );
   }
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
@@ -101,7 +104,10 @@ it("supports passing a 'maxDuration' parameter", async () => {
     await element(by.label("input")).waitToBeInvisible({ maxDuration });
   } catch (err) {
     expect(err).toBeInstanceOf(ElementWaitError);
-    expect(err).toHaveProperty("message", `Element still visible after ${maxDuration}ms timeout (interval: ${interval}ms).`);
+    expect(err).toHaveProperty(
+      "message",
+      `Element still visible after ${maxDuration}ms timeout (interval: ${interval}ms).`
+    );
   }
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
@@ -122,7 +128,10 @@ it("supports passing a 'interval' parameter", async () => {
     await element(by.label("input")).waitToBeInvisible({ interval });
   } catch (err) {
     expect(err).toBeInstanceOf(ElementWaitError);
-    expect(err).toHaveProperty("message", `Element still visible after ${timeout}ms timeout (interval: ${interval}ms).`);
+    expect(err).toHaveProperty(
+      "message",
+      `Element still visible after ${timeout}ms timeout (interval: ${interval}ms).`
+    );
   }
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
