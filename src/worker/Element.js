@@ -42,8 +42,8 @@ class Element {
 
     if (thenable) {
       this.then = function (onResolved, onRejected) {
-        return this.value.then((value) => {
-          onResolved(new Element({ value: Promise.resolve(value), thenable: false }));
+        return this.value.then((nextValue) => {
+          onResolved(new Element({ value: Promise.resolve(nextValue), thenable: false }));
         }, onRejected);
       };
     }
@@ -204,7 +204,10 @@ class Element {
         .catch((err) => {
           if (isInstanceOf(err, AppiumError)) {
             if (err.status === 13 && sessionStore.getCapabilities("platformName") === "iOS") {
-              return done(new ElementActionError("Failed to type text on element. Make sure hardware keyboard is disconnected from iOS simulator."));
+              return done(new ElementActionError([
+                "Failed to type text on element.",
+                "Make sure hardware keyboard is disconnected from iOS simulator."
+              ].join(" ")));
             }
 
             return done(new ElementActionError("Failed to type text on element."));
@@ -448,7 +451,16 @@ class Element {
       };
 
       return resolveSwipeDistance()
-        .then((distance) => appiumService.swipeElement({ element: value.ref, x, y, distance, direction: 180, duration }))
+        .then((swipeDistance) => {
+          return appiumService.swipeElement({
+            element: value.ref,
+            x,
+            y,
+            distance: swipeDistance,
+            direction: 180,
+            duration
+          });
+        })
         .then(() => done(null))
         .catch((err) => {
           if (isInstanceOf(err, AppiumError)) {
@@ -505,7 +517,16 @@ class Element {
       };
 
       return resolveSwipeDistance()
-        .then((distance) => appiumService.swipeElement({ element: value.ref, x, y, distance, direction: 90, duration }))
+        .then((swipeDistance) => {
+          return appiumService.swipeElement({
+            element: value.ref,
+            x,
+            y,
+            distance: swipeDistance,
+            direction: 90,
+            duration
+          });
+        })
         .then(() => done(null))
         .catch((err) => {
           if (isInstanceOf(err, AppiumError)) {

@@ -29,7 +29,7 @@ const pollFor = (promiseFn, { maxDuration, interval }) => {
           .then(() => {
             promiseFn()
               .then(() => next())
-              .catch((err) => next(err || new Error("'conditionFn' threw with an undefined error.")));
+              .catch((error) => next(error || new Error("'conditionFn' threw with an undefined error.")));
           });
       }
 
@@ -47,6 +47,10 @@ const log = (x) => {
   console.log(JSON.stringify(x, null, 2));
 
   return x;
+};
+
+const isString = (x) => {
+  return typeof x === "string";
 };
 
 const toBoolean = (x) => {
@@ -77,10 +81,6 @@ const isInstanceOf = (x, instance) => {
 
 const isBoolean = (x) => {
   return typeof x === "boolean";
-};
-
-const isString = (x) => {
-  return typeof x === "string";
 };
 
 const isNumber = (x) => {
@@ -119,19 +119,6 @@ const getValueType = (value) => {
   }
 
   return typeof value;
-};
-
-const getRelativePoint = ({ direction, distance }) => {
-  const radians = direction * (Math.PI / 180);
-  const x = Math.round(Math.sin(radians) * distance);
-  const y = Math.round(Math.cos(radians) * distance);
-
-  return {
-    x,
-    y: y === -0
-      ? 0
-      : y * -1
-  };
 };
 
 const transformArgs = (args) => {
@@ -174,20 +161,18 @@ const isPlatform = (platform) => {
   return getPlatform() === platform;
 };
 
-const platform = {
-  select: ({ ios, android, web, native }) => {
-    const platform = getPlatform();
+const selectPlatform = ({ ios, android, web, native }) => {
+  const platform = getPlatform();
 
-    switch (platform) {
-      case "Web":
-        return web();
-      case "iOS":
-        return native ? native() : ios();
-      case "Android":
-        return native ? native() : android();
-      default:
-        throw new Error("Platform not supported");
-    }
+  switch (platform) {
+    case "Web":
+      return web();
+    case "iOS":
+      return native ? native() : ios();
+    case "Android":
+      return native ? native() : android();
+    default:
+      throw new Error("Platform not supported");
   }
 };
 
@@ -207,10 +192,11 @@ module.exports = {
   toBoolean,
   toNumber,
   getValueType,
-  getRelativePoint,
   transformArgs,
   last,
-  platform,
+  platform: {
+    select: selectPlatform
+  },
   getPlatform,
   isPlatform
 };
