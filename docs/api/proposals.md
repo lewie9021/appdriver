@@ -15,6 +15,12 @@ TODO: Description here.
 <img src="https://img.shields.io/badge/Platform-~Native-blue.svg" />
 
 TODO: Description here.
+
+:warning: [```.execute(command: String, params: Object) => Promise```](./device/execute.md)
+
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
+
+TODO: Description here.
  
 :warning: [```.getGeoLocation() => Promise```](./device/getGeoLocation.md)
 
