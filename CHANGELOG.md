@@ -5,6 +5,7 @@
 ### Added
 
 - Support for `.isFocused` on Element.
+- Support for `.toBeFocused` on Expect.
 - Summary bar to basic reporter, showing totals of specs and devices.
 - ESLint to ensure code style consistency.
 
