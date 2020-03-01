@@ -152,11 +152,17 @@ Polls for element to be invisible every `options.interval` until it resolves or 
 
 Polls for element to exist every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
 
-[```.waitToNotExist(options?: Object) => Element```](./element/waitToExist.md)
+[```.waitToNotExist(options?: Object) => Element```](./element/waitToNotExist.md)
 
 <img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
 Polls for element to not exist every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
+
+[```.waitToBeFocused(options?: Object) => Element```](./element/waitToBeFocused.md)
+
+<img src="https://img.shields.io/badge/Platform-Native-blue.svg" />
+
+Polls for element to be focused every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
 
 [```.findElement(matcher: Matcher) => Element```](./element/findElement.md)
 
