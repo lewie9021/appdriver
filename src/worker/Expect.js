@@ -108,6 +108,19 @@ class Expect {
     });
   }
 
+  async toBeFocused() {
+    const elementIsFocused = await this.value.isFocused();
+
+    return this._assert({
+      pass: elementIsFocused === true,
+      message: (inverted) => (
+        inverted
+          ? `Expected element not to be focused.`
+          : `Expected element to be focused.`
+      )
+    });
+  }
+
   async toExist() {
     const elementExists = await this.value.exists();
 
