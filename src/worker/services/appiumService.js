@@ -3,7 +3,7 @@ const { AppiumError } = require("../errors");
 const { NotImplementedError, NotSupportedError } = require("../errors");
 const gestures = require("../gestures");
 const matchers = require("../matchers");
-const { platform, isInstanceOf, isString, toBoolean, toNumber } = require("../../utils");
+const { platform, isPlatform, isInstanceOf, isString, toBoolean, toNumber } = require("../../utils");
 const { transformBounds } = require("../attributeTransforms");
 const { request } = require("./request");
 
@@ -782,6 +782,29 @@ function createAppiumService() {
     });
   };
 
+  // ({ sessionId: String?, element: AppiumElement, text: String }) => Promise.
+  const typeElementText = ({ sessionId = sessionStore.getSessionId(), element, text }) => {
+    const characters = text.split("");
+
+    if (!isPlatform("Android")) {
+      return sendElementKeys({ sessionId, element, keys: characters });
+    }
+
+    return performActions({
+      sessionId,
+      actions: [{
+        id: "keyboard",
+        type: "key",
+        actions: characters.reduce((result, char) => {
+          result.push({ type: "keyDown", value: char });
+          result.push({ type: "keyUp", value: char });
+
+          return result;
+        }, [])
+      }]
+    });
+  };
+
   // ({ sessionId: String?, element: AppiumElement }) => Promise.
   const tapElementReturnKey = ({ sessionId = sessionStore.getSessionId(), element }) => {
     return platform.select({
@@ -862,6 +885,7 @@ function createAppiumService() {
     longPressElement,
     swipeElement,
     sendElementKeys,
+    typeElementText,
     clearElementText,
     tapElementReturnKey,
     tapElementBackspaceKey,
