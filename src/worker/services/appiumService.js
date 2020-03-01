@@ -140,6 +140,22 @@ function createAppiumService() {
       }));
   };
 
+  // ({ sessionId: String? }) => Promise<AppiumElement | null>.
+  const getActiveElement = ({ sessionId = sessionStore.getSessionId() } = {}) => {
+    return request({
+      method: "POST",
+      path: `/session/${sessionId}/element/active`
+    })
+      .catch((err) => {
+        // Handle case when no active element is found.
+        if (err.status === 7) {
+          return null;
+        }
+
+        throw err;
+      });
+  };
+
   // ({ sessionId: String? }) => Promise<{ id: String, title: String | null, url: String | null }>.
   const getContext = ({ sessionId = sessionStore.getSessionId() } = {}) => {
     return Promise.all([
@@ -386,6 +402,21 @@ function createAppiumService() {
       path: `/session/${sessionId}/element/${element.ELEMENT}/attribute/${attributeName}`
     })
       .then(attributeMatch.transform);
+  };
+
+  // ({ sessionId: String?, element: AppiumElement }) => Promise<Boolean>.
+  const getElementFocusedAttribute = ({ sessionId = sessionStore.getSessionId(), element }) => {
+    return platform.select({
+      ios: () => {
+        return getActiveElement({ sessionId })
+          .then((ref) => (ref && ref.ELEMENT) === element.ELEMENT);
+      },
+      android: () => {
+        return getElementAttribute({ sessionId, element, attribute: "focused" });
+      },
+      // TODO: Needs investigation.
+      web: () => Promise.reject(new NotSupportedError())
+    });
   };
 
   // ({ sessionId: String?, element: AppiumElement }) => Promise<Boolean>.
@@ -814,6 +845,7 @@ function createAppiumService() {
     findElement,
     findElements,
     getElementAttribute,
+    getElementFocusedAttribute,
     getElementSelectedAttribute,
     getElementEnabledAttribute,
     getElementVisibleAttribute,

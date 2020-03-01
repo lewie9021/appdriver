@@ -360,6 +360,14 @@ class Element {
       });
   }
 
+  isFocused() {
+    const currentValue = getCurrentValue(this.value);
+
+    return currentValue
+      .then((value) => appiumService.getElementFocusedAttribute({ element: value.ref }))
+      .catch(handleActionError("Failed to retrieve focused status of element."));
+  }
+
   isVisible() {
     const currentValue = getCurrentValue(this.value);
 
