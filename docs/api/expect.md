@@ -48,12 +48,6 @@ Asserts the element has a value strictly equal to `value`.
 
 Asserts the element has text matching `text`.
 
-[```.toBeDisabled() => Promise```](./expect/toBeDisabled.md)
-
-<img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
-
-Asserts the element is disabled.
-
 [```.toExist() => Promise```](./expect/toExist.md)
 
 <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
@@ -66,11 +60,23 @@ Asserts the element exists.
 
 Asserts the element is visible.
 
+[```.toBeDisabled() => Promise```](./expect/toBeDisabled.md)
+
+<img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+
+Asserts the element is disabled.
+
 [```.toBeSelected() => Promise```](./expect/toBeSelected.md)
 
 <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
 Asserts the element is selected.
+
+[```.toBeFocused() => Promise```](./expect/toBeFocused.md)
+
+<img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+
+Asserts the element is focused.
 
 [```.toEqual(value: Any) => Promise```](./expect/toEqual.md)
 
