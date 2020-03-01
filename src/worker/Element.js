@@ -328,6 +328,15 @@ class Element {
     return this._executeWait(conditionFn, maxDuration, interval, timeoutMessage);
   }
 
+  waitToBeFocused(options = {}) {
+    const maxDuration = options.maxDuration || configStore.getWaitForTimeout();
+    const interval = options.interval || configStore.getWaitForInterval();
+    const conditionFn = ($e) => new Expect($e).toBeFocused();
+    const timeoutMessage = `Element not focused after ${maxDuration}ms timeout (interval: ${interval}ms).`;
+
+    return this._executeWait(conditionFn, maxDuration, interval, timeoutMessage);
+  }
+
   getText(options) {
     const currentValue = getCurrentValue(this.value);
 
