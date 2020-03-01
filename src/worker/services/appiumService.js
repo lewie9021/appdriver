@@ -385,7 +385,7 @@ function createAppiumService() {
       method: "GET",
       path: `/session/${sessionId}/element/${element.ELEMENT}/attribute/${attributeName}`
     })
-      .then(attribute.transform);
+      .then(attributeMatch.transform);
   };
 
   // ({ sessionId: String?, element: AppiumElement }) => Promise<Boolean>.
