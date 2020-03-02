@@ -1,10 +1,9 @@
 const fs = require("fs");
 const { configStore } = require("../stores/configStore");
-const { sessionStore } = require("./stores/sessionStore");
 const { appiumService } = require("./services/appiumService");
 const { Expect } = require("./Expect");
 const { ElementNotFoundError, ElementActionError, ElementWaitError, AppiumError } = require("./errors");
-const { isUndefined, isInstanceOf, isNull, pollFor } = require("../utils");
+const { isPlatform, isUndefined, isInstanceOf, isNull, pollFor } = require("../utils");
 
 const getCurrentValue = (elementValue) => {
   return elementValue
@@ -199,11 +198,11 @@ class Element {
 
   typeText(text) {
     return this._executeAction((value, done) => {
-      return appiumService.sendElementKeys({ element: value.ref, keys: text.split("") })
+      return appiumService.typeElementText({ element: value.ref, text })
         .then(() => done(null))
         .catch((err) => {
           if (isInstanceOf(err, AppiumError)) {
-            if (err.status === 13 && sessionStore.getCapabilities("platformName") === "iOS") {
+            if (err.status === 13 && isPlatform("iOS")) {
               return done(new ElementActionError([
                 "Failed to type text on element.",
                 "Make sure hardware keyboard is disconnected from iOS simulator."
