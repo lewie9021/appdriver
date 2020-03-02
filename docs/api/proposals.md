@@ -8,6 +8,12 @@ This document contains API proposals that may eventually be implemented in the f
 
 <img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
+TODO: Description here
+
+:warning: [```.getSession() => Promise<Object>```](./device/getSession.md)
+
+<img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
+
 TODO: Description here.
 
 :warning: [```.getSource() => Promise<String>```](./device/getSource.md)
