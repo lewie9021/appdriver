@@ -8,6 +8,12 @@ This document contains API proposals that may eventually be implemented in the f
 
 <img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
+TODO: Description here
+
+:warning: [```.getSession() => Promise<Object>```](./device/getSession.md)
+
+<img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
+
 TODO: Description here.
 
 :warning: [```.getSource() => Promise<String>```](./device/getSource.md)
@@ -114,19 +120,27 @@ TODO: Description here.
 
 ### Element
 
+:warning: [```.getRef() => Promise<Object>```](./element/getRef.md)
+
+<img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
+
+TODO: Description here.
+
 :warning: [```.setValue(value: Any) => Element```](./element/setValue.md)
 
 <img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
-Note: Partial support.
+Note: Similar to `.typeText` without the string type constraint. Useful when automating Sliders and Switches.
+
 TODO: Description here.
 
 :warning: [```.getAttribute(attribute: String) => Promise<Any>```](./element/getAttribute.md)
 
 <img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
 
+Note: Partial support.
+
 TODO: Description here.
-Note: Essentially `.typeText` without the string type constraint. Useful when automating sliders.
 
 :warning: [```.swipeIntoView(options: {element: Element, swipeGesture?: Gesture, safeArea?: {top?: Number, right?: Number, bottom?: Number, left?: Number}}) => Element```](./element/swipeIntoView.md)
 
