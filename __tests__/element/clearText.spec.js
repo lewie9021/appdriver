@@ -1,5 +1,7 @@
+jest.mock("../../src/worker/stores/sessionStore");
 jest.mock("../../src/worker/services/appiumService");
 
+const { sessionStore } = require("../../src/worker/stores/sessionStore");
 const { appiumService } = require("../../src/worker/services/appiumService");
 const { createFindElementMock } = require("../appiumServiceMocks");
 const { setPlatform } = require("../helpers");
@@ -54,6 +56,31 @@ it("throws an ElementNotFoundError if the element isn't found", async () => {
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
   expect(appiumService.clearElementText).toHaveBeenCalledTimes(0);
+});
+
+it("throws an ElementActionError if the hardware keyboard is attached on iOS simulator", async () => {
+  setPlatform("iOS");
+
+  const ref = createFindElementMock();
+  const error = new AppiumError("Request error.", 12);
+
+  jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
+  jest.spyOn(appiumService, "clearElementText").mockRejectedValue(error);
+  expect.assertions(5);
+
+  try {
+    await element(by.label("input")).clearText();
+  } catch (err) {
+    expect(err).toBeInstanceOf(ElementActionError);
+    expect(err).toHaveProperty(
+      "message",
+      "Failed to clear text on element. Make sure hardware keyboard is disconnected from iOS simulator."
+    );
+  }
+
+  expect(sessionStore.getCapabilities).toHaveBeenCalledWith("platformName");
+  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.clearElementText).toHaveBeenCalledTimes(1);
 });
 
 it("throws an ElementActionError for Appium request errors", async () => {

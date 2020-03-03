@@ -223,6 +223,13 @@ class Element {
         .then(() => done(null))
         .catch((err) => {
           if (isInstanceOf(err, AppiumError)) {
+            if (err.status === 12 && isPlatform("iOS")) {
+              return done(new ElementActionError([
+                "Failed to clear text on element.",
+                "Make sure hardware keyboard is disconnected from iOS simulator."
+              ].join(" ")));
+            }
+
             return done(new ElementActionError("Failed to clear text on element."));
           }
 
