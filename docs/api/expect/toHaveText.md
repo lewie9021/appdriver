@@ -1,4 +1,4 @@
-[```.toHaveText(text: String | Regex, options?: Object) => Promise```](./expect/toHaveText.md)
+# `.toHaveText(text: String | Regex, options?: Object) => Promise`
 
 Asserts the element has text matching `text`.
 
