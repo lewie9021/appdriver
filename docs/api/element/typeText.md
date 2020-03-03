@@ -21,10 +21,14 @@ Basic text input.
 })();
 ```
 
+#### Known Issues
+
+- iOS simulators fail to input text when the hardware keyboard is connected. Ensure `Hardware > Keyboard > Connect Hardware Keyboard` is unchecked.
+
 #### Related methods
 
 - [`.clearText() => Element`](./clearText.md)
 
-### Related Appium Docs
+#### Related Appium Docs
 
 - [Send Keys](http://appium.io/docs/en/commands/element/actions/send-keys/)
