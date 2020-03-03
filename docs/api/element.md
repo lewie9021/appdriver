@@ -46,13 +46,13 @@ Performs long press gesture on element.
 
 [```.typeText(text: String) => Element```](./element/typeText.md)
 
-<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
 Using the virtual keyboard, types the given text into a text element.
 
 [```.clearText() => Element```](./element/clearText.md)
 
-<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
 Wipes the contents of a text element.
 
@@ -70,7 +70,7 @@ TODO: Description here.
 
 [```.getText(options?: Object) => Promise<String>```](./element/getText.md)
 
-<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-WIP-orange.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
 Retrieves inner text content of element.
 
@@ -166,13 +166,13 @@ Polls for element to be focused every `options.interval` until it resolves or `o
 
 [```.findElement(matcher: Matcher) => Element```](./element/findElement.md)
 
-<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
 Retrieves matching element found within parent.
 
 [```.findElements(matcher: Matcher) => Array<Element>```](./element/findElements.md)
 
-<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
 Retrieves matching elements found within parent.
 
