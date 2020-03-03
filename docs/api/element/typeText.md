@@ -32,3 +32,4 @@ Basic text input.
 #### Related Appium Docs
 
 - [Send Keys](http://appium.io/docs/en/commands/element/actions/send-keys/)
+- [W3C Actions](http://appium.io/docs/en/commands/interactions/actions/)
