@@ -143,7 +143,7 @@ it("propagates errors from further up the chain", async () => {
   const error = new AppiumError("Request error.", 3);
 
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
-  jest.spyOn(appiumService, "sendElementKeys").mockRejectedValue(error);
+  jest.spyOn(appiumService, "typeElementText").mockRejectedValue(error);
   jest.spyOn(appiumService, "swipeElement").mockResolvedValue(null);
   expect.assertions(5);
 
@@ -157,7 +157,7 @@ it("propagates errors from further up the chain", async () => {
   }
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
-  expect(appiumService.sendElementKeys).toHaveBeenCalledTimes(1);
+  expect(appiumService.typeElementText).toHaveBeenCalledTimes(1);
   expect(appiumService.swipeElement).toHaveBeenCalledTimes(0);
 });
 
