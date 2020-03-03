@@ -5,7 +5,7 @@ Retrieves text content of element.
 #### Parameters
 
 1. `options` (`Object?`):
-  - `options.recursive` (`Boolean?`): Determines whether to recursively retrieve the inner text. Often useful on Android when text is fragmented, but can be used to retrieve text from grouping elements such as list items.
+  - `options.recursive` (`Boolean?`): Determines whether to recursively retrieve the inner text. Often useful on Android when text is fragmented, but can be used to retrieve text from grouping elements such as list items. Defaults to false.
 
 #### Returns
 
@@ -13,67 +13,34 @@ Retrieves text content of element.
 
 #### Examples
 
-Text:
-```jsx
-// Application Code (React Native).
-import { Text } from "react-native";
-import { setTestId } from "appdriver";
+Text element:
 
-const App = () => (
-  <Text {...setTestId("text")}>
-    E2E Testing with AppDriver
-  </Text>
-);
-
-// Test Script (Node.js).
-const { element, by } = require("appdriver");
-
+```js
 (async () => {
-  const text = await element(by.label("text")).getText();
+  const text = await element(by.label("text"))
+    .getText();
 
-  await expect(text).toEqual("E2E Testing with AppDriver");
+  await expect(text).toEqual("Hello World!");
 })();
 ```
 
-Button:
-```jsx
-// Application Code (React Native).
-import { TouchableOpacity, Text } from "react-native";
-import { setTestId } from "appdriver";
+Button (nested text):
 
-const App = () => (
-  <TouchableOpacity
-    {...setTestId("button")}
-    onPress={() => alert("Hello World!")}
-  >
-    <Text>Press Me!</Text>
-  </TouchableOpacity>
-);
-
-// Test Script (Node.js)
+```js
 (async () => {
-  const text = await element(by.label("button")).getText();
+  const text = await element(by.label("button"))
+    .getText({ recursive: true });
 
   await expect(text).toEqual("Press Me!");
 })();
 ```
 
 Text Input:
-```jsx
-// Application Code (React Native).
-import { TextInput } from "react-native";
-import { setTestId } from "appdriver";
 
-const App = () => (
-  <TextInput
-    {...setTestId("text-input")}
-    value="Hello World!"
-  />
-);
-
-// Test Script (Node.js).
+```js
 (async () => {
-  const text = await element(by.label("text-input")).getText();
+  const text = await element(by.label("text-input"))
+    .getText();
 
   await expect(text).toEqual("Hello World!");
 })();
