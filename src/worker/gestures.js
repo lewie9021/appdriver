@@ -50,10 +50,6 @@ const moveTo = ({ x, y, duration = 0, relative = false }) => {
 
 // (gestures: Array<Gesture>) => Gesture
 const series = (gestures) => {
-  if (!gestures.length) {
-    throw new Error("You must pass at least one gesture.");
-  }
-
   if (gestures.length === 1) {
     return gestures[0];
   }
@@ -67,10 +63,6 @@ const series = (gestures) => {
 
 // (gestures: Array<Gesture>) => Gesture
 const parallel = (gestures) => {
-  if (!gestures.length) {
-    throw new Error("You must pass at least one gesture.");
-  }
-
   // gesture one -> [[moveTo], [press], [wait], [release]]
   // gesture two -> [[moveTo], [press], [wait[, [release[]
   // output -> [[moveTo, moveTo], [press, press], [wait, wait], [release, release]]

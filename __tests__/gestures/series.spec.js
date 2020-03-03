@@ -57,13 +57,13 @@ it("returns the same gesture when one gesture is passed", () => {
   expect(gesture.resolve()).toEqual(press.resolve());
 });
 
-it("throws if an empty list of gestures is passed", () => {
+it("throws when resolving an empty gesture", () => {
   expect.assertions(2);
 
   try {
-    gestures.series([]);
+    gestures.series([]).resolve();
   } catch (err) {
     expect(err).toBeInstanceOf(Error);
-    expect(err).toHaveProperty("message", "You must pass at least one gesture.");
+    expect(err).toHaveProperty("message", "Gesture is empty.");
   }
 });

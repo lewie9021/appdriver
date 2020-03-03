@@ -28,6 +28,10 @@ class Gesture {
       };
     }
 
+    if (!result.length) {
+      throw new Error("Gesture is empty.");
+    }
+
     return result;
   }
 }
