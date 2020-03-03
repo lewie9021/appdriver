@@ -12,10 +12,16 @@ Clear text input:
 
 ```javascript
 (async () => {
-  await element(by.label("text-input"))
+  const $input = await element(by.label("text-input"))
     .clearText();
+
+  await expect($input).toHaveValue("");
 })();
 ```
+
+#### Known Issues
+
+- iOS simulators fail to clear text when the hardware keyboard is connected. Ensure `Hardware > Keyboard > Connect Hardware Keyboard` is unchecked.
 
 #### Related methods
 
