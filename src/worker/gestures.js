@@ -55,7 +55,7 @@ const series = (gestures) => {
   }
 
   return new Gesture(gestures.reduce((result, gesture) => {
-    result.push(...gesture.inputs);
+    result.push(...gesture.ticks);
 
     return result;
   }, []));
@@ -63,16 +63,13 @@ const series = (gestures) => {
 
 // (gestures: Array<Gesture>) => Gesture
 const parallel = (gestures) => {
-  // gesture one -> [[moveTo], [press], [wait], [release]]
-  // gesture two -> [[moveTo], [press], [wait[, [release[]
-  // output -> [[moveTo, moveTo], [press, press], [wait, wait], [release, release]]
   return new Gesture(gestures.reduce((result, gesture) => {
-    gesture.inputs.forEach((actions, index) => {
+    gesture.ticks.forEach((inputs, index) => {
       if (!result[index]) {
         result[index] = [];
       }
 
-      result[index].push(...actions);
+      result[index].push(...inputs);
     });
 
     return result;

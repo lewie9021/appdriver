@@ -1,15 +1,15 @@
 class Gesture {
-  constructor(inputs) {
-    this.inputs = inputs;
+  constructor(ticks) {
+    this.ticks = ticks;
   }
 
   resolve() {
-    const maxInputs = this.inputs.reduce((result, actions) => {
-      if (actions.length <= result) {
+    const maxInputs = this.ticks.reduce((result, inputs) => {
+      if (inputs.length <= result) {
         return result;
       }
 
-      return actions.length;
+      return inputs.length;
     }, 0);
 
     let result = [];
@@ -20,9 +20,9 @@ class Gesture {
         parameters: {
           pointerType: "touch"
         },
-        actions: this.inputs.map((actions) => {
-          return actions[i]
-            ? actions[i]
+        actions: this.ticks.map((inputs) => {
+          return inputs[i]
+            ? inputs[i]
             : { type: "pause" };
         })
       };
