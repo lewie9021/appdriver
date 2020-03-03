@@ -5,8 +5,7 @@ Asserts the element has a value strictly equal to `value`.
 #### Parameters
 
 1. `value` (`String`): Value to compare against the element's value.
-2. `options` (`Object`):
-  - `options.sliderRange` (`Tuple<Number, Number>?`): Provides cross-platform consistency when retrieving the value of a slider. The first number in the tuple is the minimum value, while the second number is the maximum value of the slider (e.g. `[0, 1]`).
+2. `options` (`Object`): Options required for [`.getValue`](../element/getValue.md).
 
 #### Returns
 
