@@ -4,7 +4,7 @@ The `element` instance provides a way to interact with elements on the screen. Y
 
 #### Parameters
 
-1. `matcher` ([`Matcher`](./matchers.md)): Matcher object defining the element search query.
+1. `matcher` ([`Matcher`](./matchers.md)): Matcher to define the locator strategy.
 
 #### Examples
 
@@ -168,13 +168,13 @@ Polls for element to be focused every `options.interval` until it resolves or `o
 
 <img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
-TODO: Description here.
+Retrieves matching element found within parent.
 
 [```.findElements(matcher: Matcher) => Array<Element>```](./element/findElements.md)
 
 <img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
-TODO: Description here.
+Retrieves matching elements found within parent.
 
 [```.swipe(options: Object) => Element```](./element/swipe.md)
 
