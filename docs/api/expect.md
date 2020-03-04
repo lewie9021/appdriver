@@ -62,19 +62,13 @@ Asserts the element is visible.
 
 [```.toBeDisabled() => Promise```](./expect/toBeDisabled.md)
 
-<img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
-
 Asserts the element is disabled.
 
 [```.toBeSelected() => Promise```](./expect/toBeSelected.md)
 
-<img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
-
 Asserts the element is selected.
 
 [```.toBeFocused() => Promise```](./expect/toBeFocused.md)
-
-<img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
 Asserts the element is focused.
 
