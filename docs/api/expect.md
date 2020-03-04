@@ -38,13 +38,9 @@ Inverts the chained assertion to test the opposite.
 
 [```.toHaveValue(value: Any, options?: Object) => Promise```](./expect/toHaveValue.md)
 
-<img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
-
 Asserts the element has a value strictly equal to `value`.
 
 [```.toHaveText(text: String | Regex, options?: Object) => Promise```](./expect/toHaveText.md)
-
-<img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
 Asserts the element has text matching `text`.
 
