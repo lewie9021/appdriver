@@ -1,4 +1,4 @@
-# `.getText(options?: Options) => Promise<String>`
+# `.getText(options?: Object) => Promise<String>`
 
 Retrieves text content of element.
 

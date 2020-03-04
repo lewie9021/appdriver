@@ -48,7 +48,7 @@ Slider:
 
 #### Related methods
 
-- [`.getText() => Promise<String>`](./getText.md)
+- [`.getText(options?: Object) => Promise<String>`](./getText.md)
 
 ### Related Appium Docs
 
