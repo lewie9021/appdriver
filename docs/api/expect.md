@@ -50,13 +50,9 @@ Asserts the element has text matching `text`.
 
 [```.toExist() => Promise```](./expect/toExist.md)
 
-<img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
-
 Asserts the element exists.
 
 [```.toBeVisible() => Promise```](./expect/toBeVisible.md)
-
-<img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
 Asserts the element is visible.
 
