@@ -32,8 +32,6 @@ The `expect` utility is the out-of-the-box solution for asserting within tests. 
 
 [```.not => Expect```](./expect/not.md)
 
-<img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
-
 Inverts the chained assertion to test the opposite.
 
 [```.toHaveValue(value: Any, options?: Object) => Promise```](./expect/toHaveValue.md)
