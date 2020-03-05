@@ -75,7 +75,7 @@ it("throws an ElementActionError if the hardware keyboard is attached on iOS sim
     expect(err).toBeInstanceOf(ElementActionError);
     expect(err).toHaveProperty(
       "message",
-      "Failed to type text on element. Make sure hardware keyboard is disconnected from iOS simulator."
+      "Failed to type text on element. Ensure hardware keyboard is disconnected from iOS simulator."
     );
   }
 

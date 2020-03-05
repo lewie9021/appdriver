@@ -210,7 +210,7 @@ class Element {
             if (err.status === 13 && isPlatform("iOS")) {
               return done(new ElementActionError([
                 "Failed to type text on element.",
-                "Make sure hardware keyboard is disconnected from iOS simulator."
+                "Ensure hardware keyboard is disconnected from iOS simulator."
               ].join(" ")));
             }
 
@@ -231,7 +231,7 @@ class Element {
             if (err.status === 12 && isPlatform("iOS")) {
               return done(new ElementActionError([
                 "Failed to clear text on element.",
-                "Make sure hardware keyboard is disconnected from iOS simulator."
+                "Ensure hardware keyboard is disconnected from iOS simulator."
               ].join(" ")));
             }
 
