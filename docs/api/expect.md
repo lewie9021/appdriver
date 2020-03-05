@@ -80,7 +80,7 @@ Asserts the element is focused.
 
 [```.toEqual(value: Any) => Promise```](./expect/toEqual.md)
 
-<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
 Asserts the value is strictly equal to `value`.
 
