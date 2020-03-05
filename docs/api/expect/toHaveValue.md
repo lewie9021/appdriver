@@ -4,7 +4,7 @@ Asserts the element has a value strictly equal to `value`.
 
 #### Parameters
 
-1. `value` (`String`): Value to compare against the element's value.
+1. `value` (`Any`): Value to compare against the element's value.
 2. `options` (`Object`): Options required for [`.getValue`](../element/getValue.md).
 
 #### Returns
