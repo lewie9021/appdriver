@@ -24,13 +24,13 @@ describe("Form Screen", () => {
   });
 
   it("supports sliders", async () => {
-    const $slider = await element(by.label("slider-input"));
+    const $slider = await element(by.label("slider-input"), { sliderRange: [ 0, 10 ]});
 
-    await $slider.swipeRight({ percentage: 1 });
-    await expect($slider).toHaveValue(10, { sliderRange: [ 0, 10 ] });
+    await $slider.setValue(10);
+    await expect($slider).toHaveValue(10);
 
-    await $slider.swipeLeft({ percentage: 1 });
-    await expect($slider).toHaveValue(0, { sliderRange: [ 0, 10 ] });
+    await $slider.setValue(0);
+    await expect($slider).toHaveValue(0);
   });
 
   it("supports switches", async () => {
