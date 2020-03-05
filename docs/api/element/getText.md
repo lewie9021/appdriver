@@ -48,7 +48,7 @@ Text Input:
 
 #### Related methods
 
-- [`.getValue(options?: Object) => Promise<Any>`](./getValue.md)
+- [`.getValue() => Promise<Any>`](./getValue.md)
 
 ### Related Appium Docs
 

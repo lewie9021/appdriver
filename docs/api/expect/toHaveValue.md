@@ -1,11 +1,10 @@
-# `.toHaveValue(value: Any, options?: Object) => Promise`
+# `.toHaveValue(value: Any) => Promise`
 
 Asserts the element has a value strictly equal to `value`.
 
 #### Parameters
 
 1. `value` (`Any`): Value to compare against the element's value.
-2. `options` (`Object`): Options required for [`.getValue`](../element/getValue.md).
 
 #### Returns
 
@@ -17,7 +16,7 @@ Text input:
 
 ```javascript
 (async () => {
-  const $input = await element(by.label("text-input"))
+  const $input = await element(by.label("text-input"));
 
   await expect($input).toHaveValue("Hello World!");
 })();
@@ -27,7 +26,7 @@ Switch input:
 
 ```javascript
 (async () => {
-  const $input = await element(by.label("switch"))
+  const $input = await element(by.label("switch"));
 
   await expect($input).toHaveValue(true);
 })();
@@ -37,9 +36,9 @@ Slider input:
 
 ```javascript
 (async () => {
-  const $input = await element(by.label("slider"))
+  const $input = await element(by.label("slider"), { sliderRange: [0, 10] });
 
-  await expect($input).toHaveValue(5, { sliderRange: [0, 10] });
+  await expect($input).toHaveValue(5);
 })();
 ```
 

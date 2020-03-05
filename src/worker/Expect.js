@@ -56,8 +56,8 @@ class Expect {
     });
   }
 
-  async toHaveValue(value, options) {
-    const elementValue = await this.value.getValue(options);
+  async toHaveValue(value) {
+    const elementValue = await this.value.getValue();
 
     return this._assert({
       pass: elementValue === value,

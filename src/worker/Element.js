@@ -36,13 +36,18 @@ const handleActionError = (message) => (err) => {
 };
 
 class Element {
-  constructor({ value, thenable = true }) {
+  constructor({ value, options, thenable = true }) {
     this.value = value;
+    this.options = options;
 
     if (thenable) {
       this.then = function (onResolved, onRejected) {
         return this.value.then((nextValue) => {
-          onResolved(new Element({ value: Promise.resolve(nextValue), thenable: false }));
+          onResolved(new Element({
+            value: Promise.resolve(nextValue),
+            options,
+            thenable: false
+          }));
         }, onRejected);
       };
     }
@@ -351,11 +356,11 @@ class Element {
       .catch(handleActionError("Failed to get element text."));
   }
 
-  getValue(options) {
+  getValue() {
     const currentValue = getCurrentValue(this.value);
 
     return currentValue
-      .then((value) => appiumService.getElementValue({ element: value.ref, options }))
+      .then((value) => appiumService.getElementValue({ element: value.ref, options: this.options }))
       .catch(handleActionError("Failed to get element value."));
   }
 

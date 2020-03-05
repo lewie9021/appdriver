@@ -1,10 +1,12 @@
-# `element(matcher: Matcher) => Element`
+# `element(matcher: Matcher, options?: Object) => Element`
 
 The `element` instance provides a way to interact with elements on the screen. You will need to use a `matcher` object to define how elements are found. The most common is `by.label` which finds elements by accessibility label.
 
 #### Parameters
 
 1. `matcher` ([`Matcher`](./matchers.md)): Matcher to define the locator strategy.
+2. `options` (`Object?`):
+  - `options.sliderRange` (`Tuple<Number, Number>?`): Provides cross-platform consistency when retrieving the value of a slider. The first number in the tuple is the minimum value, while the second number is the maximum value of the slider (e.g. `[0, 1]`).
 
 #### Examples
 
@@ -14,6 +16,15 @@ The `element` instance provides a way to interact with elements on the screen. Y
     .typeText("Example Text");
   
   await expect($element).toHaveValue("Example Text");
+})();
+```
+
+```javascript
+(async () => {
+  const $slider = await element(by.label("slider"), { sliderRange: [ 0, 10 ] })
+    .setValue(5);
+
+  await expect($slider).toHaveValue(5);
 })();
 ```
 
@@ -74,7 +85,7 @@ TODO: Description here.
 
 Retrieves inner text content of element.
 
-[```.getValue(options?: Object) => Promise<Number | String | Boolean>```](./element/getValue.md)
+[```.getValue() => Promise<Any>```](./element/getValue.md)
 
 <img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 

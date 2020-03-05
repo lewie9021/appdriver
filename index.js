@@ -10,12 +10,22 @@ const { isInstanceOf } = require("./src/utils");
 module.exports = {
   by: matchers,
   device: new Device(),
-  element: (matcher) => {
-    return new Element({ value: Promise.resolve({ ref: null, matcher }) });
+  element: (matcher, options) => {
+    return new Element({
+      value: Promise.resolve({ ref: null, matcher }),
+      options
+    });
   },
-  elements: (matcher) => {
+  elements: (matcher, options) => {
     return appiumService.findElements({ matcher })
-      .then((refs) => refs.map((ref) => new Element({ value: Promise.resolve({ ref, matcher: null }) })))
+      .then((refs) => {
+        return refs.map((ref) => {
+          return new Element({
+            value: Promise.resolve({ ref, matcher: null }),
+            options
+          });
+        });
+      })
       .catch((err) => {
         if (isInstanceOf(err, AppiumError)) {
           throw new ElementsNotFoundError(matcher);
