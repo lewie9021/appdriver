@@ -201,6 +201,27 @@ class Element {
     });
   }
 
+  setValue(value) {
+    return this._executeAction(({ ref }, done) => {
+      return appiumService.setElementValue({ element: ref, value, options: this.options })
+        .then(() => done(null))
+        .catch((err) => {
+          if (isInstanceOf(err, AppiumError)) {
+            if (err.status === 13 && isPlatform("iOS")) {
+              return done(new ElementActionError([
+                "Failed to set value on element.",
+                "Ensure hardware keyboard is disconnected from iOS simulator."
+              ].join(" ")));
+            }
+
+            return done(new ElementActionError("Failed to set value on element."));
+          }
+
+          return done(err);
+        });
+    });
+  }
+
   typeText(text) {
     return this._executeAction((value, done) => {
       return appiumService.typeElementText({ element: value.ref, text })
