@@ -58,7 +58,6 @@ describe("Android", () => {
   it("makes a POST request to the correct Appium endpoint", async () => {
     const sessionId = "sessionId";
     const ref = createFindElementMock();
-    const text = "Hello World!";
     jest.spyOn(sessionStore, "getSessionId").mockReturnValue(sessionId);
     jest.spyOn(requestHelpers, "request").mockResolvedValue();
 
@@ -96,7 +95,7 @@ describe("Android", () => {
             { type: "keyDown", value: "d" },
             { type: "keyUp", value: "d" },
             { type: "keyDown", value: "!" },
-            { type: "keyUp", value: "!" },
+            { type: "keyUp", value: "!" }
           ]
         }]
       }

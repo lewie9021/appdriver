@@ -41,7 +41,7 @@ class Element {
     this.options = options;
 
     if (thenable) {
-      this.then = function (onResolved, onRejected) {
+      this.then = function then(onResolved, onRejected) {
         return this.value.then((nextValue) => {
           onResolved(new Element({
             value: Promise.resolve(nextValue),

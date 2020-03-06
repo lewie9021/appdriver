@@ -5,7 +5,7 @@ function runTestSpec(specPath, opts) {
     // Instantiate a Mocha instance.
     const mocha = new Mocha({
       ...opts,
-      reporter: function (runner) {
+      reporter: function reporter(runner) {
         runner.on("start", () => {
           process.send({
             type: "SPEC_STARTED",

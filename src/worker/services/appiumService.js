@@ -774,6 +774,14 @@ function createAppiumService() {
     });
   };
 
+  // ({ sessionId: String?, element: AppiumElement }) => Promise.
+  const clearElementText = ({ sessionId = sessionStore.getSessionId(), element }) => {
+    return request({
+      method: "POST",
+      path: `/session/${sessionId}/element/${element.ELEMENT}/clear`
+    });
+  };
+
   // ({ sessionId: String?, element: AppiumElement, value: Any, options?: Object }) => Promise.
   const setElementValue = ({ sessionId = sessionStore.getSessionId(), element, value, options = {} }) => {
     return platform.select({
@@ -805,14 +813,6 @@ function createAppiumService() {
         return clearElementText({ sessionId, element })
           .then(() => sendElementKeys({ sessionId, element, keys: value.toString().split("") }));
       }
-    })
-  };
-
-  // ({ sessionId: String?, element: AppiumElement }) => Promise.
-  const clearElementText = ({ sessionId = sessionStore.getSessionId(), element }) => {
-    return request({
-      method: "POST",
-      path: `/session/${sessionId}/element/${element.ELEMENT}/clear`
     });
   };
 

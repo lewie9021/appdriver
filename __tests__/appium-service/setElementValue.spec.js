@@ -64,7 +64,7 @@ describe("iOS", () => {
       .mockResolvedValueOnce("XCUIElementTypeSlider")
       .mockResolvedValue();
 
-    await appiumService.setElementValue({ element: ref, value, options: { sliderRange: [ 0, 10 ]} });
+    await appiumService.setElementValue({ element: ref, value, options: { sliderRange: [ 0, 10 ] } });
 
     expect(requestHelpers.request).toHaveBeenCalledTimes(2);
     expect(requestHelpers.request).toHaveBeenCalledWith({
@@ -228,7 +228,7 @@ describe("Android", () => {
       .mockResolvedValueOnce("android.widget.SeekBar")
       .mockResolvedValue();
 
-    await appiumService.setElementValue({ element: ref, value, options: { sliderRange: [ 0, 10 ]} });
+    await appiumService.setElementValue({ element: ref, value, options: { sliderRange: [ 0, 10 ] } });
 
     expect(requestHelpers.request).toHaveBeenCalledTimes(2);
     expect(requestHelpers.request).toHaveBeenCalledWith({
