@@ -55,6 +55,12 @@ Performs double tap gesture on element.
 
 Performs long press gesture on element.
 
+[```.setValue(value: Any) => Element```](./element/setValue.md)
+
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
+
+Replaces element value, clearing existing input.
+
 [```.typeText(text: String) => Element```](./element/typeText.md)
 
 <img src="https://img.shields.io/badge/Platform-All-blue.svg" />

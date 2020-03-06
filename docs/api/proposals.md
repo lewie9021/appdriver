@@ -126,14 +126,6 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.setValue(value: Any) => Element```](./element/setValue.md)
-
-<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
-
-Note: Similar to `.typeText` without the string type constraint. Useful when automating Sliders and Switches.
-
-TODO: Description here.
-
 :warning: [```.getAttribute(attribute: String) => Promise<Any>```](./element/getAttribute.md)
 
 <img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
