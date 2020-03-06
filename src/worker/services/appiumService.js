@@ -1,8 +1,8 @@
 const { sessionStore } = require("../stores/sessionStore");
-const { AppiumError } = require("../errors");
-const { NotImplementedError, NotSupportedError } = require("../errors");
 const gestures = require("../gestures");
 const matchers = require("../matchers");
+const { AppiumError, NotImplementedError, NotSupportedError } = require("../errors");
+const { isNativeTextInput, isNativeSwitch, isNativeSlider } = require("../helpers/elementTypes");
 const { platform, isPlatform, isInstanceOf, isString, toBoolean, toNumber } = require("../../utils");
 const { transformBounds } = require("../attributeTransforms");
 const { request } = require("./request");
@@ -779,21 +779,26 @@ function createAppiumService() {
   const setElementValue = async ({ sessionId = sessionStore.getSessionId(), element, value, options = {} }) => {
     const type = await getElementTypeAttribute({ sessionId, element });
 
-    switch (type) {
-      case "android.widget.EditText":
-      case "XCUIElementTypeTextField":
-        await clearElementText({ sessionId, element });
-        return sendElementKeys({ sessionId, element, keys: value.toString().split("") });
-      case "XCUIElementTypeSlider":
-        if (!options || !options.sliderRange) {
-          throw new Error("You must provide a 'sliderRange' option to set slider values.");
-        }
+    if (isNativeSwitch(type)) {
+      throw new NotSupportedError();
+    }
 
+    if (isNativeTextInput(type)) {
+      await clearElementText({ sessionId, element });
+    }
+
+    if (isNativeSlider(type)) {
+      if (!options || !options.sliderRange) {
+        throw new Error("You must provide a 'sliderRange' option to set slider values.");
+      }
+
+      if (isPlatform("iOS")) {
         const keys = value / (options.sliderRange[1] - options.sliderRange[0]);
         return sendElementKeys({ sessionId, element, keys: keys.toString().split("") });
-      default:
-        return sendElementKeys({ sessionId, element, keys: value.toString().split("") });
+      }
     }
+
+    return sendElementKeys({ sessionId, element, keys: value.toString().split("") });
   };
 
   // ({ sessionId: String?, element: AppiumElement }) => Promise.
