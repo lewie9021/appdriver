@@ -775,25 +775,25 @@ function createAppiumService() {
   };
 
   // ({ sessionId: String?, element: AppiumElement, value: Any, options?: Object }) => Promise.
-  // TODO: Ensure it clears the value first, particularly for text inputs.
   // Note: Doesn't work with switch elements.
-  const setElementValue = ({ sessionId = sessionStore.getSessionId(), element, value, options = {} }) => {
-    return getElementTypeAttribute({ sessionId, element })
-      .then((type) => {
-        switch (type) {
-          case "android.widget.SeekBar":
-            return value;
-          case "XCUIElementTypeSlider":
-            if (!options || !options.sliderRange) {
-              throw new Error("You must provide a 'sliderRange' option to set slider values.");
-            }
+  const setElementValue = async ({ sessionId = sessionStore.getSessionId(), element, value, options = {} }) => {
+    const type = await getElementTypeAttribute({ sessionId, element });
 
-            return value / (options.sliderRange[1] - options.sliderRange[0]);
-          default:
-            return value
+    switch (type) {
+      case "android.widget.EditText":
+      case "XCUIElementTypeTextField":
+        await clearElementText({ sessionId, element });
+        return sendElementKeys({ sessionId, element, keys: value.toString().split("") });
+      case "XCUIElementTypeSlider":
+        if (!options || !options.sliderRange) {
+          throw new Error("You must provide a 'sliderRange' option to set slider values.");
         }
-      })
-      .then((value) => sendElementKeys({ sessionId, element, keys: value.toString().split("") }));
+
+        const keys = value / (options.sliderRange[1] - options.sliderRange[0]);
+        return sendElementKeys({ sessionId, element, keys: keys.toString().split("") });
+      default:
+        return sendElementKeys({ sessionId, element, keys: value.toString().split("") });
+    }
   };
 
   // ({ sessionId: String?, element: AppiumElement }) => Promise.
