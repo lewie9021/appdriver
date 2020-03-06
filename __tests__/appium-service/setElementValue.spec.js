@@ -340,3 +340,63 @@ describe("Android", () => {
     );
   });
 });
+
+describe("Web", () => {
+  beforeEach(() => setPlatform("Web"));
+
+  it("clears the existing value", async () => {
+    const sessionId = "sessionId";
+    const ref = createFindElementMock();
+    const value = "Hello World!";
+    jest.spyOn(sessionStore, "getSessionId").mockReturnValue(sessionId);
+    jest.spyOn(requestHelpers, "request").mockResolvedValue();
+
+    await appiumService.setElementValue({ element: ref, value });
+
+    expect(requestHelpers.request).toHaveBeenCalledTimes(2);
+    expect(requestHelpers.request).toHaveBeenCalledWith({
+      method: "POST",
+      path: `/session/${sessionId}/element/${ref.ELEMENT}/clear`
+    });
+  });
+
+  it("attempts to set the value on element", async () => {
+    const sessionId = "sessionId";
+    const ref = createFindElementMock();
+    const value = 5;
+    jest.spyOn(sessionStore, "getSessionId").mockReturnValue(sessionId);
+    jest.spyOn(requestHelpers, "request").mockResolvedValue();
+
+    await appiumService.setElementValue({ element: ref, value });
+
+    expect(requestHelpers.request).toHaveBeenCalledTimes(2);
+    expect(requestHelpers.request).toHaveBeenCalledWith({
+      method: "POST",
+      path: `/session/${sessionId}/element/${ref.ELEMENT}/value`,
+      payload: {
+        value: value.toString().split("")
+      }
+    });
+  });
+
+  it("optionally accepts a sessionId", async () => {
+    const sessionId = "newSessionId";
+    const ref = createFindElementMock();
+    jest.spyOn(sessionStore, "getSessionId").mockReturnValue("sessionId");
+    jest.spyOn(requestHelpers, "request").mockResolvedValue();
+
+    await appiumService.setElementValue({ sessionId, element: ref, value: "Hello World!" });
+
+    expect(requestHelpers.request).toHaveBeenCalledTimes(2);
+    expect(requestHelpers.request).toHaveBeenCalledWith(
+      expect.objectContaining({
+        path: `/session/${sessionId}/element/${ref.ELEMENT}/clear`
+      })
+    );
+    expect(requestHelpers.request).toHaveBeenCalledWith(
+      expect.objectContaining({
+        path: `/session/${sessionId}/element/${ref.ELEMENT}/value`
+      })
+    );
+  });
+});
