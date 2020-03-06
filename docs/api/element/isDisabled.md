@@ -20,6 +20,7 @@ Disabled status of text input:
 #### Related Methods
 
 - [`.isSelected() => Promise<Boolean>`](./isSelected.md)
+- [`.isFocused() => Promise<Boolean>`](./isFocused.md)
 
 ### Related Appium Docs
 

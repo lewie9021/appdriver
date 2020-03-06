@@ -123,7 +123,7 @@ Retrieves selected status of element.
 
 [```.isFocused() => Promise<Boolean>```](./element/isFocused.md)
 
-<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
 Retrieves focused status of element.
 
