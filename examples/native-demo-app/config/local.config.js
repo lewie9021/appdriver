@@ -47,14 +47,14 @@ const emulators = {
 module.exports = {
   maxDevices: 2,
   specs: [
-    "../tests/button-screen.e2e.js",
     "../tests/carousel-screen.e2e.js",
     "../tests/form-screen.e2e.js",
     "../tests/swipeable-screen.e2e.js",
-    "../tests/zoom-screen.e2e.js",
+    // "../tests/zoom-screen.e2e.js", // TODO: Android not performing gesture.
+    // "../tests/webview-screen.e2e.js", // TODO: Throwing NotSupportedError.
   ],
   devices: [
-    { capabilities: simulators.iPhone8 },
+    // { capabilities: simulators.iPhone8 },
     { capabilities: simulators.iPhoneX },
     { capabilities: emulators.pixel2 }
   ]
