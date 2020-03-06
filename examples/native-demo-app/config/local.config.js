@@ -54,7 +54,7 @@ module.exports = {
     // "../tests/webview-screen.e2e.js", // TODO: Throwing NotSupportedError.
   ],
   devices: [
-    // { capabilities: simulators.iPhone8 },
+    { capabilities: simulators.iPhone8 },
     { capabilities: simulators.iPhoneX },
     { capabilities: emulators.pixel2 }
   ]
