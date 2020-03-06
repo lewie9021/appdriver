@@ -27,6 +27,7 @@ Basic text input.
 
 #### Related methods
 
+- [`.setValue(value: Any) => Element`](./setValue.md)
 - [`.clearText() => Element`](./clearText.md)
 
 #### Related Appium Docs

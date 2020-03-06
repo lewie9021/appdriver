@@ -25,6 +25,7 @@ Clear text input:
 
 #### Related methods
 
+- [`.setValue(value: Any) => Element`](./setValue.md)
 - [`.typeText(text: String) => Element`](./typeText.md)
 
 ### Related Appium Docs
