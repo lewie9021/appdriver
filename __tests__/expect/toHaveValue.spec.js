@@ -88,9 +88,9 @@ it("supports passing .getValue options", async () => {
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
   jest.spyOn(appiumService, "getElementValue").mockResolvedValue(value);
 
-  const $element = await element(by.label("text-input"));
+  const $element = await element(by.label("text-input"), options);
 
-  await expect(assert($element).toHaveValue(value, options))
+  await expect(assert($element).toHaveValue(value))
     .resolves.toEqual(undefined);
 
   expect(appiumService.getElementValue).toHaveBeenCalledWith(expect.objectContaining({ options }));

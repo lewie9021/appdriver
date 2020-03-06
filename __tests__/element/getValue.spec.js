@@ -30,17 +30,17 @@ it("returns the element's value", async () => {
 
 it("supports passing an 'sliderRange' parameter", async () => {
   const ref = createFindElementMock();
-  const sliderRange = [ 0, 5 ];
+  const options = { sliderRange: [ 0, 5 ] };
   const value = 2.5;
 
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
   jest.spyOn(appiumService, "getElementValue").mockResolvedValue(value);
 
-  const result = await element(by.label("slider")).getValue({ sliderRange });
+  const result = await element(by.label("slider"), options).getValue();
 
   expect(appiumService.findElement).toHaveBeenCalledTimes(1);
   expect(appiumService.getElementValue).toHaveBeenCalledTimes(1);
-  expect(appiumService.getElementValue).toHaveBeenCalledWith(expect.objectContaining({ options: { sliderRange } }));
+  expect(appiumService.getElementValue).toHaveBeenCalledWith(expect.objectContaining({ options }));
   expect(result).toEqual(value);
 });
 
