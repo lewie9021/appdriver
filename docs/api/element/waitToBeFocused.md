@@ -1,6 +1,6 @@
-# `.waitToExist(options?: Object) => Element`
+# `.waitToBeFocused(options?: Object) => Element`
 
-Polls for element to exist every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
+Polls for element to be focused every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
 
 #### Parameters
 
@@ -15,22 +15,21 @@ Polls for element to exist every `options.interval` until it resolves or `option
 #### Examples
 
 ```javascript
-const { element, by } = require("appdriver");
-
 (async () => {
-  element(by.label("button"))
-    .waitToExist();
+  await element(by.label("text-input"))
+    .waitToBeFocused();
 })();
 ```
 
 #### Related methods
 
 - [`.waitFor(fn: Function<Promise>, options?: Object) => Element`](./waitFor.md)
+- [`.waitToExist(options?: Object) => Element`](./waitToExist.md)
 - [`.waitToBeVisible(options?: Object) => Element`](./waitToBeVisible.md)
 - [`.waitToBeInvisible(options?: Object) => Element`](./waitToBeInvisible.md)
 - [`.waitToNotExist(options?: Object) => Element`](./waitToNotExist.md)
-- [`.waitToBeFocused(options?: Object) => Element`](./waitToBeFocused.md)
 
 ### Related Appium Docs
 
-- [Find Element](http://appium.io/docs/en/commands/element/find-element/)
+- [Get Active Element (iOS)](http://appium.io/docs/en/commands/element/other/active/)
+- [Get Element Attribute (Android)](http://appium.io/docs/en/commands/element/attributes/attribute/)

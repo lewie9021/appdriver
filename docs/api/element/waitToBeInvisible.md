@@ -29,6 +29,7 @@ const { element, by } = require("appdriver");
 - [`.waitToExist(options?: Object) => Element`](./waitToExist.md)
 - [`.waitToBeVisible(options?: Object) => Element`](./waitToBeVisible.md)
 - [`.waitToNotExist(options?: Object) => Element`](./waitToNotExist.md)
+- [`.waitToBeFocused(options?: Object) => Element`](./waitToBeFocused.md)
 
 ### Related Appium Docs
 
