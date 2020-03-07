@@ -5,6 +5,7 @@
 ### Added
 
 - Support for `.getRef` on Element.
+- Support for `.session` on Device.
 
 ## [v1.0.0-alpha.20] - 2020-03-06
 
