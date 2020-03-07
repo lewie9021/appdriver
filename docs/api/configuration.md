@@ -20,7 +20,7 @@ The configuration file provides a way of tweaking AppDriver the way you want. Wh
 - `waitForInterval` (`Number?`): Interval duration in milliseconds to poll the expectation when using waits within tests. Defaults to 200.
 - `waitForTimeout` (`Number?`): Maximum duration in milliseconds before timing out when using waits within tests. Defaults to 10000.
 - `testTimeout` (`Number?`): Maximum duration in milliseconds before timing out for a test to complete. Defaults to 60000.
-- `maxSpecRetries` (`Number?`): Maximum number of retries for failing spec files. Defaults to 3.
+- `maxSpecRetries` (`Number?`): Maximum number of retries for failing spec files. Defaults to 2.
 
 ### Examples
  

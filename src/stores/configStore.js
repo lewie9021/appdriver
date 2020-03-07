@@ -42,7 +42,7 @@ function createConfigStore() {
       const device = state.config.devices[deviceIndex];
       const deviceMaxSpecRetries = device ? device.maxSpecRetries : null;
 
-      return deviceMaxSpecRetries || state.config.maxSpecRetries || 3;
+      return deviceMaxSpecRetries || state.config.maxSpecRetries || 2;
     },
     getSpecPaths: (deviceIndex = state.deviceIndex) => {
       const device = state.config.devices[deviceIndex];
