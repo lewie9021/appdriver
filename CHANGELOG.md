@@ -1,5 +1,11 @@
 # Change Log
 
+## [Unreleased]
+
+### Added
+
+- Support for `.getRef` on Element.
+
 ## [v1.0.0-alpha.20] - 2020-03-06
 
 ### Added

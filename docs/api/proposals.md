@@ -120,12 +120,6 @@ TODO: Description here.
 
 ### Element
 
-:warning: [```.getRef() => Promise<Object>```](./element/getRef.md)
-
-<img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
-
-TODO: Description here.
-
 :warning: [```.getAttribute(attribute: String) => Promise<Any>```](./element/getAttribute.md)
 
 <img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
