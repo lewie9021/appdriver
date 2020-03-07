@@ -112,7 +112,7 @@ class Element {
     return new Element({ value: nextValue });
   }
 
-  _getRef() {
+  getRef() {
     return getCurrentValue(this.value)
       .then((value) => value.ref);
   }

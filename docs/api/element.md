@@ -37,6 +37,12 @@ The `element` instance provides a way to interact with elements on the screen. Y
 
 #### Element API
 
+[```.getRef() => Promise<Object>```](./element/getRef.md)
+
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
+
+Retrieves the element reference.
+
 [```.tap(options?: Object) => Element```](./element/tap.md)
 
 <img src="https://img.shields.io/badge/Platform-All-blue.svg" />
