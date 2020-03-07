@@ -29,6 +29,13 @@ class Device {
     };
   }
 
+  get session() {
+    return {
+      sessionId: sessionStore.getSessionId(),
+      capabilities: sessionStore.getCapabilities()
+    };
+  }
+
   restartApp() {
     return appiumService.restartApp()
       .catch(handleActionError("Failed to restart the application."));

@@ -68,6 +68,12 @@ Returns the device name of the current session.
 
 Returns the platform name and version of the current session.
 
+[```.session: Object```](./device/session.md)
+
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
+
+Returns the session identifier and capabilities.
+
 [```.wait(duration: Number) => Promise```](./device/wait.md)
 
 <img src="https://img.shields.io/badge/Platform-All-blue.svg" />
