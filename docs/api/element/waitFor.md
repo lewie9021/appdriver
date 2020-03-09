@@ -1,12 +1,12 @@
-# `.waitFor(conditionFn: Function<Promise>, options?: Object) => Element`
+# `.waitFor(condition: Function<Promise>, options?: Object) => Element`
 
-Polls `conditionFn` every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
+Polls `condition` every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
 
-This is useful when your tests need to wait until a particular condition is met. It's common to make use of `expect` as part of defining the `conditionFn` function.
+This is useful when your tests need to wait until a particular condition is met. It's common to make use of `expect` as part of defining the `condition` function.
 
 #### Parameters
 
-1. `conditionFn` (`Function`):
+1. `condition` (`Function`):
   - `element` (`Element`): Reference to current element to apply assertions against.
   - `[ReturnType]` (`Promise`): Returning a Promise that rejects will trigger a retry until successfully resolving or exceeding `options.maxDuration`.
 2. `options` (`Object?`):

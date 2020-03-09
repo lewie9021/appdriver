@@ -22,4 +22,4 @@ Explicitly wait 200 milliseconds:
 
 #### Related methods
 
-- [`.waitFor(conditionFn: Function<Promise>, options?: Object) => Promise`](./waitFor.md)
+- [`.waitFor(condition: Function<Promise>, options?: Object) => Promise`](./waitFor.md)

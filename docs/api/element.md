@@ -151,11 +151,11 @@ Retrieves width and height dimensions of element.
 
 Takes a screenshot (PNG) of the element within the viewport and saves the result on disk at the given `filePath` location.
 
-[```.waitFor(conditionFn: Function<Promise>, options?: Object) => Element```](./element/waitFor.md)
+[```.waitFor(condition: Function<Promise>, options?: Object) => Element```](./element/waitFor.md)
 
 <img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
-Polls `conditionFn` every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
+Polls `condition` every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
 
 [```.waitToBeVisible(options?: Object) => Element```](./element/waitToBeVisible.md)
 

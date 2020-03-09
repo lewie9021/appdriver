@@ -80,11 +80,11 @@ Returns the session identifier and capabilities.
 
 Explicitly wait `duration` milliseconds.
 
-[```.waitFor(conditionFn: Function<Promise>, options?: Object) => Promise```](./device/waitFor.md)
+[```.waitFor(condition: Function<Promise>, options?: Object) => Promise```](./device/waitFor.md)
 
 <img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
-Polls `conditionFn` every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
+Polls `condition` every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
 
 [```.restartApp() => Promise```](./device/restartApp.md)
 
