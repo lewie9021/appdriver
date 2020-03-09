@@ -226,6 +226,6 @@ TODO: Description here.
 
 [```.performGesture(gesture: Gesture) => Promise```](./device/performGesture.md)
 
-<img src="https://img.shields.io/badge/Platform-Native-blue.svg" /> <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-WIP-orange.svg" />
+<img src="https://img.shields.io/badge/Platform-Native-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
 
 TODO: Description here.

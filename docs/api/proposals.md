@@ -10,9 +10,9 @@ This document contains API proposals that could potentially be implemented in th
 
 TODO: Description here
 
-:warning: [```.getSession() => Promise<Object>```](./device/getSession.md)
+:warning: [```.doUntil(action: Function<Promise>, condition: Function<Promise>, options?: Object) => Promise```](./device/doUntil.md)
 
-<img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
 TODO: Description here.
 
