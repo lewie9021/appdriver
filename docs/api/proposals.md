@@ -120,6 +120,12 @@ TODO: Description here.
 
 ### Element
 
+:warning: [```.doUntil(action: Function<Promise>, condition: Function<Promise>, options?: Object) => Element```](./element/doUntil.md)
+
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
+
+TODO: Description here.
+
 :warning: [```.getAttribute(attribute: String) => Promise<Any>```](./element/getAttribute.md)
 
 <img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
