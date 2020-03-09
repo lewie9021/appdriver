@@ -10,6 +10,12 @@ This document contains API proposals that could potentially be implemented in th
 
 TODO: Description here
 
+:warning: [```.doUntil(action: Function<Promise>, condition: Function<Promise>, options?: Object) => Promise```](./device/doUntil.md)
+
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
+
+TODO: Description here.
+
 :warning: [```.getSource() => Promise<String>```](./device/getSource.md)
 
 <img src="https://img.shields.io/badge/Platform-~Native-blue.svg" />
