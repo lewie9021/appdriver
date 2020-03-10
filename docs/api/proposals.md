@@ -10,7 +10,7 @@ This document contains API proposals that could potentially be implemented in th
 
 TODO: Description here
 
-:warning: [```.doUntil(action: Function<Promise>, condition: Function<Promise>, options?: Object) => Promise```](./device/doUntil.md)
+:warning: [```.while(condition: Function<Promise>, action: Function<Promise>, options?: Object) => Promise```](./device/while.md)
 
 <img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
@@ -119,6 +119,12 @@ TODO: Description here.
 TODO: Description here.
 
 ### Element
+
+:warning: [```.while(condition: Function<Promise>, action: Function<Promise>, options?: Object) => Element```](./element/while.md)
+
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
+
+TODO: Description here.
 
 :warning: [```.getAttribute(attribute: String) => Promise<Any>```](./element/getAttribute.md)
 
