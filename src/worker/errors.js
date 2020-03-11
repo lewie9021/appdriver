@@ -53,9 +53,12 @@ class WaitError extends Error {
   constructor(message, errors) {
     super(message);
 
-    Error.captureStackTrace(this, ElementWaitError);
+    Error.captureStackTrace(this, WaitError);
     this.name = this.constructor.name;
-    this.conditionError = last(errors);
+
+    if (errors.length) {
+      this.conditionError = last(errors);
+    }
   }
 }
 
