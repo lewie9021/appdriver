@@ -86,6 +86,12 @@ Explicitly wait `duration` milliseconds.
 
 Polls `condition` every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
 
+[```.while(condition: Function<Promise>, action: Function<Promise>, options?: Object) => Promise```](./device/while.md)
+
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Dev-WIP-orange.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
+
+Polls `condition` and `action` every `options.interval` until `condition` rejects or `options.maxDuration` timeout is exceeded.
+
 [```.restartApp() => Promise```](./device/restartApp.md)
 
 <img src="https://img.shields.io/badge/Platform-All-blue.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" />
