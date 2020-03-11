@@ -30,8 +30,7 @@ describe("Date Picker Screen", () => {
 
     await device.while(
       () => expect($year).not.toHaveValue(year),
-      () => $year.setValue(year),
-      { maxDuration: 3000 }
+      () => $year.setValue(year)
     );
 
     // waitFor(condition: ($e: Element) => Promise, options?: object) => Promise.
