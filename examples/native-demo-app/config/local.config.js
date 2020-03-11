@@ -54,8 +54,23 @@ module.exports = {
     // "../tests/webview-screen.e2e.js", // TODO: Throwing NotSupportedError.
   ],
   devices: [
-    { capabilities: simulators.iPhone8 },
-    { capabilities: simulators.iPhoneX },
-    { capabilities: emulators.pixel2 }
+    {
+      capabilities: simulators.iPhone8,
+      specs: [
+        "../tests/date-picker-screen.ios.e2e.js",
+      ]
+    },
+    {
+      capabilities: simulators.iPhoneX,
+      specs: [
+        "../tests/date-picker-screen.ios.e2e.js",
+      ]
+    },
+    {
+      capabilities: emulators.pixel2,
+      specs: [
+        "../tests/date-picker-screen.android.e2e.js",
+      ]
+    }
   ]
 };
