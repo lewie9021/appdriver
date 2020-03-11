@@ -1,4 +1,4 @@
-const { by, element, expect } = require("../../../index");
+const { by, element, expect, device } = require("../../../index");
 
 describe("Date Picker Screen", () => {
   let $screen;
@@ -14,23 +14,24 @@ describe("Date Picker Screen", () => {
     const [ $month, $day, $year ] = await element(by.label("date-picker"))
       .findElements(by.type("XCUIElementTypePickerWheel"));
 
-    const day = "25";
-    const month = "May";
-    const year = "2023";
+    const day = "28";
+    const month = "August";
+    const year = "2500";
 
-    await $month.while(
-      ($e) => expect($e).not.toHaveValue(month),
-      ($e) => $e.setValue(month)
+    await device.while(
+      () => expect($month).not.toHaveValue(month),
+      () => $month.setValue(month)
     );
 
-    await $day.while(
-      ($e) => expect($e).not.toHaveValue(day),
-      ($e) => $e.setValue(day)
+    await device.while(
+      () => expect($day).not.toHaveValue(day),
+      () => $day.setValue(day)
     );
 
-    await $year.while(
-      ($e) => expect($e).not.toHaveValue(year),
-      ($e) => $e.setValue(year)
+    await device.while(
+      () => expect($year).not.toHaveValue(year),
+      () => $year.setValue(year),
+      { maxDuration: 3000 }
     );
 
     // waitFor(condition: ($e: Element) => Promise, options?: object) => Promise.
@@ -48,8 +49,8 @@ describe("Date Picker Screen", () => {
     //   () => element(by.label("scroll-view")).swipeUp({ distance: 100 })
     // );
 
-    await expect($month).toHaveValue("May");
-    await expect($day).toHaveValue("25");
-    await expect($year).toHaveValue("2023");
+    await expect($month).toHaveValue(month);
+    await expect($day).toHaveValue(day);
+    await expect($year).toHaveValue(year);
   });
 });

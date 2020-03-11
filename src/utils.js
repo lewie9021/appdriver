@@ -6,6 +6,37 @@ const delay = (ms) => {
   });
 };
 
+const pollWhile = async (conditionFn, actionFn, { maxDuration, interval }) => {
+  let timedOut = false;
+  let errors = [];
+
+  const timeout = setTimeout(() => {
+    timedOut = true;
+  }, maxDuration);
+
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    if (timedOut) {
+      throw errors;
+    }
+
+    try {
+      await conditionFn();
+    } catch (err) {
+      clearTimeout(timeout);
+      return;
+    }
+
+    try {
+      await actionFn();
+    } catch (err) {
+      errors.push(err);
+    }
+
+    await delay(interval);
+  }
+};
+
 const pollFor = (promiseFn, { maxDuration, interval }) => {
   return new Promise((resolve, reject) => {
     let timedOut = false;
@@ -178,6 +209,7 @@ const selectPlatform = ({ ios, android, web, native }) => {
 
 module.exports = {
   delay,
+  pollWhile,
   pollFor,
   log,
   isBoolean,

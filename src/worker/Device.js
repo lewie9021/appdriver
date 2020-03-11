@@ -4,7 +4,7 @@ const { sessionStore } = require("./stores/sessionStore");
 const { appiumService } = require("./services/appiumService");
 const gestures = require("./gestures");
 const { Expect } = require("./Expect");
-const { delay, isUndefined, isInstanceOf, pollFor, platform } = require("../utils");
+const { delay, isUndefined, isInstanceOf, pollWhile, pollFor, platform } = require("../utils");
 const { ActionError, AppiumError, WaitError } = require("./errors");
 
 const handleActionError = (message) => (err) => {
@@ -153,6 +153,15 @@ class Device {
     const timeoutMessage = `Wait condition exceeded ${maxDuration}ms timeout (interval: ${interval}ms).`;
 
     return pollFor(conditionFn, { maxDuration, interval })
+      .catch((errors) => { throw new WaitError(timeoutMessage, errors); });
+  }
+
+  while(condition, action, options = {}) {
+    const maxDuration = options.maxDuration || configStore.getWaitForTimeout();
+    const interval = options.interval || configStore.getWaitForInterval();
+    const timeoutMessage = `While exceeded ${maxDuration}ms timeout (interval: ${interval}ms).`;
+
+    return pollWhile(condition, action, { maxDuration, interval })
       .catch((errors) => { throw new WaitError(timeoutMessage, errors); });
   }
 
