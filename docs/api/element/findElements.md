@@ -4,7 +4,7 @@ Retrieves matching elements found within parent. Useful when a direct locator st
 
 #### Parameters
 
-1. `matcher` ([`Matcher`](./matchers.md)): Matcher to define the locator strategy.
+1. `matcher` ([`Matcher`](../matchers.md)): Matcher to define the locator strategy.
 
 #### Returns
 
