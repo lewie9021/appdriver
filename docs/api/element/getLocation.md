@@ -5,7 +5,7 @@ Retrieves x and y coordinates of element.
 #### Parameters
 
 1. `options` (`Object?`):
-  - `options.relative` (Boolean?): Determines if the location should be calculated relative to the viewpoint. Defaults to false.
+    - `options.relative` (Boolean?): Determines if the location should be calculated relative to the viewpoint. Defaults to false.
 
 #### Returns
 

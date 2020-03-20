@@ -7,10 +7,10 @@ This is useful when your tests need to wait until a particular condition is met.
 #### Parameters
 
 1. `condition` (`Function`):
-  - `[ReturnType]` (`Promise`): Returning a Promise that rejects will trigger a retry until successfully resolving or exceeding `options.maxDuration`.
+    - `[ReturnType]` (`Promise`): Returning a Promise that rejects will trigger a retry until successfully resolving or exceeding `options.maxDuration`.
 2. `options` (`Object?`):
-  - `options.interval` (`Number?`): Duration in milliseconds to wait between polling. Defaults to 200.
-  - `options.maxDuration` (`Number?`): Max duration in milliseconds to poll before throwing. Defaults to 10000.
+    - `options.interval` (`Number?`): Duration in milliseconds to wait between polling. Defaults to 200.
+    - `options.maxDuration` (`Number?`): Max duration in milliseconds to poll before throwing. Defaults to 10000.
 
 #### Returns
 

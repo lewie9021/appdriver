@@ -5,9 +5,9 @@ Performs long press gesture on the element.
 #### Parameters
 
 1. `options` (`Object?`):
-  - `options.x` (`Number?`): x offset from left of element. Defaults to center point.
-  - `options.y` (`Number?`): y offset from top of element. Defaults to center point.
-  - `options.duration` (`Number?`): Time in milliseconds to perform the press gesture. Defaults to 750.
+    - `options.x` (`Number?`): x offset from left of element. Defaults to center point.
+    - `options.y` (`Number?`): y offset from top of element. Defaults to center point.
+    - `options.duration` (`Number?`): Time in milliseconds to perform the press gesture. Defaults to 750.
 
 #### Returns
 

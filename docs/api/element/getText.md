@@ -5,7 +5,7 @@ Retrieves text content of element.
 #### Parameters
 
 1. `options` (`Object?`):
-  - `options.recursive` (`Boolean?`): Determines whether to recursively retrieve the inner text. Often useful on Android when text is fragmented, but can be used to retrieve text from grouping elements such as list items. Defaults to false.
+    - `options.recursive` (`Boolean?`): Determines whether to recursively retrieve the inner text. Often useful on Android when text is fragmented, but can be used to retrieve text from grouping elements such as list items. Defaults to false.
 
 #### Returns
 

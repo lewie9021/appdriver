@@ -5,12 +5,12 @@ Polls `condition` and `action` every `options.interval` until `condition` reject
 #### Parameters
 
 1. `condition` (`Function`):
-  - `[ReturnType]` (`Promise`): Returning a Promise that resolves will trigger a retry until it rejects or exceeds `options.maxDuration`.
+    - `[ReturnType]` (`Promise`): Returning a Promise that resolves will trigger a retry until it rejects or exceeds `options.maxDuration`.
 2. `action` (`Function`):
-  - `[ReturnType]` (`Promise`): A Promise that attempts to make `condition` reject.
+    - `[ReturnType]` (`Promise`): A Promise that attempts to make `condition` reject.
 3. `options` (`Object?`):
-  - `options.interval` (`Number?`): Duration in milliseconds to wait between polling. Defaults to 200.
-  - `options.maxDuration` (`Number?`): Max duration in milliseconds to poll before throwing. Defaults to 10000.
+    - `options.interval` (`Number?`): Duration in milliseconds to wait between polling. Defaults to 200.
+    - `options.maxDuration` (`Number?`): Max duration in milliseconds to poll before throwing. Defaults to 10000.
 
 #### Returns
 

@@ -5,11 +5,11 @@ Performs a swipe gesture in the context of the device viewport.
 #### Parameters
 
 1. `options` (`Object`):
-  - `options.x` (`Number?`): X coordinate to begin the gesture from. Defaults to 0.
-  - `options.y` (`Number?`): Y coordinate to begin the gesture from. Defaults to 0.
-  - `options.distance` (`Number`): Distance of swipe in density independent pixels (DIP).
-  - `options.direction` (`Number`): Direction in degrees (0-359) of swipe.
-  - `options.duration` (`Number?`): Time in milliseconds to perform the swipe gesture.
+    - `options.x` (`Number?`): X coordinate to begin the gesture from. Defaults to 0.
+    - `options.y` (`Number?`): Y coordinate to begin the gesture from. Defaults to 0.
+    - `options.distance` (`Number`): Distance of swipe in density independent pixels (DIP).
+    - `options.direction` (`Number`): Direction in degrees (0-359) of swipe.
+    - `options.duration` (`Number?`): Time in milliseconds to perform the swipe gesture.
 
 #### Returns
 

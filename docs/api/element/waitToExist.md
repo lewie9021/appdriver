@@ -5,8 +5,8 @@ Polls for element to exist every `options.interval` until it resolves or `option
 #### Parameters
 
 1. `options` (`Object?`):
-  - `options.interval` (`Number?`): Duration in milliseconds to wait between polling. Defaults to 200.
-  - `options.maxDuration` (`Number?`): Max duration in milliseconds to poll for before throwing. Defaults to 10000.
+    - `options.interval` (`Number?`): Duration in milliseconds to wait between polling. Defaults to 200.
+    - `options.maxDuration` (`Number?`): Max duration in milliseconds to poll for before throwing. Defaults to 10000.
 
 #### Returns
 

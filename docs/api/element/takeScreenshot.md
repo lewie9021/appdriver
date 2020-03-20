@@ -5,7 +5,7 @@ Takes a screenshot (PNG) of the element within the viewport and saves the result
 #### Parameters
 
 1. `options` (`Object`):
-  - `options.filePath` (`String?`): Absolute path on disk to store the screenshot. 
+    - `options.filePath` (`String?`): Absolute path on disk to store the screenshot. 
 
 #### Returns
 

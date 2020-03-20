@@ -5,8 +5,8 @@ Performs double tap gesture on element.
 #### Parameters
 
 1. `options` (`Object?`):
-  - `options.x` (`Number?`): x offset from left of element. Defaults to center point.
-  - `options.y` (`Number?`): y offset from top of element. Defaults to center point.
+    - `options.x` (`Number?`): x offset from left of element. Defaults to center point.
+    - `options.y` (`Number?`): y offset from top of element. Defaults to center point.
 
 #### Returns
 
