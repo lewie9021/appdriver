@@ -33,3 +33,4 @@ const { device, element, by, expect } = require("appdriver");
 #### Related methods
 
 - [`.wait(duration: Number) => Promise`](./wait.md)
+- [`.while(condition: Function<Promise>, action: Function<Promise>, options?: Object) => Promise`](./while.md)

@@ -23,3 +23,4 @@ Explicitly wait 200 milliseconds:
 #### Related methods
 
 - [`.waitFor(condition: Function<Promise>, options?: Object) => Promise`](./waitFor.md)
+- [`.while(condition: Function<Promise>, action: Function<Promise>, options?: Object) => Promise`](./while.md)

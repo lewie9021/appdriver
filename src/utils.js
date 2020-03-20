@@ -31,6 +31,7 @@ const pollWhile = async (conditionFn, actionFn, { maxDuration, interval }) => {
       await actionFn();
     } catch (err) {
       errors.push(err);
+      throw errors;
     }
 
     await delay(interval);
