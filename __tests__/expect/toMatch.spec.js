@@ -1,5 +1,5 @@
 const { NotImplementedError } = require("../../src/worker/errors");
-const { expect: assert } = require("../../index");
+const { expect: assert } = require("../../main");
 
 it("doesn't throw if expectation is met", async () => {
   await expect(assert("Hello World").toMatch(/^Hello/))

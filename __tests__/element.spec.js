@@ -4,7 +4,7 @@ const { appiumService } = require("../src/worker/services/appiumService");
 const { createFindElementMock } = require("./appiumServiceMocks");
 const { setPlatform } = require("./helpers");
 const { Element } = require("../src/worker/Element");
-const { element, by } = require("../");
+const { element, by } = require("../main");
 
 beforeEach(() => setPlatform("iOS"));
 

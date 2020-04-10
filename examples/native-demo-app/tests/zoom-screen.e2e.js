@@ -1,4 +1,4 @@
-const { by, element, device, gestures } = require("../../../index");
+const { by, element, device, gestures } = require("../../../main");
 
 describe("Zoom Screen", () => {
   before(async () => {

@@ -5,7 +5,7 @@ const { createFindElementMock } = require("../appiumServiceMocks");
 const { setPlatform } = require("../helpers");
 const { ElementNotFoundError, ElementActionError, AppiumError } = require("../../src/worker/errors");
 const { Element } = require("../../src/worker/Element");
-const { element, by } = require("../../");
+const { element, by } = require("../../main");
 
 beforeEach(() => setPlatform("iOS"));
 

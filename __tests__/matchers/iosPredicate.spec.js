@@ -3,7 +3,7 @@ jest.mock("../../src/worker/stores/sessionStore");
 const { setPlatform } = require("../helpers");
 const { NotSupportedError } = require("../../src/worker/errors");
 const Matcher = require("../../src/worker/Matcher");
-const { by } = require("../../");
+const { by } = require("../../main");
 
 afterEach(() => {
   jest.resetAllMocks();

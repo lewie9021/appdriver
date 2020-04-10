@@ -1,4 +1,4 @@
-const { by, element, expect, device } = require("../../../index");
+const { by, element, expect, device } = require("../../../main");
 
 
 describe("Date Picker Screen", () => {

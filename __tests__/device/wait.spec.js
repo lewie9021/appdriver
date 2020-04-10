@@ -1,4 +1,4 @@
-const { device } = require("../../");
+const { device } = require("../../main");
 
 it("delays the test script for the given duration (ms)", () => {
   jest.useFakeTimers();

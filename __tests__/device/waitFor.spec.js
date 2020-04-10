@@ -2,7 +2,7 @@ jest.mock("../../src/stores/configStore");
 
 const { configStore } = require("../../src/stores/configStore");
 const { WaitError } = require("../../src/worker/errors");
-const { device } = require("../../");
+const { device } = require("../../main");
 
 afterEach(() => {
   jest.resetAllMocks();

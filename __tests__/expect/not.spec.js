@@ -1,4 +1,4 @@
-const { expect: assert } = require("../../");
+const { expect: assert } = require("../../main");
 
 it("inverts the expectation", async () => {
   const result = assert(100).not;

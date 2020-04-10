@@ -2,7 +2,7 @@ jest.mock("../../src/worker/services/appiumService");
 
 const { appiumService } = require("../../src/worker/services/appiumService");
 const { AppiumError, ActionError } = require("../../src/worker/errors");
-const { device, gestures } = require("../../");
+const { device, gestures } = require("../../main");
 
 afterEach(() => {
   jest.resetAllMocks();

@@ -6,7 +6,7 @@ const { sessionStore } = require("../../src/worker/stores/sessionStore");
 const { appiumService } = require("../../src/worker/services/appiumService");
 const { createFindElementMock, createFindElementsMock } = require("../appiumServiceMocks");
 const { setPlatform } = require("../helpers");
-const { by } = require("../../");
+const { by } = require("../../main");
 
 beforeEach(() => setPlatform("iOS"));
 

@@ -1,4 +1,4 @@
-const { by, element, device, expect } = require("../../../index");
+const { by, element, device, expect } = require("../../../main");
 
 describe("WebView Screen", () => {
   before(async () => {

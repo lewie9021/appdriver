@@ -1,4 +1,4 @@
-const { by, element, elements } = require("../../../index");
+const { by, element, elements } = require("../../../main");
 
 describe("List Screen", () => {
   before(async () => {

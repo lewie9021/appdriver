@@ -1,7 +1,7 @@
 jest.mock("../../src/worker/stores/sessionStore");
 
 const { sessionStore } = require("../../src/worker/stores/sessionStore");
-const { device } = require("../../");
+const { device } = require("../../main");
 
 afterEach(() => {
   jest.resetAllMocks();

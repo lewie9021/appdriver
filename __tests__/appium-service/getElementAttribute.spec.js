@@ -6,7 +6,7 @@ it.todo("Rewrite to ensure use cases are covered.");
 //
 // const appiumServer = require("../helpers/appiumServer");
 //
-// const { element, by } = require("../../");
+// const { element, by } = require("../../main");
 // const { ElementActionError } = require("../../src/errors");
 //
 // afterEach(() => {

@@ -1,7 +1,7 @@
 {
   "name": "appdriver",
   "version": "1.0.0-alpha.20",
-  "main": "index.js",
+  "main": "main.js",
   "bin": "./bin/appdriver",
   "scripts": {
     "prepublish": "yarn lint && yarn test",

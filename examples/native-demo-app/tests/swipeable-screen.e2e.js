@@ -1,4 +1,4 @@
-const { by, element } = require("../../../index");
+const { by, element } = require("../../../main");
 
 describe("Swipeable Screen", () => {
   before(async () => {

@@ -1,4 +1,4 @@
-const { by, element, expect } = require("../../../index");
+const { by, element, expect } = require("../../../main");
 
 describe("Button Screen", () => {
   let $screen;
