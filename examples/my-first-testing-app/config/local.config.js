@@ -5,7 +5,7 @@ const simulators = {
     bundleId: "org.reactjs.native.example.MyFirstTestingApp",
     app: path.join(__dirname, "app", "MyFirstTestingApp.zip"),
     platformName: "iOS",
-    platformVersion: "12.1",
+    platformVersion: "13.3",
     deviceName: "iPhone X",
     automationName: "XCUITest",
     wdaLocalPort: 8100,
