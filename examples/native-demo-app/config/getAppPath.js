@@ -5,7 +5,7 @@ const getAppPath = (platformName, dev = false) => {
   switch (platformName) {
     case "iOS":
       return dev
-        ? path.join(__dirname, "..", "..", "..", "..", "appdriver-native-demo-app", "ios", "build", "NativeDemoApp", "Build", "Products", "Debug-iphonesimulator", "NativeDemoApp.app")
+        ? path.join(__dirname, "..", "..", "..", "..", "appdriver-native-demo-app", "ios", "Build", "Products", "Debug-iphonesimulator", "NativeDemoApp.app")
         : path.join(__dirname, "app", "NativeDemoApp.zip");
     case "Android":
       return dev
