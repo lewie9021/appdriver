@@ -868,6 +868,54 @@ function createAppiumService() {
     });
   };
 
+  // ({ sessionId: String? }) => Promise<String>.
+  const getAlertText = ({ sessionId = sessionStore.getSessionId() } = {}) => {
+    return request({
+      method: "GET",
+      path: `/session/${sessionId}/alert/text`
+    });
+  };
+
+  // ({ sessionId: String? }) => Promise.
+  const acceptAlert = ({ sessionId = sessionStore.getSessionId() } = {}) => {
+    return request({
+      method: "POST",
+      path: `/session/${sessionId}/alert/accept`
+    });
+  };
+
+  // ({ sessionId: String? }) => Promise.
+  const dismissAlert = ({ sessionId = sessionStore.getSessionId() } = {}) => {
+    return request({
+      method: "POST",
+      path: `/session/${sessionId}/alert/dismiss`
+    });
+  };
+
+  // ({ sessionId: String? }) => Promise.
+  const setAlertValue = ({ sessionId = sessionStore.getSessionId(), value }) => {
+    return request({
+      method: "POST",
+      path: `/session/${sessionId}/alert/text`,
+      payload: { text: value }
+    });
+  };
+
+  // ({ sessionId: String? }) => Promise<Boolean>.
+  const getAlertVisible = ({ sessionId = sessionStore.getSessionId() } = {}) => {
+    return platform.select({
+      ios: () => {
+        const matcher = matchers.iosPredicate(`type == "XCUIElementTypeAlert"`);
+
+        return findElement({ sessionId, matcher })
+          .then(() => true)
+          .catch(() => false);
+      },
+      android: () => Promise.reject(new NotImplementedError()),
+      web: () => Promise.reject(new NotImplementedError())
+    });
+  };
+
   // ({ sessionId: String?, script: String, args?: Array<String> }) => Promise.
   const execute = ({ sessionId = sessionStore.getSessionId(), script, args = [] }) => {
     return request({
@@ -899,6 +947,7 @@ function createAppiumService() {
     sendKeyCode,
     goBack,
     performActions,
+
     findElement,
     findElements,
     getElementAttribute,
@@ -925,6 +974,13 @@ function createAppiumService() {
     tapElementReturnKey,
     tapElementBackspaceKey,
     takeElementScreenshot,
+
+    getAlertText,
+    acceptAlert,
+    dismissAlert,
+    setAlertValue,
+    getAlertVisible,
+
     execute
   };
 }

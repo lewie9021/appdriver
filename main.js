@@ -1,4 +1,5 @@
 const { appiumService } = require("./src/worker/services/appiumService");
+const { Alert } = require("./src/worker/Alert");
 const { Device } = require("./src/worker/Device");
 const { Element } = require("./src/worker/Element");
 const { Expect } = require("./src/worker/Expect");
@@ -9,6 +10,7 @@ const { isInstanceOf } = require("./src/utils");
 
 module.exports = {
   by: matchers,
+  alert: new Alert(),
   device: new Device(),
   element: (matcher, options) => {
     return new Element({
