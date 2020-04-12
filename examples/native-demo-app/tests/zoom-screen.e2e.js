@@ -14,8 +14,9 @@ describe("Zoom Screen", () => {
     const { width, height } = await $image.getSize();
     const x = Math.round(location.x + (width / 2));
     const y = Math.round(location.y + (height / 2));
+    const distance = device.platform.name === "iOS" ? 10 : 400;
 
-    await device.performGesture(gestures.spread({ x, y, distance: 10 }));
+    await device.performGesture(gestures.spread({ x, y, distance }));
     await device.wait(3000);
   });
 
@@ -26,8 +27,9 @@ describe("Zoom Screen", () => {
     const { width, height } = await $image.getSize();
     const x = Math.round(location.x + (width / 2));
     const y = Math.round(location.y + (height / 2));
+    const distance = device.platform.name === "iOS" ? 10 : 400;
 
-    await device.performGesture(gestures.pinch({ x, y, distance: 10 }));
+    await device.performGesture(gestures.pinch({ x, y, distance }));
     await device.wait(3000);
   });
 });
