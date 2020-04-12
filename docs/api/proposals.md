@@ -140,38 +140,6 @@ To be used on scrollable elements, ensuring `element` is fully visible so that i
 
 Asserts the element has `attribute` strictly equal to `value`.
 
-### Alert
-
-:warning: [```.accept() => Promise```](./alert/accept.md)
-
-<img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
-
-TODO: Description here.
-
-:warning: [```.dismiss() => Promise```](./alert/dismiss.md)
-
-<img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
-
-TODO: Description here.
-
-:warning: [```.getText() => Promise<String>```](./alert/getText.md)
-
-<img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
-
-TODO: Description here.
-
-:warning: [```.setValue(text: String) => Promise```](./alert/setValue.md)
-
-<img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
-
-TODO: Description here.
-
-:warning: [```.isVisible() => Promise<Boolean>```](./alert/isVisible.md)
-
-<img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
-
-TODO: Description here.
-
 ### Configuration
 
 :warning: `appium.username: String?`
