@@ -160,7 +160,13 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.typeText(text: String) => Promise```](./alert/typeText.md)
+:warning: [```.setValue(text: String) => Promise```](./alert/setValue.md)
+
+<img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
+
+TODO: Description here.
+
+:warning: [```.isVisible() => Promise<Boolean>```](./alert/isVisible.md)
 
 <img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
 
