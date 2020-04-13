@@ -1,5 +1,6 @@
 const { appiumService } = require("./services/appiumService");
-const { isInstanceOf } = require("../utils");
+const { Expect } = require("./Expect");
+const { isInstanceOf, pollFor } = require("../utils");
 const { ActionError, AppiumError } = require("./errors");
 
 const handleActionError = (message) => (err) => {
@@ -17,13 +18,37 @@ class Alert {
   }
 
   accept() {
-    return appiumService.acceptAlert()
-      .catch(handleActionError("Failed to accept alert."));
+    const maxDuration = 5000;
+    const interval = 200;
+    const timeoutMessage = `Failed to accept alert. Alert still visible after ${maxDuration}ms.`;
+    const getAlertText = () => appiumService.getAlertText().catch(() => "");
+
+    return getAlertText()
+      .then((text) => {
+        return appiumService.acceptAlert()
+          .then(() => {
+            return pollFor(() => new Expect(getAlertText()).not.toEqual(text), { maxDuration, interval })
+              .catch(() => { throw new ActionError(timeoutMessage); });
+          })
+          .catch(handleActionError("Failed to accept alert."));
+      });
   }
 
   dismiss() {
-    return appiumService.dismissAlert()
-      .catch(handleActionError("Failed to dismiss alert."));
+    const maxDuration = 5000;
+    const interval = 200;
+    const timeoutMessage = `Failed to dismiss alert. Alert still visible after ${maxDuration}ms.`;
+    const getAlertText = () => appiumService.getAlertText().catch(() => "");
+
+    return getAlertText()
+      .then((text) => {
+        return appiumService.dismissAlert()
+          .then(() => {
+            return pollFor(() => new Expect(getAlertText()).not.toEqual(text), { maxDuration, interval })
+              .catch(() => { throw new ActionError(timeoutMessage); });
+          })
+          .catch(handleActionError("Failed to dismiss alert."));
+      });
   }
 
   setValue(value) {
