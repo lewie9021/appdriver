@@ -911,7 +911,13 @@ function createAppiumService() {
           .then(() => true)
           .catch(() => false);
       },
-      android: () => Promise.reject(new NotImplementedError()),
+      android: () => {
+        const matcher = matchers.id("android:id/alertTitle");
+
+        return findElement({ sessionId, matcher })
+          .then(() => true)
+          .catch(() => false);
+      },
       web: () => Promise.reject(new NotImplementedError())
     });
   };
