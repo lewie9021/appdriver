@@ -901,25 +901,23 @@ function createAppiumService() {
     });
   };
 
-  // ({ sessionId: String? }) => Promise<Boolean>.
-  const getAlertVisible = ({ sessionId = sessionStore.getSessionId() } = {}) => {
-    return platform.select({
-      ios: () => {
-        const matcher = matchers.iosPredicate(`type == "XCUIElementTypeAlert"`);
+  // ({ sessionId: String?, text: String? }) => Promise<Boolean>.
+  const getAlertVisible = ({ sessionId = sessionStore.getSessionId(), text } = {}) => {
+    return getAlertText({ sessionId })
+      .then((alertText) => {
+        if (!text) {
+          return true;
+        }
 
-        return findElement({ sessionId, matcher })
-          .then(() => true)
-          .catch(() => false);
-      },
-      android: () => {
-        const matcher = matchers.id("android:id/alertTitle");
+        return alertText === text;
+      })
+      .catch((err) => {
+        if (isInstanceOf(err, AppiumError) && err.status === 27) {
+          return false;
+        }
 
-        return findElement({ sessionId, matcher })
-          .then(() => true)
-          .catch(() => false);
-      },
-      web: () => Promise.reject(new NotImplementedError())
-    });
+        throw err;
+      });
   };
 
   // ({ sessionId: String?, script: String, args?: Array<String> }) => Promise.
