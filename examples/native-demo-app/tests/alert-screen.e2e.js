@@ -25,16 +25,11 @@ describe("Alert Screen", () => {
     const $screen = await element(by.label("alert-screen"));
     await $screen.findElement(by.label("confirm-alert-button")).tap();
 
-    await device.waitFor(() => expect(alert.isVisible()).toBeTruthy());
+    await device.waitFor(() => expect(alert.isVisible()).toEqual(true));
 
     await alert.accept();
 
-    await device.waitFor(() => {
-      return expect(alert.getText()).toEqual([
-        "Alert",
-        "Accepted!"
-      ].join("\n"));
-    });
+    await device.waitFor(() => expect(alert.isVisible()).toEqual(true));
 
     return alert.dismiss();
   });
@@ -43,16 +38,11 @@ describe("Alert Screen", () => {
     const $screen = await element(by.label("alert-screen"));
     await $screen.findElement(by.label("confirm-alert-button")).tap();
 
-    await device.waitFor(() => expect(alert.isVisible()).toBeTruthy());
+    await device.waitFor(() => expect(alert.isVisible()).toEqual(true));
 
     await alert.dismiss();
 
-    await device.waitFor(() => {
-      return expect(alert.getText()).toEqual([
-        "Alert",
-        "Cancelled!"
-      ].join("\n"));
-    });
+    await device.waitFor(() => expect(alert.isVisible()).toEqual(true));
 
     return alert.dismiss();
   });
