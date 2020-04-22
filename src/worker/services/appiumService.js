@@ -869,6 +869,7 @@ function createAppiumService() {
   };
 
   // ({ sessionId: String? }) => Promise<String>.
+  // Note: Seems to return the text of the last alert in the stack (overlap scenario).
   const getAlertText = ({ sessionId = sessionStore.getSessionId() } = {}) => {
     return request({
       method: "GET",
