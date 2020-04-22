@@ -21,16 +21,19 @@ class Alert {
     const maxDuration = 5000;
     const interval = 200;
     const timeoutMessage = `Failed to accept alert. Alert still visible after ${maxDuration}ms.`;
-    const getAlertText = () => appiumService.getAlertText().catch(() => "");
 
-    return getAlertText()
+    return appiumService.getAlertText()
+      .catch(handleActionError("Failed to accept alert. No alert present."))
       .then((text) => {
         return appiumService.acceptAlert()
           .then(() => {
-            return pollFor(() => new Expect(getAlertText()).not.toEqual(text), { maxDuration, interval })
+            return pollFor(async () => {
+              const visible = await appiumService.getAlertVisible({ text });
+              return new Expect(visible).toBeFalsy();
+            }, { maxDuration, interval })
               .catch(() => { throw new ActionError(timeoutMessage); });
           })
-          .catch(handleActionError("Failed to accept alert."));
+          .catch(handleActionError("Failed to accept alert. Alert still present."));
       });
   }
 
@@ -38,16 +41,19 @@ class Alert {
     const maxDuration = 5000;
     const interval = 200;
     const timeoutMessage = `Failed to dismiss alert. Alert still visible after ${maxDuration}ms.`;
-    const getAlertText = () => appiumService.getAlertText().catch(() => "");
 
-    return getAlertText()
+    return appiumService.getAlertText()
+      .catch(handleActionError("Failed to dismiss alert. No alert present."))
       .then((text) => {
         return appiumService.dismissAlert()
           .then(() => {
-            return pollFor(() => new Expect(getAlertText()).not.toEqual(text), { maxDuration, interval })
+            return pollFor(async () => {
+              const visible = await appiumService.getAlertVisible({ text });
+              return new Expect(visible).toBeFalsy();
+            }, { maxDuration, interval })
               .catch(() => { throw new ActionError(timeoutMessage); });
           })
-          .catch(handleActionError("Failed to dismiss alert."));
+          .catch(handleActionError("Failed to dismiss alert. Alert still present."));
       });
   }
 

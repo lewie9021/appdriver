@@ -877,6 +877,8 @@ function createAppiumService() {
   };
 
   // ({ sessionId: String? }) => Promise.
+  // Note: Seems to accept all present alerts, not just the top one (overlap scenario).
+  // If this becomes an issue, we can always write our own heuristic.
   const acceptAlert = ({ sessionId = sessionStore.getSessionId() } = {}) => {
     return request({
       method: "POST",
@@ -885,6 +887,8 @@ function createAppiumService() {
   };
 
   // ({ sessionId: String? }) => Promise.
+  // Note: Seems to dismiss all present alerts, not just the top one (overlap scenario).
+  // If this becomes an issue, we can always write our own heuristic.
   const dismissAlert = ({ sessionId = sessionStore.getSessionId() } = {}) => {
     return request({
       method: "POST",
@@ -903,18 +907,24 @@ function createAppiumService() {
 
   // ({ sessionId: String?, text: String? }) => Promise<Boolean>.
   const getAlertVisible = ({ sessionId = sessionStore.getSessionId(), text } = {}) => {
+    // console.log("get alert visible:", { text })
+
     return getAlertText({ sessionId })
       .then((alertText) => {
         if (!text) {
+          console.log("no text");
           return true;
         }
-
+        console.log("checking equality");
         return alertText === text;
       })
       .catch((err) => {
         if (isInstanceOf(err, AppiumError) && err.status === 27) {
+          console.log("no alert");
           return false;
         }
+
+        console.log("error!", err);
 
         throw err;
       });
