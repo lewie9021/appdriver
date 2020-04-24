@@ -31,6 +31,6 @@ const { element, by } = require("appdriver");
 - [`.waitToNotExist(options?: Object) => Element`](./waitToNotExist.md)
 - [`.waitToBeFocused(options?: Object) => Element`](./waitToBeFocused.md)
 
-### Related Appium Docs
+#### Related Appium Docs
 
 - [Is Element Displayed](http://appium.io/docs/en/commands/element/attributes/displayed/)

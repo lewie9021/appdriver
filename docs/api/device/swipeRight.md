@@ -40,7 +40,7 @@ Swipe right 200 pixels. This will swipe right from the coordinate (300, 200) to 
 - [`.swipeUp(options: Object) => Promise`](./swipeUp.md)
 - [`.swipeLeft(options: Object) => Promise`](./swipeLeft.md)
 
-### Related Docs
+#### Related Docs
                                                            
 - [W3C Actions (Appium)](http://appium.io/docs/en/commands/interactions/actions/)
 - [Actions (W3C)](https://www.w3.org/TR/webdriver/#actions)

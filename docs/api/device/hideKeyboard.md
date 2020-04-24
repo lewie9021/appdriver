@@ -19,6 +19,6 @@ Hides the on-screen keyboard.
 
 - [`.isKeyboardVisible() => Promise<Boolean>`](./isKeyboardVisible.md)
 
-### Related Docs
+#### Related Docs
 
 - [Hide Keyboard (Appium)](http://appium.io/docs/en/commands/device/keys/hide-keyboard/)

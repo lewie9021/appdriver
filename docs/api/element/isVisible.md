@@ -21,6 +21,6 @@ Visibility status of button:
 
 - [`.exists() => Promise<Boolean>`](./exists.md)
 
-### Related Appium Docs
+#### Related Appium Docs
 
 - [Is Element Displayed](http://appium.io/docs/en/commands/element/attributes/displayed/)

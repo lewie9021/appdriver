@@ -21,6 +21,6 @@ Existence status of button:
 
 - [`.isVisible() => Promise<Boolean>`](./isVisible.md)
 
-### Related Appium Docs
+#### Related Appium Docs
 
 - [Find Element](http://appium.io/docs/en/commands/element/find-element/)

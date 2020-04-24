@@ -22,6 +22,6 @@ Check if the device is in a portrait orientation.
 - [`.setPortrait() => Promise`](./setPortrait.md)
 - [`.setLandscape() => Promise`](./setLandscape.md)
 
-### Related Appium Docs
+#### Related Appium Docs
 
 - [Get Orientation](http://appium.io/docs/en/commands/session/orientation/get-orientation/)

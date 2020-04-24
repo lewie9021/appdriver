@@ -20,7 +20,7 @@ Sets the device orientation to portrait.
 - [`.isPortrait() => Promise<Boolean>`](./isPortrait.md)
 - [`.setLandscape() => Promise`](./setLandscape.md)
 
-### Related Docs
+#### Related Docs
 
 - [Set Orientation (Appium)](http://appium.io/docs/en/commands/session/orientation/set-orientation/)
 - [Set Orientation (JSONWP)](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#post-sessionsessionidorientation)

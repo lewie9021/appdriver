@@ -48,7 +48,7 @@ Swipe down 100 pixels. This will swipe down from the coordinate (0, 0) to (0, 10
 - [`.swipeLeft(options: Object) => Promise`](./swipeLeft.md)
 - [`.swipeRight(options: Object) => Promise`](./swipeRight.md)
 
-### Related Docs
+#### Related Docs
 
 - [W3C Actions (Appium)](http://appium.io/docs/en/commands/interactions/actions/)
 - [Actions (W3C)](https://www.w3.org/TR/webdriver/#actions)

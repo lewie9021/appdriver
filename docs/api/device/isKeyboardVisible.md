@@ -19,6 +19,6 @@ Returns whether the keyboard is visible or not.
 
 - [`.hideKeyboard() => Promise`](./hideKeyboard.md)
 
-### Related Docs
+#### Related Docs
 
 - [Is Keyboard Shown (Appium)](http://appium.io/docs/en/commands/device/keys/is-keyboard-shown/)

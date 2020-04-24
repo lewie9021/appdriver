@@ -19,7 +19,7 @@ Asserts the element is focused.
 - [`.toBeDisabled() => Promise`](./toBeDisabled.md)
 - [`.toBeSelected() => Promise`](./toBeSelected.md)
 
-### Related Appium Docs
+#### Related Appium Docs
 
 - [Get Active Element (iOS)](http://appium.io/docs/en/commands/element/other/active/)
 - [Get Element Attribute (Android)](http://appium.io/docs/en/commands/element/attributes/attribute/)

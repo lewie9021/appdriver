@@ -45,6 +45,6 @@ const path = require("path");
 - [`.takeScreenshot(options: Object) => Promise<Buffer>`](./takeScreenshot.md)
 - [`.startScreenRecording(options?: Object) => Promise`](./startScreenRecording.md)
 
-### Related Docs
+#### Related Docs
 
 - [Stop Recording Screen (Appium)](http://appium.io/docs/en/commands/device/recording-screen/stop-recording-screen/)

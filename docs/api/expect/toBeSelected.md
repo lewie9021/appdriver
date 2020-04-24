@@ -19,6 +19,6 @@ Asserts the element is selected.
 - [`.toBeDisabled() => Promise`](./toBeDisabled.md)
 - [`.toBeFocused() => Promise`](./toBeFocused.md)
 
-### Related Appium Docs
+#### Related Appium Docs
 
 - [Is Element Selected](http://appium.io/docs/en/commands/element/attributes/selected/)

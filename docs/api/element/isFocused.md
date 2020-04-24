@@ -22,7 +22,7 @@ Text input:
 - [`.isDisabled() => Promise<Boolean>`](./isDisabled.md)
 - [`.isSelected() => Promise<Boolean>`](./isSelected.md)
 
-### Related Appium Docs
+#### Related Appium Docs
 
 - [Get Active Element (iOS)](http://appium.io/docs/en/commands/element/other/active/)
 - [Get Element Attribute (Android)](http://appium.io/docs/en/commands/element/attributes/attribute/)

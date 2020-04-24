@@ -26,6 +26,6 @@ Attempts to accept a native alert. If an alert is not visible, an error will be 
 
 - [`.dismiss() => Promise`](./dismiss.md)
 
-### Related Docs
+#### Related Docs
 
 - [Accept Alert (W3C)](https://www.w3.org/TR/webdriver/#accept-alert)

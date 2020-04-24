@@ -42,6 +42,6 @@ Swipe left 50% of the element width. Given the element width is 200, this will s
 - [`.swipeUp(options: Object) => Promise`](./swipeUp.md)
 - [`.swipeRight(options: Object) => Promise`](./swipeRight.md)
 
-### Related Appium Docs
+#### Related Appium Docs
 
 - [W3C Actions](http://appium.io/docs/en/commands/interactions/actions/)

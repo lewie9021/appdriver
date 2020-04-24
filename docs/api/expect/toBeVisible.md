@@ -18,6 +18,6 @@ Asserts the element is visible.
 
 - [`.toExist() => Promise`](./toExist.md)
 
-### Related Appium Docs
+#### Related Appium Docs
 
 - [Is Element Displayed](http://appium.io/docs/en/commands/element/attributes/displayed/)

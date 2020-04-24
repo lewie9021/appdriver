@@ -19,6 +19,6 @@ Asserts the element is disabled.
 - [`.toBeSelected() => Promise`](./toBeSelected.md)
 - [`.toBeFocused() => Promise`](./toBeFocused.md)
 
-### Related Appium Docs
+#### Related Appium Docs
 
 - [Is Element Enabled](http://appium.io/docs/en/commands/element/attributes/enabled/)

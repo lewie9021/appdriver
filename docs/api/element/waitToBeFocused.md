@@ -29,7 +29,7 @@ Polls for element to be focused every `options.interval` until it resolves or `o
 - [`.waitToBeInvisible(options?: Object) => Element`](./waitToBeInvisible.md)
 - [`.waitToNotExist(options?: Object) => Element`](./waitToNotExist.md)
 
-### Related Appium Docs
+#### Related Appium Docs
 
 - [Get Active Element (iOS)](http://appium.io/docs/en/commands/element/other/active/)
 - [Get Element Attribute (Android)](http://appium.io/docs/en/commands/element/attributes/attribute/)

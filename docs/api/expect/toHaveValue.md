@@ -46,7 +46,7 @@ Slider input:
 
 - [`.toHaveText(text: String | Regex, options?: Object) => Promise`](./toHaveText.md)
 
-### Related Appium Docs
+#### Related Appium Docs
 
 - [Get Element Text (Android)](http://appium.io/docs/en/commands/element/attributes/text/)
 - [Get Element Value (iOS)](http://appium.io/docs/en/commands/element/attributes/value/)

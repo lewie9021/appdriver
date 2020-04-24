@@ -22,6 +22,6 @@ Disabled status of text input:
 - [`.isSelected() => Promise<Boolean>`](./isSelected.md)
 - [`.isFocused() => Promise<Boolean>`](./isFocused.md)
 
-### Related Appium Docs
+#### Related Appium Docs
 
 - [Is Element Enabled](http://appium.io/docs/en/commands/element/attributes/enabled/)

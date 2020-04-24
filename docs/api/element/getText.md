@@ -50,6 +50,6 @@ Text Input:
 
 - [`.getValue() => Promise<Any>`](./getValue.md)
 
-### Related Appium Docs
+#### Related Appium Docs
 
 - [Get Element Text](http://appium.io/docs/en/commands/element/attributes/text/)

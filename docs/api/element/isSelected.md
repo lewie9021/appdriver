@@ -24,6 +24,6 @@ Retrieves selected status of element. Please note that this is based on the acce
 - [`.isDisabled() => Promise<Boolean>`](./isDisabled.md)
 - [`.isFocused() => Promise<Boolean>`](./isFocused.md)
 
-### Related Appium Docs
+#### Related Appium Docs
 
 - [Is Element Selected](http://appium.io/docs/en/commands/element/attributes/selected/)

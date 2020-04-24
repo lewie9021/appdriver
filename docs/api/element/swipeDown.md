@@ -42,6 +42,6 @@ Swipe down 25% of the element height. Given the element has a height of 40, this
 - [`.swipeLeft(options: Object) => Promise`](./swipeLeft.md)
 - [`.swipeRight(options: Object) => Promise`](./swipeRight.md)
 
-### Related Appium Docs
+#### Related Appium Docs
 
 - [W3C Actions](http://appium.io/docs/en/commands/interactions/actions/)

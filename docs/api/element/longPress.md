@@ -38,6 +38,6 @@ Perform long press gesture at (100, 25), relative to the element location:
 - [`.tap(options?: Object) => Element`](./tap.md)
 - [`.doubleTap(options?: Object) => Element`](./doubleTap.md)
 
-### Related Appium Docs
+#### Related Appium Docs
 
 - [W3C Actions](http://appium.io/docs/en/commands/interactions/actions/)

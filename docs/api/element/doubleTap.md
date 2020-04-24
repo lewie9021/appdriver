@@ -37,6 +37,6 @@ Perform double tap gesture at (200, 0), relative to the element location:
 - [`.tap(options?: Object) => Element`](./tap.md)
 - [`.longPress(options?: Object) => Element`](./longPress.md)
 
-### Related Appium Docs
+#### Related Appium Docs
 
 - [W3C Actions](http://appium.io/docs/en/commands/interactions/actions/)
