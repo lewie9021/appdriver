@@ -24,6 +24,6 @@ const path = require("path");
 })();
 ```     
 
-### Related Docs
+#### Related Docs
 
 - [Take Element Screenshot (W3C)](https://www.w3.org/TR/webdriver/#dfn-take-element-screenshot)
