@@ -25,7 +25,7 @@ The `alert` object provides a way of interacting with native alerts.
 
 <img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
-TODO: Description here.
+Attempts to accept a native alert.
 
 [```.dismiss() => Promise```](./alert/dismiss.md)
 
