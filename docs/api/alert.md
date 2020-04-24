@@ -31,7 +31,7 @@ Attempts to accept a native alert.
 
 <img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
-TODO: Description here.
+Attempts to dismiss a native alert.
 
 [```.getText() => Promise<String>```](./alert/getText.md)
 
