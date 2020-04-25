@@ -47,7 +47,7 @@ const pollFor = (promiseFn, { maxDuration, interval }) => {
       timedOut = true;
     }, maxDuration);
 
-    const next = (err) => {
+    const next = (err, value) => {
       if (err) {
         errors.push(err);
       }
@@ -60,17 +60,17 @@ const pollFor = (promiseFn, { maxDuration, interval }) => {
         return delay(interval)
           .then(() => {
             promiseFn()
-              .then(() => next())
+              .then((x) => next(null, x))
               .catch((error) => next(error || new Error("'conditionFn' threw with an undefined error.")));
           });
       }
 
       clearTimeout(timeout);
-      resolve();
+      resolve(value);
     };
 
     promiseFn()
-      .then(() => next())
+      .then((x) => next(null, x))
       .catch((err) => next(err || new Error("'conditionFn' threw with an undefined error.")));
   });
 };
