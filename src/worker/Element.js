@@ -14,7 +14,7 @@ const getCurrentValue = (elementValue) => {
       if (isInstanceOf(err, ElementNotFoundError) && err.matcher) {
         return pollFor(() => {
           return appiumService.findElement({ matcher: err.matcher })
-            .then((ref) => ({ ref, matcher: err.matcher }))
+            .then((ref) => ({ ref, matcher: err.matcher }));
         }, { maxDuration, interval })
           .catch(() => { throw new ElementNotFoundError(err.matcher); });
       }
