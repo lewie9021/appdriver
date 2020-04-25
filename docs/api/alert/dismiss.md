@@ -30,3 +30,4 @@ Attempts to dismiss a native alert. If an alert is not visible, an error will be
 #### Related Docs
 
 - [Dismiss Alert (W3C)](https://www.w3.org/TR/webdriver/#dismiss-alert)
+- [Get Alert Text (W3C)](https://www.w3.org/TR/webdriver/#get-alert-text)

@@ -30,3 +30,4 @@ Attempts to accept a native alert. If an alert is not visible, an error will be 
 #### Related Docs
 
 - [Accept Alert (W3C)](https://www.w3.org/TR/webdriver/#accept-alert)
+- [Get Alert Text (W3C)](https://www.w3.org/TR/webdriver/#get-alert-text)
