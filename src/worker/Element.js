@@ -148,7 +148,7 @@ class Element {
             return refs.map((ref) => {
               return new Element({
                 value: Promise.resolve({ ref, matcher: null }),
-                optio
+                options
               });
             });
           });
