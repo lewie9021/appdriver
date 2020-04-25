@@ -13,7 +13,7 @@ describe("Date Picker Screen", () => {
 
     const day = "1";
     const month = "September";
-    const year = "2100";
+    const year = "2050";
 
     await device.while(
       () => expect($month).not.toHaveValue(month),
