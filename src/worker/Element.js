@@ -117,7 +117,7 @@ class Element {
       .then((value) => value.ref);
   }
 
-  findElement(matcher) {
+  findElement(matcher, options) {
     const currentValue = getCurrentValue(this.value);
 
     const nextValue = new Promise((resolve, reject) => {
@@ -135,7 +135,7 @@ class Element {
         });
     });
 
-    return new Element({ value: nextValue });
+    return new Element({ value: nextValue, options });
   }
 
   findElements(matcher) {
