@@ -160,20 +160,23 @@ class Expect {
 
   async toHaveLength(length) {
     const supportedTypes = [ "array", "object", "string" ];
-    const valueType = getValueType(this.value);
+    const isPromiseValue = isPromise(this.value);
+    const actualValue = await this.value;
+    const valueType = getValueType(actualValue);
 
     if (!supportedTypes.includes(valueType)) {
       throw new NotImplementedError();
     }
 
-    const actualLength = this.value.length || 0;
+    const actualLength = actualValue.length || 0;
+    const valueTypeText = isPromiseValue ? "promise" : valueType;
 
     return this._assert({
       pass: actualLength === length,
       message: (inverted) => (
         inverted
-          ? `Expected ${valueType} not to have length '${length}'.`
-          : `Expected ${valueType} to have length '${length}' but instead got '${actualLength}'.`
+          ? `Expected ${valueTypeText} not to have length '${length}'.`
+          : `Expected ${valueTypeText} to have length '${length}' but instead got '${actualLength}'.`
       )
     });
   }
