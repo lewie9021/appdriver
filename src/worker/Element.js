@@ -6,13 +6,16 @@ const { ElementNotFoundError, ElementActionError, ElementWaitError, AppiumError 
 const { isPlatform, isUndefined, isInstanceOf, isNull, pollFor } = require("../utils");
 
 const getCurrentValue = (elementValue) => {
+  const maxDuration = configStore.getFindTimeout();
+  const interval = configStore.getFindInterval();
+
   return elementValue
     .catch((err) => {
       if (isInstanceOf(err, ElementNotFoundError) && err.matcher) {
         return pollFor(() => {
           return appiumService.findElement({ matcher: err.matcher })
             .then((ref) => ({ ref, matcher: err.matcher }))
-        }, { maxDuration: 30 * 1000, interval: 200 })
+        }, { maxDuration, interval })
           .catch(() => { throw new ElementNotFoundError(err.matcher); });
       }
 
@@ -23,7 +26,7 @@ const getCurrentValue = (elementValue) => {
         return pollFor(() => {
           return appiumService.findElement({ matcher: value.matcher })
             .then((ref) => ({ ref, matcher: value.matcher }));
-        }, { maxDuration: 30 * 1000, interval: 200 })
+        }, { maxDuration, interval })
           .catch(() => { throw new ElementNotFoundError(value.matcher); });
       }
 

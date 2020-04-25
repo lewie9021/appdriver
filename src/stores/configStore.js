@@ -26,6 +26,18 @@ function createConfigStore() {
 
       return deviceTestTimeout || state.config.testTimeout || (60 * 1000);
     },
+    getFindTimeout: (deviceIndex = state.deviceIndex) => {
+      const device = state.config.devices[deviceIndex];
+      const deviceWaitForTimeout = device ? device.findTimeout : null;
+
+      return deviceWaitForTimeout || state.config.findTimeout || (10 * 1000);
+    },
+    getFindInterval: (deviceIndex = state.deviceIndex) => {
+      const device = state.config.devices[deviceIndex];
+      const deviceWaitForInterval = device ? device.findInterval : null;
+
+      return deviceWaitForInterval || state.config.findInterval || 200;
+    },
     getWaitForTimeout: (deviceIndex = state.deviceIndex) => {
       const device = state.config.devices[deviceIndex];
       const deviceWaitForTimeout = device ? device.waitForTimeout : null;
