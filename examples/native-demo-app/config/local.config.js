@@ -47,33 +47,34 @@ const emulators = {
 module.exports = {
   maxDevices: 2,
   specs: [
-    "../tests/alert-screen.e2e.js",
-    "../tests/carousel-screen.e2e.js",
-    "../tests/form-screen.e2e.js",
-    "../tests/swipeable-screen.e2e.js",
+    // "../tests/test.e2e.js"
+    // "../tests/alert-screen.e2e.js",
+    // "../tests/carousel-screen.e2e.js",
+    // "../tests/form-screen.e2e.js",
+    // "../tests/swipeable-screen.e2e.js",
     // "../tests/zoom-screen.e2e.js", // TODO: Android not performing gesture.
     // "../tests/webview-screen.e2e.js", // TODO: Throwing NotSupportedError.
   ],
   devices: [
-    {
-      capabilities: simulators.iPhone8,
-      specs: [
-        "../tests/date-picker-screen.ios.e2e.js",
-        "../tests/alert-screen.ios.e2e.js"
-      ]
-    },
+    // {
+    //   capabilities: simulators.iPhone8,
+    //   specs: [
+    //     "../tests/date-picker-screen.ios.e2e.js",
+    //     "../tests/alert-screen.ios.e2e.js"
+    //   ]
+    // },
     {
       capabilities: simulators.iPhoneX,
       specs: [
-        "../tests/date-picker-screen.ios.e2e.js",
+      //   "../tests/date-picker-screen.ios.e2e.js",
         "../tests/alert-screen.ios.e2e.js"
       ]
     },
-    {
-      capabilities: emulators.pixel2,
-      specs: [
-        "../tests/date-picker-screen.android.e2e.js"
-      ]
-    }
+    // {
+    //   capabilities: emulators.pixel2,
+    //   // specs: [
+    //   //   "../tests/date-picker-screen.android.e2e.js"
+    //   // ]
+    // }
   ]
 };

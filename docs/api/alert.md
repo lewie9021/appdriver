@@ -37,13 +37,13 @@ Attempts to dismiss a native alert.
 
 <img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
-TODO: Description here.
+Retrieves text content of a native alert.
 
 [```.setValue(text: String) => Promise```](./alert/setValue.md)
 
 <img src="https://img.shields.io/badge/Platform-iOS-blue.svg" />
 
-TODO: Description here.
+Replaces alert value, clearing existing input.
 
 [```.isVisible() => Promise<Boolean>```](./alert/isVisible.md)
 

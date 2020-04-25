@@ -14,6 +14,7 @@ describe("Alert Screen (iOS)", () => {
     await $screen.findElement(by.label("prompt-button")).tap();
 
     await alert.setValue("Hello World!");
+    await alert.setValue("Testing!");
 
     await device.wait(2000);
   });
