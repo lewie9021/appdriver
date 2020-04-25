@@ -49,4 +49,4 @@ TODO: Description here.
 
 <img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
 
-TODO: Description here.
+Returns whether an alert is visible.
