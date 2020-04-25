@@ -187,13 +187,13 @@ Polls for element to not exist every `options.interval` until it resolves or `op
 
 Polls for element to be focused every `options.interval` until it resolves or `options.maxDuration` timeout is exceeded.
 
-[```.findElement(matcher: Matcher) => Element```](./element/findElement.md)
+[```.findElement(matcher: Matcher, options?: Object) => Element```](./element/findElement.md)
 
 <img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
 Retrieves matching element found within parent.
 
-[```.findElements(matcher: Matcher) => Array<Element>```](./element/findElements.md)
+[```.findElements(matcher: Matcher, options?: Object) => Array<Element>```](./element/findElements.md)
 
 <img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 

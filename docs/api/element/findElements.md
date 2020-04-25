@@ -1,10 +1,12 @@
-# `.findElements(matcher: Matcher) => Array<Element>`
+# `.findElements(matcher: Matcher, options?: Object) => Array<Element>`
 
 Retrieves matching elements found within parent. Useful when a direct locator strategy isn't available unless scoped to an element.
 
 #### Parameters
 
 1. `matcher` ([`Matcher`](../matchers.md)): Matcher to define the locator strategy.
+2. `options` (`Object?`):
+  - `options.sliderRange` (`Tuple<Number, Number>?`): Provides cross-platform consistency when retrieving the value of a slider. The first number in the tuple is the minimum value, while the second number is the maximum value of the slider (e.g. `[0, 1]`).
 
 #### Returns
 
@@ -25,4 +27,4 @@ Find visible list items in scroll view:
 
 #### Related methods
 
-- [`.findElement(matcher: Matcher) => Element`](./findElement.md)
+- [`.findElement(matcher: Matcher, options?: Object) => Element`](./findElement.md)
