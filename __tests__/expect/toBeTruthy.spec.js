@@ -15,6 +15,9 @@ it("doesn't throw if expectation is met", async () => {
 
   await expect(assert({}).toBeTruthy())
     .resolves.toBe(undefined);
+
+  await expect(assert(Promise.resolve(true)).toBeTruthy())
+    .resolves.toBe(undefined);
 });
 
 it("inverses the expectation when used with .not", async () => {
@@ -31,6 +34,9 @@ it("inverses the expectation when used with .not", async () => {
     .resolves.toBe(undefined);
 
   await expect(assert(NaN).not.toBeTruthy())
+    .resolves.toBe(undefined);
+
+  await expect(assert(Promise.resolve(false)).not.toBeTruthy())
     .resolves.toBe(undefined);
 });
 
@@ -49,6 +55,9 @@ it("throws if expectation is not met", async () => {
 
   await expect(assert(NaN).toBeTruthy())
     .rejects.toThrow(new Error("Expected NaN to be truthy."));
+
+  await expect(assert(Promise.resolve(false)).toBeTruthy())
+    .rejects.toThrow(new Error("Expected promise to be truthy."));
 });
 
 it("throws if expectation is not met when used with .not", async () => {
@@ -66,4 +75,7 @@ it("throws if expectation is not met when used with .not", async () => {
 
   await expect(assert({}).not.toBeTruthy())
     .rejects.toThrow(new Error("Expected object not to be truthy."));
+
+  await expect(assert(Promise.resolve(true)).not.toBeTruthy())
+    .rejects.toThrow(new Error("Expected promise not to be truthy."));
 });

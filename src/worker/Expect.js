@@ -199,14 +199,15 @@ class Expect {
   }
 
   async toBeTruthy() {
-    const displayValueText = displayValue(this.value);
+    const actualValue = await this.value;
+    const valueTypeText = isPromise(this.value) ? "promise" : displayValue(actualValue);
 
     return this._assert({
-      pass: Boolean(this.value),
+      pass: Boolean(actualValue),
       message: (inverted) => (
         inverted
-          ? `Expected ${displayValueText} not to be truthy.`
-          : `Expected ${displayValueText} to be truthy.`
+          ? `Expected ${valueTypeText} not to be truthy.`
+          : `Expected ${valueTypeText} to be truthy.`
       )
     });
   }
