@@ -1,30 +1,34 @@
-const { by, element, device, expect } = require("../../../main");
+const { by, element, device, alert, expect } = require("../../../main");
 
 describe("Form Screen", () => {
   before(async () => {
-    await element(by.label("menu-screen")).waitToBeVisible();
     await element(by.label("list-item-form-screen")).tap();
-    await element(by.label("form-screen")).waitToBeVisible();
   });
 
   it("supports text input", async () => {
-    await expect(element(by.label("text-input"))).toHaveValue("");
+    const $screen = await element(by.label("form-screen"));
+    const $textInput = await $screen.findElement(by.label("text-input"));
+    const text = "Hello World!";
 
-    const $textInput = await element(by.label("text-input"))
-      .tap()
-      .typeText("Hello World!");
+    await expect($textInput).toHaveValue("");
 
-    await expect($textInput).toHaveValue("Hello World!");
+    await $textInput.setValue(text);
+
+    await expect($textInput).toHaveValue(text);
   });
 
   it("supports clearing text", async () => {
-    const $element = await element(by.label("text-input")).clearText();
+    const $screen = await element(by.label("form-screen"));
+    const $textInput = await $screen.findElement(by.label("text-input"));
 
-    await expect($element).toHaveValue("");
+    await $textInput.clearText();
+
+    await expect($textInput).toHaveValue("");
   });
 
   it("supports sliders", async () => {
-    const $slider = await element(by.label("slider-input"), { sliderRange: [ 0, 10 ]});
+    const $screen = await element(by.label("form-screen"));
+    const $slider = await $screen.findElement(by.label("slider-input"), { sliderRange: [ 0, 10 ]});
 
     await $slider.setValue(10);
     await expect($slider).toHaveValue(10);
@@ -34,7 +38,8 @@ describe("Form Screen", () => {
   });
 
   it("supports switches", async () => {
-    const $switch = await element(by.label("switch"));
+    const $screen = await element(by.label("form-screen"));
+    const $switch = await $screen.findElement(by.label("switch"));
 
     await expect($switch).toHaveValue(false);
 
@@ -44,20 +49,22 @@ describe("Form Screen", () => {
   });
 
   it("supports the tap gesture", async () => {
-    await element(by.label("button")).tap();
+    const $screen = await element(by.label("form-screen"));
+    const $button = await $screen.findElement(by.label("button"));
 
-    await element(by.text("OK"))
-      .waitToBeVisible()
-      .tap();
+    await $button.tap();
+
+    await device.waitFor(() => expect(alert.isVisible()).toBeTruthy());
+    await alert.accept();
   });
 
   it("supports the long press gesture", async () => {
-    await element(by.label("button"))
-      .waitToBeVisible()
-      .longPress();
+    const $screen = await element(by.label("form-screen"));
+    const $button = await $screen.findElement(by.label("button"));
 
-    await device.wait(200);
+    await $button.longPress();
 
-    await element(by.text("OK")).tap();
+    await device.waitFor(() => expect(alert.isVisible()).toBeTruthy());
+    await alert.accept();
   });
 });

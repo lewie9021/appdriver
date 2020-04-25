@@ -2,13 +2,12 @@ const { by, element, device, gestures } = require("../../../main");
 
 describe("Zoom Screen", () => {
   before(async () => {
-    await element(by.label("menu-screen")).waitToBeVisible();
     await element(by.label("list-item-zoom-screen")).tap();
-    await element(by.label("zoom-screen")).waitToBeVisible();
   });
 
   it("supports spread gesture", async () => {
-    const $image = element(by.label("image"));
+    const $screen = await element(by.label("zoom-screen"));
+    const $image = $screen.findElement(by.label("image"));
 
     const location = await $image.getLocation({ relative: true });
     const { width, height } = await $image.getSize();
@@ -21,7 +20,8 @@ describe("Zoom Screen", () => {
   });
 
   it("supports pinch gesture", async () => {
-    const $image = element(by.label("image"));
+    const $screen = await element(by.label("zoom-screen"));
+    const $image = $screen.findElement(by.label("image"));
 
     const location = await $image.getLocation({ relative: true });
     const { width, height } = await $image.getSize();

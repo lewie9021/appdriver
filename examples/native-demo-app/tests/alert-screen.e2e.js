@@ -2,9 +2,7 @@ const { by, alert, device, element, expect } = require("../../../main");
 
 describe("Alert Screen", () => {
   before(async () => {
-    await element(by.label("menu-screen")).waitToBeVisible();
     await element(by.label("list-item-alert-screen")).tap();
-    await element(by.label("alert-screen")).waitToBeVisible();
   });
 
   it("supports retrieving alert text", async () => {
@@ -25,11 +23,11 @@ describe("Alert Screen", () => {
     const $screen = await element(by.label("alert-screen"));
     await $screen.findElement(by.label("confirm-alert-button")).tap();
 
-    await device.waitFor(() => expect(alert.isVisible()).toEqual(true));
+    await device.waitFor(() => expect(alert.isVisible()).toBeTruthy());
 
     await alert.accept();
 
-    await device.waitFor(() => expect(alert.isVisible()).toEqual(true));
+    await device.waitFor(() => expect(alert.isVisible()).toBeTruthy());
 
     return alert.dismiss();
   });
@@ -38,11 +36,11 @@ describe("Alert Screen", () => {
     const $screen = await element(by.label("alert-screen"));
     await $screen.findElement(by.label("confirm-alert-button")).tap();
 
-    await device.waitFor(() => expect(alert.isVisible()).toEqual(true));
+    await device.waitFor(() => expect(alert.isVisible()).toBeTruthy());
 
     await alert.dismiss();
 
-    await device.waitFor(() => expect(alert.isVisible()).toEqual(true));
+    await device.waitFor(() => expect(alert.isVisible()).toBeTruthy());
 
     return alert.dismiss();
   });

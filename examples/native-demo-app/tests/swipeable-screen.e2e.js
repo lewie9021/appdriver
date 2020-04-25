@@ -1,17 +1,19 @@
-const { by, element } = require("../../../main");
+const { by, element, device, alert, expect } = require("../../../main");
 
 describe("Swipeable Screen", () => {
   before(async () => {
-    await element(by.label("menu-screen")).waitToBeVisible();
     await element(by.label("list-item-swipeable-screen")).tap();
-    await element(by.label("menu-screen")).waitToBeInvisible();
-    await element(by.label("swipeable-screen")).waitToBeVisible();
   });
 
   it("removes the item", async () => {
-    await element(by.label("list-item"))
-      .swipe({ distance: 200, direction: 270 });
+    const $screen = await element(by.label("swipeable-screen"));
+    const $listItem = await $screen.findElement(by.label("list-item"));
 
-    await element(by.label("remove-button")).tap();
+    await $listItem.swipeLeft({ percentage: 0.75 });
+
+    await $listItem.findElement(by.label("remove-button")).tap();
+
+    await device.waitFor(() => expect(alert.isVisible()).toBeTruthy());
+    await alert.accept();
   });
 });
