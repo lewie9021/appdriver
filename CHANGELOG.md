@@ -24,7 +24,7 @@
 ### Changed
 
 - Modified `.typeText` to use W3C actions on Android to mimic similar behaviour to iOS.
-- Element `.getValue` and `.toHaveValue` on Expect no longer take an options object to handle sliders. This has now moved to `element` and `elements`.
+- Element `.getValue` and `.toHaveValue` on Expect no longer takes an 'options' object to handle sliders. This has now moved to `element` and `elements`.
 
 ## [v1.0.0-alpha.19] - 2020-02-25
 
