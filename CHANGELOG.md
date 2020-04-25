@@ -7,6 +7,7 @@
 - Support for `.getRef` on Element.
 - Support for `.session` on Device.
 - Support for interacting with native alerts via `alert`.
+- Support for resolving promise values with `.toBeTruthy` and `.toBeFalsy` on Expect.
 
 ### Changed
 
