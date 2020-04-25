@@ -6,6 +6,7 @@
 
 - Support for `.getRef` on Element.
 - Support for `.session` on Device.
+- Support for interacting with native alerts via `alert`.
 
 ### Changed
 
