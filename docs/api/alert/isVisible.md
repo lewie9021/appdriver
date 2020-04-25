@@ -19,6 +19,7 @@ Returns whether an alert is visible.
 
 - [`.accept() => Promise`](./accept.md)
 - [`.dismiss() => Promise`](./dismiss.md)
+- [`.getText() => Promise<String>`](./getText.md)
 
 #### Related Docs
 
