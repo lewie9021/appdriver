@@ -9,8 +9,10 @@ const getCurrentValue = (elementValue) => {
   return elementValue
     .catch((err) => {
       if (isInstanceOf(err, ElementNotFoundError) && err.matcher) {
-        return appiumService.findElement({ matcher: err.matcher })
-          .then((ref) => ({ ref, matcher: err.matcher }))
+        return pollFor(() => {
+          return appiumService.findElement({ matcher: err.matcher })
+            .then((ref) => ({ ref, matcher: err.matcher }))
+        }, { maxDuration: 30 * 1000, interval: 200 })
           .catch(() => { throw new ElementNotFoundError(err.matcher); });
       }
 
@@ -18,8 +20,10 @@ const getCurrentValue = (elementValue) => {
     })
     .then((value) => {
       if (isNull(value.ref) && value.matcher) {
-        return appiumService.findElement({ matcher: value.matcher })
-          .then((ref) => ({ ref, matcher: value.matcher }))
+        return pollFor(() => {
+          return appiumService.findElement({ matcher: value.matcher })
+            .then((ref) => ({ ref, matcher: value.matcher }));
+        }, { maxDuration: 30 * 1000, interval: 200 })
           .catch(() => { throw new ElementNotFoundError(value.matcher); });
       }
 
