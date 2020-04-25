@@ -138,7 +138,7 @@ class Element {
     return new Element({ value: nextValue, options });
   }
 
-  findElements(matcher) {
+  findElements(matcher, options) {
     const currentValue = getCurrentValue(this.value);
 
     return currentValue
@@ -146,7 +146,10 @@ class Element {
         return appiumService.findElements({ element: value.ref, matcher })
           .then((refs) => {
             return refs.map((ref) => {
-              return new Element({ value: Promise.resolve({ ref, matcher: null }) });
+              return new Element({
+                value: Promise.resolve({ ref, matcher: null }),
+                optio
+              });
             });
           });
       })
