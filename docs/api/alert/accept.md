@@ -25,6 +25,7 @@ Attempts to accept a native alert. If an alert is not visible, an error will be 
 #### Related methods
 
 - [`.dismiss() => Promise`](./dismiss.md)
+- [`.isVisible() => Promise<Boolean>`](./isVisible.md)
 
 #### Related Docs
 
