@@ -8,7 +8,7 @@ The `alert` object provides a way of interacting with native alerts.
 (async () => {
   await element(by.label("button")).tap();
   
-  await device.waitFor(() => expect(alert.isVisible()).toBeTruthy());
+  await alert.waitToBeVisible();
 
   await expect(alert.getText()).toEqual([
     "Alert",
@@ -16,6 +16,8 @@ The `alert` object provides a way of interacting with native alerts.
   ].join("\n"));
 
   await alert.accept();
+
+  await expect(alert.isVisible()).toBeFalsy();
 })();
 ```
 
@@ -50,3 +52,9 @@ Replaces alert value, clearing existing input.
 <img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
 
 Returns whether an alert is visible.
+
+[```.waitToBeVisible(options?: Object) => Promise```](./alert/waitToBeVisible.md)
+
+<img src="https://img.shields.io/badge/Platform-~All-blue.svg" />
+
+Polls for an alert to be visible every `options.interval` until found or exceeds `options.maxDuration` timeout.
