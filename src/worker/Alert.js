@@ -1,7 +1,8 @@
+const { configStore } = require("../stores/configStore");
 const { appiumService } = require("./services/appiumService");
 const { Expect } = require("./Expect");
 const { isInstanceOf, pollFor } = require("../utils");
-const { ActionError, AppiumError } = require("./errors");
+const { ActionError, AppiumError, WaitError } = require("./errors");
 
 const handleActionError = (message) => (err) => {
   if (isInstanceOf(err, AppiumError)) {
@@ -64,7 +65,17 @@ class Alert {
 
   isVisible() {
     return appiumService.getAlertVisible()
-      .catch((handleActionError("Failed to get visibility status of alert.")));
+      .catch(handleActionError("Failed to get visibility status of alert."));
+  }
+
+  waitToBeVisible(options = {}) {
+    const maxDuration = options.maxDuration || configStore.getWaitForTimeout();
+    const interval = options.interval || configStore.getWaitForInterval();
+    const conditionFn = () => new Expect(appiumService.getAlertVisible()).toBeTruthy();
+    const timeoutMessage = `Alert not visible after ${maxDuration}ms timeout (interval: ${interval}ms).`;
+
+    return pollFor(conditionFn, { maxDuration, interval })
+      .catch((errors) => { throw new WaitError(timeoutMessage, errors); });
   }
 }
 

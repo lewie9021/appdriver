@@ -10,6 +10,7 @@ describe("Alert Screen (iOS)", () => {
     const $screen = await element(by.label("alert-screen"));
     await $screen.findElement(by.label("prompt-button")).tap();
 
+    await alert.waitToBeVisible();
     await alert.setValue("Hello World!");
 
     await device.wait(2000);
