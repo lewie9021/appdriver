@@ -1,12 +1,16 @@
+jest.mock("../../src/stores/configStore");
 jest.mock("../../src/worker/services/appiumService");
 
 const { appiumService } = require("../../src/worker/services/appiumService");
 const { createFindElementMock } = require("../appiumServiceMocks");
-const { setPlatform } = require("../helpers");
+const { setPlatform, setConfig } = require("../helpers");
 const { ElementNotFoundError, ElementActionError, AppiumError } = require("../../src/worker/errors");
 const { element, by } = require("../../main");
 
-beforeEach(() => setPlatform("iOS"));
+beforeEach(() => {
+  setPlatform("iOS");
+  setConfig({ findInterval: 200, findTimeout: 1000 });
+});
 
 afterEach(() => {
   jest.resetAllMocks();
@@ -27,11 +31,9 @@ it("modifies the internal element reference to the newly found element", async (
 });
 
 it("throws an ElementNotFoundError if the element isn't found", async () => {
-  const ref = createFindElementMock();
   const error = new AppiumError("Request error.", 7);
 
-  jest.spyOn(appiumService, "findElement").mockRejectedValueOnce(error);
-  jest.spyOn(appiumService, "findElement").mockResolvedValueOnce(ref);
+  jest.spyOn(appiumService, "findElement").mockRejectedValue(error);
   expect.assertions(3);
 
   try {
@@ -41,7 +43,7 @@ it("throws an ElementNotFoundError if the element isn't found", async () => {
     expect(err).toHaveProperty("message", `Failed to find element by label matching "screen".`);
   }
 
-  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.findElement).toHaveBeenCalled();
 });
 
 it("throws an ElementActionError for Appium request errors", async () => {

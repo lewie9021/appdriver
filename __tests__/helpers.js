@@ -1,4 +1,5 @@
 const { sessionStore } = require("../src/worker/stores/sessionStore");
+const { configStore } = require("../src/stores/configStore");
 
 const setPlatform = (platform) => {
   switch (platform) {
@@ -13,6 +14,14 @@ const setPlatform = (platform) => {
   }
 };
 
+const setConfig = ({ findInterval, findTimeout, waitForInterval, waitForTimeout } = {}) => {
+  jest.spyOn(configStore, "getFindInterval").mockReturnValue(findInterval);
+  jest.spyOn(configStore, "getFindTimeout").mockReturnValue(findTimeout);
+  jest.spyOn(configStore, "getWaitForInterval").mockReturnValue(waitForInterval);
+  jest.spyOn(configStore, "getWaitForTimeout").mockReturnValue(waitForTimeout);
+};
+
 module.exports = {
-  setPlatform
+  setPlatform,
+  setConfig
 };

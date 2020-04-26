@@ -1,13 +1,17 @@
+jest.mock("../../src/stores/configStore");
 jest.mock("../../src/worker/services/appiumService");
 
 const { appiumService } = require("../../src/worker/services/appiumService");
 const { createFindElementMock } = require("../appiumServiceMocks");
-const { setPlatform } = require("../helpers");
+const { setPlatform, setConfig } = require("../helpers");
 const { ElementNotFoundError, ElementActionError, AppiumError } = require("../../src/worker/errors");
 const { Element } = require("../../src/worker/Element");
 const { element, by } = require("../../main");
 
-beforeEach(() => setPlatform("iOS"));
+beforeEach(() => {
+  setPlatform("iOS");
+  setConfig({ findInterval: 200, findTimeout: 1000 });
+});
 
 afterEach(() => {
   jest.resetAllMocks();
@@ -95,7 +99,7 @@ it("throws an ElementNotFoundError if the element isn't found", async () => {
     expect(err).toHaveProperty("message", `Failed to find element by label matching "box".`);
   }
 
-  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.findElement).toHaveBeenCalled();
   expect(appiumService.tapElement).toHaveBeenCalledTimes(0);
 });
 

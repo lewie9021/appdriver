@@ -1,15 +1,19 @@
+jest.mock("../../src/stores/configStore");
 jest.mock("../../src/worker/stores/sessionStore");
 jest.mock("../../src/worker/services/appiumService");
 
 const { sessionStore } = require("../../src/worker/stores/sessionStore");
 const { appiumService } = require("../../src/worker/services/appiumService");
 const { createFindElementMock } = require("../appiumServiceMocks");
-const { setPlatform } = require("../helpers");
+const { setPlatform, setConfig } = require("../helpers");
 const { ElementNotFoundError, ElementActionError, AppiumError } = require("../../src/worker/errors");
 const { Element } = require("../../src/worker/Element");
 const { element, by } = require("../../main");
 
-beforeEach(() => setPlatform("iOS"));
+beforeEach(() => {
+  setPlatform("iOS");
+  setConfig({ findInterval: 200, findTimeout: 1000 });
+});
 
 afterEach(() => {
   jest.resetAllMocks();
@@ -54,8 +58,8 @@ it("throws an ElementNotFoundError if the element isn't found", async () => {
     expect(err).toHaveProperty("message", `Failed to find element by label matching "input".`);
   }
 
-  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
-  expect(appiumService.clearElementText).toHaveBeenCalledTimes(0);
+  expect(appiumService.findElement).toHaveBeenCalled();
+  expect(appiumService.clearElementText).not.toHaveBeenCalled();
 });
 
 it("throws an ElementActionError if the hardware keyboard is attached on iOS simulator", async () => {

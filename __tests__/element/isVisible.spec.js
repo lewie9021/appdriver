@@ -1,12 +1,16 @@
+jest.mock("../../src/stores/configStore");
 jest.mock("../../src/worker/services/appiumService");
 
 const { appiumService } = require("../../src/worker/services/appiumService");
 const { createFindElementMock } = require("../appiumServiceMocks");
-const { setPlatform } = require("../helpers");
+const { setPlatform, setConfig } = require("../helpers");
 const { ElementActionError, AppiumError } = require("../../src/worker/errors");
 const { element, by } = require("../../main");
 
-beforeEach(() => setPlatform("iOS"));
+beforeEach(() => {
+  setPlatform("iOS");
+  setConfig({ findInterval: 200, findTimeout: 1000 });
+});
 
 afterEach(() => {
   jest.resetAllMocks();
@@ -37,7 +41,7 @@ it("returns 'false' if the element isn't found", async () => {
   const result = await element(by.label("box")).isVisible();
 
   expect(result).toEqual(false);
-  expect(appiumService.findElement).toHaveBeenCalledTimes(1);
+  expect(appiumService.findElement).toHaveBeenCalled();
   expect(appiumService.getElementVisibleAttribute).toHaveBeenCalledTimes(0);
 });
 
