@@ -9,6 +9,7 @@
 - Support for interacting with native alerts via `alert`.
 - Support for resolving promise values with `.toHaveLength`, `.toBeTruthy` and `.toBeFalsy` on Expect.
 - Support for passing options to `.findElement` and `.findElements` on Element.
+- Support for [configuring](./docs/api/configuration.md) timeouts when finding elements via `findInterval` and `findTimeout`.
 
 ### Changed
 
