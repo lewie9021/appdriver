@@ -11,7 +11,7 @@ Attempts to dismiss a native alert. If an alert is not visible, an error will be
 ```javascript
 (async () => {
   await element(by.label("button")).tap();
-  await device.waitFor(() => expect(alert.isVisible()).toBeTruthy());
+  await alert.waitToBeVisible();
   await alert.dismiss();
 
   return expect(alert.isVisible()).toBeFalsy();
@@ -26,6 +26,7 @@ Attempts to dismiss a native alert. If an alert is not visible, an error will be
 
 - [`.accept() => Promise`](./accept.md)
 - [`.isVisible() => Promise<Boolean>`](./isVisible.md)
+- [`.waitToBeVisible(options?: Object) => Promise`](./waitToBeVisible.md)
 
 #### Related Docs
 

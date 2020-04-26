@@ -11,15 +11,13 @@ Returns whether an alert is visible.
 ```javascript
 (async () => {
   const visible = await alert.isVisible();
-  console.log(visible); // true
+  await expect(visible).toBeTruthy();
 })();
 ```
 
 #### Related Methods
 
-- [`.accept() => Promise`](./accept.md)
-- [`.dismiss() => Promise`](./dismiss.md)
-- [`.getText() => Promise<String>`](./getText.md)
+- [`.waitToBeVisible(options?: Object) => Promise`](./waitToBeVisible.md)
 
 #### Related Docs
 
