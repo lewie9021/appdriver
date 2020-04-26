@@ -13,7 +13,7 @@ describe("Swipeable Screen", () => {
 
     await $listItem.findElement(by.label("remove-button")).tap();
 
-    await device.waitFor(() => expect(alert.isVisible()).toBeTruthy());
+    await alert.waitToBeVisible();
     await alert.accept();
   });
 });

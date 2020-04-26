@@ -15,7 +15,7 @@ describe("List Screen", () => {
       const $listItem = listItems[i];
 
       await $listItem.tap();
-      await device.waitFor(() => expect(alert.isVisible()).toBeTruthy());
+      await alert.waitToBeVisible();
       await alert.accept();
 
       console.log("item", i + 1);

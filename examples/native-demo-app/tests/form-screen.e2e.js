@@ -54,7 +54,7 @@ describe("Form Screen", () => {
 
     await $button.tap();
 
-    await device.waitFor(() => expect(alert.isVisible()).toBeTruthy());
+    await alert.waitToBeVisible();
     await alert.accept();
   });
 
@@ -64,7 +64,7 @@ describe("Form Screen", () => {
 
     await $button.longPress();
 
-    await device.waitFor(() => expect(alert.isVisible()).toBeTruthy());
+    await alert.waitToBeVisible();
     await alert.accept();
   });
 });
