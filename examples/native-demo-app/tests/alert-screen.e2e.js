@@ -11,7 +11,7 @@ describe("Alert Screen", () => {
 
     await alert.waitToBeVisible();
 
-    await expect(alert.getText()).toEqual([
+    await expect(alert).toHaveText([
       "Alert",
       "Hello World!"
     ].join("\n"));

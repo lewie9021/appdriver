@@ -14,7 +14,7 @@ Attempts to dismiss a native alert. If an alert is not visible, an error will be
   await alert.waitToBeVisible();
   await alert.dismiss();
 
-  return expect(alert.isVisible()).toBeFalsy();
+  return expect(alert).not.toBeVisible();
 })();
 ```
 

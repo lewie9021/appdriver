@@ -14,7 +14,7 @@ Attempts to accept a native alert. If an alert is not visible, an error will be 
   await alert.waitToBeVisible();
   await alert.accept();
 
-  return expect(alert.isVisible()).toBeFalsy();
+  return expect(alert).not.toBeVisible();
 })();
 ```
 
