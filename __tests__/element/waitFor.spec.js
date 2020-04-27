@@ -30,7 +30,7 @@ const createConditionFn = (maxPollCount, error) => {
 it("returns an instance of Element to enable function chaining", async () => {
   const ref = createFindElementMock();
 
-  setConfig({ findInterval: 200, findTimeout: 1000, waitForInterval: 50, waitForTimeout: 2000 });
+  setConfig({ findInterval: 200, findTimeout: 1000, waitInterval: 50, waitTimeout: 2000 });
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
 
   const $element = await element(by.label("input")).waitFor(() => Promise.resolve());
@@ -43,7 +43,7 @@ it("polls 'conditionFn' until it resolves when there's an element reference", as
   const conditionFn = createConditionFn(totalPollCount, new Error("Test"));
   const ref = createFindElementMock();
 
-  setConfig({ findInterval: 200, findTimeout: 1000, waitForInterval: 50, waitForTimeout: 2000 });
+  setConfig({ findInterval: 200, findTimeout: 1000, waitInterval: 50, waitTimeout: 2000 });
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
 
   await element(by.label("input")).waitFor(conditionFn);
@@ -57,7 +57,7 @@ it("polls 'conditionFn' until it resolves when there isn't an element reference"
   const conditionFn = createConditionFn(totalPollCount, new Error("Test"));
   const error = new AppiumError("Request error.", 3);
 
-  setConfig({ findInterval: 200, findTimeout: 1000, waitForInterval: 50, waitForTimeout: 2000 });
+  setConfig({ findInterval: 200, findTimeout: 1000, waitInterval: 50, waitTimeout: 2000 });
   jest.spyOn(appiumService, "findElement").mockRejectedValue(error);
 
   await element(by.label("input")).waitFor(conditionFn);
@@ -72,7 +72,7 @@ it("throws an ElementWaitError if the polling times out", async () => {
   const timeout = 2000;
   const interval = 50;
 
-  setConfig({ findInterval: 200, findTimeout: 1000, waitForInterval: interval, waitForTimeout: timeout });
+  setConfig({ findInterval: 200, findTimeout: 1000, waitInterval: interval, waitTimeout: timeout });
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
   expect.assertions(3);
 
@@ -92,7 +92,7 @@ it("supports passing a 'maxDuration' parameter", async () => {
   const conditionFn = createConditionFn(Infinity, new Error("Test"));
   const ref = createFindElementMock();
 
-  setConfig({ findInterval: 200, findTimeout: 1000, waitForInterval: interval, waitForTimeout: 2000 });
+  setConfig({ findInterval: 200, findTimeout: 1000, waitInterval: interval, waitTimeout: 2000 });
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
   expect.assertions(3);
 
@@ -115,7 +115,7 @@ it("supports passing a 'interval' parameter", async () => {
   const conditionFn = createConditionFn(Infinity, new Error("Test"));
   const ref = createFindElementMock();
 
-  setConfig({ findInterval: 200, findTimeout: 1000, waitForInterval: 50, waitForTimeout: timeout });
+  setConfig({ findInterval: 200, findTimeout: 1000, waitInterval: 50, waitTimeout: timeout });
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
   expect.assertions(3);
 
@@ -134,7 +134,7 @@ it("propagates errors from further up the chain", async () => {
   const ref = createFindElementMock();
   const tapError = new AppiumError("Request error.", 3);
 
-  setConfig({ findInterval: 200, findTimeout: 1000, waitForInterval: 50, waitForTimeout: 2000 });
+  setConfig({ findInterval: 200, findTimeout: 1000, waitInterval: 50, waitTimeout: 2000 });
   jest.spyOn(appiumService, "findElement").mockResolvedValue(ref);
   jest.spyOn(appiumService, "tapElement").mockRejectedValue(tapError);
   expect.assertions(5);

@@ -25,7 +25,7 @@ it("polls 'conditionFn' until it resolves", async () => {
   const totalPollCount = 5;
   const conditionFn = createConditionFn(totalPollCount, new Error("Test"));
 
-  setConfig({ waitForInterval: 50, waitForTimeout: 2000 });
+  setConfig({ waitInterval: 50, waitTimeout: 2000 });
 
   await device.waitFor(conditionFn);
 
@@ -37,7 +37,7 @@ it("throws a WaitError if the polling times out", async () => {
   const timeout = 2000;
   const interval = 50;
 
-  setConfig({ waitForInterval: interval, waitForTimeout: timeout });
+  setConfig({ waitInterval: interval, waitTimeout: timeout });
   expect.assertions(2);
 
   try {
@@ -56,7 +56,7 @@ it("supports passing a 'maxDuration' parameter", async () => {
   const interval = 50;
   const conditionFn = createConditionFn(Infinity, new Error("Test"));
 
-  setConfig({ waitForInterval: interval, waitForTimeout: 2000 });
+  setConfig({ waitInterval: interval, waitTimeout: 2000 });
   expect.assertions(2);
 
   try {
@@ -75,7 +75,7 @@ it("supports passing a 'interval' parameter", async () => {
   const timeout = 2000;
   const conditionFn = createConditionFn(Infinity, new Error("Test"));
 
-  setConfig({ waitForInterval: 50, waitForTimeout: timeout });
+  setConfig({ waitInterval: 50, waitTimeout: timeout });
   expect.assertions(2);
 
   try {

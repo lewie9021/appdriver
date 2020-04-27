@@ -14,12 +14,12 @@ const setPlatform = (platform) => {
   }
 };
 
-const setConfig = ({ baseUrl, findInterval, findTimeout, waitForInterval, waitForTimeout } = {}) => {
+const setConfig = ({ baseUrl, findInterval, findTimeout, waitInterval, waitTimeout } = {}) => {
   jest.spyOn(configStore, "getBaseUrl").mockReturnValue(baseUrl);
   jest.spyOn(configStore, "getFindInterval").mockReturnValue(findInterval);
   jest.spyOn(configStore, "getFindTimeout").mockReturnValue(findTimeout);
-  jest.spyOn(configStore, "getWaitInterval").mockReturnValue(waitForInterval);
-  jest.spyOn(configStore, "getWaitTimeout").mockReturnValue(waitForTimeout);
+  jest.spyOn(configStore, "getWaitInterval").mockReturnValue(waitInterval);
+  jest.spyOn(configStore, "getWaitTimeout").mockReturnValue(waitTimeout);
 };
 
 module.exports = {

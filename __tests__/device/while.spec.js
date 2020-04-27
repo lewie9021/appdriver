@@ -26,7 +26,7 @@ it("polls 'action' while 'condition' resolves", async () => {
   const condition = createConditionFn(totalPollCount, new Error("Test"));
   const action = jest.fn();
 
-  setConfig({ waitForInterval: 50, waitForTimeout: 2000 });
+  setConfig({ waitInterval: 50, waitTimeout: 2000 });
 
   await device.while(condition, action);
 
@@ -40,7 +40,7 @@ it("throws a WaitError if the polling times out", async () => {
   const timeout = 2000;
   const interval = 50;
 
-  setConfig({ waitForInterval: interval, waitForTimeout: timeout });
+  setConfig({ waitInterval: interval, waitTimeout: timeout });
   expect.assertions(2);
 
   try {
@@ -60,7 +60,7 @@ it("supports passing a 'maxDuration' parameter", async () => {
   const maxDuration = 1000;
   const interval = 50;
 
-  setConfig({ waitForInterval: interval, waitForTimeout: 2000 });
+  setConfig({ waitInterval: interval, waitTimeout: 2000 });
   expect.assertions(2);
 
   try {
@@ -80,7 +80,7 @@ it("supports passing a 'interval' parameter", async () => {
   const interval = 100;
   const timeout = 2000;
 
-  setConfig({ waitForInterval: 50, waitForTimeout: timeout });
+  setConfig({ waitInterval: 50, waitTimeout: timeout });
   expect.assertions(2);
 
   try {

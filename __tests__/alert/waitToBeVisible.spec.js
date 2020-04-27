@@ -12,7 +12,7 @@ afterEach(() => {
 });
 
 it("polls alert visibility status until it resolves", async () => {
-  setConfig({ waitForInterval: 50, waitForTimeout: 2000 });
+  setConfig({ waitInterval: 50, waitTimeout: 2000 });
   jest.spyOn(appiumService, "getAlertVisible").mockResolvedValueOnce(false);
   jest.spyOn(appiumService, "getAlertVisible").mockResolvedValueOnce(false);
   jest.spyOn(appiumService, "getAlertVisible").mockResolvedValueOnce(true);
@@ -26,7 +26,7 @@ it("throws a WaitError if the polling times out", async () => {
   const timeout = 1000;
   const interval = 50;
 
-  setConfig({ waitForInterval: interval, waitForTimeout: timeout });
+  setConfig({ waitInterval: interval, waitTimeout: timeout });
   jest.spyOn(appiumService, "getAlertVisible").mockResolvedValue(false);
   expect.assertions(3);
 
@@ -47,7 +47,7 @@ it("supports passing a 'maxDuration' parameter", async () => {
   const maxDuration = 1000;
   const interval = 50;
 
-  setConfig({ waitForInterval: interval, waitForTimeout: 2000 });
+  setConfig({ waitInterval: interval, waitTimeout: 2000 });
   jest.spyOn(appiumService, "getAlertVisible").mockResolvedValue(false);
   expect.assertions(3);
 
@@ -68,7 +68,7 @@ it("supports passing a 'interval' parameter", async () => {
   const timeout = 2000;
   const interval = 100;
 
-  setConfig({ waitForInterval: 50, waitForTimeout: timeout });
+  setConfig({ waitInterval: 50, waitTimeout: timeout });
   jest.spyOn(appiumService, "getElementVisibleAttribute").mockResolvedValue(false);
   expect.assertions(3);
 
