@@ -33,25 +33,27 @@ class Expect {
   }
 
   async toHaveText(text, options) {
-    const elementText = await this.value.getText(options);
+    // TODO: Use instanceOf once we can get around cycle dependency issue.
+    const entityType = this.value.constructor.name.toLowerCase();
+    const entityText = await this.value.getText(options);
 
     if (isRegex(text)) {
       return this._assert({
-        pass: text.test(elementText),
+        pass: text.test(entityText),
         message: (inverted) => (
           inverted
-            ? `Expected element not to have text match '${text}'.`
-            : `Expected element to have text match '${text}'.`
+            ? `Expected ${entityType} not to have text match '${text}'.`
+            : `Expected ${entityType} to have text match '${text}'.`
         )
       });
     }
 
     return this._assert({
-      pass: elementText === text,
+      pass: entityText === text,
       message: (inverted) => (
         inverted
-          ? `Expected element not to have text '${text}'.`
-          : `Expected element to have text '${text}' but instead got '${elementText}'.`
+          ? `Expected ${entityType} not to have text '${text}'.`
+          : `Expected ${entityType} to have text '${text}' but instead got '${entityText}'.`
       )
     });
   }
