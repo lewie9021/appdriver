@@ -1,11 +1,11 @@
 # `.toHaveText(text: String | Regex, options?: Object) => Promise`
 
-Asserts the element has text matching `text`.
+Asserts the elements and alerts have text matching `text`.
 
 #### Parameters
 
-1. `text` (`String`): Text to compare against the element's text.
-2. `options` (`Object`): Options required for [`.getText`](../element/getText.md).
+1. `text` (`String`): Text to compare against.
+2. `options` (`Object`): Options required for [`.getText`](../element/getText.md) when asserting an element.
 
 #### Returns
 
@@ -13,7 +13,7 @@ Asserts the element has text matching `text`.
 
 #### Examples
 
-Text:
+Element text:
 
 ```javascript
 (async () => {
@@ -23,7 +23,7 @@ Text:
 })();
 ```
 
-Text input:
+Input text:
 
 ```javascript
 (async () => {
@@ -43,10 +43,22 @@ Button (nested text):
 })();
 ```
 
+Alert:
+
+```javascript
+(async () => {
+  await expect(alert).toHaveText([
+    "Alert",
+    "Hello World!"
+  ].join("\n"));
+})();
+```
+
 #### Related methods
 
 - [`.toHaveValue(value: Any, options?: Object) => Promise`](./toHaveValue.md)
 
-#### Related Appium Docs
+#### Related Docs
 
 - [Get Element Text](http://appium.io/docs/en/commands/element/attributes/text/)
+- [Get Alert Text (W3C)](https://www.w3.org/TR/webdriver/#get-alert-text)
