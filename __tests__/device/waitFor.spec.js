@@ -1,7 +1,7 @@
 jest.mock("../../src/stores/configStore");
 
-const { configStore } = require("../../src/stores/configStore");
 const { WaitError } = require("../../src/worker/errors");
+const { setConfig } = require("../helpers");
 const { device } = require("../../main");
 
 afterEach(() => {
@@ -25,8 +25,7 @@ it("polls 'conditionFn' until it resolves", async () => {
   const totalPollCount = 5;
   const conditionFn = createConditionFn(totalPollCount, new Error("Test"));
 
-  jest.spyOn(configStore, "getWaitForTimeout").mockReturnValue(2000);
-  jest.spyOn(configStore, "getWaitForInterval").mockReturnValue(50);
+  setConfig({ waitForInterval: 50, waitForTimeout: 2000 });
 
   await device.waitFor(conditionFn);
 
@@ -38,8 +37,7 @@ it("throws a WaitError if the polling times out", async () => {
   const timeout = 2000;
   const interval = 50;
 
-  jest.spyOn(configStore, "getWaitForTimeout").mockReturnValue(timeout);
-  jest.spyOn(configStore, "getWaitForInterval").mockReturnValue(interval);
+  setConfig({ waitForInterval: interval, waitForTimeout: timeout });
   expect.assertions(2);
 
   try {
@@ -58,8 +56,7 @@ it("supports passing a 'maxDuration' parameter", async () => {
   const interval = 50;
   const conditionFn = createConditionFn(Infinity, new Error("Test"));
 
-  jest.spyOn(configStore, "getWaitForTimeout").mockReturnValue(2000);
-  jest.spyOn(configStore, "getWaitForInterval").mockReturnValue(interval);
+  setConfig({ waitForInterval: interval, waitForTimeout: 2000 });
   expect.assertions(2);
 
   try {
@@ -78,8 +75,7 @@ it("supports passing a 'interval' parameter", async () => {
   const timeout = 2000;
   const conditionFn = createConditionFn(Infinity, new Error("Test"));
 
-  jest.spyOn(configStore, "getWaitForTimeout").mockReturnValue(timeout);
-  jest.spyOn(configStore, "getWaitForInterval").mockReturnValue(50);
+  setConfig({ waitForInterval: 50, waitForTimeout: timeout });
   expect.assertions(2);
 
   try {

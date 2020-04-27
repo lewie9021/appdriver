@@ -327,16 +327,16 @@ class Element {
   }
 
   waitFor(conditionFn, options = {}) {
-    const maxDuration = options.maxDuration || configStore.getWaitForTimeout();
-    const interval = options.interval || configStore.getWaitForInterval();
+    const maxDuration = options.maxDuration || configStore.getWaitTimeout();
+    const interval = options.interval || configStore.getWaitInterval();
     const timeoutMessage = `Wait condition exceeded ${maxDuration}ms timeout (interval: ${interval}ms).`;
 
     return this._executeWait(conditionFn, maxDuration, interval, timeoutMessage);
   }
 
   waitToBeVisible(options = {}) {
-    const maxDuration = options.maxDuration || configStore.getWaitForTimeout();
-    const interval = options.interval || configStore.getWaitForInterval();
+    const maxDuration = options.maxDuration || configStore.getWaitTimeout();
+    const interval = options.interval || configStore.getWaitInterval();
     const conditionFn = ($e) => new Expect($e).toBeVisible();
     const timeoutMessage = `Element not visible after ${maxDuration}ms timeout (interval: ${interval}ms).`;
 
@@ -344,8 +344,8 @@ class Element {
   }
 
   waitToBeInvisible(options = {}) {
-    const maxDuration = options.maxDuration || configStore.getWaitForTimeout();
-    const interval = options.interval || configStore.getWaitForInterval();
+    const maxDuration = options.maxDuration || configStore.getWaitTimeout();
+    const interval = options.interval || configStore.getWaitInterval();
     const conditionFn = ($e) => new Expect($e).not.toBeVisible();
     const timeoutMessage = `Element still visible after ${maxDuration}ms timeout (interval: ${interval}ms).`;
 
@@ -353,8 +353,8 @@ class Element {
   }
 
   waitToExist(options = {}) {
-    const maxDuration = options.maxDuration || configStore.getWaitForTimeout();
-    const interval = options.interval || configStore.getWaitForInterval();
+    const maxDuration = options.maxDuration || configStore.getWaitTimeout();
+    const interval = options.interval || configStore.getWaitInterval();
     const conditionFn = ($e) => new Expect($e).toExist();
     const timeoutMessage = `Element not found after ${maxDuration}ms timeout (interval: ${interval}ms).`;
 
@@ -362,8 +362,8 @@ class Element {
   }
 
   waitToNotExist(options = {}) {
-    const maxDuration = options.maxDuration || configStore.getWaitForTimeout();
-    const interval = options.interval || configStore.getWaitForInterval();
+    const maxDuration = options.maxDuration || configStore.getWaitTimeout();
+    const interval = options.interval || configStore.getWaitInterval();
     const conditionFn = ($e) => new Expect($e).not.toExist();
     const timeoutMessage = `Element still found after ${maxDuration}ms timeout (interval: ${interval}ms).`;
 
@@ -371,8 +371,8 @@ class Element {
   }
 
   waitToBeFocused(options = {}) {
-    const maxDuration = options.maxDuration || configStore.getWaitForTimeout();
-    const interval = options.interval || configStore.getWaitForInterval();
+    const maxDuration = options.maxDuration || configStore.getWaitTimeout();
+    const interval = options.interval || configStore.getWaitInterval();
     const conditionFn = ($e) => new Expect($e).toBeFocused();
     const timeoutMessage = `Element not focused after ${maxDuration}ms timeout (interval: ${interval}ms).`;
 

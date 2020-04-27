@@ -28,27 +28,27 @@ function createConfigStore() {
     },
     getFindTimeout: (deviceIndex = state.deviceIndex) => {
       const device = state.config.devices[deviceIndex];
-      const deviceWaitForTimeout = device ? device.findTimeout : null;
+      const deviceFindTimeout = device ? device.findTimeout : null;
 
-      return deviceWaitForTimeout || state.config.findTimeout || (10 * 1000);
+      return deviceFindTimeout || state.config.findTimeout || (10 * 1000);
     },
     getFindInterval: (deviceIndex = state.deviceIndex) => {
       const device = state.config.devices[deviceIndex];
-      const deviceWaitForInterval = device ? device.findInterval : null;
+      const deviceFindInterval = device ? device.findInterval : null;
 
-      return deviceWaitForInterval || state.config.findInterval || 200;
+      return deviceFindInterval || state.config.findInterval || 200;
     },
-    getWaitForTimeout: (deviceIndex = state.deviceIndex) => {
+    getWaitTimeout: (deviceIndex = state.deviceIndex) => {
       const device = state.config.devices[deviceIndex];
-      const deviceWaitForTimeout = device ? device.waitForTimeout : null;
+      const deviceWaitTimeout = device ? device.waitTimeout : null;
 
-      return deviceWaitForTimeout || state.config.waitForTimeout || (10 * 1000);
+      return deviceWaitTimeout || state.config.waitTimeout || (10 * 1000);
     },
-    getWaitForInterval: (deviceIndex = state.deviceIndex) => {
+    getWaitInterval: (deviceIndex = state.deviceIndex) => {
       const device = state.config.devices[deviceIndex];
-      const deviceWaitForInterval = device ? device.waitForInterval : null;
+      const deviceWaitInterval = device ? device.waitInterval : null;
 
-      return deviceWaitForInterval || state.config.waitForInterval || 200;
+      return deviceWaitInterval || state.config.waitInterval || 200;
     },
     getMaxSpecRetries: (deviceIndex = state.deviceIndex) => {
       const device = state.config.devices[deviceIndex];

@@ -148,8 +148,8 @@ class Device {
   }
 
   waitFor(conditionFn, options = {}) {
-    const maxDuration = options.maxDuration || configStore.getWaitForTimeout();
-    const interval = options.interval || configStore.getWaitForInterval();
+    const maxDuration = options.maxDuration || configStore.getWaitTimeout();
+    const interval = options.interval || configStore.getWaitInterval();
     const timeoutMessage = `Wait condition exceeded ${maxDuration}ms timeout (interval: ${interval}ms).`;
 
     return pollFor(conditionFn, { maxDuration, interval })
@@ -157,8 +157,8 @@ class Device {
   }
 
   while(condition, action, options = {}) {
-    const maxDuration = options.maxDuration || configStore.getWaitForTimeout();
-    const interval = options.interval || configStore.getWaitForInterval();
+    const maxDuration = options.maxDuration || configStore.getWaitTimeout();
+    const interval = options.interval || configStore.getWaitInterval();
     const timeoutMessage = `While exceeded ${maxDuration}ms timeout (interval: ${interval}ms).`;
 
     return pollWhile(condition, action, { maxDuration, interval })

@@ -69,8 +69,8 @@ class Alert {
   }
 
   waitToBeVisible(options = {}) {
-    const maxDuration = options.maxDuration || configStore.getWaitForTimeout();
-    const interval = options.interval || configStore.getWaitForInterval();
+    const maxDuration = options.maxDuration || configStore.getWaitTimeout();
+    const interval = options.interval || configStore.getWaitInterval();
     const conditionFn = () => new Expect(appiumService.getAlertVisible()).toBeTruthy();
     const timeoutMessage = `Alert not visible after ${maxDuration}ms timeout (interval: ${interval}ms).`;
 
