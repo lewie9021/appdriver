@@ -72,14 +72,15 @@ class Expect {
   }
 
   async toBeVisible() {
-    const elementIsVisible = await this.value.isVisible();
+    const entityType = this.value.constructor.name.toLowerCase();
+    const entityVisible = await this.value.isVisible();
 
     return this._assert({
-      pass: elementIsVisible === true,
+      pass: entityVisible === true,
       message: (inverted) => (
         inverted
-          ? `Expected element not to be visible.`
-          : `Expected element to be visible.`
+          ? `Expected ${entityType} not to be visible.`
+          : `Expected ${entityType} to be visible.`
       )
     });
   }
