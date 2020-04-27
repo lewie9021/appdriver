@@ -46,7 +46,7 @@ Asserts the element has a value strictly equal to `value`.
 
 <img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
-Asserts the element has text matching `text`.
+Asserts elements and alerts have text matching `text`.
 
 [```.toExist() => Promise```](./expect/toExist.md)
 
@@ -58,7 +58,7 @@ Asserts the element exists.
 
 <img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
-Asserts the element is visible.
+Asserts visibility status of elements and alerts.
 
 [```.toBeDisabled() => Promise```](./expect/toBeDisabled.md)
 

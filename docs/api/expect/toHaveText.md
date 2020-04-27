@@ -1,6 +1,6 @@
 # `.toHaveText(text: String | Regex, options?: Object) => Promise`
 
-Asserts the elements and alerts have text matching `text`.
+Asserts elements and alerts have text matching `text`.
 
 #### Parameters
 
