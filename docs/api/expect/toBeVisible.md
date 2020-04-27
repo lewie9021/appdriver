@@ -1,6 +1,6 @@
 # `.toBeVisible() => Promise`
 
-Asserts the element is visible.
+Asserts visibility status of elements and alerts.
 
 #### Returns
 
@@ -8,9 +8,19 @@ Asserts the element is visible.
 
 #### Examples
 
+Element:
+
 ```javascript
 (async () => {
   await expect(element(by.label("image"))).toBeVisible();
+})();
+```
+
+Alert:
+
+```javascript
+(async () => {
+  await expect(alert).toBeVisible();
 })();
 ```
 
@@ -18,6 +28,7 @@ Asserts the element is visible.
 
 - [`.toExist() => Promise`](./toExist.md)
 
-#### Related Appium Docs
+#### Related Docs
 
 - [Is Element Displayed](http://appium.io/docs/en/commands/element/attributes/displayed/)
+- [Get Alert Text (W3C)](https://www.w3.org/TR/webdriver/#get-alert-text)
