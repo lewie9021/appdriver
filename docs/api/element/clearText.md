@@ -22,6 +22,7 @@ Clear text input:
 #### Known Issues
 
 - iOS simulators fail to clear text when the hardware keyboard is connected. Ensure `Hardware > Keyboard > Connect Hardware Keyboard` is unchecked.
+- Inputs fail to clear when using Xcode 11.x and iOS 12.x and below: ([GitHub issue](https://github.com/appium/appium/issues/13288)).
 
 #### Related methods
 
