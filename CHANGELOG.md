@@ -14,6 +14,8 @@
 ### Changed
 
 - Modified `maxSpecRetries` default configuration to 2 (previously 3), meaning each spec now executes up to 3 times.
+- Renamed `waitForInterval` configuration to `waitInterval`.
+- Renamed `waitForTimeout` configuration to `waitTimeout`.
 
 ## [v1.0.0-alpha.20] - 2020-03-06
 
