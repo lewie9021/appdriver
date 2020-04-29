@@ -61,6 +61,7 @@ module.exports = {
       specs: [
         "../tests/date-picker-screen.ios.e2e.js",
         "../tests/alert-screen.ios.e2e.js",
+        "../tests/execute.ios.e2e.js",
       ]
     },
     {
@@ -68,12 +69,14 @@ module.exports = {
       specs: [
         "../tests/date-picker-screen.ios.e2e.js",
         "../tests/alert-screen.ios.e2e.js",
+        "../tests/execute.ios.e2e.js",
       ]
     },
     {
       capabilities: emulators.pixel2,
       specs: [
         // "../tests/date-picker-screen.android.e2e.js"
+        "../tests/execute.android.e2e.js",
       ]
     }
   ]

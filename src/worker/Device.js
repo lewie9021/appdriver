@@ -331,6 +331,10 @@ class Device {
     return appiumService.setContext({ contextId: "NATIVE_APP" })
       .catch(handleActionError("Failed to switch to the native context."));
   }
+
+  execute(script, params = {}) {
+    return appiumService.execute({ script, args: params });
+  }
 }
 
 module.exports = {
