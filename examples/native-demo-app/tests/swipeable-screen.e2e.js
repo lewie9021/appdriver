@@ -1,4 +1,4 @@
-const { by, element, device, alert, expect } = require("../../../main");
+const { by, element, alert } = require("../../../main");
 
 describe("Swipeable Screen", () => {
   before(async () => {
