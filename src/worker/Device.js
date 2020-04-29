@@ -332,8 +332,9 @@ class Device {
       .catch(handleActionError("Failed to switch to the native context."));
   }
 
-  execute(script, params = {}) {
-    return appiumService.execute({ script, args: params });
+  execute(script, ...params) {
+    return appiumService.execute({ script, args: params })
+      .catch(handleActionError(`Failed to execute script '${script}'.`));
   }
 }
 
