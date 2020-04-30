@@ -925,12 +925,32 @@ function createAppiumService() {
       });
   };
 
-  // ({ sessionId: String?, script: String, args?: Array<String> }) => Promise.
+  // ({ sessionId: String?, script: String | Function, args?: Array<String> }) => Promise.
   const execute = ({ sessionId = sessionStore.getSessionId(), script, args = [] }) => {
-    return request({
-      method: "POST",
-      path: `/session/${sessionId}/execute`,
-      payload: { script, args }
+    return platform.select({
+      native: () => {
+        if (typeof script === "function") {
+          return Promise.reject(new NotSupportedError("Functions are only supported in the Web context."));
+        }
+
+        return request({
+          method: "POST",
+          path: `/session/${sessionId}/execute`,
+          payload: { script, args }
+        });
+      },
+      web: () => {
+        return request({
+          method: "POST",
+          path: `/session/${sessionId}/execute`,
+          payload: {
+            script: typeof script === "function"
+              ? `return (${script}).apply(null, arguments)`
+              : script,
+            args
+          }
+        });
+      }
     });
   };
 
