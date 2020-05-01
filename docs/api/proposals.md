@@ -2,6 +2,14 @@
 
 This document contains API proposals that could potentially be implemented in the future.
 
+### Matchers
+ 
+:warning: [```by.ref(ref: Object) => Matcher```](./matchers/byRef.md)
+
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
+
+TODO: Description here
+
 ### Device
  
 :warning: [```.isReal: Boolean```](./device/isReal.md)
