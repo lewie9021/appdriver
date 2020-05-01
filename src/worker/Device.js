@@ -333,8 +333,12 @@ class Device {
   }
 
   execute(script, ...params) {
+    const errorMessage = typeof script === "string"
+      ? `Failed to execute script '${script}'.`
+      : "Failed to execute script.";
+
     return appiumService.execute({ script, args: params })
-      .catch(handleActionError(`Failed to execute script '${script}'.`));
+      .catch(handleActionError(errorMessage));
   }
 }
 
