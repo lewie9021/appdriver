@@ -194,6 +194,12 @@ TODO: Description here.
 
 TODO: Description here.
 
+:warning: [```.execute(script: String | Function, ...params: Any) => Promise<Any>```](./device/execute.md)
+
+<img src="https://img.shields.io/badge/Platform-All-blue.svg" />
+
+Execute a script / command within the current context.
+
 [```.scroll(options: { distance: Number, direction: Number }) => Promise```](./device/scroll.md)
 
 <img src="https://img.shields.io/badge/Platform-Web-blue.svg" /> <img src="https://img.shields.io/badge/Dev-TODO-red.svg" /> <img src="https://img.shields.io/badge/Docs-TODO-red.svg" /> <img src="https://img.shields.io/badge/Tests-TODO-red.svg" />
