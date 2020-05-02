@@ -16,7 +16,7 @@ const runNativeTests = () => {
   it("makes a POST request to the correct Appium endpoint", async () => {
     const sessionId = "sessionId";
     const script = "mobile:getDeviceTime";
-    const args = [{ format: "YYY-MM" }];
+    const args = [{ format: "YYYY-MM" }];
     jest.spyOn(sessionStore, "getSessionId").mockReturnValue(sessionId);
     jest.spyOn(requestHelpers, "request").mockResolvedValue();
 
