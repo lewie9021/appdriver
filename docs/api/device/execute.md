@@ -7,7 +7,7 @@ Execute a script / command within the current context. Commands available within
 #### Parameters
 
 1. `script` (`String | Function`): Script to execute. Functions are only supported within the Web context.
-2. `...params` (`Any`): N-number of parameters to be passed to the script. Parameters must be JSON serializable (e.g. strings, numbers, objects, arrays and null).
+2. `...params` (`Any`): JSON serializable parameters (e.g. strings, numbers, objects, arrays and null) to be passed to the script.
 
 #### Returns
 
