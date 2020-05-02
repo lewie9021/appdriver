@@ -11,8 +11,9 @@ describe("WebView Screen", () => {
     await device.waitFor(() => expect(device.getContexts()).toHaveLength(2));
     await device.switchToWebContext();
 
-    await element(by.css(`input[name="q"]`)).setValue("Hello World");
+    const $input = await element(by.css(`input[name="q"]`)).setValue("Hello World");
+    const value = await device.execute(($input) => $input.value, await $input.getRef());
 
-    await device.wait(2000);
+    return expect(value).toEqual("Hello World");
   });
 });

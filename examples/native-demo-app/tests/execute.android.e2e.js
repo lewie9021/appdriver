@@ -1,8 +1,10 @@
-const { device } = require("../../../main");
+const { device, expect } = require("../../../main");
 
 describe("Execute (Android)", () => {
   it("works", async () => {
-    const permissions = await device.execute("mobile:getPermissions");
-    console.log("permissions", permissions);
+    const deviceInfo = await device.execute("mobile:deviceInfo");
+
+    expect(deviceInfo.carrierName).toEqual("Android");
+    expect(deviceInfo.apiVersion).toEqual("27");
   });
 });
