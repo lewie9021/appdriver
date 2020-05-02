@@ -1,6 +1,6 @@
 # `.execute(script: String | Function, ...params: Any) => Promise<Any>`
 
-Execute a script / command within the current context. The commands available within the native context can be found [here](http://appium.io/docs/en/commands/mobile-command/). In the Web context, you can execute arbitrary JavaScript that provides access to various aspects of the document. 
+Execute a script / command within the current context. Commands available within the native context can be found [here](http://appium.io/docs/en/commands/mobile-command/). In the Web context, you can execute arbitrary JavaScript that provides access to various aspects of the document. 
 
 > Note: Where possible, it is good practice to extract script functions into a separate module. That way, it removes temptation to reference variables out of scope that will cause the script to fail. It also helps untangle the mix of execution contexts (Node.js vs. Web).
 
@@ -59,4 +59,5 @@ Retrieve the inner text of an element (Web):
 #### Related Docs
 
 - [Execute Mobile Command (Appium)](http://appium.io/docs/en/commands/mobile-command/)
+- [Execute Script (Appium)](http://appium.io/docs/en/commands/web/execute/)
 - [Execute Script (W3C)](https://www.w3.org/TR/webdriver/#dfn-execute-script)

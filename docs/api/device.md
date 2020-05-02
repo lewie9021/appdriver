@@ -194,7 +194,7 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.execute(script: String | Function, ...params: Any) => Promise<Any>```](./device/execute.md)
+[```.execute(script: String | Function, ...params: Any) => Promise<Any>```](./device/execute.md)
 
 <img src="https://img.shields.io/badge/Platform-All-blue.svg" />
 
