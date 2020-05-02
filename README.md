@@ -1,6 +1,6 @@
 # AppDriver
 
-The mobile automation framework.
+A mobile focused test automation framework.
 
 [![NPM Version](https://img.shields.io/npm/v/appdriver.svg?style=flat)](https://www.npmjs.com/package/appdriver)
 
