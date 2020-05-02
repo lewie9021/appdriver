@@ -12,7 +12,7 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-const runTests = () => {
+const runNativeTests = () => {
   it("makes a POST request to the correct Appium endpoint", async () => {
     const sessionId = "sessionId";
     const script = "mobile:getDeviceTime";
@@ -48,8 +48,8 @@ const runTests = () => {
       method: "POST",
       path: `/session/${sessionId}/execute`,
       payload: {
-        args: [],
-        script
+        script,
+        args: []
       }
     });
   });
@@ -57,7 +57,7 @@ const runTests = () => {
 
 describe("iOS", () => {
   beforeEach(() => setPlatform("iOS"));
-  runTests();
+  runNativeTests();
 
   it("throws a NotSupportedError when a function is passed", async () => {
     const sessionId = "sessionId";
@@ -80,7 +80,7 @@ describe("iOS", () => {
 
 describe("Android", () => {
   beforeEach(() => setPlatform("Android"));
-  runTests();
+  runNativeTests();
 
   it("throws a NotSupportedError when a function is passed", async () => {
     const sessionId = "sessionId";
@@ -103,7 +103,68 @@ describe("Android", () => {
 
 describe("Web", () => {
   beforeEach(() => setPlatform("Web"));
-  runTests();
+
+  it("makes a POST request to the correct Appium endpoint", async () => {
+    const sessionId = "sessionId";
+    const script = "return arguments[0] * 2";
+    const args = [5];
+    jest.spyOn(sessionStore, "getSessionId").mockReturnValue(sessionId);
+    jest.spyOn(requestHelpers, "request").mockResolvedValue();
+
+    await expect(appiumService.execute({ script, args }))
+      .resolves.toEqual(undefined);
+
+    expect(requestHelpers.request).toHaveBeenCalledTimes(1);
+    expect(requestHelpers.request).toHaveBeenCalledWith({
+      method: "POST",
+      path: `/session/${sessionId}/execute`,
+      payload: {
+        script,
+        args
+      }
+    });
+  });
+
+  it("optionally accepts a sessionId", async () => {
+    const sessionId = "newSessionId";
+    const script = "return 1 + 2";
+    jest.spyOn(sessionStore, "getSessionId").mockReturnValue("sessionId");
+    jest.spyOn(requestHelpers, "request").mockResolvedValue();
+
+    await expect(appiumService.execute({ sessionId, script }))
+      .resolves.toEqual(undefined);
+
+    expect(requestHelpers.request).toHaveBeenCalledTimes(1);
+    expect(requestHelpers.request).toHaveBeenCalledWith({
+      method: "POST",
+      path: `/session/${sessionId}/execute`,
+      payload: {
+        script,
+        args: []
+      }
+    });
+  });
+
+  it("prepends 'return' when a string is passed without one", async () => {
+    const sessionId = "sessionId";
+    const script = "arguments[0] + arguments[1]";
+    const args = [1, 2];
+    jest.spyOn(sessionStore, "getSessionId").mockReturnValue(sessionId);
+    jest.spyOn(requestHelpers, "request").mockResolvedValue();
+
+    await expect(appiumService.execute({ script, args }))
+      .resolves.toEqual(undefined);
+
+    expect(requestHelpers.request).toHaveBeenCalledTimes(1);
+    expect(requestHelpers.request).toHaveBeenCalledWith({
+      method: "POST",
+      path: `/session/${sessionId}/execute`,
+      payload: {
+        script: `return ${script.trim()}`,
+        args
+      }
+    });
+  });
 
   it("supports passing a function to 'script'", async () => {
     const sessionId = "sessionId";

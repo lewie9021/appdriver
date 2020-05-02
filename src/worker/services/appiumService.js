@@ -3,6 +3,7 @@ const gestures = require("../gestures");
 const matchers = require("../matchers");
 const { AppiumError, NotImplementedError, NotSupportedError } = require("../errors");
 const { isNativeTextInput, isNativeSwitch, isNativeSlider } = require("../helpers/elementTypes");
+const { getWebScript } = require("../helpers/getWebScript");
 const { platform, isPlatform, isInstanceOf, isString, toBoolean, toNumber } = require("../../utils");
 const { transformBounds } = require("../attributeTransforms");
 const { request } = require("./request");
@@ -944,9 +945,7 @@ function createAppiumService() {
           method: "POST",
           path: `/session/${sessionId}/execute`,
           payload: {
-            script: typeof script === "function"
-              ? `return (${script}).apply(null, arguments)`
-              : script,
+            script: getWebScript(script),
             args
           }
         });
