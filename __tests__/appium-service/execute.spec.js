@@ -62,7 +62,7 @@ describe("iOS", () => {
   it("throws a NotSupportedError when a function is passed", async () => {
     const sessionId = "sessionId";
     const script = (a, b) => a + b;
-    const args = [1, 2];
+    const args = [ 1, 2 ];
     jest.spyOn(sessionStore, "getSessionId").mockReturnValue(sessionId);
     jest.spyOn(requestHelpers, "request").mockResolvedValue();
     expect.assertions(3);
@@ -85,7 +85,7 @@ describe("Android", () => {
   it("throws a NotSupportedError when a function is passed", async () => {
     const sessionId = "sessionId";
     const script = (a, b) => a + b;
-    const args = [1, 2];
+    const args = [ 1, 2 ];
     jest.spyOn(sessionStore, "getSessionId").mockReturnValue(sessionId);
     jest.spyOn(requestHelpers, "request").mockResolvedValue();
     expect.assertions(3);
@@ -148,7 +148,7 @@ describe("Web", () => {
   it("prepends 'return' when a string is passed without one", async () => {
     const sessionId = "sessionId";
     const script = "arguments[0] + arguments[1]";
-    const args = [1, 2];
+    const args = [ 1, 2 ];
     jest.spyOn(sessionStore, "getSessionId").mockReturnValue(sessionId);
     jest.spyOn(requestHelpers, "request").mockResolvedValue();
 
@@ -169,7 +169,7 @@ describe("Web", () => {
   it("supports passing a function to 'script'", async () => {
     const sessionId = "sessionId";
     const script = (a, b) => a + b;
-    const args = [1, 2];
+    const args = [ 1, 2 ];
     jest.spyOn(sessionStore, "getSessionId").mockReturnValue(sessionId);
     jest.spyOn(requestHelpers, "request").mockResolvedValue();
 
