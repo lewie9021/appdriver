@@ -25,6 +25,15 @@ Retrieve the current device time (Native):
 })();
 ```
 
+Perform a swipe left gesture (Native):
+
+```javascript
+(async () => {
+    const ref = await element(by.label("list-item")).getRef();
+    await device.execute("mobile:swipe", { direction: "left", element: ref });
+})();
+```
+
 Retrieve an element reference and scroll into view (Web):
 
 ```javascript
