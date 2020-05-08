@@ -5,7 +5,7 @@ const development = true;
 
 const simulators = {
   iPhone8: {
-    bundleId: "org.reactjs.native.example.NativeDemoApp",
+    bundleId: "com.nativedemoapp",
     app: getAppPath("iOS", development),
     platformName: "iOS",
     platformVersion: "13.3",
@@ -16,7 +16,7 @@ const simulators = {
     noReset: true
   },
   iPhoneX: {
-    bundleId: "org.reactjs.native.example.NativeDemoApp",
+    bundleId: "com.nativedemoapp",
     app: getAppPath("iOS", development),
     platformName: "iOS",
     platformVersion: "13.3",
