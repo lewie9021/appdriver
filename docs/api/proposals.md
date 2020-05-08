@@ -68,20 +68,6 @@ TODO: Description here.
 
 TODO: Description here.
 
-:warning: [```.performTouchId(options: {successful: Boolean}) => Promise```](./device/performTouchId.md)
-
-<img src="https://img.shields.io/badge/Platform-iOS-blue.svg" />
-
-Note: Simulator only.
-TODO: Description here.
-
-:warning: [```.performFingerPrint(options: {id?: Number}) => Promise```](./device/performFingerPrint.md)
-
-<img src="https://img.shields.io/badge/Platform-Android-blue.svg" />
-
-Note: Emulator only.
-TODO: Description here.
-
 :warning: [```.sendSms({phoneNumber: String, message: String}) => Promise```](./device/sendSms.md)
 
 <img src="https://img.shields.io/badge/Platform-Android-blue.svg" />
