@@ -1,10 +1,11 @@
 const { sessionStore } = require("../stores/sessionStore");
 const gestures = require("../gestures");
 const matchers = require("../matchers");
+const { Expect } = require("../Expect");
 const { AppiumError, NotImplementedError, NotSupportedError } = require("../errors");
 const { isNativeTextInput, isNativeSwitch, isNativeSlider } = require("../helpers/elementTypes");
 const { getWebScript } = require("../helpers/getWebScript");
-const { platform, isPlatform, isInstanceOf, isString, toBoolean, toNumber } = require("../../utils");
+const { platform, isPlatform, isInstanceOf, isString, toBoolean, toNumber, pollFor } = require("../../utils");
 const { transformBounds } = require("../attributeTransforms");
 const { request } = require("./request");
 
@@ -74,7 +75,7 @@ function createAppiumService() {
   };
 
   // ({ sessionId: String?, appId: String }) => Promise.
-  const launchApp = ({ sessionId = sessionStore.getSessionId(), appId } = {}) => {
+  const launchApp = ({ sessionId = sessionStore.getSessionId(), appId }) => {
     return request({
       method: "POST",
       path: `/session/${sessionId}/appium/device/activate_app`,
@@ -83,7 +84,7 @@ function createAppiumService() {
   };
 
   // ({ sessionId: String?, appId: String }) => Promise.
-  const closeApp = ({ sessionId = sessionStore.getSessionId(), appId } = {}) => {
+  const closeApp = ({ sessionId = sessionStore.getSessionId(), appId }) => {
     return request({
       method: "POST",
       path: `/session/${sessionId}/appium/device/terminate_app`,
@@ -953,6 +954,49 @@ function createAppiumService() {
     });
   };
 
+  // ({ sessionId: String?, url: String }) => Promise.
+  // Note: We don't use the normal endpoint for iOS as it only works for Simulators and displays an alert on first open
+  // which is difficult to determine. Using Safari seems to be the most predictable strategy.
+  const navigate = async ({ sessionId = sessionStore.getSessionId(), url }) => {
+    if (!isPlatform("iOS")) {
+      return request({
+        method: "POST",
+        path: `/session/${sessionId}/url`,
+        payload: { url }
+      });
+    }
+
+    await restartApp({ sessionId, appId: "com.apple.mobilesafari" });
+
+    // Handle differing Safari behaviour (pre iOS 13) where url input isn't auto-focused.
+    if (!await getKeyboardVisible({ sessionId })) {
+      const $urlButton = await pollFor(() => {
+        return findElement({
+          sessionId,
+          matcher: matchers.iosPredicate(`type == "XCUIElementTypeButton" && name == "URL"`)
+        });
+      }, { maxDuration: 10000, interval: 200 });
+
+      await clickElement({ sessionId, element: $urlButton });
+    }
+
+    const $urlInput = await pollFor(() => {
+      return findElement({
+        sessionId,
+        matcher: matchers.iosPredicate(`type == "XCUIElementTypeTextField" && name CONTAINS "URL"`)
+      });
+    }, { maxDuration: 10000, interval: 200 });
+
+    await setElementValue({ sessionId, element: $urlInput, value: url });
+    await tapElementReturnKey({ sessionId, element: $urlInput });
+
+    await pollFor(() => {
+      return new Expect(getAlertVisible({ sessionId })).toBeTruthy();
+    }, { maxDuration: 10000, interval: 200 });
+
+    return acceptAlert({ sessionId });
+  };
+
   return {
     getStatus,
     createSession,
@@ -1009,7 +1053,8 @@ function createAppiumService() {
     setAlertValue,
     getAlertVisible,
 
-    execute
+    execute,
+    navigate
   };
 }
 
