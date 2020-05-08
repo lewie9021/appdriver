@@ -340,6 +340,10 @@ class Device {
     return appiumService.execute({ script, args: params })
       .catch(handleActionError(errorMessage));
   }
+
+  navigate(url) {
+    return appiumService.navigate({ url });
+  }
 }
 
 module.exports = {
