@@ -926,7 +926,7 @@ function createAppiumService() {
       });
   };
 
-  // ({ sessionId: String?, script: String | Function, args?: Array<String> }) => Promise.
+  // ({ sessionId: String?, script: String | Function, args?: Array<JSONValue> }) => Promise.
   const execute = ({ sessionId = sessionStore.getSessionId(), script, args = [] }) => {
     return platform.select({
       native: () => {
