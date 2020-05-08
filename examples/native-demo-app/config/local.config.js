@@ -7,6 +7,7 @@ const simulators = {
   iPhone8: {
     bundleId: "com.nativedemoapp",
     app: getAppPath("iOS", development),
+    derivedDataPath: path.join(__dirname, "derived-data", "iphone-8-13-3"),
     platformName: "iOS",
     platformVersion: "13.3",
     deviceName: "iPhone 8",
@@ -18,6 +19,7 @@ const simulators = {
   iPhoneX: {
     bundleId: "com.nativedemoapp",
     app: getAppPath("iOS", development),
+    derivedDataPath: path.join(__dirname, "derived-data", "iphone-x-13-3"),
     platformName: "iOS",
     platformVersion: "13.3",
     deviceName: "iPhone X",
