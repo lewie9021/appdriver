@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Writing Your First Test · AppDriver</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="Let&#x27;s create a test script that taps a button and asserts that a message appears with the text &quot;Hello World!&quot;:"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Writing Your First Test · AppDriver"/><meta property="og:type" content="website"/><meta property="og:url" content="https://lewie9021.github.io/appdriver/"/><meta property="og:description" content="Let&#x27;s create a test script that taps a button and asserts that a message appears with the text &quot;Hello World!&quot;:"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/appdriver/undefined"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/darcula.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/appdriver/js/scrollSpy.js"></script><link rel="stylesheet" href="/appdriver/css/main.css"/><script src="/appdriver/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/appdriver/"><h2 class="headerTitle">AppDriver</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/appdriver/docs/getting-started" target="_self">Docs</a></li><li class=""><a href="/appdriver/docs/api-reference" target="_self">API</a></li><li class=""><a href="https://github.com/lewie9021/appdriver" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Introduction</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Introduction</h3><ul class=""><li class="navListItem"><a class="navItem" href="/appdriver/docs/getting-started">Getting Started</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/appdriver/docs/writing-your-first-test">Writing Your First Test</a></li></ul></div></div></section></div><script>
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>2. Writing Your First Test · AppDriver</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="Let&#x27;s create a test script that taps a button and asserts the alert text:"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="2. Writing Your First Test · AppDriver"/><meta property="og:type" content="website"/><meta property="og:url" content="https://lewie9021.github.io/appdriver/"/><meta property="og:description" content="Let&#x27;s create a test script that taps a button and asserts the alert text:"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/appdriver/undefined"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/darcula.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/appdriver/js/scrollSpy.js"></script><link rel="stylesheet" href="/appdriver/css/main.css"/><script src="/appdriver/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/appdriver/"><h2 class="headerTitle">AppDriver</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/appdriver/docs/getting-started" target="_self">Docs</a></li><li class=""><a href="/appdriver/docs/api-reference" target="_self">API</a></li><li class=""><a href="https://github.com/lewie9021/appdriver" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Tutorial</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Introduction</h3><ul class=""><li class="navListItem"><a class="navItem" href="/appdriver/docs/getting-started">Getting Started</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Tutorial</h3><ul class=""><li class="navListItem"><a class="navItem" href="/appdriver/docs/configuring-the-runner">1. Configuring The Runner</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/appdriver/docs/writing-your-first-test">2. Writing Your First Test</a></li><li class="navListItem"><a class="navItem" href="/appdriver/docs/running-the-test">3. Running The Test</a></li></ul></div></div></section></div><script>
             var coll = document.getElementsByClassName('collapsible');
             var checkActiveCategory = true;
             for (var i = 0; i < coll.length; i++) {
@@ -54,7 +54,7 @@
                 };
               }
             });
-        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Writing Your First Test</h1></header><article><div><span><p>Let's create a test script that taps a button and asserts that a message appears with the text &quot;Hello World!&quot;:</p>
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">2. Writing Your First Test</h1></header><article><div><span><p>Let's create a test script that taps a button and asserts the alert text:</p>
 <p><strong>tests/hello-world.e2e.js</strong></p>
 <pre><code class="hljs css language-javascript"><span class="hljs-keyword">const</span> { element, by, alert, expect } = <span class="hljs-built_in">require</span>(<span class="hljs-string">"appdriver"</span>);
 
@@ -66,51 +66,7 @@ describe(<span class="hljs-string">"My First Testing App"</span>, () =&gt; {
   });
 });
 </code></pre>
-<p>Before we can run our test script, we must first define our AppDriver configuration file:</p>
-<blockquote>
-<p>Note: 'specs' only supports paths directly to files (fuzzy matching is not yet).</p>
-</blockquote>
-<p><strong>config/local.config.js</strong></p>
-<pre><code class="hljs css language-javascript"><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">"path"</span>);
-
-<span class="hljs-keyword">const</span> simulators = {
-  <span class="hljs-attr">iPhoneX</span>: {
-    <span class="hljs-attr">bundleId</span>: <span class="hljs-string">"org.reactjs.native.example.MyFirstTestingApp"</span>,
-    <span class="hljs-attr">app</span>: path.join(__dirname, <span class="hljs-string">"app"</span>, <span class="hljs-string">"MyFirstTestingApp.zip"</span>),
-    <span class="hljs-attr">platformName</span>: <span class="hljs-string">"iOS"</span>,
-    <span class="hljs-attr">platformVersion</span>: <span class="hljs-string">"12.1"</span>,
-    <span class="hljs-attr">deviceName</span>: <span class="hljs-string">"iPhone X"</span>,
-    <span class="hljs-attr">automationName</span>: <span class="hljs-string">"XCUITest"</span>,
-    <span class="hljs-attr">wdaLocalPort</span>: <span class="hljs-number">8100</span>,
-    <span class="hljs-attr">waitForQuiescence</span>: <span class="hljs-literal">false</span>,
-    <span class="hljs-attr">noReset</span>: <span class="hljs-literal">true</span>
-  }
-};
-
-<span class="hljs-built_in">module</span>.exports = {
-  <span class="hljs-attr">specs</span>: [
-    <span class="hljs-string">"../tests/hello-world.e2e.js"</span>
-  ],
-  <span class="hljs-attr">devices</span>: [
-    { <span class="hljs-attr">capabilities</span>: simulators.iPhoneX }
-  ]
-};
-</code></pre>
-<p>Now we have configured AppDriver, it is time to run test script:</p>
-<pre><code class="hljs css language-bash">./node_modules/.bin/appdriver --config ./config/local.config.js
-</code></pre>
-<p>Should you wish to alias the command above, simply modify your package.json file with a script command:</p>
-<pre><code class="hljs css language-json5">{
-  <span class="hljs-comment">// ...</span>
-  <span class="hljs-attr">"scripts"</span>: {
-      <span class="hljs-comment">// ...</span>
-      <span class="hljs-attr">"test:e2e"</span>: <span class="hljs-string">"appdriver --config ./config/local.config.js"</span>
-  }
-  <span class="hljs-comment">// ...</span>
-}
-</code></pre>
-<p>You can find the complete source code <a href="https://github.com/lewie9021/appdriver/tree/master/examples/my-first-testing-app">here</a>, including the pre-built application.</p>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated on 5/8/2020</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/appdriver/docs/configuring-the-runner"><span class="arrow-prev">← </span><span>Previous</span></a><a class="docs-next button" href="/appdriver/docs/guides/finding-elements"><span>Next</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/appdriver/" class="nav-home"></a><div><h5>Docs</h5><a href="/appdriver/docs/getting-started.html">Getting Started</a><a href="/appdriver/docs/core-concepts/device.html">Core Concepts</a></div><div><h5>Community</h5><a href="https://stackoverflow.com/questions/tagged/appdriver" target="_blank" rel="noreferrer noopener">Stack Overflow</a></div><div><h5>More</h5><a href="https://github.com/lewie9021/appdriver-docs">Edit The Docs</a><a href="https://github.com/lewie9021/appdriver-native-demo-app">Native Demo App</a><a href="https://github.com/lewie9021/appdriver">GitHub</a><a class="github-button" href="https://github.com/lewie9021/appdriver" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><section class="copyright">Copyright © 2020 Lewis Barnes</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 5/10/2020</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/appdriver/docs/configuring-the-runner"><span class="arrow-prev">← </span><span>1. Configuring The Runner</span></a><a class="docs-next button" href="/appdriver/docs/running-the-test"><span>3. Running The Test</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/appdriver/" class="nav-home"></a><div><h5>Docs</h5><a href="/appdriver/docs/getting-started.html">Getting Started</a><a href="/appdriver/docs/core-concepts/device.html">Core Concepts</a></div><div><h5>Community</h5><a href="https://stackoverflow.com/questions/tagged/appdriver" target="_blank" rel="noreferrer noopener">Stack Overflow</a></div><div><h5>More</h5><a href="https://github.com/lewie9021/appdriver-docs">Edit The Docs</a><a href="https://github.com/lewie9021/appdriver-native-demo-app">Native Demo App</a><a href="https://github.com/lewie9021/appdriver">GitHub</a><a class="github-button" href="https://github.com/lewie9021/appdriver" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><section class="copyright">Copyright © 2020 Lewis Barnes</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;
