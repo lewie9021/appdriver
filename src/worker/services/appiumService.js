@@ -987,14 +987,14 @@ function createAppiumService() {
       });
     }, { maxDuration: 10000, interval: 200 });
 
-    await setElementValue({ sessionId, element: $urlInput, value: url });
+    await sendElementKeys({ sessionId, element: $urlInput, keys: url.split("") });
     await tapElementReturnKey({ sessionId, element: $urlInput });
 
     await pollFor(() => {
       return new Expect(getAlertVisible({ sessionId })).toBeTruthy();
     }, { maxDuration: 10000, interval: 200 });
 
-    return acceptAlert({ sessionId });
+    await acceptAlert({ sessionId });
   };
 
   return {
