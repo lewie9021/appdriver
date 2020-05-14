@@ -1,6 +1,6 @@
 # `.goBack() => Promise`
 
-Taps the hardware back button on Android.
+Go to the previous screen. On Android, this will be the hardware back button.
 
 #### Returns
 
