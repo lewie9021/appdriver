@@ -1,6 +1,6 @@
 # [AppDriver](https://lewie9021.github.io/appdriver/)
 
-[![NPM Version](https://img.shields.io/npm/v/appdriver.svg?style=flat)](https://www.npmjs.com/package/appdriver)
+[![NPM Version](https://img.shields.io/npm/v/appdriver.svg?style=flat)](https://www.npmjs.com/package/appdriver) [![GitHub License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/lewie9021/appdriver/blob/master/LICENSE.md)
 
 A mobile focused test automation framework.
 
