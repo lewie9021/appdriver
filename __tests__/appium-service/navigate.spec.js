@@ -188,8 +188,6 @@ describe("iOS", () => {
       path: `/session/${sessionId}/alert/accept`
     });
   });
-
-  // runTests();
 });
 
 describe("Android", () => {
