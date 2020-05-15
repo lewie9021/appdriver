@@ -6,7 +6,7 @@ A mobile focused test automation framework.
 
 [Get Started](https://lewie9021.github.io/appdriver/docs/getting-started.html) | [API Reference](https://lewie9021.github.io/appdriver/docs/api-reference) | [Native Demo App](https://github.com/lewie9021/appdriver-native-demo-app) | [Change Log](https://github.com/lewie9021/appdriver/blob/master/CHANGELOG.md)
 
-<img width="100%" src="https://raw.githubusercontent.com/lewie9021/appdriver/master/docs/assets/demo.gif">
+<img width="100%" src="https://raw.githubusercontent.com/lewie9021/appdriver/master/assets/demo.gif">
 
 ### Notices
 
@@ -88,25 +88,3 @@ Unlike Webdriver clients, [Detox](https://github.com/wix/Detox) is yet to suppor
   await device.performGesture(tap);
 })();
 ```
-
-### Documentation
-
-- [Introduction](./docs)
-- [Installation](./docs/installation)
-  - [Appium](./docs/installation/installing-appium.md) :hammer:
-  - [AppDriver](./docs/installation/installing-appdriver.md)
-- [Guides](./docs/guides)
-  - [Writing Your First Test](./docs/guides/writing-your-first-test.md)
-  - [Finding Elements](./docs/guides/finding-elements.md) :hammer:
-- [API Reference](./docs/api)
-  - [Configuration](./docs/api/configuration.md)
-  - [Matchers](./docs/api/matchers.md)
-  - [Element](./docs/api/element.md)
-  - [Elements](./docs/api/elements.md)
-  - [Device](./docs/api/device.md)
-  - [Alert](./docs/api/alert.md)
-  - [Gestures](./docs/api/gestures.md)
-  - [Expect](./docs/api/expect.md)
-  - [Utilities](./docs/api/utilities.md)
-  - [Proposals](./docs/api/proposals.md) :warning:
-- [Change Log](./CHANGELOG.md)
