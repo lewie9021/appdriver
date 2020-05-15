@@ -342,7 +342,8 @@ class Device {
   }
 
   navigate(url) {
-    return appiumService.navigate({ url });
+    return appiumService.navigate({ url })
+      .catch(handleActionError(`Failed to navigate to '${url}'.`));
   }
 }
 
