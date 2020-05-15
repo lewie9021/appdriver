@@ -1,8 +1,10 @@
-# AppDriver
+# [AppDriver](https://lewie9021.github.io/appdriver/)
+
+[![NPM Version](https://img.shields.io/npm/v/appdriver.svg?style=flat)](https://www.npmjs.com/package/appdriver)
 
 A mobile focused test automation framework.
 
-[![NPM Version](https://img.shields.io/npm/v/appdriver.svg?style=flat)](https://www.npmjs.com/package/appdriver)
+[Get Started](https://lewie9021.github.io/appdriver/docs/getting-started.html) | [API Reference](https://lewie9021.github.io/appdriver/docs/api-reference) | [Native Demo App](https://github.com/lewie9021/appdriver-native-demo-app) | [Change Log](https://github.com/lewie9021/appdriver/blob/master/CHANGELOG.md)
 
 <img width="100%" src="https://raw.githubusercontent.com/lewie9021/appdriver/master/docs/assets/demo.gif">
 
