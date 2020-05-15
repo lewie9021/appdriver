@@ -1,5 +1,12 @@
 # Change Log
 
+## [Unreleased]
+
+### Added
+
+- Official AppDriver [website](https://lewie9021.github.io/appdriver/)!
+- Support for `.navigate` on Device.
+
 ## [v1.0.0-beta.1] - 2020-05-02
 
 ### Added
