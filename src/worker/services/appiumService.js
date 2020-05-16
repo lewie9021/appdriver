@@ -5,8 +5,8 @@ const { Expect } = require("../Expect");
 const { AppiumError, NotImplementedError, NotSupportedError } = require("../errors");
 const { isNativeTextInput, isNativeSwitch, isNativeSlider } = require("../helpers/elementTypes");
 const { getWebScript } = require("../helpers/getWebScript");
-const { platform, isPlatform, isInstanceOf, isString, toBoolean, toNumber, pollFor } = require("../../utils");
-const { transformBounds } = require("../attributeTransforms");
+const { platform, isPlatform, isInstanceOf, isString, pollFor } = require("../../utils");
+const transformAttribute = require("../helpers/transformAttribute");
 const { request } = require("./request");
 
 const parseValue = (rawValue, elementType, options) => {
@@ -348,62 +348,11 @@ function createAppiumService() {
 
   // ({ sessionId: String?, element: AppiumElement, attribute: String }) => Promise<Boolean | String | Number | Object>.
   const getElementAttribute = ({ sessionId = sessionStore.getSessionId(), element, attribute }) => {
-    const validAttributes = platform.select({
-      ios: () => [
-        { name: "uid", internalName: "UID" },
-        { name: "accessibilityContainer", transform: toBoolean },
-        { name: "accessible", transform: toBoolean },
-        { name: "enabled", transform: toBoolean },
-        // { name: "frame" }, // 500 error on ScrollView element.
-        { name: "label" },
-        { name: "name" },
-        { name: "rect", transform: JSON.parse },
-        { name: "type" },
-        { name: "value" },
-        { name: "visible", transform: toBoolean }
-      ],
-      android: () => [
-        { name: "checkable", transform: toBoolean },
-        { name: "checked", transform: toBoolean },
-        { name: "className" },
-        { name: "clickable", transform: toBoolean },
-        { name: "contentDescription" },
-        { name: "enabled", transform: toBoolean },
-        { name: "focusable", transform: toBoolean },
-        { name: "focused", transform: toBoolean },
-        { name: "longClickable", transform: toBoolean },
-        { name: "package" },
-        // { name: "password" }, // Doesn't seem to work.
-        { name: "resourceId" },
-        { name: "scrollable", transform: toBoolean },
-        { name: "selectionStart", internalName: "selection-start", transform: toNumber },
-        { name: "selectionEnd", internalName: "selection-end", transform: toNumber },
-        { name: "selected", transform: toBoolean },
-        { name: "text" },
-        { name: "bounds", transform: transformBounds },
-        { name: "displayed", transform: toBoolean },
-        { name: "contentSize", transform: JSON.parse } // Only works on ScrollViews
-      ],
-      web: () => {
-        // TODO: Investigate valid attributes.
-        return Promise.reject(new NotSupportedError());
-      }
-    });
-    const attributeMatch = validAttributes.find((x) => x.name === attribute);
-
-    if (!attributeMatch) {
-      const attributesText = validAttributes.map((x) => `- ${x.name}`).join("\n");
-
-      throw new Error(`Invalid attribute.\n\nValid attributes are:\n\n${attributesText}`);
-    }
-
-    const attributeName = attributeMatch.internalName || attributeMatch.name;
-
     return request({
       method: "GET",
-      path: `/session/${sessionId}/element/${element.ELEMENT}/attribute/${attributeName}`
+      path: `/session/${sessionId}/element/${element.ELEMENT}/attribute/${attribute}`
     })
-      .then(attributeMatch.transform);
+      .then((value) => transformAttribute(attribute, value));
   };
 
   // ({ sessionId: String?, element: AppiumElement }) => Promise<Boolean>.

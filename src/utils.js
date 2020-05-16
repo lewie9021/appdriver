@@ -85,6 +85,8 @@ const isString = (x) => {
   return typeof x === "string";
 };
 
+const toValue = (x) => x;
+
 const toBoolean = (x) => {
   if (isString(x)) {
     switch (x) {
@@ -222,6 +224,7 @@ module.exports = {
   isNull,
   isUndefined,
   isInstanceOf,
+  toValue,
   toBoolean,
   toNumber,
   getValueType,
