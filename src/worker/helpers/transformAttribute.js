@@ -1,4 +1,4 @@
-const { platform, toValue, toBoolean, toNumber } = require("../../utils");
+const { platform, isPlatform, toValue, toBoolean, toNumber } = require("../../utils");
 
 const transformBounds = (x) => {
   const coordinates = x.match(/(\d|\.)+/g);
@@ -12,6 +12,10 @@ const transformBounds = (x) => {
 };
 
 const transformAttribute = (name, value) => {
+  if (isPlatform("Web")) {
+    return value;
+  }
+
   // Known attributes.
   const transforms = platform.select({
     ios: () => ({
@@ -25,7 +29,7 @@ const transformAttribute = (name, value) => {
       "rect": JSON.parse,
       "selected": toBoolean,
       "type": toValue,
-      "value": toValue,
+      "value": toValue, // null when input is empty otherwise a string.
       "visible": toBoolean,
       "wdAccessibilityContainer": toBoolean,
       "wdAccessible": toBoolean,
@@ -54,7 +58,7 @@ const transformAttribute = (name, value) => {
       "long-clickable": toBoolean,
       "longClickable": toBoolean,
       "package": toValue,
-      "password": toValue, // Doesn't seem to work.
+      "password": toBoolean,
       "resource-id": toValue,
       "resourceId": toValue,
       "scrollable": toBoolean,
@@ -66,8 +70,7 @@ const transformAttribute = (name, value) => {
       "bounds": transformBounds,
       "displayed": toBoolean,
       "contentSize": JSON.parse // Only works on scroll views.
-    }),
-    web: () => ({})
+    })
   });
 
   const transform = transforms[name];
@@ -76,7 +79,7 @@ const transformAttribute = (name, value) => {
     return transform(value);
   }
 
-  return toValue(value);
+  return value;
 };
 
 module.exports = transformAttribute;
