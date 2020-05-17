@@ -9,6 +9,11 @@
 - Support for `.navigate` on Device.
 - Support for `.toHaveAttribute` on Expect.
 
+### Changed
+
+- Renamed `.toBeGreaterThan` to `.toBeMoreThan` on Expect.
+- Renamed `.toBeGreaterThanOrEqual` to `.toBeMoreThanOrEqual` on Expect.
+
 ## [v1.0.0-beta.1] - 2020-05-02
 
 ### Added
