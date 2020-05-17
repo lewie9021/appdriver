@@ -181,7 +181,7 @@ class Expect {
     const valueType = getValueType(actualValue);
 
     if (!supportedTypes.includes(valueType)) {
-      throw new NotImplementedError();
+      throw new TypeError();
     }
 
     const actualLength = actualValue.length || 0;
@@ -202,7 +202,7 @@ class Expect {
     const valueType = getValueType(this.value);
 
     if (!supportedTypes.includes(valueType)) {
-      throw new NotImplementedError();
+      throw new TypeError();
     }
 
     const displayValueText = displayValue(this.value);
@@ -250,7 +250,7 @@ class Expect {
     const valueType = getValueType(this.value);
 
     if (!supportedTypes.includes(valueType)) {
-      throw new NotImplementedError();
+      throw new TypeError();
     }
 
     const displayValueText = displayValue(this.value);
@@ -270,7 +270,7 @@ class Expect {
     const valueType = getValueType(this.value);
 
     if (!supportedTypes.includes(valueType)) {
-      throw new NotImplementedError();
+      throw new TypeError();
     }
 
     const displayValueText = displayValue(this.value);
@@ -290,7 +290,7 @@ class Expect {
     const valueType = getValueType(this.value);
 
     if (!supportedTypes.includes(valueType)) {
-      throw new NotImplementedError();
+      throw new TypeError();
     }
 
     const displayValueText = displayValue(this.value);
@@ -310,7 +310,7 @@ class Expect {
     const valueType = getValueType(this.value);
 
     if (!supportedTypes.includes(valueType)) {
-      throw new NotImplementedError();
+      throw new TypeError();
     }
 
     const displayValueText = displayValue(this.value);

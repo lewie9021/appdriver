@@ -1,4 +1,3 @@
-const { NotImplementedError } = require("../../src/worker/errors");
 const { expect: assert } = require("../../main");
 
 it("doesn't throw if expectation is met", async () => {
@@ -65,14 +64,14 @@ it("throws if expectation is not met when used with .not", async () => {
 
 it("throws if value to perform assertion on isn't supported", async () => {
   await expect(assert(undefined).toHaveLength(0))
-    .rejects.toThrow(NotImplementedError);
+    .rejects.toThrow(TypeError);
 
   await expect(assert(null).toHaveLength(0))
-    .rejects.toThrow(NotImplementedError);
+    .rejects.toThrow(TypeError);
 
   await expect(assert(true).toHaveLength(0))
-    .rejects.toThrow(NotImplementedError);
+    .rejects.toThrow(TypeError);
 
   await expect(assert(50).toHaveLength(0))
-    .rejects.toThrow(NotImplementedError);
+    .rejects.toThrow(TypeError);
 });
