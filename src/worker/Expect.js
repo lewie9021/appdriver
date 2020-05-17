@@ -285,7 +285,7 @@ class Expect {
     });
   }
 
-  async toBeGreaterThan(value) {
+  async toBeMoreThan(value) {
     const supportedTypes = ["number"];
     const valueType = getValueType(this.value);
 
@@ -299,8 +299,8 @@ class Expect {
       pass: this.value > value,
       message: (inverted) => (
         inverted
-          ? `Expected ${displayValueText} not to be greater than ${value}.`
-          : `Expected ${displayValueText} to be greater than ${value}.`
+          ? `Expected ${displayValueText} not to be more than ${value}.`
+          : `Expected ${displayValueText} to be more than ${value}.`
       )
     });
   }
