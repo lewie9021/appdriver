@@ -5,7 +5,9 @@
 ### Added
 
 - Official AppDriver [website](https://lewie9021.github.io/appdriver/)!
+- Support for `.getAttribute` on Element.
 - Support for `.navigate` on Device.
+- Support for `.toHaveAttribute` on Expect.
 
 ## [v1.0.0-beta.1] - 2020-05-02
 
