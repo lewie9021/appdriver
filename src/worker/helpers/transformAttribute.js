@@ -23,7 +23,7 @@ const transformAttribute = (name, value) => {
       "accessibilityContainer": toBoolean,
       "accessible": toBoolean,
       "enabled": toBoolean,
-      "frame": toValue, // 500 error on scroll view.
+      "frame": toValue, // Get 500 error from Appium: "Invalid type in JSON write (NSConcreteValue)".
       "label": toValue,
       "name": toValue,
       "rect": JSON.parse,
