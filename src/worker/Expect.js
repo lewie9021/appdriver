@@ -124,6 +124,19 @@ class Expect {
     });
   }
 
+  async toHaveAttribute(attribute, value) {
+    const elementAttribute = await this.value.getAttribute(attribute);
+
+    return this._assert({
+      pass: elementAttribute === value,
+      message: (inverted) => (
+        inverted
+          ? `Expected element ${attribute} attribute not to have value '${value}'.`
+          : `Expected element ${attribute} attribute to have value '${value}' but instead got '${elementAttribute}'.`
+      )
+    });
+  }
+
   async toExist() {
     const elementExists = await this.value.exists();
 
