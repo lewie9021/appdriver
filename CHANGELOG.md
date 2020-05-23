@@ -1,5 +1,11 @@
 # Change Log
 
+## [Unreleased]
+
+### Added
+
+- Support within the Web context for `.isFocused` on Element.
+
 ## [v1.0.0-beta.2] - 2020-05-17
 
 ### Added
