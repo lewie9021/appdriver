@@ -279,25 +279,6 @@ function createAppiumService() {
     });
   };
 
-  // ({ sessionId: String? }) => Promise.
-  const goBack = ({ sessionId = sessionStore.getSessionId() } = {}) => {
-    return platform.select({
-      ios: () => Promise.reject(new NotSupportedError()),
-      android: () => {
-        return request({
-          method: "POST",
-          path: `/session/${sessionId}/back`
-        });
-      },
-      web: () => {
-        return request({
-          method: "POST",
-          path: `/session/${sessionId}/back`
-        });
-      }
-    });
-  };
-
   // ({ sessionId: String?, actions: W3CActions }) => Promise.
   const performActions = ({ sessionId = sessionStore.getSessionId(), actions }) => {
     return platform.select({
@@ -309,6 +290,33 @@ function createAppiumService() {
         });
       },
       web: () => Promise.reject(new NotSupportedError())
+    });
+  };
+
+  // ({ sessionId: String?, script: String | Function, args?: Array<JSONValue> }) => Promise.
+  const execute = ({ sessionId = sessionStore.getSessionId(), script, args = [] }) => {
+    return platform.select({
+      native: () => {
+        if (typeof script === "function") {
+          return Promise.reject(new NotSupportedError("Functions are only supported in the Web context."));
+        }
+
+        return request({
+          method: "POST",
+          path: `/session/${sessionId}/execute`,
+          payload: { script, args }
+        });
+      },
+      web: () => {
+        return request({
+          method: "POST",
+          path: `/session/${sessionId}/execute`,
+          payload: {
+            script: getWebScript(script),
+            args
+          }
+        });
+      }
     });
   };
 
@@ -365,8 +373,13 @@ function createAppiumService() {
       android: () => {
         return getElementAttribute({ sessionId, element, attribute: "focused" });
       },
-      // TODO: Needs investigation.
-      web: () => Promise.reject(new NotSupportedError())
+      web: () => {
+        return execute({
+          sessionId,
+          script: "arguments[0] === document.activeElement",
+          args: [element]
+        });
+      }
     });
   };
 
@@ -876,28 +889,20 @@ function createAppiumService() {
       });
   };
 
-  // ({ sessionId: String?, script: String | Function, args?: Array<JSONValue> }) => Promise.
-  const execute = ({ sessionId = sessionStore.getSessionId(), script, args = [] }) => {
+  // ({ sessionId: String? }) => Promise.
+  const goBack = ({ sessionId = sessionStore.getSessionId() } = {}) => {
     return platform.select({
-      native: () => {
-        if (typeof script === "function") {
-          return Promise.reject(new NotSupportedError("Functions are only supported in the Web context."));
-        }
-
+      ios: () => Promise.reject(new NotSupportedError()),
+      android: () => {
         return request({
           method: "POST",
-          path: `/session/${sessionId}/execute`,
-          payload: { script, args }
+          path: `/session/${sessionId}/back`
         });
       },
       web: () => {
         return request({
           method: "POST",
-          path: `/session/${sessionId}/execute`,
-          payload: {
-            script: getWebScript(script),
-            args
-          }
+          path: `/session/${sessionId}/back`
         });
       }
     });
@@ -966,8 +971,9 @@ function createAppiumService() {
     getKeyboardVisible,
     hideKeyboard,
     sendKeyCode,
-    goBack,
     performActions,
+
+    execute,
 
     findElement,
     findElements,
@@ -1002,7 +1008,7 @@ function createAppiumService() {
     setAlertValue,
     getAlertVisible,
 
-    execute,
+    goBack,
     navigate
   };
 }
