@@ -22,8 +22,8 @@ const scroll = async ({ sessionId = sessionStore.getSessionId(), x, y, direction
         sessionId,
         script: "window.scrollBy(arguments[0], arguments[1])",
         args: [
-          relativePoint.x * -1,
-          relativePoint.y * -1
+          relativePoint.x,
+          relativePoint.y
         ]
       });
     }
