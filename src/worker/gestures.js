@@ -1,4 +1,5 @@
 const Gesture = require("./Gesture");
+const { normalisePixels } = require("./helpers/pixels");
 
 const getRelativePoint = ({ x = 0, y = 0, direction, distance }) => {
   const radians = direction * (Math.PI / 180);
@@ -140,6 +141,37 @@ const swipeDown = ({ x, y, distance, duration = 50 }) => {
 };
 
 // (options: Object) => Gesture
+const scroll = ({ x, y, direction, distance }) => {
+  const stepSize = normalisePixels(25);
+  const steps = Math.ceil(distance / stepSize);
+  let moves = [];
+
+  for (let i = 0; i < steps; i += 1) {
+    const relativePoint = getRelativePoint({
+      distance: Math.min(stepSize, distance - (i * stepSize)),
+      direction
+    });
+
+    moves.push(
+      moveTo({
+        x: relativePoint.x * -1,
+        y: relativePoint.y * -1,
+        duration: 100,
+        relative: true
+      })
+    );
+  }
+
+  return series([
+    moveTo({ x, y }),
+    press(),
+    wait(250),
+    ...moves,
+    release()
+  ]);
+};
+
+// (options: Object) => Gesture
 const spread = ({ x, y, distance, direction = 90, duration = 200 }) => {
   return parallel([
     swipe({ x, y, distance, direction: (direction + 180) % 360, duration }),
@@ -183,6 +215,8 @@ module.exports = {
   swipeRight,
   swipeUp,
   swipeDown,
+
+  scroll,
 
   spread,
   pinch
