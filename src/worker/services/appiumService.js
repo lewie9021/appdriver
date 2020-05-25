@@ -9,6 +9,9 @@ const { platform, isPlatform, isInstanceOf, isString, pollFor } = require("../..
 const transformAttribute = require("../helpers/transformAttribute");
 const { request } = require("./request");
 
+const getViewport = require("./appium/getViewport");
+const performActions = require("./appium/performActions");
+
 const parseValue = (rawValue, elementType, options) => {
   switch (elementType) {
     case "XCUIElementTypeTextField":
@@ -189,14 +192,6 @@ function createAppiumService() {
       .then(() => sessionStore.setState({ webContext: contextId !== "NATIVE_APP" }));
   };
 
-  // ({ sessionId: String? }) => Promise<{ width: Number, height: Number }>.
-  const getViewport = ({ sessionId = sessionStore.getSessionId() } = {}) => {
-    return request({
-      method: "GET",
-      path: `/session/${sessionId}/window/rect`
-    });
-  };
-
   // ({ sessionId: String? }) => Promise<String>.
   const getOrientation = ({ sessionId = sessionStore.getSessionId() } = {}) => {
     return request({
@@ -275,20 +270,6 @@ function createAppiumService() {
         });
       },
       // TODO: Investigate on Android.
-      web: () => Promise.reject(new NotSupportedError())
-    });
-  };
-
-  // ({ sessionId: String?, actions: W3CActions }) => Promise.
-  const performActions = ({ sessionId = sessionStore.getSessionId(), actions }) => {
-    return platform.select({
-      native: () => {
-        return request({
-          method: "POST",
-          path: `/session/${sessionId}/actions`,
-          payload: { actions }
-        });
-      },
       web: () => Promise.reject(new NotSupportedError())
     });
   };
@@ -951,6 +932,13 @@ function createAppiumService() {
     await acceptAlert({ sessionId });
   };
 
+  const getDeviceSettings = ({ sessionId = sessionStore.getSessionId() } = {}) => {
+    return request({
+      method: "GET",
+      path: `/session/${sessionId}/appium/settings`
+    });
+  };
+
   return {
     getStatus,
     createSession,
@@ -1009,7 +997,9 @@ function createAppiumService() {
     getAlertVisible,
 
     goBack,
-    navigate
+    navigate,
+
+    getDeviceSettings
   };
 }
 
