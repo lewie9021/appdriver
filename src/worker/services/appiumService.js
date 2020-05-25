@@ -4,13 +4,13 @@ const matchers = require("../matchers");
 const { Expect } = require("../Expect");
 const { AppiumError, NotImplementedError, NotSupportedError } = require("../errors");
 const { isNativeTextInput, isNativeSwitch, isNativeSlider } = require("../helpers/elementTypes");
-const { getWebScript } = require("../helpers/getWebScript");
 const { platform, isPlatform, isInstanceOf, isString, pollFor } = require("../../utils");
 const transformAttribute = require("../helpers/transformAttribute");
 const { request } = require("./request");
 
 const getViewport = require("./appium/getViewport");
 const performActions = require("./appium/performActions");
+const execute = require("./appium/execute");
 
 const parseValue = (rawValue, elementType, options) => {
   switch (elementType) {
@@ -271,33 +271,6 @@ function createAppiumService() {
       },
       // TODO: Investigate on Android.
       web: () => Promise.reject(new NotSupportedError())
-    });
-  };
-
-  // ({ sessionId: String?, script: String | Function, args?: Array<JSONValue> }) => Promise.
-  const execute = ({ sessionId = sessionStore.getSessionId(), script, args = [] }) => {
-    return platform.select({
-      native: () => {
-        if (typeof script === "function") {
-          return Promise.reject(new NotSupportedError("Functions are only supported in the Web context."));
-        }
-
-        return request({
-          method: "POST",
-          path: `/session/${sessionId}/execute`,
-          payload: { script, args }
-        });
-      },
-      web: () => {
-        return request({
-          method: "POST",
-          path: `/session/${sessionId}/execute`,
-          payload: {
-            script: getWebScript(script),
-            args
-          }
-        });
-      }
     });
   };
 
