@@ -1,5 +1,4 @@
 const Gesture = require("./Gesture");
-const { normalisePixels } = require("./helpers/pixels");
 const { getRelativePoint } = require("./helpers/coordinates");
 
 // () => Gesture
@@ -132,20 +131,20 @@ const swipeDown = ({ x, y, distance, duration = 50 }) => {
 
 // (options: Object) => Gesture
 const scroll = ({ x, y, direction, distance }) => {
-  const stepSize = normalisePixels(25);
+  const stepSize = 25;
   const steps = Math.ceil(distance / stepSize);
   let moves = [];
 
   for (let i = 0; i < steps; i += 1) {
     const relativePoint = getRelativePoint({
       distance: Math.min(stepSize, distance - (i * stepSize)),
-      direction
+      direction: (direction + 180) % 360
     });
 
     moves.push(
       moveTo({
-        x: relativePoint.x * -1,
-        y: relativePoint.y * -1,
+        x: relativePoint.x,
+        y: relativePoint.y,
         duration: 100,
         relative: true
       })
