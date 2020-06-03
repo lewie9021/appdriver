@@ -16,7 +16,7 @@ const scroll = async ({ sessionId = sessionStore.getSessionId(), x, y, direction
       });
     },
     web: () => {
-      const relativePoint = getRelativePoint({ x, y, direction, distance });
+      const relativePoint = getRelativePoint({ x: 0, y: 0, direction, distance });
 
       return appiumService.execute({
         sessionId,
