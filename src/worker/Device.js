@@ -2,6 +2,7 @@ const fs = require("fs");
 const { configStore } = require("../stores/configStore");
 const { sessionStore } = require("./stores/sessionStore");
 const { appiumService } = require("./services/appiumService");
+const appdriverService = require("./services/appdriverService");
 const gestures = require("./gestures");
 const { Expect } = require("./Expect");
 const { delay, isUndefined, isInstanceOf, pollWhile, pollFor, platform } = require("../utils");
@@ -141,6 +142,11 @@ class Device {
 
     return appiumService.performActions({ actions: await swipeDownGesture.resolve() })
       .catch(handleActionError("Failed to perform swipe down gesture."));
+  }
+
+  async scroll({ x = 0, y = 0, direction, distance }) {
+    return appdriverService.scroll({ x, y, direction, distance })
+      .catch(handleActionError("Failed to perform scroll gesture."));
   }
 
   wait(duration) {
