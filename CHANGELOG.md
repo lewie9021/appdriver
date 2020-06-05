@@ -4,6 +4,7 @@
 
 ### Added
 
+- Support for `.scroll` on Device.
 - Support within the Web context for `.isFocused` on Element.
 
 ## [v1.0.0-beta.2] - 2020-05-17
