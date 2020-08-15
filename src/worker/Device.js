@@ -47,6 +47,11 @@ class Device {
       .catch(handleActionError("Failed to reset the application."));
   }
 
+  getSource() {
+    return appiumService.getSource()
+      .catch(handleActionError("Failed to get source."));
+  }
+
   getViewport() {
     return appiumService.getViewport()
       .catch(handleActionError("Failed to get viewport."));

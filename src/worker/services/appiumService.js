@@ -114,6 +114,14 @@ function createAppiumService() {
   };
 
   // ({ sessionId: String? }) => Promise<String>.
+  const getSource = ({ sessionId = sessionStore.getSessionId() } = {}) => {
+    return request({
+      method: "GET",
+      path: `/session/${sessionId}/source`
+    });
+  };
+
+  // ({ sessionId: String? }) => Promise<String>.
   const getContextId = ({ sessionId = sessionStore.getSessionId() } = {}) => {
     return request({
       method: "GET",
@@ -920,6 +928,7 @@ function createAppiumService() {
     closeApp,
     restartApp,
     resetApp,
+    getSource,
     getContext,
     getContexts,
     setContext,
