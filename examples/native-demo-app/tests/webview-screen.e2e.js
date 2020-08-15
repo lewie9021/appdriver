@@ -11,9 +11,18 @@ describe("WebView Screen", () => {
     await device.waitFor(() => expect(device.getContexts()).toHaveLength(2));
     await device.switchToWebContext();
 
-    const $input = await element(by.css(`input[name="q"]`)).setValue("Hello World");
-    const value = await device.execute(($input) => $input.value, await $input.getRef());
+    const $input = await element(by.css(`input[name="q"]`));
 
-    return expect(value).toEqual("Hello World");
+    await $input.setValue("Hello World");
+    await expect($input).toBeFocused();
+
+    const value = await device.execute("arguments[0].value", await $input.getRef());
+    await expect(value).toEqual("Hello World");
+
+    await element(by.css(`button[aria-label="Google Search"]`)).tap();
+
+    await device.wait(2000);
+    await device.scroll({ direction: 180, distance: 500 });
+    await device.wait(5000);
   });
 });
