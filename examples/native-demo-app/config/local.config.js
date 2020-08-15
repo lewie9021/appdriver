@@ -4,6 +4,18 @@ const getAppPath = require("./getAppPath");
 const development = true;
 
 const simulators = {
+  iPhoneSE: {
+    bundleId: "com.nativedemoapp",
+    app: getAppPath("iOS", development),
+    derivedDataPath: path.join(__dirname, "derived-data", "iphone-se-13-3"),
+    platformName: "iOS",
+    platformVersion: "13.3",
+    deviceName: "iPhone SE",
+    automationName: "XCUITest",
+    wdaLocalPort: 8100,
+    waitForQuiescence: true,
+    noReset: true
+  },
   iPhone8: {
     bundleId: "com.nativedemoapp",
     app: getAppPath("iOS", development),
@@ -53,6 +65,7 @@ module.exports = {
     "../tests/carousel-screen.e2e.js",
     "../tests/form-screen.e2e.js",
     "../tests/list-screen.e2e.js",
+    "../tests/source.e2e.js",
     "../tests/swipeable-screen.e2e.js",
     "../tests/zoom-screen.e2e.js",
     "../tests/webview-screen.e2e.js",
