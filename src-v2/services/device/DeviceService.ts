@@ -5,6 +5,7 @@ import launchApp from "./helpers/launchApp";
 import closeApp from "./helpers/closeApp";
 import resetApp from "./helpers/resetApp";
 import getSource from "./helpers/getSource";
+import getActiveElement from "./helpers/getActiveElement";
 import getViewport from "./helpers/getViewport";
 
 export class DeviceService {
@@ -43,6 +44,13 @@ export class DeviceService {
     return getSource({
       api: this.#api,
       session: this.#session,
+    });
+  }
+
+  getActiveElement() {
+    return getActiveElement({
+      api: this.#api,
+      session: this.#session
     });
   }
 
