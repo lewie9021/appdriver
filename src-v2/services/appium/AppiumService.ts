@@ -8,28 +8,28 @@ import {
 import deleteSession from "./helpers/deleteSession";
 
 export class AppiumService {
-  readonly #apiService: ApiService;
+  readonly #api: ApiService;
 
-  constructor(apiService: ApiService) {
-    this.#apiService = apiService;
+  constructor(api: ApiService) {
+    this.#api = api;
   }
 
   status() {
     return getStatus({
-      apiService: this.#apiService
+      api: this.#api
     });
   }
 
   createSession({ capabilities }: CreateSessionParams) {
     return createSession({
-      apiService: this.#apiService,
+      api: this.#api,
       capabilities
     });
   }
 
   deleteSession({ sessionId }: DeleteSessionParams) {
     return deleteSession({
-      apiService: this.#apiService,
+      api: this.#api,
       sessionId
     });
   }

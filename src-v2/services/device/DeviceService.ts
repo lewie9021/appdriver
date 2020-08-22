@@ -46,6 +46,6 @@ export class DeviceService {
   }
 }
 
-// const api = new ApiService("http://localhost:4723/wd/hub");
-// const session = new SessionStore("sessionId", {});
-// const deviceService = new DeviceService(api, session);
+// const apiService = new ApiService("http://localhost:4723/wd/hub");
+// const sessionStore = new SessionStore("sessionId", {});
+// const deviceService = new DeviceService(apiService, sessionStore);

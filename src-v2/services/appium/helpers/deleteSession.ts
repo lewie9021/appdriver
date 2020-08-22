@@ -1,14 +1,14 @@
 import { ApiService } from "../../api/ApiService";
 
 interface DeleteSessionParams {
-  apiService: ApiService;
+  api: ApiService;
   sessionId: string;
 }
 
 export type DeleteSessionResponse = null;
 
-const deleteSession = ({ apiService, sessionId }: DeleteSessionParams): Promise<DeleteSessionResponse> => {
-  return apiService.del({
+const deleteSession = ({ api, sessionId }: DeleteSessionParams): Promise<DeleteSessionResponse> => {
+  return api.del({
     path: `/session/${sessionId}`,
   });
 };

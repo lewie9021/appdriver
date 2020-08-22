@@ -2,7 +2,7 @@ import { ApiService } from "../../api/ApiService";
 import { AppiumCapabilities } from "../../interfaces/appium";
 
 interface CreateSessionParams {
-  apiService: ApiService;
+  api: ApiService;
   capabilities: AppiumCapabilities;
 }
 
@@ -12,8 +12,8 @@ export interface CreateSessionResponse {
   capabilities: object;
 }
 
-const createSession = ({ apiService, capabilities }: CreateSessionParams): Promise<CreateSessionResponse> => {
-  return apiService.post({
+const createSession = ({ api, capabilities }: CreateSessionParams): Promise<CreateSessionResponse> => {
+  return api.post({
     path: `/session`,
     payload: { desiredCapabilities: capabilities },
     transform: (data) => ({

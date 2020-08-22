@@ -1,14 +1,14 @@
 import { ApiService } from "../../api/ApiService";
 
 interface GetStatusParams {
-  apiService: ApiService;
+  api: ApiService;
 }
 
 // TODO: Determine response model.
 export type GetStatusResponse = object;
 
-const getStatus = ({ apiService }: GetStatusParams): Promise<GetStatusResponse> => {
-  return apiService.get({
+const getStatus = ({ api }: GetStatusParams): Promise<GetStatusResponse> => {
+  return api.get({
     path: `/status`
   });
 };
