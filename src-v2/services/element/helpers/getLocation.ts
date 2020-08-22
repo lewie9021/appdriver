@@ -1,9 +1,10 @@
 import { ApiService } from "../../api/ApiService";
+import { SessionStore } from "../../../stores/sesssion/SessionStore";
 import { AppiumElement } from "../../interfaces/appium";
 
 interface GetLocationParams {
-  apiService: ApiService;
-  sessionId: string;
+  api: ApiService;
+  session: SessionStore;
   element: AppiumElement;
   relative?: boolean;
 }
@@ -13,9 +14,9 @@ export interface GetLocationResponse {
   y: number;
 }
 
-const getLocation = ({ apiService, sessionId, element, relative = false }: GetLocationParams): Promise<GetLocationResponse> => {
-  return apiService.get({
-    path: `/session/${sessionId}/element/${element.ELEMENT}/${relative ? "location_in_view" : "location"}`
+const getLocation = ({ api, session, element, relative = false }: GetLocationParams): Promise<GetLocationResponse> => {
+  return api.get({
+    path: `/session/${session.getSessionId()}/element/${element.ELEMENT}/${relative ? "location_in_view" : "location"}`
   });
 };
 

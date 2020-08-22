@@ -1,16 +1,17 @@
 import { ApiService } from "../../api/ApiService";
+import { SessionStore } from "../../../stores/sesssion/SessionStore";
 
 interface LaunchAppParams {
-  apiService: ApiService;
-  sessionId: string;
+  api: ApiService;
+  session: SessionStore;
   appId: string;
 }
 
 export type LaunchAppResponse = void;
 
-const launchApp = ({ apiService, sessionId, appId }: LaunchAppParams): Promise<LaunchAppResponse> => {
-  return apiService.post({
-    path: `/session/${sessionId}/appium/device/activate_app`,
+const launchApp = ({ api, session, appId }: LaunchAppParams): Promise<LaunchAppResponse> => {
+  return api.post({
+    path: `/session/${session.getSessionId()}/appium/device/activate_app`,
     payload: { appId }
   });
 };

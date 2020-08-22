@@ -1,16 +1,17 @@
 import { ApiService } from "../../api/ApiService";
+import { SessionStore } from "../../../stores/sesssion/SessionStore";
 
 interface CloseAppParams {
-  apiService: ApiService;
-  sessionId: string;
+  api: ApiService;
+  session: SessionStore;
   appId: string;
 }
 
 export type CloseAppResponse = void;
 
-const closeApp = ({ apiService, sessionId, appId }: CloseAppParams): Promise<CloseAppResponse> => {
-  return apiService.post({
-    path: `/session/${sessionId}/appium/device/terminate_app`,
+const closeApp = ({ api, session, appId }: CloseAppParams): Promise<CloseAppResponse> => {
+  return api.post({
+    path: `/session/${session.getSessionId()}/appium/device/terminate_app`,
     payload: { appId }
   });
 };

@@ -1,9 +1,10 @@
 import { ApiService } from "../../api/ApiService";
+import { SessionStore } from "../../../stores/sesssion/SessionStore";
 import { AppiumElement } from "../../interfaces/appium";
 
 interface GetSizeParams {
-  apiService: ApiService;
-  sessionId: string;
+  api: ApiService;
+  session: SessionStore;
   element: AppiumElement;
 }
 
@@ -12,9 +13,9 @@ export interface GetSizeResponse {
   height: number;
 }
 
-const getSize = ({ apiService, sessionId, element }: GetSizeParams): Promise<GetSizeResponse> => {
-  return apiService.get({
-    path: `/session/${sessionId}/element/${element.ELEMENT}/size`
+const getSize = ({ api, session, element }: GetSizeParams): Promise<GetSizeResponse> => {
+  return api.get({
+    path: `/session/${session.getSessionId()}/element/${element.ELEMENT}/size`
   });
 };
 

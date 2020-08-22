@@ -1,4 +1,5 @@
 import { ApiService } from "../api/ApiService";
+import { SessionStore } from "../../stores/sesssion/SessionStore";
 import { CloseAppParams, LaunchAppParams } from "./interfaces/deviceService";
 import launchApp from "./helpers/launchApp";
 import closeApp from "./helpers/closeApp";
@@ -6,44 +7,45 @@ import getSource from "./helpers/getSource";
 import getViewport from "./helpers/getViewport";
 
 export class DeviceService {
-  readonly #apiService: ApiService;
-  readonly #sessionId: string;
+  readonly #api: ApiService;
+  readonly #session: SessionStore;
 
-  constructor(apiService: ApiService, sessionId: string) {
-    this.#apiService = apiService;
-    this.#sessionId = sessionId;
+  constructor(api: ApiService, session: SessionStore) {
+    this.#api = api;
+    this.#session = session;
   }
 
   launchApp({ appId }: LaunchAppParams) {
     return launchApp({
-      apiService: this.#apiService,
-      sessionId: this.#sessionId,
+      api: this.#api,
+      session: this.#session,
       appId
     });
   }
 
   closeApp({ appId }: CloseAppParams) {
     return closeApp({
-      apiService: this.#apiService,
-      sessionId: this.#sessionId,
+      api: this.#api,
+      session: this.#session,
       appId
     });
   }
 
   getSource() {
     return getSource({
-      apiService: this.#apiService,
-      sessionId: this.#sessionId
+      api: this.#api,
+      session: this.#session,
     });
   }
 
   getViewport() {
     return getViewport({
-      apiService: this.#apiService,
-      sessionId: this.#sessionId
+      api: this.#api,
+      session: this.#session,
     });
   }
 }
 
-// const apiService = new ApiService("http://localhost:4723/wd/hub");
-// const deviceService = new DeviceService(apiService, "hello");
+// const api = new ApiService("http://localhost:4723/wd/hub");
+// const session = new SessionStore("sessionId", {});
+// const deviceService = new DeviceService(api, session);

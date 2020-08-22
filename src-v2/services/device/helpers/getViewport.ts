@@ -1,8 +1,9 @@
 import { ApiService } from "../../api/ApiService";
+import { SessionStore } from "../../../stores/sesssion/SessionStore";
 
 interface GetViewportParams {
-  apiService: ApiService;
-  sessionId: string;
+  api: ApiService;
+  session: SessionStore;
 }
 
 export interface GetViewportResponse {
@@ -10,9 +11,9 @@ export interface GetViewportResponse {
   height: number;
 }
 
-const getViewport = ({ apiService, sessionId }: GetViewportParams): Promise<GetViewportResponse> => {
-  return apiService.get({
-    path: `/session/${sessionId}/window/rect`
+const getViewport = ({ api, session }: GetViewportParams): Promise<GetViewportResponse> => {
+  return api.get({
+    path: `/session/${session.getSessionId()}/window/rect`
   });
 };
 

@@ -1,15 +1,16 @@
 import { ApiService } from "../../api/ApiService";
+import { SessionStore } from "../../../stores/sesssion/SessionStore";
 
 interface GetSourceParams {
-  apiService: ApiService;
-  sessionId: string;
+  api: ApiService;
+  session: SessionStore;
 }
 
 export type GetSourceResponse = string;
 
-const getSource = ({ apiService, sessionId }: GetSourceParams): Promise<GetSourceResponse> => {
-  return apiService.get({
-    path: `/session/${sessionId}/source`
+const getSource = ({ api, session }: GetSourceParams): Promise<GetSourceResponse> => {
+  return api.get({
+    path: `/session/${session.getSessionId()}/source`
   });
 };
 
