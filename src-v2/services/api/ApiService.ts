@@ -1,9 +1,9 @@
-import request, { RequestParams } from "./request";
+import request, { RequestParams } from "./helpers/request";
 
-type GetParams = Pick<RequestParams, "path" | "query">;
-type PutParams = Pick<RequestParams, "path" | "query" | "payload">;
-type PostParams = Pick<RequestParams, "path" | "query" | "payload">;
-type DeleteParams = Pick<RequestParams, "path" | "query" | "payload">;
+type GetParams = Pick<RequestParams, "path" | "query" | "transform">;
+type PutParams = Pick<RequestParams, "path" | "query" | "payload" | "transform">;
+type PostParams = Pick<RequestParams, "path" | "query" | "payload" | "transform">;
+type DeleteParams = Pick<RequestParams, "path" | "query" | "payload" | "transform">;
 
 export class ApiService {
   readonly #baseUrl: string;

@@ -1,6 +1,6 @@
-import getQueryString from "./helpers/getQueryString";
-import getFetchOptions from "./helpers/getFetchOptions";
-import { AppiumError } from "../errors";
+import getQueryString from "./getQueryString";
+import getFetchOptions from "./getFetchOptions";
+import { AppiumError } from "../../../errors";
 
 export type RequestMethod = "GET" | "PUT" | "POST" | "DELETE";
 export type RequestQuery = Record<string, string | number>;

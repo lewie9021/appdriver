@@ -1,4 +1,4 @@
-import { RequestMethod, RequestPayload } from "../request";
+import { RequestMethod, RequestPayload } from "./request";
 
 interface GetFetchOptionsParams {
   method: RequestMethod;

@@ -1,4 +1,4 @@
-import { RequestQuery } from "../request";
+import { RequestQuery } from "./request";
 
 const getQueryString = (params: RequestQuery) => {
   if (!params) {
