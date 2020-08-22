@@ -1,12 +1,10 @@
-import { CreateSessionResponse } from "../../services/appium/helpers/createSession";
-
-type Capabilities = CreateSessionResponse["capabilities"];
+import { AppiumCapabilities } from "../../services/interfaces/appium";
 
 export class SessionStore {
   readonly #sessionId: string;
-  readonly #capabilities: Capabilities;
+  readonly #capabilities: AppiumCapabilities;
 
-  constructor(sessionId: string, capabilities: Capabilities) {
+  constructor(sessionId: string, capabilities: AppiumCapabilities) {
     this.#sessionId = sessionId;
     this.#capabilities = capabilities;
   }
@@ -15,7 +13,7 @@ export class SessionStore {
     return this.#sessionId;
   }
 
-  getCapability<Key extends keyof Capabilities = keyof Capabilities>(key: Key): Capabilities[Key] {
+  getCapability<Key extends keyof AppiumCapabilities = keyof AppiumCapabilities>(key: Key): AppiumCapabilities[Key] {
     return this.#capabilities[key];
   }
 
@@ -24,11 +22,9 @@ export class SessionStore {
   }
 
   getAppId() {
-    const { platformName, bundleId, appPackage } = this.#capabilities;
-
-    switch (platformName) {
-      case "iOS": return bundleId;
-      case "Android": return appPackage;
+    switch (this.#capabilities.platformName) {
+      case "iOS": return this.#capabilities.bundleId;
+      case "Android": return this.#capabilities.appPackage;
       default: return null;
     }
   }

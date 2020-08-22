@@ -1,7 +1,7 @@
-import { AppiumCapabilities } from "../../interfaces/appium";
+import { DesiredCapabilities } from "../../interfaces/appium";
 
 export interface CreateSessionParams {
-  capabilities: AppiumCapabilities;
+  capabilities: DesiredCapabilities;
 }
 
 export interface DeleteSessionParams {

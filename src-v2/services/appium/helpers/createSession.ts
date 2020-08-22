@@ -1,15 +1,15 @@
 import { ApiService } from "../../api/ApiService";
-import { AppiumCapabilities } from "../../interfaces/appium";
+import { DesiredCapabilities, AppiumCapabilities } from "../../interfaces/appium";
 
 interface CreateSessionParams {
   api: ApiService;
-  capabilities: AppiumCapabilities;
+  capabilities: DesiredCapabilities;
 }
 
 // TODO: Determine response model.
 export interface CreateSessionResponse {
   sessionId: string;
-  capabilities: object;
+  capabilities: AppiumCapabilities;
 }
 
 const createSession = ({ api, capabilities }: CreateSessionParams): Promise<CreateSessionResponse> => {

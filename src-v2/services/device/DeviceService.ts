@@ -3,6 +3,7 @@ import { SessionStore } from "../../stores/sesssion/SessionStore";
 import { CloseAppParams, LaunchAppParams } from "./interfaces/deviceService";
 import launchApp from "./helpers/launchApp";
 import closeApp from "./helpers/closeApp";
+import resetApp from "./helpers/resetApp";
 import getSource from "./helpers/getSource";
 import getViewport from "./helpers/getViewport";
 
@@ -28,6 +29,13 @@ export class DeviceService {
       api: this.#api,
       session: this.#session,
       appId
+    });
+  }
+
+  resetApp() {
+    return resetApp({
+      api: this.#api,
+      session: this.#session,
     });
   }
 
