@@ -13,7 +13,7 @@ export class SessionStore {
     return this.#sessionId;
   }
 
-  getCapability<Key extends keyof AppiumCapabilities = keyof AppiumCapabilities>(key: Key): AppiumCapabilities[Key] {
+  getCapability(key: keyof AppiumCapabilities) {
     return this.#capabilities[key];
   }
 
