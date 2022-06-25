@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "mocha": "7.1.2",
-    "node-fetch": "2.6.1",
+    "node-fetch": "2.6.7",
     "yargs": "15.3.1"
   },
   "devDependencies": {
